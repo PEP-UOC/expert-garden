@@ -8,8 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "build": "expo build:web",
-    "build-optimized": "npx expo-optimize && expo build:web"
+    "build": "npx expo-optimize && expo build:web"
   },
   "dependencies": {
     "expo": "~44.0.0",
