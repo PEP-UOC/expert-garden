@@ -4,9 +4,9 @@
     "slug": "expert-garden",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/assets/images/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./src/assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,20 +17,16 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.mypackage.expertgarden",
-      "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true
     },
     "android": {
-      "package": "com.mypackage.expertgarden",
-      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png",
+      "favicon": "./src/assets/images/favicon.png",
       "config": {
         "firebase": {
           "apiKey": "AIzaSyDb2ver9X-LTcTdsa84J-cTHDOe16yh82A",
@@ -40,6 +36,13 @@
           "messagingSenderId": "644824745090",
           "appId": "1:644824745090:web:fe962dbbaf41c4a4e4e09b",
           "measurementId": "G-HV58GWH706"
+        }
+      },
+      "build": {
+        "babel": {
+          "include": [
+            "@ui-kitten/components"
+          ]
         }
       }
     }
