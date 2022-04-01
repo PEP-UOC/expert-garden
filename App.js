@@ -1,6 +1,11 @@
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+// Navigation
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+const Stack = createNativeStackNavigator();
+
 // Components
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
@@ -30,21 +35,28 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 
 // Views
-import { Home } from './src/views/Home/Home';
+import { HomeScreen } from './src/screens/Home/Home';
+import { ServiceRequestScreen } from './src/screens/ServiceRequest/ServiceRequest';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
 
-    if (!isLoadingComplete) {
+  if (!isLoadingComplete) {
     return null;
   } else {
     return (
       <SafeAreaProvider>
         <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }} customMapping={mapping}>
-            <View style={styles.container}>
-              <Home />
-              <StatusBar style="auto" />
-            </View>
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="Home">
+              <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Inicio' }} />
+              <Stack.Screen name="ServiceRequest" component={ServiceRequestScreen} options={{ title: 'Solicitar Servicio' }} />
+              {/*<View style={styles.container}>
+                    <Home />
+                    <StatusBar style="auto" />
+                  </View>*/}
+            </Stack.Navigator>
+          </NavigationContainer>
         </ApplicationProvider>
       </SafeAreaProvider>
     );
