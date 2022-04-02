@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "identifier": "CREATE_GARDEN",
+        "label": "Crear jardín desde 0"
+    },
+    {
+        "id": 2,
+        "identifier": "ADD_TO_GARDEN",
+        "label": "Añadir al jardín"
+    },
+    {
+        "id": 3,
+        "identifier": "MANTAIN_GARDEN",
+        "label": "Mantenimiento del jardín"
+    }
+]
