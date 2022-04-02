@@ -1,4 +1,8 @@
 import React from 'react';
+import PropTypes from "prop-types";
+
+//Constants
+import Constants from 'expo-constants';
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
@@ -19,7 +23,8 @@ import { Divider, Layout, Text, Button, TopNavigation, TopNavigationAction } fro
 //Icons
 import { BackIcon } from '../../components/icons/Back'
 
-export const ServiceRequestScreen = ({ navigation }) => {
+// eslint-disable-next-line no-unused-vars
+export const ServiceRequestScreen = ({ debug, navigation }) => {
   const dispatch = useDispatch()
 
   //Styles
@@ -39,7 +44,7 @@ export const ServiceRequestScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <TopNavigation title='Solicita un servicio' alignment='center' accessoryLeft={BackAction} />
+      <TopNavigation title={'Solicita un servicio'} alignment='center' accessoryLeft={BackAction} />
       <Divider />
       <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 10 }}>
         <Text category='h1' style={gloStyles?.h1}>Solicitar un servicio</Text>
@@ -55,4 +60,13 @@ export const ServiceRequestScreen = ({ navigation }) => {
       </Layout>
     </SafeAreaView>
   )
+};
+
+ServiceRequestScreen.propTypes = {
+  debug: PropTypes.bool.isRequired,
+  navigation: PropTypes.object.isRequired,
+};
+
+ServiceRequestScreen.defaultProps = {
+  debug: Constants.manifest.extra.debug || false,
 };

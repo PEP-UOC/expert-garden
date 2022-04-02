@@ -1,4 +1,8 @@
 import React from 'react';
+import PropTypes from "prop-types";
+
+//Constants
+import Constants from 'expo-constants';
 
 //Navigation
 import { NavigationContainer } from '@react-navigation/native';
@@ -18,7 +22,8 @@ import { BellIcon } from '../icons/Bell'
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
-const BottomTabBar = ({ navigation, state }) => (
+// eslint-disable-next-line no-unused-vars
+const BottomTabBar = ({ debug, navigation, state }) => (
     <BottomNavigation
         selectedIndex={state.index}
         onSelect={index => navigation.navigate(state.routeNames[index])}>
@@ -47,3 +52,13 @@ export const AppNavigator = () => (
         <TabNavigator />
     </NavigationContainer>
 );
+
+BottomTabBar.propTypes = {
+    debug: PropTypes.bool.isRequired,
+    navigation: PropTypes.object.isRequired,
+    state: PropTypes.object.isRequired
+};
+
+BottomTabBar.defaultProps = {
+    debug: Constants.manifest.extra.debug || false,
+};

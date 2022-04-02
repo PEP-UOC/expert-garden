@@ -1,4 +1,8 @@
 import React from 'react'
+import PropTypes from "prop-types";
+
+//Constants
+import Constants from 'expo-constants';
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
@@ -16,7 +20,9 @@ import { Text, Button, Divider, Layout, TopNavigation, List, ListItem } from '@u
 import { AddIcon } from '../../components/icons/Add'
 import { ChevronRightIcon } from '../../components/icons/ChevronRight'
 
-export const HomeScreen = ({ navigation }) => {
+// eslint-disable-next-line no-unused-vars
+export const HomeScreen = ({ debug, navigation }) => {
+
   //Styles
   const gloStyles = useStyleSheet(globalStyles);
   const ownStyles = useStyleSheet(styles);
@@ -48,7 +54,7 @@ export const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <TopNavigation title='Inicio' alignment='center' />
+      <TopNavigation title={'Inicio'} alignment='center' />
       <Divider />
       <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 10 }}>
         <Text category='h1' style={gloStyles?.h1}>Redux Configurado Correctamente 👩‍🌾</Text>
@@ -71,4 +77,13 @@ export const HomeScreen = ({ navigation }) => {
       </Layout >
     </SafeAreaView>
   )
+};
+
+HomeScreen.propTypes = {
+  debug: PropTypes.bool.isRequired,
+  navigation: PropTypes.object.isRequired,
+};
+
+HomeScreen.defaultProps = {
+  debug: Constants.manifest.extra.debug || false,
 };
