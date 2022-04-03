@@ -1,7 +1,21 @@
 import { StyleService } from '@ui-kitten/components';
 
-export const styles = StyleService.create({
-  button: {
-    width: '100%',
-  },
-});
+//Device Detect
+import Device from '../../libs/react-native-device-detection';
+
+let styles;
+if (Device.isPhone) {
+  styles = StyleService.create({
+    button: {
+      width: '100%',
+    },
+  });
+} else {
+  styles = StyleService.create({
+    button: {
+      width: '100%',
+    },
+  });
+}
+
+export default styles;

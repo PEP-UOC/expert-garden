@@ -1,19 +1,22 @@
 import React from 'react'
 import PropTypes from "prop-types";
 
+//Device Detect
+import Device from '../../libs/react-native-device-detection'
+
 //Constants
 import Constants from 'expo-constants';
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
-import { globalStyles } from '../../styles/globalStyles'
-import { styles } from './styles'
+import globalStyles from '../../styles/globalStyles'
+import styles from './styles'
 
 //Store
 import { useSelector } from 'react-redux'
 
 //Components
-import { SafeAreaView } from 'react-native'
+import { SafeAreaView, View } from 'react-native'
 import { Text, Button, Divider, Layout, TopNavigation, List, ListItem } from '@ui-kitten/components';
 
 //Icons
@@ -56,24 +59,25 @@ export const HomeScreen = ({ debug, navigation }) => {
     <SafeAreaView style={{ flex: 1 }}>
       <TopNavigation title={'Inicio'} alignment='center' />
       <Divider />
-      <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 10 }}>
-        <Text category='h1' style={gloStyles?.h1}>Redux Configurado Correctamente 👩‍🌾</Text>
+      <Layout style={{ ...gloStyles.layout }}>
+        <View style={{ ...gloStyles.view }}>
+          <Text category='h1' style={gloStyles?.h1}>Tipo de dispositivo {Device.isPhone ? '📱' : '💻'}</Text>
 
-        <Button style={{ ...gloStyles?.button, ...ownStyles?.button }} size='large' onPress={navigateServiceRequest} accessoryLeft={AddIcon}>SOLICITA UN SERVICIO</Button>
+          <Button style={{ ...gloStyles?.button, ...ownStyles?.button }} size='large' onPress={navigateServiceRequest} accessoryLeft={AddIcon}>SOLICITA UN SERVICIO</Button>
 
-        <Text category='h2' style={gloStyles?.h2}>Servicios solicitados</Text>
+          <Text category='h2' style={gloStyles?.h2}>Servicios solicitados</Text>
 
-        {services.length ? <List
-          style={ownStyles?.listContainer}
-          data={services}
-          renderItem={renderItem}
-        /> :
-          <ListItem
-            title={'Todavía no has solicitado ningún servicio'}
-          />
-        }
+          {services.length ? <List
+            style={ownStyles?.listContainer}
+            data={services}
+            renderItem={renderItem}
+          /> :
+            <ListItem
+              title={'Todavía no has solicitado ningún servicio'}
+            />
+          }
 
-
+        </View>
       </Layout >
     </SafeAreaView>
   )

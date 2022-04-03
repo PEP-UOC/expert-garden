@@ -6,8 +6,8 @@ import Constants from 'expo-constants';
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
-import { globalStyles } from '../../styles/globalStyles'
-import { styles } from './styles'
+import globalStyles from '../../styles/globalStyles'
+import styles from './styles'
 
 //Store
 import { useDispatch } from 'react-redux'
@@ -46,7 +46,7 @@ export const ServiceRequestScreen = ({ debug, navigation }) => {
     <SafeAreaView style={{ flex: 1 }}>
       <TopNavigation title={'Solicita un servicio'} alignment='center' accessoryLeft={BackAction} />
       <Divider />
-      <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 10 }}>
+      <Layout style={{ ...gloStyles.layout }}>
         <Text category='h1' style={gloStyles?.h1}>Solicitar un servicio</Text>
 
         {mainServices.map(service => {
