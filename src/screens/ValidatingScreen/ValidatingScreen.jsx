@@ -29,6 +29,9 @@ import firebaseErrorCodeMap from '../../common/firebaseErrorCodeMap';
 //Linking
 import * as Linking from 'expo-linking';
 
+//Device
+import Device from '../../libs/react-native-device-detection';
+
 // eslint-disable-next-line no-unused-vars
 export const ValidatingScreen = ({ debug, mode, actionCode }) => {
     const dispatch = useDispatch()
@@ -70,6 +73,9 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
             setIsValidated(false)
         }).finally(() => {
             let redirectURL = Linking.createURL('/', {});
+            if (Device.isPhoneOrTablet) {
+                redirectURL = 'exp://192.168.1.65:19000'
+            }
             setRedirectURL(redirectURL);
             setIsValidating(false);
         });
