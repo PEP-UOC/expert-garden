@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from "prop-types";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 //Constants
 import Constants from 'expo-constants';
 
@@ -104,14 +102,6 @@ export const SignUpScreen = ({ debug, navigation }) => {
                     .then((user) => {
                         console.info('Registered!');
                         console.info(user.user.email);
-                        AsyncStorage.setItem('emailForSignIn', user.user.email);
-                        var actionCodeSettings = {
-                            //url: `${redirectUrl}/${firebase.auth().currentUser.email}`,
-                            url: `https://expertgarden.page.link/confirmemail`,
-                            handleCodeInApp: true,
-                            dynamicLinkDomain: "expertgarden.page.link"
-                        };
-                        console.log('actionCodeSettings', actionCodeSettings)
                         auth().currentUser.sendEmailVerification()
                             .then(() => {
                                 console.info('Email verification sent!');
