@@ -1,11 +1,17 @@
 import React from 'react';
 
+//Constants
+import Constants from 'expo-constants';
+
 // Store
-import store from './src/store';
 import { Provider } from 'react-redux';
+import { store } from './src/store';
 
 // Navigation
-import { AppNavigator } from './src/components/navigation/BottomNavigation';
+import { RootNavigation } from './src/navigation/RootNavigation';
+
+// Modal General
+import { MainModal, ErrorModal } from './src/components/Modals/Modals';
 
 // Hooks
 import useCachedResources from './src/hooks/useCachedResources';
@@ -14,26 +20,36 @@ import useCachedResources from './src/hooks/useCachedResources';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
-import { default as theme } from './src/assets/ui-kitten/theme.json';
-import { default as mapping } from './src/assets/ui-kitten/mapping.json';
+import { default as theme } from './src/styles/ui-kitten/theme.json';
+import { default as mapping } from './src/styles/ui-kitten/mapping.json';
 
 // FIREBASE
-import { initializeApp } from 'firebase/app';
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: 'AIzaSyDb2ver9X-LTcTdsa84J-cTHDOe16yh82A',
-  authDomain: 'expert-garden.firebaseapp.com',
-  projectId: 'expert-garden',
-  storageBucket: 'expert-garden.appspot.com',
-  messagingSenderId: '644824745090',
-  appId: '1:644824745090:web:fe962dbbaf41c4a4e4e09b',
-  measurementId: 'G-HV58GWH706',
-};
 //TODO TERMINAR DE CONFIGURAR ANALYTICS EN APPS https://docs.expo.dev/guides/setup-native-firebase/
-initializeApp(firebaseConfig);
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+
+const firebaseConfig = {
+  apiKey: Constants.manifest.extra.firebaseApiKey,
+  authDomain: Constants.manifest.extra.firebaseAuthDomain,
+  projectId: Constants.manifest.extra.firebaseProjectId,
+  storageBucket: Constants.manifest.extra.firebaseStorageBucket,
+  messagingSenderId: Constants.manifest.extra.firebaseMessagingSenderId,
+  appId: Constants.manifest.extra.firebaseAppId,
+  measurementId: Constants.manifest.extra.firebaseMeasurementId,
+};
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
+
+  //Firebase
+  if (!firebase?.apps.length) {
+    console.info('Initializing app!');
+    firebase?.initializeApp(firebaseConfig);
+  } else {
+    console.info('Already initialized app!');
+    firebase?.app();
+  }
 
   if (!isLoadingComplete) {
     return null;
@@ -42,8 +58,10 @@ export default function App() {
       <>
         <IconRegistry icons={EvaIconsPack} />
         <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }} customMapping={mapping}>
-          <Provider store={store}>
-            <AppNavigator />
+          <Provider store={store.store}>
+            <RootNavigation />
+            <MainModal />
+            <ErrorModal />
           </Provider>
         </ApplicationProvider>
       </>

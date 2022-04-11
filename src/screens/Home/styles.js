@@ -1,23 +1,21 @@
 import { StyleService } from '@ui-kitten/components';
 
 //Device Detect
-import Device from '../../libs/react-native-device-detection';
+//import Device from '../../libs/react-native-device-detection';
+//import { Platform } from 'react-native';
 
-let styles;
-if (Device.isPhone) {
-  styles = StyleService.create({
-    listContainer: {
-      width: '100%',
-      maxHeight: 200,
+const styles = StyleService.create({
+  h1: { marginBottom: 0 },
+  button: {
+    verifyEmail: {
+      marginBottom: 0,
+      paddingBottom: 0,
     },
-  });
-} else {
-  styles = StyleService.create({
-    listContainer: {
-      width: '100%',
-      maxHeight: 200,
-    },
-  });
-}
+  },
+  listContainer: {
+    width: '100%',
+    maxHeight: 200,
+  },
+});
 
 export default styles;

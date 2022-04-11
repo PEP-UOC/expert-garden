@@ -4,6 +4,8 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
+    "dev": "DEBUG=true expo start",
+    "start:dev": "npm run dev --reset-cache",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -12,6 +14,7 @@
   },
   "dependencies": {
     "@eva-design/eva": "^2.1.1",
+    "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-navigation/bottom-tabs": "^6.3.1",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.1",
@@ -21,9 +24,11 @@
     "@ui-kitten/date-fns": "^5.1.2",
     "@ui-kitten/eva-icons": "^5.1.2",
     "@ui-kitten/moment": "^5.1.2",
+    "dotenv": "^16.0.0",
     "expo": "~44.0.0",
     "expo-constants": "~13.0.1",
     "expo-firebase-analytics": "~6.0.0",
+    "expo-linking": "~3.0.0",
     "expo-status-bar": "~1.2.0",
     "firebase": "^9.6.10",
     "prop-types": "^15.8.1",
@@ -35,12 +40,15 @@
     "react-native-svg": "12.1.1",
     "react-native-web": "0.17.1",
     "react-redux": "^7.2.8",
-    "redux": "^4.1.2"
+    "redux": "^4.1.2",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@redux-devtools/core": "^3.11.0",
     "babel-eslint": "^10.1.0",
+    "babel-plugin-rename-jsx-attribute": "^0.2.4",
     "eslint": "^8.12.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-native": "^4.0.0",

@@ -2,6 +2,7 @@
 node_modules/
 dist/
 web-build/
+.env
 
 # Expo
 .expo/

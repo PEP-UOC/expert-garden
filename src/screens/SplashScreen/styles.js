@@ -5,8 +5,13 @@ import { StyleService } from '@ui-kitten/components';
 //import { Platform } from 'react-native';
 
 const styles = StyleService.create({
-  button: {
-    width: '100%',
+  h1: { marginBottom: 20, alignSelf: 'center', textAlign: 'center' },
+  splashScreen: {
+    alignItems: 'center',
+  },
+  leaf: {
+    marginTop: 40,
+    fill: 'color-primary-500',
   },
 });
 
