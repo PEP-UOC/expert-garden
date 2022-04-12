@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types";
 
 //Device Detect
@@ -19,11 +19,12 @@ import { updateUser } from '../../store/user/userAction';
 
 //Components
 import { SafeAreaView, ScrollView, LogBox, View } from 'react-native'
-import { Text, Button, Divider, Layout, TopNavigation, List, ListItem, Card } from '@ui-kitten/components';
+import { Text, Button, Divider, Layout, TopNavigation, List, ListItem } from '@ui-kitten/components';
+import { ScreenTitle } from '../../components/ScreenTitle/ScreenTitle'
+import { EmailVerify } from './components/EmailVerify'
 
 //Icons
 import { AddIcon } from '../../assets/icons/Add'
-import { PaperPlaneIcon } from '../../assets/icons/PaperPlane'
 import { ChevronRightIcon } from '../../assets/icons/ChevronRight'
 
 //Firebase
@@ -57,11 +58,6 @@ export const HomeScreen = ({ debug, navigation }) => {
   //Firebase
   const auth = firebase.auth;
 
-  //Email verification
-  const resendEmail = (auth) => {
-    auth().currentUser.sendEmailVerification()
-  };
-
   //List
   const renderItem = ({ item }) => {
     return (
@@ -81,21 +77,28 @@ export const HomeScreen = ({ debug, navigation }) => {
   useEffect(() => {
     dispatch(setLoadingMessage(false))
     dispatch(setErrorMessage(false))
-    //console.log('user', user)
-
-    firebase?.auth().onAuthStateChanged((updatedUser) => {
-      if (updatedUser != null) {
-        console.log('updateUser', updatedUser);
-        dispatch(updateUser({ user: updatedUser }));
-      } else {
-        console.log('NO USER');
-      }
-    });
   }, []);
 
   useEffect(() => {
     console.log('user', user);
   }, [user]);
+
+  //Update user
+  const [updateUserCounter, setUpdateUserCounter] = useState(1000);
+  useEffect(() => {
+    const timer =
+      updateUserCounter > 0 && setInterval(() => {
+        auth().onIdTokenChanged((updatedUser) => {
+          if (updatedUser && updatedUser?.emailVerified) {
+            console.log('🧶 Actualizando usuario')
+            dispatch(updateUser({ user: updatedUser }));
+            setUpdateUserCounter(0)
+          }
+        })
+        auth()?.currentUser?.reload();
+      }, 10000);
+    return () => clearInterval(timer);
+  }, [updateUserCounter]);
 
   const device = Device.isPhone ? '📱' : '💻';
   const role = user?.role === 'client' ? '🧔🏻‍♂️' : '💼';
@@ -108,68 +111,64 @@ export const HomeScreen = ({ debug, navigation }) => {
         contentContainerStyle={{ ...fullStyles.scrollView }}>
         <Layout style={{ ...fullStyles.layout }}>
           <View style={{ ...fullStyles.view }}>
-            <Text category='h1' style={{ ...fullStyles?.h1 }}>Bienvenido</Text>
-            <Text category='h2' style={{ ...fullStyles?.h2 }}>{user?.fullname || ''}</Text>
+            <View style={{ ...fullStyles.section.primary }}>
+              <ScreenTitle primaryText={'Bienvenido'} secondaryText={user?.fullname || ''} />
+              <EmailVerify user={user} />
+              {
+                {
+                  'client': (
+                    <Button style={{ ...fullStyles?.button }} size='large' onPress={navigateServiceRequest} accessoryLeft={AddIcon}>SOLICITA UN SERVICIO</Button>
+                  ),
+                  'business': <></>,
+                  'worker': <></>
+                }[user?.role]
+              }
+            </View>
+            <View style={{ ...fullStyles.section.secondary }}>
+              {user && user?.role === 'client' ? (
+                <>
+                  <Text category='h2' style={{ ...fullStyles?.h2 }}>Servicios solicitados</Text>
 
-            {user && !user?.user?.emailVerified && (
-              <Card style={{ ...fullStyles?.card }} status='danger'>
-                {user?.additionalUserInfo?.isNewUser ?
-                  (
-                    <>
-                      <Text category='p1' style={{ ...fullStyles?.textCenter }} >!Gracias por registrarte!</Text>
-                      <Text category='p1' style={{ ...fullStyles?.textCenter }} >Ahora necesitamos verificar tu email: {user.user.email}</Text>
-                    </>
-                  ) : (
-                    <Text category='p1' style={{ ...fullStyles?.textCenter }}>Verifica tu email: {user.user.email}</Text>
-                  )}
-                <Button style={{ ...fullStyles?.button?.verifyEmail }} appearance='ghost' size='large' onPress={() => resendEmail(auth)} accessoryLeft={PaperPlaneIcon}>Reenviar email</Button>
-              </Card>
-            )}
+                  {services?.length ? <List
+                    style={{ ...fullStyles?.listContainer }}
+                    data={services}
+                    renderItem={renderItem}
+                  /> :
+                    <ListItem
+                      title={'Todavía no has solicitado ningún servicio'}
+                    />
+                  }
+                </>
+              ) : user && user?.role === 'business' ? (
+                <>
+                  <Text category='h2' style={{ ...fullStyles?.h2 }}>Servicios solicitados</Text>
 
-            {user && user?.role === 'client' ? (
-              <>
-                <Button style={{ ...fullStyles?.button }} size='large' onPress={navigateServiceRequest} accessoryLeft={AddIcon}>SOLICITA UN SERVICIO</Button>
-                <Text category='h2' style={{ ...fullStyles?.h2 }}>Servicios solicitados</Text>
+                  {services?.length ? <List
+                    style={{ ...fullStyles?.listContainer }}
+                    data={services}
+                    renderItem={renderItem}
+                  /> :
+                    <ListItem
+                      title={'Todavía no has solicitado ningún servicio'}
+                    />
+                  }
+                </>
+              ) : user && user?.role === 'worker' ? (
+                <>
+                  <Text category='h2' style={{ ...fullStyles?.h2 }}>Servicios solicitados</Text>
 
-                {services?.length ? <List
-                  style={{ ...fullStyles?.listContainer }}
-                  data={services}
-                  renderItem={renderItem}
-                /> :
-                  <ListItem
-                    title={'Todavía no has solicitado ningún servicio'}
-                  />
-                }
-              </>
-            ) : user && user?.role === 'business' ? (
-              <>
-                <Text category='h2' style={{ ...fullStyles?.h2 }}>Servicios solicitados</Text>
-
-                {services?.length ? <List
-                  style={{ ...fullStyles?.listContainer }}
-                  data={services}
-                  renderItem={renderItem}
-                /> :
-                  <ListItem
-                    title={'Todavía no has solicitado ningún servicio'}
-                  />
-                }
-              </>
-            ) : user && user?.role === 'worker' ? (
-              <>
-                <Text category='h2' style={{ ...fullStyles?.h2 }}>Servicios solicitados</Text>
-
-                {services?.length ? <List
-                  style={{ ...fullStyles?.listContainer }}
-                  data={services}
-                  renderItem={renderItem}
-                /> :
-                  <ListItem
-                    title={'Todavía no has solicitado ningún servicio'}
-                  />
-                }
-              </>
-            ) : null}
+                  {services?.length ? <List
+                    style={{ ...fullStyles?.listContainer }}
+                    data={services}
+                    renderItem={renderItem}
+                  /> :
+                    <ListItem
+                      title={'Todavía no has solicitado ningún servicio'}
+                    />
+                  }
+                </>
+              ) : null}
+            </View>
 
           </View>
         </Layout >

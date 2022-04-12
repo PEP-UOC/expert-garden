@@ -205,63 +205,65 @@ export const SignUpScreen = ({ debug, navigation }) => {
                 contentContainerStyle={{ ...fullStyles.scrollView }}>
                 <Layout style={{ ...fullStyles.layout }}>
                     <View style={{ ...fullStyles.view }}>
+                        <View style={{ ...fullStyles.section.full }}>
 
-                        <Text category='h6' style={{ ...fullStyles?.h6 }}>REGISTRATE EN</Text>
-                        <Text category='h1' style={{ ...fullStyles?.h1 }}>EXPERT GARDEN</Text>
+                            <Text category='h6' style={{ ...fullStyles?.h6 }}>REGISTRATE EN</Text>
+                            <Text category='h1' style={{ ...fullStyles?.h1 }}>EXPERT GARDEN</Text>
 
-                        <Select
-                            style={{ ...fullStyles.inputs.select }}
-                            label='¿Quién eres?'
-                            value={displayValue}
-                            selectedIndex={selectedIndex}
-                            onSelect={index => {
-                                setSelectedIndex(index)
-                                handleChange(userTypes[index - 1].name, "role")
-                            }}>
-                            {userTypes.map(uT => uT.value).map(renderOption)}
-                        </Select>
-                        <Input
-                            style={{ ...fullStyles.inputs.input }}
-                            label={values.role === 'client' ? 'Nombre completo' : 'Nombre de la empresa'}
-                            placeholder={values.role === 'client' ? 'Introduce tu nombre completo' : 'Introduce el nombre comercial'}
-                            value={values?.fullname || ''}
-                            onChangeText={text => handleChange(text, "fullname")}
-                            accessoryRight={renderKeyboardIcon}
-                        />
-                        <Input
-                            style={{ ...fullStyles.inputs.input }}
-                            label='Correo electrónico'
-                            placeholder='Introduce tu correo electrónico'
-                            value={values?.email || ''}
-                            onChangeText={text => handleChange(text, "email")}
-                            accessoryRight={renderKeyboardIcon}
-                        />
-                        <Input
-                            style={{ ...fullStyles.inputs.input }}
-                            label='Contraseña'
-                            placeholder='Introduce tu contraseña'
-                            value={values?.password || ''}
-                            caption={renderCaption}
-                            accessoryRight={renderEyeIcon}
-                            secureTextEntry={secureTextEntry}
-                            onChangeText={text => handleChange(text, "password")}
-                        />
-                        <Input
-                            style={{ ...fullStyles.inputs.input, marginBottom: 40 }}
-                            label='Contraseña'
-                            placeholder='Confirma la contraseña'
-                            value={values?.password2 || ''}
-                            accessoryRight={renderEyeIcon}
-                            secureTextEntry={secureTextEntry}
-                            onChangeText={text => handleChange(text, "password2")}
-                        />
+                            <Select
+                                style={{ ...fullStyles.inputs.select }}
+                                label='¿Quién eres?'
+                                value={displayValue}
+                                selectedIndex={selectedIndex}
+                                onSelect={index => {
+                                    setSelectedIndex(index)
+                                    handleChange(userTypes[index - 1].name, "role")
+                                }}>
+                                {userTypes.map(uT => uT.value).map(renderOption)}
+                            </Select>
+                            <Input
+                                style={{ ...fullStyles.inputs.input }}
+                                label={values.role === 'client' ? 'Nombre completo' : 'Nombre de la empresa'}
+                                placeholder={values.role === 'client' ? 'Introduce tu nombre completo' : 'Introduce el nombre comercial'}
+                                value={values?.fullname || ''}
+                                onChangeText={text => handleChange(text, "fullname")}
+                                accessoryRight={renderKeyboardIcon}
+                            />
+                            <Input
+                                style={{ ...fullStyles.inputs.input }}
+                                label='Correo electrónico'
+                                placeholder='Introduce tu correo electrónico'
+                                value={values?.email || ''}
+                                onChangeText={text => handleChange(text, "email")}
+                                accessoryRight={renderKeyboardIcon}
+                            />
+                            <Input
+                                style={{ ...fullStyles.inputs.input }}
+                                label='Contraseña'
+                                placeholder='Introduce tu contraseña'
+                                value={values?.password || ''}
+                                caption={renderCaption}
+                                accessoryRight={renderEyeIcon}
+                                secureTextEntry={secureTextEntry}
+                                onChangeText={text => handleChange(text, "password")}
+                            />
+                            <Input
+                                style={{ ...fullStyles.inputs.input, marginBottom: 30 }}
+                                label='Contraseña'
+                                placeholder='Confirma la contraseña'
+                                value={values?.password2 || ''}
+                                accessoryRight={renderEyeIcon}
+                                secureTextEntry={secureTextEntry}
+                                onChangeText={text => handleChange(text, "password2")}
+                            />
 
-                        <Button style={{ ...fullStyles?.button }} onPress={() => SignUp()}>REGISTRARSE</Button>
+                            <Button style={{ ...fullStyles?.button }} onPress={() => SignUp()}>REGISTRARSE</Button>
 
-                        <Button style={{ ...fullStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("Login")}>¿Ya tienes cuenta?</Button>
+                            <Button style={{ ...fullStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("Login")}>¿Ya tienes cuenta?</Button>
 
-                        <View style={{ alignItems: 'center' }}>
-                            <LeafIcon width={180} height={60} style={{ ...fullStyles.leaf }} />
+                            <View style={{ alignItems: 'center' }}>
+                                <LeafIcon width={180} height={60} style={{ ...fullStyles.leaf }} />
+                            </View>
                         </View>
                     </View>
                 </Layout >

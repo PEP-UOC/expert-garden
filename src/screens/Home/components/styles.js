@@ -5,11 +5,7 @@ import { StyleService } from '@ui-kitten/components';
 //import { Platform } from 'react-native';
 
 const styles = StyleService.create({
-  h1: { marginBottom: 20, alignSelf: 'center', textAlign: 'center' },
-  h2: { marginBottom: 20, alignSelf: 'center', textAlign: 'center' },
-  splashScreen: {
-    alignItems: 'center',
-  },
+  verifyEmailButton: { margin: 10 },
 });
 
 export default styles;

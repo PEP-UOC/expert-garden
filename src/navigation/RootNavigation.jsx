@@ -29,7 +29,7 @@ const RootScreen = () => {
 
     //State
     const [isLoading, setIsLoading] = useState(true)
-    const [isValidatingEmail, setIsValidatingEmail] = useState(false)
+    const [isValidating, setIsValidating] = useState(false)
     const [urlReceived, setUrlReceived] = useState(false)
     const [mode, setMode] = useState(undefined)
     const [actionCode, setActionCode] = useState(undefined)
@@ -54,7 +54,7 @@ const RootScreen = () => {
     }, [])
 
     useEffect(() => {
-        if (!isValidatingEmail) {
+        if (!isValidating) {
             // Get the action to complete.
             var mode = getParameterByName('mode');
             // Get the one-time code from the query parameter.
@@ -72,8 +72,15 @@ const RootScreen = () => {
             if (mode !== null) {
                 setMode(mode)
                 setActionCode(actionCode)
-                setIsValidatingEmail(true)
-                dispatch(setValidatingMessage('Validando email'))
+                setIsValidating(true)
+                switch (mode) {
+                    case 'verifyEmail':
+                        dispatch(setValidatingMessage('Validando email'))
+                        break;
+                    case 'resetPassword':
+                        dispatch(setValidatingMessage('Recuperando contraseña'))
+                        break;
+                }
             }
         }
     }, [urlReceived])
@@ -96,7 +103,7 @@ const RootScreen = () => {
         >
             {isLoading ? (
                 <Root.Screen name="LoadingSplashScreen" component={LoadingSplashScreen} />
-            ) : isValidatingEmail ? (
+            ) : isValidating ? (
                 <Root.Screen name="ValidatingScreenRender" component={ValidatingScreenRender} />
             ) : isLoggedIn ? (
                 <Root.Screen name="TabsNavigation" component={TabsNavigation} />

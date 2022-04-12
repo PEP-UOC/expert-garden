@@ -142,35 +142,37 @@ export const LoginScreen = ({ debug, navigation }) => {
                 contentContainerStyle={{ ...fullStyles?.scrollView }}>
                 <Layout style={{ ...fullStyles?.layout }}>
                     <View style={{ ...fullStyles?.view }}>
-                        <Text category='h6' style={{ ...fullStyles?.h6 }}>ACCEDE A</Text>
-                        <Text category='h1' style={{ ...fullStyles?.h1 }}>EXPERT GARDEN</Text>
+                        <View style={{ ...fullStyles.section.full }}>
+                            <Text category='h6' style={{ ...fullStyles?.h6 }}>ACCEDE A</Text>
+                            <Text category='h1' style={{ ...fullStyles?.h1 }}>EXPERT GARDEN</Text>
 
-                        <Input
-                            style={{ ...fullStyles?.input?.input }}
-                            label='Correo electrónico'
-                            placeholder='Introduce tu correo electrónico'
-                            value={values?.email || ''}
-                            accessoryRight={renderKeyboardIcon}
-                            onChangeText={text => handleChange(text, "email")}
-                        />
-                        <Input
-                            style={{ ...fullStyles?.input?.input, marginBottom: 40 }}
-                            label='Contraseña'
-                            placeholder='Introduce tu contraseña'
-                            value={values?.password || ''}
-                            accessoryRight={renderEyeIcon}
-                            secureTextEntry={secureTextEntry}
-                            onChangeText={text => handleChange(text, "password")}
-                        />
+                            <Input
+                                style={{ ...fullStyles?.inputs?.input }}
+                                label='Correo electrónico'
+                                placeholder='Introduce tu correo electrónico'
+                                value={values?.email || ''}
+                                accessoryRight={renderKeyboardIcon}
+                                onChangeText={text => handleChange(text, "email")}
+                            />
+                            <Input
+                                style={{ ...fullStyles?.inputs?.input, marginBottom: 30 }}
+                                label='Contraseña'
+                                placeholder='Introduce tu contraseña'
+                                value={values?.password || ''}
+                                accessoryRight={renderEyeIcon}
+                                secureTextEntry={secureTextEntry}
+                                onChangeText={text => handleChange(text, "password")}
+                            />
 
-                        <Button style={{ ...fullStyles?.button }} onPress={() => Login()}>ACCEDER</Button>
+                            <Button style={{ ...fullStyles?.button }} onPress={() => Login()}>ACCEDER</Button>
 
-                        <Button style={{ ...fullStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("SignUp")}>¿Necesitas una cuenta?</Button>
+                            <Button style={{ ...fullStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("SignUp")}>¿Necesitas una cuenta?</Button>
 
-                        <Button style={{ ...fullStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("RememberPass")}>¿Has olvidado la contraseña?</Button>
+                            <Button style={{ ...fullStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("RememberPass")}>¿Has olvidado la contraseña?</Button>
 
-                        <View style={{ alignItems: 'center' }}>
-                            <LeafIcon width={180} height={60} style={{ ...fullStyles?.leaf }} />
+                            <View style={{ alignItems: 'center' }}>
+                                <LeafIcon width={180} height={60} style={{ ...fullStyles?.leaf }} />
+                            </View>
                         </View>
                     </View>
                 </Layout>
