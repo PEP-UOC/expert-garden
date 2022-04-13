@@ -5,9 +5,14 @@ import { StyleService } from '@ui-kitten/components';
 //import { Platform } from 'react-native';
 
 const styles = StyleService.create({
-  listContainer: {
-    width: '100%',
-    maxHeight: 200,
+  _h1: {
+    color: 'color-primary-900',
+    marginBottom: 0,
+  },
+  _h2: {
+    color: 'color-primary-900',
+    fontFamily: 'OpenSans-Bold',
+    fontSize: 32,
   },
 });
 

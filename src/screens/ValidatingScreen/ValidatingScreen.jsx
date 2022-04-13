@@ -19,7 +19,7 @@ import { LeafIcon } from '../../assets/icons/Leaf'
 //Components
 import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback } from 'react-native'
 import { Text, Button, Layout, Input, Spinner, Icon } from '@ui-kitten/components';
-import Anchor from '../../components/Anchor/Anchor'
+import BtnExternalLink from '../../components/Buttons/ExternalLink'
 
 //Firebase
 import firebase from 'firebase/compat/app';
@@ -131,6 +131,7 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
                     ))
                     dispatch(setValidatingMessage('No hemos podido validar tu código de recuperación de contraseña...'))
                     setIsActionCodeValid(false)
+                    setIsPassResetValid(false)
                 }).finally(() => {
                     console.log('Device', Device)
                     let redirectURL = Linking.createURL('/', {});
@@ -177,37 +178,39 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
                             mode === 'verifyEmail' ?
                                 isValidating
                                     ? <Spinner size='giant' />
-                                    : <Anchor href={redirectURL}>{isActionCodeValid ? 'ACCEDER' : 'ACCEDER DE NUEVO'}</Anchor>
+                                    : <BtnExternalLink href={redirectURL}>{isActionCodeValid ? 'ACCEDER' : 'ACCEDER DE NUEVO'}</BtnExternalLink>
                                 : mode === 'resetPassword'
                                     ? isValidating
                                         ? <Spinner size='giant' />
-                                        : isPassResetValid
-                                            ? <Anchor href={redirectURL}>{'ACCEDER'}</Anchor>
-                                            : (
-                                                <>
-                                                    <Input
-                                                        style={{ ...fullStyles.inputs.input }}
-                                                        label='Contraseña'
-                                                        placeholder='Introduce tu contraseña'
-                                                        value={values?.password || ''}
-                                                        caption={renderCaption}
-                                                        accessoryRight={renderEyeIcon}
-                                                        secureTextEntry={secureTextEntry}
-                                                        onChangeText={text => handleChange(text, "password")}
-                                                    />
-                                                    <Input
-                                                        style={{ ...fullStyles.inputs.input, marginBottom: 30 }}
-                                                        label='Contraseña'
-                                                        placeholder='Confirma la contraseña'
-                                                        value={values?.password2 || ''}
-                                                        accessoryRight={renderEyeIcon}
-                                                        secureTextEntry={secureTextEntry}
-                                                        onChangeText={text => handleChange(text, "password2")}
-                                                    />
+                                        : isActionCodeValid
+                                            ? isPassResetValid
+                                                ? <BtnExternalLink href={redirectURL}>{'ACCEDER'}</BtnExternalLink>
+                                                : (
+                                                    <>
+                                                        <Input
+                                                            style={{ ...fullStyles.inputs.input }}
+                                                            label='Contraseña'
+                                                            placeholder='Introduce tu contraseña'
+                                                            value={values?.password || ''}
+                                                            caption={renderCaption}
+                                                            accessoryRight={renderEyeIcon}
+                                                            secureTextEntry={secureTextEntry}
+                                                            onChangeText={text => handleChange(text, "password")}
+                                                        />
+                                                        <Input
+                                                            style={{ ...fullStyles.inputs.input, marginBottom: 30 }}
+                                                            label='Contraseña'
+                                                            placeholder='Confirma la contraseña'
+                                                            value={values?.password2 || ''}
+                                                            accessoryRight={renderEyeIcon}
+                                                            secureTextEntry={secureTextEntry}
+                                                            onChangeText={text => handleChange(text, "password2")}
+                                                        />
 
-                                                    <Button style={{ ...fullStyles?.button }} onPress={() => resetPass()} disabled={values.password === '' || values.password2 === ''}>Crear nueva contraseña</Button>
-                                                </>
-                                            )
+                                                        <Button style={{ ...fullStyles?.button }} onPress={() => resetPass()} disabled={values.password === '' || values.password2 === ''}>Crear nueva contraseña</Button>
+                                                    </>
+                                                )
+                                            : <BtnExternalLink href={redirectURL}>{'ACCEDER DE NUEVO'}</BtnExternalLink>
                                     : null
                         }
 

@@ -20,7 +20,9 @@ import { updateUser } from '../../store/user/userAction';
 //Components
 import { SafeAreaView, ScrollView, LogBox, View } from 'react-native'
 import { Text, Button, Divider, Layout, TopNavigation, List, ListItem } from '@ui-kitten/components';
-import { ScreenTitle } from '../../components/ScreenTitle/ScreenTitle'
+import { SeparatorTop } from '../../components/Separators/Top'
+import { TitleScreen } from '../../components/Titles/Screen'
+import { BtnWithLogo } from '../../components/Buttons/WithLogo'
 import { EmailVerify } from './components/EmailVerify'
 
 //Icons
@@ -91,8 +93,8 @@ export const HomeScreen = ({ debug, navigation }) => {
         auth().onIdTokenChanged((updatedUser) => {
           if (updatedUser && updatedUser?.emailVerified) {
             console.log('🧶 Actualizando usuario')
-            dispatch(updateUser({ user: updatedUser }));
             setUpdateUserCounter(0)
+            dispatch(updateUser({ user: updatedUser }));
           }
         })
         auth()?.currentUser?.reload();
@@ -110,64 +112,71 @@ export const HomeScreen = ({ debug, navigation }) => {
       <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
         contentContainerStyle={{ ...fullStyles.scrollView }}>
         <Layout style={{ ...fullStyles.layout }}>
+          <SeparatorTop />
           <View style={{ ...fullStyles.view }}>
             <View style={{ ...fullStyles.section.primary }}>
-              <ScreenTitle primaryText={'Bienvenido'} secondaryText={user?.fullname || ''} />
-              <EmailVerify user={user} />
+              <TitleScreen primaryText={'Bienvenido'} secondaryText={user?.fullname || ''} />
+              <EmailVerify user={user || {}} />
               {
                 {
                   'client': (
-                    <Button style={{ ...fullStyles?.button }} size='large' onPress={navigateServiceRequest} accessoryLeft={AddIcon}>SOLICITA UN SERVICIO</Button>
+                    <BtnWithLogo icon={AddIcon} text={"SOLICITA UN SERVICIO"} navigateTo={navigateServiceRequest} />
                   ),
-                  'business': <></>,
-                  'worker': <></>
+                  'business': (
+                    <BtnWithLogo icon={AddIcon} text={"SOLICITA UN SERVICIO"} navigateTo={navigateServiceRequest} />
+                  ),
+                  'worker': (
+                    <BtnWithLogo icon={AddIcon} text={"SOLICITA UN SERVICIO"} navigateTo={navigateServiceRequest} />
+                  )
                 }[user?.role]
               }
             </View>
             <View style={{ ...fullStyles.section.secondary }}>
-              {user && user?.role === 'client' ? (
-                <>
-                  <Text category='h2' style={{ ...fullStyles?.h2 }}>Servicios solicitados</Text>
+              {
+                {
+                  'client': (
+                    <>
+                      <Text category='h2' style={{ ...fullStyles?.h2 }}>Servicios solicitados</Text>
 
-                  {services?.length ? <List
-                    style={{ ...fullStyles?.listContainer }}
-                    data={services}
-                    renderItem={renderItem}
-                  /> :
-                    <ListItem
-                      title={'Todavía no has solicitado ningún servicio'}
-                    />
-                  }
-                </>
-              ) : user && user?.role === 'business' ? (
-                <>
-                  <Text category='h2' style={{ ...fullStyles?.h2 }}>Servicios solicitados</Text>
+                      {services?.length ? <List
+                        style={{ ...fullStyles?.listContainer }}
+                        data={services}
+                        renderItem={renderItem}
+                      /> :
+                        <ListItem
+                          title={'Todavía no has solicitado ningún servicio'}
+                        />
+                      }
+                    </>
+                  ),
+                  'business': <>
+                    <Text category='h2' style={{ ...fullStyles?.h2 }}>Servicios solicitados</Text>
 
-                  {services?.length ? <List
-                    style={{ ...fullStyles?.listContainer }}
-                    data={services}
-                    renderItem={renderItem}
-                  /> :
-                    <ListItem
-                      title={'Todavía no has solicitado ningún servicio'}
-                    />
-                  }
-                </>
-              ) : user && user?.role === 'worker' ? (
-                <>
-                  <Text category='h2' style={{ ...fullStyles?.h2 }}>Servicios solicitados</Text>
+                    {services?.length ? <List
+                      style={{ ...fullStyles?.listContainer }}
+                      data={services}
+                      renderItem={renderItem}
+                    /> :
+                      <ListItem
+                        title={'Todavía no has solicitado ningún servicio'}
+                      />
+                    }
+                  </>,
+                  'worker': <>
+                    <Text category='h2' style={{ ...fullStyles?.h2 }}>Servicios solicitados</Text>
 
-                  {services?.length ? <List
-                    style={{ ...fullStyles?.listContainer }}
-                    data={services}
-                    renderItem={renderItem}
-                  /> :
-                    <ListItem
-                      title={'Todavía no has solicitado ningún servicio'}
-                    />
-                  }
-                </>
-              ) : null}
+                    {services?.length ? <List
+                      style={{ ...fullStyles?.listContainer }}
+                      data={services}
+                      renderItem={renderItem}
+                    /> :
+                      <ListItem
+                        title={'Todavía no has solicitado ningún servicio'}
+                      />
+                    }
+                  </>
+                }[user?.role]
+              }
             </View>
 
           </View>

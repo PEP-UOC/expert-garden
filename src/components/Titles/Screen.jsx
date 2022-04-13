@@ -4,34 +4,37 @@ import PropTypes from "prop-types";
 //Constants
 import Constants from 'expo-constants';
 
-//Styles
-import { useStyleSheet } from '@ui-kitten/components';
-import globalStyles from '../../styles/globalStyles'
-
 //Components
 import { Text } from '@ui-kitten/components';
 
+//Styles
+import { useStyleSheet } from '@ui-kitten/components';
+import globalStyles from '../../styles/globalStyles'
+import styles from './styles'
+
+
 // eslint-disable-next-line no-unused-vars
-export const ScreenTitle = ({ debug, primaryText, secondaryText }) => {
+export const TitleScreen = ({ debug, primaryText, secondaryText }) => {
 
     //Styles
     const gloStyles = useStyleSheet(globalStyles);
-    const fullStyles = { ...gloStyles };
+    const ownStyles = useStyleSheet(styles);
+    const fullStyles = { ...gloStyles, ...ownStyles };
 
     return (
         <>
-            <Text category='h1' style={{ ...fullStyles?.h1 }}>{primaryText}</Text>
-            <Text category='h2' style={{ ...fullStyles?.h2 }}>{secondaryText}</Text>
+            <Text category='h1' style={{ ...fullStyles?.h1, ...fullStyles?._h1 }}>{primaryText}</Text>
+            <Text category='h2' style={{ ...fullStyles?.h2, ...fullStyles?._h2 }}>{secondaryText}</Text>
         </>
     )
 };
 
-ScreenTitle.propTypes = {
+TitleScreen.propTypes = {
     debug: PropTypes.bool.isRequired,
     primaryText: PropTypes.string.isRequired,
     secondaryText: PropTypes.string.isRequired,
 };
 
-ScreenTitle.defaultProps = {
+TitleScreen.defaultProps = {
     debug: Constants.manifest.extra.debug || false,
 };

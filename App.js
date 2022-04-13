@@ -11,7 +11,8 @@ import { store } from './src/store';
 import { RootNavigation } from './src/navigation/RootNavigation';
 
 // Modal General
-import { MainModal, ErrorModal } from './src/components/Modals/Modals';
+import { ModalFullScreen } from './src/components/Modals/FullScreen';
+import { ModalError } from './src/components/Modals/Error';
 
 // Hooks
 import useCachedResources from './src/hooks/useCachedResources';
@@ -60,8 +61,8 @@ export default function App() {
         <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }} customMapping={mapping}>
           <Provider store={store.store}>
             <RootNavigation />
-            <MainModal />
-            <ErrorModal />
+            <ModalFullScreen />
+            <ModalError />
           </Provider>
         </ApplicationProvider>
       </>
