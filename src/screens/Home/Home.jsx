@@ -19,15 +19,15 @@ import { updateUser } from '../../store/user/userAction';
 
 //Components
 import { SafeAreaView, ScrollView, LogBox, View } from 'react-native'
-import { Text, Button, Divider, Layout, TopNavigation, List, ListItem } from '@ui-kitten/components';
+import { Divider, Layout, TopNavigation } from '@ui-kitten/components';
 import { SeparatorTop } from '../../components/Separators/Top'
 import { TitleScreen } from '../../components/Titles/Screen'
 import { BtnWithLogo } from '../../components/Buttons/WithLogo'
 import { EmailVerify } from './components/EmailVerify'
+import { ServicesList } from '../Services/components/List'
 
 //Icons
 import { AddIcon } from '../../assets/icons/Add'
-import { ChevronRightIcon } from '../../assets/icons/ChevronRight'
 
 //Firebase
 import firebase from 'firebase/compat/app';
@@ -50,7 +50,6 @@ export const HomeScreen = ({ debug, navigation }) => {
 
   //Store
   const user = useSelector(state => state.userReducer.user);
-  const services = useSelector(state => state.serviceReducer.services);
 
   //Navigation
   const navigateServiceRequest = () => {
@@ -60,29 +59,13 @@ export const HomeScreen = ({ debug, navigation }) => {
   //Firebase
   const auth = firebase.auth;
 
-  //List
-  const renderItem = ({ item }) => {
-    return (
-      <ListItem
-        onPress={navigateServiceRequest}
-        title={`${item.id}`}
-        description={`${item.service}`}
-        accessoryRight={renderItemAccessory}
-      />
-    )
-  };
-  const renderItemAccessory = () => (
-    <Button onPress={navigateServiceRequest}
-      accessoryRight={ChevronRightIcon} size='giant' appearance='ghost'></Button>
-  );
-
   useEffect(() => {
     dispatch(setLoadingMessage(false))
     dispatch(setErrorMessage(false))
   }, []);
 
   useEffect(() => {
-    console.log('user', user);
+    console.log('👩‍🌾 Usuario', user.fullname, user.email);
   }, [user]);
 
   //Update user
@@ -92,8 +75,8 @@ export const HomeScreen = ({ debug, navigation }) => {
       updateUserCounter > 0 && setInterval(() => {
         auth().onIdTokenChanged((updatedUser) => {
           if (updatedUser && updatedUser?.emailVerified) {
-            console.log('🧶 Actualizando usuario')
             setUpdateUserCounter(0)
+            console.log('🧶 Actualizando usuario')
             dispatch(updateUser({ user: updatedUser }));
           }
         })
@@ -115,7 +98,7 @@ export const HomeScreen = ({ debug, navigation }) => {
           <SeparatorTop />
           <View style={{ ...fullStyles.view }}>
             <View style={{ ...fullStyles.section.primary }}>
-              <TitleScreen primaryText={'Bienvenido'} secondaryText={user?.fullname || ''} />
+              <TitleScreen primaryText={'Bienvenido'} secondaryText={`${user?.fullname} 👩‍🌾` || ''} />
               <EmailVerify user={user || {}} />
               {
                 {
@@ -123,10 +106,10 @@ export const HomeScreen = ({ debug, navigation }) => {
                     <BtnWithLogo icon={AddIcon} text={"SOLICITA UN SERVICIO"} navigateTo={navigateServiceRequest} />
                   ),
                   'business': (
-                    <BtnWithLogo icon={AddIcon} text={"SOLICITA UN SERVICIO"} navigateTo={navigateServiceRequest} />
+                    <BtnWithLogo icon={AddIcon} text={"PRÓXIMOS SERVICIOS"} navigateTo={navigateServiceRequest} />
                   ),
                   'worker': (
-                    <BtnWithLogo icon={AddIcon} text={"SOLICITA UN SERVICIO"} navigateTo={navigateServiceRequest} />
+                    <BtnWithLogo icon={AddIcon} text={"EMPEZAR A TRABAJAR"} navigateTo={navigateServiceRequest} />
                   )
                 }[user?.role]
               }
@@ -135,46 +118,14 @@ export const HomeScreen = ({ debug, navigation }) => {
               {
                 {
                   'client': (
-                    <>
-                      <Text category='h2' style={{ ...fullStyles?.h2 }}>Servicios solicitados</Text>
-
-                      {services?.length ? <List
-                        style={{ ...fullStyles?.listContainer }}
-                        data={services}
-                        renderItem={renderItem}
-                      /> :
-                        <ListItem
-                          title={'Todavía no has solicitado ningún servicio'}
-                        />
-                      }
-                    </>
+                    <ServicesList type={'solicitados'} />
                   ),
-                  'business': <>
-                    <Text category='h2' style={{ ...fullStyles?.h2 }}>Servicios solicitados</Text>
-
-                    {services?.length ? <List
-                      style={{ ...fullStyles?.listContainer }}
-                      data={services}
-                      renderItem={renderItem}
-                    /> :
-                      <ListItem
-                        title={'Todavía no has solicitado ningún servicio'}
-                      />
-                    }
-                  </>,
-                  'worker': <>
-                    <Text category='h2' style={{ ...fullStyles?.h2 }}>Servicios solicitados</Text>
-
-                    {services?.length ? <List
-                      style={{ ...fullStyles?.listContainer }}
-                      data={services}
-                      renderItem={renderItem}
-                    /> :
-                      <ListItem
-                        title={'Todavía no has solicitado ningún servicio'}
-                      />
-                    }
-                  </>
+                  'business': (
+                    <ServicesList type={'solicitados'} />
+                  ),
+                  'worker': (
+                    <ServicesList type={'solicitados'} />
+                  )
                 }[user?.role]
               }
             </View>

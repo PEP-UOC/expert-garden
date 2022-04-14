@@ -22,7 +22,7 @@ export const ModalFullScreen = ({ debug }) => {
     //Loading
     const loadingMessage = useSelector(state => state.rootReducer.loadingMessage);
 
-    console.log('loadingMessage', loadingMessage)
+    console.log('🫧 loadingMessage', loadingMessage)
 
     //Styles
     const gloStyles = useStyleSheet(globalStyles);
@@ -33,13 +33,14 @@ export const ModalFullScreen = ({ debug }) => {
         <Modal
             visible={loadingMessage}
             backdropStyle={{ ...fullStyles.modal.main.backdrop }}
-            onBackdropPress={() => console.log(false)}>
+        //onBackdropPress={() => console.log(false)}
+        >
             <View style={{ ...fullStyles.modal.main.view }}>
                 {/*<Text style={{ ...fullStyles.modal.main.icons }}>👩‍🌾🧑‍🌾</Text>*/}
                 <Text style={{ ...fullStyles.modal.main.text }}>{loadingMessage}</Text>
                 <Spinner size='giant' />
             </View>
-        </Modal>
+        </Modal >
     )
 };
 

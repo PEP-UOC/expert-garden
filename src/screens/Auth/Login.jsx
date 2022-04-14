@@ -76,6 +76,7 @@ export const LoginScreen = ({ debug, navigation }) => {
 
         dispatch(setLoadingMessage(debug ? '🔧 Accediendo' : 'Accediendo'))
 
+
         auth().signInWithEmailAndPassword(email, password)
             .then((user) => {
                 console.info('Logged In!');
@@ -121,7 +122,7 @@ export const LoginScreen = ({ debug, navigation }) => {
     }, []);
 
     function hideKeyboard() {
-        console.log("HIDE")
+        console.log("⌨️ HIDE Keyboard")
         Keyboard.dismiss()
     }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Constants
 import Constants from 'expo-constants';
@@ -29,6 +30,8 @@ import { default as mapping } from './src/styles/ui-kitten/mapping.json';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import { initializeAuth } from 'firebase/auth';
+import { getReactNativePersistence } from 'firebase/auth/react-native';
 
 const firebaseConfig = {
   apiKey: Constants.manifest.extra.firebaseApiKey,
@@ -46,7 +49,10 @@ export default function App() {
   //Firebase
   if (!firebase?.apps.length) {
     console.info('Initializing app!');
-    firebase?.initializeApp(firebaseConfig);
+    const app = firebase?.initializeApp(firebaseConfig);
+    initializeAuth(app, {
+      persistence: getReactNativePersistence(AsyncStorage),
+    });
   } else {
     console.info('Already initialized app!');
     firebase?.app();

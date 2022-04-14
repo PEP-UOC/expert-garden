@@ -5,10 +5,7 @@ import { StyleService } from '@ui-kitten/components';
 //import { Platform } from 'react-native';
 
 const styles = StyleService.create({
-  _h1: {
-    color: 'color-primary-900',
-    marginBottom: 0,
-  },
+  verifyEmailButton: { margin: 10 },
 });
 
 export default styles;

@@ -24,7 +24,7 @@ export const SplashScreen = ({ debug, isSplash = false }) => {
 
     //Loading
     const loadingMessage = useSelector(state => {
-        console.log('state', state)
+        //console.log('state', state)
         return state.rootReducer.loadingMessage
     });
 

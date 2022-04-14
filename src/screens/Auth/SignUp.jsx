@@ -171,7 +171,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
     }, []);
 
     function hideKeyboard() {
-        console.log("HIDE")
+        console.log("⌨️ HIDE Keyboard")
         Keyboard.dismiss()
     }
 

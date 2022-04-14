@@ -11,7 +11,6 @@ import styles from './styles'
 
 //Store
 import { useDispatch } from 'react-redux'
-import { addService } from '../../store/service/serviceAction';
 import { setErrorMessage, setLoadingMessage, setLoggedIn } from '../../store/root/rootAction';
 import { removeUser } from '../../store/user/userAction';
 
@@ -20,7 +19,9 @@ import mainServices from '../../data/mainServices.json'
 
 //Components
 import { SafeAreaView, ScrollView, View } from 'react-native'
-import { Divider, Layout, Text, Button, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { Divider, Layout, Button, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { TitleScreen } from '../../components/Titles/Screen'
+import { SeparatorTop } from '../../components/Separators/Top'
 
 //Icons
 import { AddIcon } from '../../assets/icons/Add'
@@ -29,10 +30,16 @@ import { BackIcon } from '../../assets/icons/Back'
 //Firebase
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import "firebase/compat/firestore";
+import firebaseErrorCodeMap from '../../common/firebaseErrorCodeMap';
 
 // eslint-disable-next-line no-unused-vars
 export const MainServiceRequestScreen = ({ debug, navigation }) => {
   const dispatch = useDispatch()
+
+  //Firebase
+  const auth = firebase.auth;
+  const firestore = firebase.firestore;
 
   //Styles
   const gloStyles = useStyleSheet(globalStyles);
@@ -40,12 +47,30 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
   const fullStyles = { ...gloStyles, ...ownStyles };
 
   //Actions
-  const submitService = (text) => dispatch(addService(text)) && navigation.navigate('Home');
+  const submitService = (type, text) => {
+    const ref = firestore().collection("services").doc();
+    firestore().collection("services").doc(ref.id).set({
+      sid: ref.id,
+      uid: auth().currentUser.uid,
+      type,
+      text
+    })
+      .then(() => {
+        navigation.navigate('Home')
+      })
+      .catch((error) => {
+        console.error(error.message);
+        dispatch(setLoggedIn(false))
+        dispatch(setLoadingMessage(false))
+        dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
+      });
+  };
 
   //Navigation
   const BackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
   );
+
   const navigateBack = () => {
     navigation.goBack();
   };
@@ -55,7 +80,7 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
 
     dispatch(setLoadingMessage(debug ? '🔧 Adiós!' : 'Adiós!'))
 
-    firebase.auth().signOut()
+    auth().signOut()
       .then(() => {
         console.info('Logged Out!');
         dispatch(removeUser())
@@ -82,18 +107,21 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
       <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
         contentContainerStyle={{ ...fullStyles.scrollView }}>
         <Layout style={{ ...fullStyles.layout }}>
+          <SeparatorTop />
           <View style={{ ...fullStyles.view }}>
-            <Button style={{ ...fullStyles?.button }} size='tiny' accessoryLeft={AddIcon} status='danger' appearance='outline' onPress={doLogout}>CERRAR SESIÓN</Button>
-            <Text category='h1' style={{ ...fullStyles?.h1 }}>Solicitar un servicio</Text>
-
-            {mainServices.map(service => {
-              //console.log(service)
-              return (<Button style={{ ...fullStyles?.button }}
-                key={service.id} onPress={() => submitService(service.identifier)} >
-                {service.label}
-              </Button>)
-            })}
-
+            <View style={{ ...fullStyles.section.primary }}>
+              <TitleScreen primaryText={'Solicita un servicio'} secondaryText={''} />
+              <Button style={{ ...fullStyles?.button }} size='tiny' accessoryLeft={AddIcon} status='danger' appearance='outline' onPress={doLogout}>CERRAR SESIÓN</Button>
+            </View>
+            <View style={{ ...fullStyles.section.secondary }}>
+              {mainServices.map(service => {
+                //console.log(service)
+                return (<Button style={{ ...fullStyles?.button, ...fullStyles?._button }}
+                  key={service.id} onPress={() => submitService(service.identifier, `Test ${Math.random() * (1000 - 1) + 1}`)} >
+                  {service.label}
+                </Button>)
+              })}
+            </View>
           </View>
         </Layout>
       </ScrollView>

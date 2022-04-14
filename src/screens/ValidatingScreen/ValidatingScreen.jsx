@@ -87,8 +87,8 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
 
     useEffect(() => {
 
-        console.log('mode', mode)
-        console.log('actionCode', actionCode)
+        console.log('🚨 mode', mode)
+        console.log('🎲 actionCode', actionCode)
 
         setIsValidating(true);
         switch (mode) {
@@ -107,7 +107,7 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
                     dispatch(setValidatingMessage('No hemos podido validar tu email...'))
                     setIsActionCodeValid(false)
                 }).finally(() => {
-                    console.log('Device', Device)
+                    console.log('💻 Device', Device)
                     let redirectURL = Linking.createURL('/', {});
                     if (Device.isPhone) {
                         redirectURL = 'exp://192.168.1.65:19000'
@@ -133,7 +133,7 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
                     setIsActionCodeValid(false)
                     setIsPassResetValid(false)
                 }).finally(() => {
-                    console.log('Device', Device)
+                    console.log('💻 Device', Device)
                     let redirectURL = Linking.createURL('/', {});
                     if (Device.isPhone) {
                         redirectURL = 'exp://192.168.1.65:19000'

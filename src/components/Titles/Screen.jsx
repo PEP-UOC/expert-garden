@@ -24,7 +24,7 @@ export const TitleScreen = ({ debug, primaryText, secondaryText }) => {
     return (
         <>
             <Text category='h1' style={{ ...fullStyles?.h1, ...fullStyles?._h1 }}>{primaryText}</Text>
-            <Text category='h2' style={{ ...fullStyles?.h2, ...fullStyles?._h2 }}>{secondaryText}</Text>
+            <Text category='h1' style={{ ...fullStyles?.h1, ...fullStyles?._h1 }}>{secondaryText}</Text>
         </>
     )
 };
