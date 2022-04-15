@@ -70,7 +70,7 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
 
     const renderCaption = () => {
         return (
-            <Text style={{ ...fullStyles.inputs.captionText }}>Utiliza un mínimo de 6 carácteres</Text>
+            <Text style={{ ...gloStyles.inputs.captionText }}>Utiliza un mínimo de 6 carácteres</Text>
         )
     }
 
@@ -80,7 +80,6 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
     //Styles
     const gloStyles = useStyleSheet(globalStyles);
     const ownStyles = useStyleSheet(styles);
-    const fullStyles = { ...gloStyles, ...ownStyles };
 
     //Firebase
     const auth = firebase.auth;
@@ -168,10 +167,10 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
             <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-                contentContainerStyle={{ ...fullStyles.scrollView }}>
-                <Layout style={{ ...fullStyles.layout }}>
-                    <View style={{ ...fullStyles.splashScreen }}>
-                        <Text category='h2' style={{ ...fullStyles?.h2 }}>
+                contentContainerStyle={{ ...gloStyles.scrollView }}>
+                <Layout style={{ ...gloStyles.layout }}>
+                    <View style={{ ...ownStyles.view }}>
+                        <Text category='h2' style={{ ...gloStyles?.h2, ...ownStyles?.title }}>
                             {validatingMessage}
                         </Text>
                         {
@@ -188,7 +187,7 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
                                                 : (
                                                     <>
                                                         <Input
-                                                            style={{ ...fullStyles.inputs.input }}
+                                                            style={{ ...gloStyles.inputs.input }}
                                                             label='Contraseña'
                                                             placeholder='Introduce tu contraseña'
                                                             value={values?.password || ''}
@@ -198,7 +197,7 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
                                                             onChangeText={text => handleChange(text, "password")}
                                                         />
                                                         <Input
-                                                            style={{ ...fullStyles.inputs.input, marginBottom: 30 }}
+                                                            style={{ ...gloStyles.inputs.input, marginBottom: 30 }}
                                                             label='Contraseña'
                                                             placeholder='Confirma la contraseña'
                                                             value={values?.password2 || ''}
@@ -207,7 +206,7 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
                                                             onChangeText={text => handleChange(text, "password2")}
                                                         />
 
-                                                        <Button style={{ ...fullStyles?.button }} onPress={() => resetPass()} disabled={values.password === '' || values.password2 === ''}>Crear nueva contraseña</Button>
+                                                        <Button style={{ ...gloStyles?.button }} onPress={() => resetPass()} disabled={values.password === '' || values.password2 === ''}>Crear nueva contraseña</Button>
                                                     </>
                                                 )
                                             : <BtnExternalLink href={redirectURL}>{'ACCEDER DE NUEVO'}</BtnExternalLink>
@@ -215,7 +214,7 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
                         }
 
                         <View style={{ alignItems: 'center' }}>
-                            <LeafIcon width={180} height={60} style={{ ...fullStyles?.leaf }} />
+                            <LeafIcon width={180} height={60} style={{ ...gloStyles?.leaf }} />
                         </View>
                     </View>
                 </Layout >

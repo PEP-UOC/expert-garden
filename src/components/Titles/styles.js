@@ -5,7 +5,18 @@ import { StyleService } from '@ui-kitten/components';
 //import { Platform } from 'react-native';
 
 const styles = StyleService.create({
-  _h1: {
+  screenWrapper: {
+    marginBottom: 30,
+  },
+  screenText: {
+    color: 'color-primary-900',
+    marginBottom: 0,
+  },
+  sectionWrapper: {
+    marginBottom: 0,
+    flexDirection: 'row',
+  },
+  sectionText: {
     color: 'color-primary-900',
     marginBottom: 0,
   },

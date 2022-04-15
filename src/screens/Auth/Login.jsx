@@ -29,6 +29,9 @@ import 'firebase/compat/auth';
 import "firebase/compat/firestore";
 import firebaseErrorCodeMap from '../../common/firebaseErrorCodeMap';
 
+//Hooks
+import { useKeyboardSize } from "../../hooks/useKeyboardSize"
+
 // eslint-disable-next-line no-unused-vars
 export const LoginScreen = ({ debug, navigation }) => {
     const dispatch = useDispatch()
@@ -40,7 +43,6 @@ export const LoginScreen = ({ debug, navigation }) => {
     //Styles
     const gloStyles = useStyleSheet(globalStyles);
     const ownStyles = useStyleSheet(styles);
-    const fullStyles = { ...gloStyles, ...ownStyles };
 
     //State
     const [values, setValues] = useState({
@@ -84,7 +86,7 @@ export const LoginScreen = ({ debug, navigation }) => {
                 dispatch(addUser(user))
                 firestore().collection("users").doc(auth().currentUser.uid).get()
                     .then((user) => {
-                        dispatch(updateUser(user.data()))
+                        dispatch(updateUser({ metadata: user.data() }))
                         dispatch(setLoggedIn(true))
                         dispatch(setLoadingMessage(false))
                         dispatch(setErrorMessage(false))
@@ -104,22 +106,8 @@ export const LoginScreen = ({ debug, navigation }) => {
             });
     }
 
-    //Hide Keyboard
-    const [keyboardIsOpen, setKeyboardIsOpen] = useState(false);
-
-    useEffect(() => {
-        const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-            setKeyboardIsOpen(true);
-        });
-        const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-            setKeyboardIsOpen(false);
-        });
-
-        return () => {
-            showSubscription.remove();
-            hideSubscription.remove();
-        };
-    }, []);
+    //Keyboard
+    const [keyboardIsOpen] = useKeyboardSize()
 
     function hideKeyboard() {
         console.log("⌨️ HIDE Keyboard")
@@ -140,15 +128,15 @@ export const LoginScreen = ({ debug, navigation }) => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
             <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-                contentContainerStyle={{ ...fullStyles?.scrollView }}>
-                <Layout style={{ ...fullStyles?.layout }}>
-                    <View style={{ ...fullStyles?.view }}>
-                        <View style={{ ...fullStyles.section.full }}>
-                            <Text category='h6' style={{ ...fullStyles?.h6 }}>ACCEDE A</Text>
-                            <Text category='h1' style={{ ...fullStyles?.h1 }}>EXPERT GARDEN</Text>
+                contentContainerStyle={{ ...gloStyles?.scrollView, ...ownStyles?.scrollHeight }}>
+                <Layout style={{ ...gloStyles?.layout }}>
+                    <View style={{ ...gloStyles?.view }}>
+                        <View style={{ ...gloStyles.section.full }}>
+                            <Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>ACCEDE A</Text>
+                            <Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>EXPERT GARDEN</Text>
 
                             <Input
-                                style={{ ...fullStyles?.inputs?.input }}
+                                style={{ ...gloStyles?.inputs?.input }}
                                 label='Correo electrónico'
                                 placeholder='Introduce tu correo electrónico'
                                 value={values?.email || ''}
@@ -156,7 +144,7 @@ export const LoginScreen = ({ debug, navigation }) => {
                                 onChangeText={text => handleChange(text, "email")}
                             />
                             <Input
-                                style={{ ...fullStyles?.inputs?.input, marginBottom: 30 }}
+                                style={{ ...gloStyles?.inputs?.input, marginBottom: 30 }}
                                 label='Contraseña'
                                 placeholder='Introduce tu contraseña'
                                 value={values?.password || ''}
@@ -165,14 +153,14 @@ export const LoginScreen = ({ debug, navigation }) => {
                                 onChangeText={text => handleChange(text, "password")}
                             />
 
-                            <Button style={{ ...fullStyles?.button }} onPress={() => Login()}>ACCEDER</Button>
+                            <Button style={{ ...gloStyles?.button }} onPress={() => Login()}>ACCEDER</Button>
 
-                            <Button style={{ ...fullStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("SignUp")}>¿Necesitas una cuenta?</Button>
+                            <Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("SignUp")}>¿Necesitas una cuenta?</Button>
 
-                            <Button style={{ ...fullStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("RememberPass")}>¿Has olvidado la contraseña?</Button>
+                            <Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("RememberPass")}>¿Has olvidado la contraseña?</Button>
 
                             <View style={{ alignItems: 'center' }}>
-                                <LeafIcon width={180} height={60} style={{ ...fullStyles?.leaf }} />
+                                <LeafIcon width={180} height={60} style={{ ...gloStyles?.leaf }} />
                             </View>
                         </View>
                     </View>

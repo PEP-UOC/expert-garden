@@ -5,8 +5,9 @@ import { StyleService } from '@ui-kitten/components';
 //import { Platform } from 'react-native';
 
 const styles = StyleService.create({
-  h1: { marginBottom: 20, alignSelf: 'center', textAlign: 'center' },
-  h6: { marginBottom: 0, alignSelf: 'center', textAlign: 'center' },
+  scrollHeight: { minHeight: undefined },
+  mainTitle: { alignSelf: 'center', textAlign: 'center' },
+  topSubTitle: { marginBottom: 0, alignSelf: 'center', textAlign: 'center' },
 });
 
 export default styles;

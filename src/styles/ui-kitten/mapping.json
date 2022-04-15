@@ -1,12 +1,12 @@
 {
     "strict": {
         "text-font-family": "OpenSans-Regular",
-        "text-heading-1-font-size": 36,
+        "text-heading-1-font-size": 34,
         "text-heading-1-font-weight": "800",
         "text-heading-1-font-family": "OpenSans-Bold",
-        "text-heading-2-font-size": 28,
-        "text-heading-2-font-weight": "400",
-        "text-heading-2-font-family": "OpenSans-Regular"
+        "text-heading-2-font-size": 26,
+        "text-heading-2-font-weight": "600",
+        "text-heading-2-font-family": "OpenSans-SemiBold"
     },
     "components": {}
 }

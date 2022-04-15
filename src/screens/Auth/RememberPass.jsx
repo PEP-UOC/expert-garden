@@ -34,7 +34,6 @@ export const RememberPass = ({ debug, navigation }) => {
     //Styles
     const gloStyles = useStyleSheet(globalStyles);
     const ownStyles = useStyleSheet(styles);
-    const fullStyles = { ...gloStyles, ...ownStyles };
 
     //State
     const [email, setEmail] = useState("")
@@ -68,31 +67,31 @@ export const RememberPass = ({ debug, navigation }) => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
             <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-                contentContainerStyle={{ ...fullStyles?.scrollView }}>
-                <Layout style={{ ...fullStyles?.layout }}>
-                    <View style={{ ...fullStyles?.view }}>
-                        <View style={{ ...fullStyles.section.full }}>
-                            <Text category='h6' style={{ ...fullStyles?.h6 }}>RESTABLECER</Text>
-                            <Text category='h1' style={{ ...fullStyles?.h1 }}>CONTRASEÑA</Text>
+                contentContainerStyle={{ ...gloStyles?.scrollView, ...ownStyles?.scrollHeight }}>
+                <Layout style={{ ...gloStyles?.layout }}>
+                    <View style={{ ...gloStyles?.view }}>
+                        <View style={{ ...gloStyles.section.full }}>
+                            <Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>RESTABLECER</Text>
+                            <Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>CONTRASEÑA</Text>
                             <Input
-                                style={{ ...fullStyles?.inputs?.input }}
+                                style={{ ...gloStyles?.inputs?.input }}
                                 label='Correo electrónico'
                                 placeholder='Introduce tu correo electrónico'
                                 value={email || ''}
                                 onChangeText={text => setEmail(text)}
                             />
 
-                            <Button style={{ ...fullStyles?.button }} onPress={() => sendResetEmail(auth)} disabled={passCounter > 0 || email === ''}>Enviar email de recuperación</Button>
+                            <Button style={{ ...gloStyles?.button }} onPress={() => sendResetEmail(auth)} disabled={passCounter > 0 || email === ''}>Enviar email de recuperación</Button>
                             {passCounter > 0 &&
                                 <>
-                                    <Text category='c1' style={{ ...fullStyles?.smallText }}>Te hemos enviado un email con las instrucciones para restablecer tu contraseña.</Text>
-                                    <Text category='c1' style={{ ...fullStyles?.smallText }}>Espera {passCounter}s. para enviar un nuevo email de recuperación.</Text>
+                                    <Text category='c1' style={{ ...gloStyles?.smallText }}>Te hemos enviado un email con las instrucciones para restablecer tu contraseña.</Text>
+                                    <Text category='c1' style={{ ...gloStyles?.smallText }}>Espera {passCounter}s. para enviar un nuevo email de recuperación.</Text>
                                 </>}
 
-                            <Button style={{ ...fullStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.pop()}>Volver</Button>
+                            <Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.pop()}>Volver</Button>
 
                             <View style={{ alignItems: 'center' }}>
-                                <LeafIcon width={180} height={60} style={{ ...fullStyles?.leaf }} />
+                                <LeafIcon width={180} height={60} style={{ ...gloStyles?.leaf }} />
                             </View>
                         </View>
                     </View>

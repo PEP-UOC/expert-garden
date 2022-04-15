@@ -15,6 +15,7 @@ export default function useCachedResources() {
           'space-mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
           'OpenSans-Regular': require('../assets/fonts/OpenSans/OpenSans-Regular.ttf'),
           'OpenSans-Italic': require('../assets/fonts/OpenSans/OpenSans-Italic.ttf'),
+          'OpenSans-SemiBold': require('../assets/fonts/OpenSans/OpenSans-SemiBold.ttf'),
           'OpenSans-Bold': require('../assets/fonts/OpenSans/OpenSans-Bold.ttf'),
         });
       } catch (e) {

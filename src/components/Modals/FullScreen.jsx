@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux'
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
-import globalStyles from '../../styles/globalStyles'
 import styles from './styles'
 
 //Components
@@ -25,19 +24,15 @@ export const ModalFullScreen = ({ debug }) => {
     console.log('🫧 loadingMessage', loadingMessage)
 
     //Styles
-    const gloStyles = useStyleSheet(globalStyles);
     const ownStyles = useStyleSheet(styles);
-    const fullStyles = { ...gloStyles, ...ownStyles };
 
     return (
         <Modal
             visible={loadingMessage}
-            backdropStyle={{ ...fullStyles.modal.main.backdrop }}
-        //onBackdropPress={() => console.log(false)}
+            backdropStyle={{ ...ownStyles.fullScreen.backdrop }}
         >
-            <View style={{ ...fullStyles.modal.main.view }}>
-                {/*<Text style={{ ...fullStyles.modal.main.icons }}>👩‍🌾🧑‍🌾</Text>*/}
-                <Text style={{ ...fullStyles.modal.main.text }}>{loadingMessage}</Text>
+            <View style={{ ...ownStyles.fullScreen.view }}>
+                <Text style={{ ...ownStyles.fullScreen.text }}>{loadingMessage}</Text>
                 <Spinner size='giant' />
             </View>
         </Modal >

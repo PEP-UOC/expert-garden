@@ -20,7 +20,7 @@ export default class BtnExternalLink extends React.Component {
 
     render() {
         return (
-            <Button style={{ width: Device?.isPhone ? '100%' : 350, }} {...this.props} onPress={this._handlePress}>
+            <Button style={{ width: Device?.isPhone ? '100%' : 325, }} {...this.props} onPress={this._handlePress}>
                 {this.props.children}
             </Button>
         );

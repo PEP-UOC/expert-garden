@@ -5,11 +5,11 @@ import { StyleService } from '@ui-kitten/components';
 //import { Platform } from 'react-native';
 
 const styles = StyleService.create({
-  h1: { marginBottom: 20, alignSelf: 'center', textAlign: 'center' },
-  splashScreen: {
+  view: {
     alignItems: 'center',
   },
-  leaf: {
+  title: { alignSelf: 'center', textAlign: 'center' },
+  logo: {
     marginTop: 40,
     fill: 'color-primary-500',
   },

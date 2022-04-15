@@ -3,7 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import rootReducer from './root/rootReducer';
-import serviceReducer from './service/serviceReducer';
+//import serviceReducer from './service/serviceReducer';
 import userReducer from './user/userReducer';
 
 import thunk from 'redux-thunk';
@@ -15,7 +15,7 @@ import { composeWithDevToolsDevelopmentOnly } from '@redux-devtools/extension';
 
 const mainReducer = combineReducers({
   rootReducer,
-  serviceReducer,
+  //serviceReducer,
   userReducer,
 });
 

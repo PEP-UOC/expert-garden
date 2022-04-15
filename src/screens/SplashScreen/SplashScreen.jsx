@@ -31,19 +31,18 @@ export const SplashScreen = ({ debug, isSplash = false }) => {
     //Styles
     const gloStyles = useStyleSheet(globalStyles);
     const ownStyles = useStyleSheet(styles);
-    const fullStyles = { ...gloStyles, ...ownStyles };
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
             <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-                contentContainerStyle={{ ...fullStyles.scrollView }}>
-                <Layout style={{ ...fullStyles.layout }}>
-                    <View style={{ ...fullStyles.splashScreen }}>
-                        <Text category='h1' style={{ ...fullStyles?.h1 }}>
+                contentContainerStyle={{ ...gloStyles.scrollView }}>
+                <Layout style={{ ...gloStyles.layout }}>
+                    <View style={{ ...ownStyles.view }}>
+                        <Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.title }}>
                             {isSplash ? 'EXPERT GARDEN' : loadingMessage}</Text>
                         <Spinner size='giant' />
                         {isSplash && (<View style={{ alignItems: 'center' }}>
-                            <LeafIcon width={360} height={120} style={{ ...fullStyles?.leaf }} />
+                            <LeafIcon width={360} height={120} style={{ ...gloStyles?.leaf, ...ownStyles?.logo }} />
                         </View>)}
                     </View>
                 </Layout >

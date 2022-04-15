@@ -10,7 +10,10 @@ import { BottomNavigation, BottomNavigationTab } from '@ui-kitten/components';
 
 //Screens
 import { HomeScreen } from '../screens/Home/Home';
+import { ProfileScreen } from '../screens/Profile/Profile';
 import { ServiceRequestNavigation } from './ScreensNavigation/ServiceRequestNavigation';
+import { ServicesScreen } from '../screens/Services/Services';
+import { NotificationsScreen } from '../screens/Notifications/Notifications';
 
 //Icons
 import { HomeIcon } from '../assets/icons/Home'
@@ -50,10 +53,10 @@ export const TabsNavigation = () => {
             return <BottomTabBar {...props} />
         }}>
             <Tabs.Screen name='Home' component={HomeScreen} />
+            <Tabs.Screen name='Profile' component={ProfileScreen} />
             <Tabs.Screen name='ServiceRequest' component={ServiceRequestNavigation} />
-            <Tabs.Screen name='ServiceRequest2' component={ServiceRequestNavigation} />
-            <Tabs.Screen name='ServiceRequest3' component={ServiceRequestNavigation} />
-            <Tabs.Screen name='ServiceRequest4' component={ServiceRequestNavigation} />
+            <Tabs.Screen name='Services' component={ServicesScreen} />
+            <Tabs.Screen name='Notifications' component={NotificationsScreen} />
         </Tabs.Navigator>
     )
 };

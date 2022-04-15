@@ -10,7 +10,6 @@ import { setErrorMessage } from '../../store/root/rootAction';
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
-import globalStyles from '../../styles/globalStyles'
 import styles from './styles'
 
 //Components
@@ -25,19 +24,17 @@ export const ModalError = ({ debug }) => {
     const errorMessage = useSelector(state => state.rootReducer.errorMessage);
 
     //Styles
-    const gloStyles = useStyleSheet(globalStyles);
     const ownStyles = useStyleSheet(styles);
-    const fullStyles = { ...gloStyles, ...ownStyles };
 
     return (
         <Modal
             visible={errorMessage}
-            backdropStyle={{ ...fullStyles.modal.error.backdrop }}
+            backdropStyle={{ ...ownStyles.error.backdrop }}
             onBackdropPress={() => dispatch(setErrorMessage(false))}>
             <Card disabled={true}>
-                <View style={{ ...fullStyles.modal.error.view }}>
-                    <Text style={{ ...fullStyles.modal.error.icons }}>👩‍🌾🧑‍🌾</Text>
-                    <Text style={{ ...fullStyles.modal.error.text }}>{errorMessage}</Text>
+                <View style={{ ...ownStyles.error.view }}>
+                    <Text style={{ ...ownStyles.error.icons }}>👩‍🌾🧑‍🌾</Text>
+                    <Text style={{ ...ownStyles.error.text }}>{errorMessage}</Text>
                 </View>
             </Card>
         </Modal>

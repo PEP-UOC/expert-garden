@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types";
 
 //Constants
@@ -33,6 +33,9 @@ import 'firebase/compat/auth';
 import "firebase/compat/firestore";
 import firebaseErrorCodeMap from '../../common/firebaseErrorCodeMap';
 
+//Moment
+import moment from "moment";
+
 // eslint-disable-next-line no-unused-vars
 export const MainServiceRequestScreen = ({ debug, navigation }) => {
   const dispatch = useDispatch()
@@ -44,18 +47,81 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
   //Styles
   const gloStyles = useStyleSheet(globalStyles);
   const ownStyles = useStyleSheet(styles);
-  const fullStyles = { ...gloStyles, ...ownStyles };
+
+  //State
+  const [needsPreviousVisit, setNeedsPreviousVisit] = useState(false);
+  const [needsDesign, setNeedsDesign] = useState(false);
+  const [isRecurrent, setIsRecurrent] = useState(false);
+  const [isFinalized, setIsFinalized] = useState(false);
 
   //Actions
-  const submitService = (type, text) => {
+  const submitService = (type, comment) => {
+    const now = moment();
+    const requestDateTime = now.format();
+    const requestDate = now.format("DD-MM-YYYY");
+    const requestTime = now.format("HH:mm");
     const ref = firestore().collection("services").doc();
     firestore().collection("services").doc(ref.id).set({
       sid: ref.id,
       uid: auth().currentUser.uid,
       type,
-      text
+      comment,
+      requestDateTime,
+      requestDate,
+      requestTime,
+      needsPreviousVisit,
+      needsDesign,
+      confirmationDateTime: null,
+      confirmationDate: null,
+      confirmationTime: null,
+      serviceDateTime: null,
+      serviceDate: null,
+      serviceTime: null,
+      isRecurrent,
+      isFinalized,
+      price: null,
+      isPaid: false,
+      cancelationDateTime: null,
+      cancelationDate: null,
+      cancelationTime: null,
+      cancelationReason: null,
     })
       .then(() => {
+        // Añadir a firestore service details relacionadas con el sid
+        // Añadir a firestore proposed dates relacionadas con el sid
+        // Añadir a firestore selected companies relacionadas con el sid
+        navigation.navigate('Home')
+      })
+      .catch((error) => {
+        console.error(error.message);
+        dispatch(setLoggedIn(false))
+        dispatch(setLoadingMessage(false))
+        dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
+      });
+  };
+  const submitNotification = (type, content) => {
+    const now = moment();
+    const ref = firestore().collection("notifications").doc();
+    const sendDateTime = now.format();
+    const sendDate = now.format("DD-MM-YYYY");
+    const sendTime = now.format("HH:mm");
+    firestore().collection("notifications").doc(ref.id).set({
+      nid: ref.id,
+      uidSender: auth().currentUser.uid,
+      uidReceiver: auth().currentUser.uid,
+      type,
+      content,
+      sendDateTime,
+      sendDate,
+      sendTime,
+      readDateTime: null,
+      readDate: null,
+      readTime: null,
+    })
+      .then(() => {
+        // Añadir a firestore links relacionados con el nid
+        // Añadir a firestore proposed dates relacionadas con el sid
+        // Añadir a firestore selected companies relacionadas con el sid
         navigation.navigate('Home')
       })
       .catch((error) => {
@@ -105,22 +171,26 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
       <TopNavigation title={'Solicita un servicio'} alignment='center' accessoryLeft={BackAction} />
       <Divider />
       <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-        contentContainerStyle={{ ...fullStyles.scrollView }}>
-        <Layout style={{ ...fullStyles.layout }}>
+        contentContainerStyle={{ ...gloStyles.scrollView }}>
+        <Layout style={{ ...gloStyles.layout }}>
           <SeparatorTop />
-          <View style={{ ...fullStyles.view }}>
-            <View style={{ ...fullStyles.section.primary }}>
-              <TitleScreen primaryText={'Solicita un servicio'} secondaryText={''} />
-              <Button style={{ ...fullStyles?.button }} size='tiny' accessoryLeft={AddIcon} status='danger' appearance='outline' onPress={doLogout}>CERRAR SESIÓN</Button>
+          <View style={{ ...gloStyles.view }}>
+            <View style={{ ...gloStyles.section.primary }}>
+              <TitleScreen icon={'plus-circle-outline'} primaryText={'Solicita un servicio'} secondaryText={''} />
+              <Button style={{ ...gloStyles?.button }} size='tiny' accessoryLeft={AddIcon} status='danger' appearance='outline' onPress={doLogout}>CERRAR SESIÓN</Button>
             </View>
-            <View style={{ ...fullStyles.section.secondary }}>
+            <View style={{ ...gloStyles.section.secondary }}>
               {mainServices.map(service => {
                 //console.log(service)
-                return (<Button style={{ ...fullStyles?.button, ...fullStyles?._button }}
+                return (<Button style={{ ...gloStyles?.button, ...ownStyles?.btnServiceRequest }}
                   key={service.id} onPress={() => submitService(service.identifier, `Test ${Math.random() * (1000 - 1) + 1}`)} >
                   {service.label}
                 </Button>)
               })}
+              <Button style={{ ...gloStyles?.button, ...ownStyles?.btnServiceRequest }}
+                key={'service.id'} onPress={() => submitNotification('PUSH', `Test ${Math.random() * (1000 - 1) + 1}`)} >
+                CREAR NOTIFICACIÓN
+              </Button>
             </View>
           </View>
         </Layout>

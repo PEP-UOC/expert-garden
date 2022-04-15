@@ -6,8 +6,8 @@ import Device from '../../libs/react-native-device-detection';
 
 const styles = StyleService.create({
   topSeparator: {
-    marginTop: Device?.isPhone ? 0 : 25,
-    marginBottom: Device?.isPhone ? 0 : 25,
+    marginTop: Device?.isPhone ? 0 : 15,
+    marginBottom: Device?.isPhone ? 0 : 15,
     width: '100%',
   },
 });

@@ -10,10 +10,11 @@ const globalStyles = StyleService.create({
   },
   scrollView: Device?.isPhone
     ? Platform?.OS === 'ios'
-      ? {}
+      ? {
+          minHeight: '100%',
+        }
       : {
-          flex: 1,
-          justifyContent: 'space-between',
+          minHeight: '100%',
         }
     : {
         flex: 1,
@@ -62,28 +63,37 @@ const globalStyles = StyleService.create({
   h6: { marginBottom: 20, alignSelf: 'flex-start', textAlign: 'left' },
   card: {
     width: '100%',
-    marginBottom: 20,
+    marginBottom: 30,
   },
   button: {
-    width: Device?.isPhone ? '100%' : 350,
+    width: Device?.isPhone ? '100%' : 325,
     marginBottom: 20,
     marginLeft: Device?.isPhone ? undefined : 'auto',
     marginRight: Device?.isPhone ? undefined : 'auto',
   },
   buttonGhost: {
-    width: Device?.isPhone ? '100%' : 350,
+    width: Device?.isPhone ? '100%' : 325,
     marginBottom: 0,
     marginLeft: Device?.isPhone ? undefined : 'auto',
     marginRight: Device?.isPhone ? undefined : 'auto',
   },
   inputs: {
+    wrapper: {
+      marginTop: Device?.isPhone ? 10 : 20,
+      marginLeft: Device?.isPhone ? 0 : 50,
+    },
+    row: {
+      display: 'flex',
+      flexDirection: Device?.isPhone ? 'column' : 'row',
+      justifyContent: 'space-between',
+    },
     select: {
-      width: Device?.isPhone ? '100%' : 350,
+      width: Device?.isPhone ? '100%' : 325,
       marginBottom: 20,
       alignSelf: 'center',
     },
     input: {
-      width: Device?.isPhone ? '100%' : 350,
+      width: Device?.isPhone ? '100%' : 325,
       marginBottom: 20,
       alignSelf: 'center',
     },
@@ -100,6 +110,27 @@ const globalStyles = StyleService.create({
     textAlign: 'center',
     marginTop: 5,
     marginBottom: 5,
+  },
+  modal: {
+    backdrop: {
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    card: {
+      padding: 2,
+    },
+    view: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+    icons: {
+      marginBottom: 10,
+      fontSize: 36,
+    },
+    text: {
+      marginBottom: 10,
+      fontSize: 18,
+      textAlign: 'center',
+    },
   },
 });
 

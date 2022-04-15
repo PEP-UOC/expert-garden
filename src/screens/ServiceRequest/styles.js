@@ -5,7 +5,7 @@ import { StyleService } from '@ui-kitten/components';
 //import { Platform } from 'react-native';
 
 const styles = StyleService.create({
-  _button: {
+  btnServiceRequest: {
     width: '100%',
   },
 });

@@ -6,7 +6,6 @@ import Constants from 'expo-constants';
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
-import globalStyles from '../../styles/globalStyles'
 import styles from './styles'
 
 //Components
@@ -16,12 +15,10 @@ import { View } from 'react-native';
 export const SeparatorTop = ({ debug }) => {
 
     //Styles
-    const gloStyles = useStyleSheet(globalStyles);
     const ownStyles = useStyleSheet(styles);
-    const fullStyles = { ...gloStyles, ...ownStyles };
 
     return (
-        <View style={{ ...fullStyles.topSeparator }}></View>
+        <View style={{ ...ownStyles.topSeparator }}></View>
     )
 };
 

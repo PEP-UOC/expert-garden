@@ -28,6 +28,9 @@ import 'firebase/compat/auth';
 import "firebase/compat/firestore";
 import firebaseErrorCodeMap from '../../common/firebaseErrorCodeMap';
 
+//Hooks
+import { useKeyboardSize } from "../../hooks/useKeyboardSize"
+
 //Select Options
 const userTypes = [
     {
@@ -51,11 +54,11 @@ export const SignUpScreen = ({ debug, navigation }) => {
     //Styles
     const gloStyles = useStyleSheet(globalStyles);
     const ownStyles = useStyleSheet(styles);
-    const fullStyles = { ...gloStyles, ...ownStyles };
 
     //State
     const [values, setValues] = useState({
-        fullname: "",
+        name: "",
+        surnames: "",
         role: "client",
         email: "",
         password: "",
@@ -75,7 +78,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 
     const renderCaption = () => {
         return (
-            <Text style={{ ...fullStyles.inputs.captionText }}>Utiliza un mínimo de 6 carácteres</Text>
+            <Text style={{ ...gloStyles.inputs.captionText }}>Utiliza un mínimo de 6 carácteres</Text>
         )
     }
 
@@ -92,7 +95,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
     //SignUp
     function SignUp() {
 
-        const { email, password, password2, fullname, role } = values
+        const { email, password, password2, name, surnames, role } = values
 
         dispatch(setLoadingMessage(debug ? '🔧 Registrándote!' : 'Registrándote!'))
 
@@ -108,15 +111,25 @@ export const SignUpScreen = ({ debug, navigation }) => {
                                 dispatch(addUser(user))
                                 firestore().collection("users").doc(auth().currentUser.uid).set({
                                     uid: auth().currentUser.uid,
-                                    fullname,
+                                    name,
+                                    surnames,
+                                    fullname: `${name} ${surnames}`,
                                     role,
                                     email
                                 })
                                     .then(() => {
                                         auth().currentUser.updateProfile({
-                                            displayName: fullname
+                                            displayName: `${name} ${surnames}`,
                                         }).then(() => {
-                                            dispatch(updateUser(values))
+                                            dispatch(updateUser({
+                                                metadata: {
+                                                    name,
+                                                    surnames,
+                                                    fullname: `${name} ${surnames}`,
+                                                    role,
+                                                    email
+                                                }
+                                            }))
                                             dispatch(setLoggedIn(true))
                                             dispatch(setLoadingMessage(false))
                                             dispatch(setErrorMessage(false))
@@ -153,22 +166,8 @@ export const SignUpScreen = ({ debug, navigation }) => {
         }
     }
 
-    //Hide Keyboard
-    const [keyboardIsOpen, setKeyboardIsOpen] = useState(false);
-
-    useEffect(() => {
-        const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-            setKeyboardIsOpen(true);
-        });
-        const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-            setKeyboardIsOpen(false);
-        });
-
-        return () => {
-            showSubscription.remove();
-            hideSubscription.remove();
-        };
-    }, []);
+    //Keyboard
+    const [keyboardSize, keyboardIsOpen] = useKeyboardSize()
 
     function hideKeyboard() {
         console.log("⌨️ HIDE Keyboard")
@@ -183,7 +182,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 
     //Checks
     function allFilled() {
-        return values?.fullname === '' || values?.role === '' || values?.email === '' || values?.password === '' || values?.password2 === ''
+        return values?.name === '' || (values?.surnames === '' && values?.role === 'client') || values?.role === '' || values?.email === '' || values?.password === '' || values?.password2 === ''
     }
 
     useEffect(() => {
@@ -198,20 +197,22 @@ export const SignUpScreen = ({ debug, navigation }) => {
         <SelectItem key={title} title={title} />
     );
 
+    console.log('keyboardSize', keyboardSize)
+
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
             <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-                contentContainerStyle={{ ...fullStyles.scrollView }}>
-                <Layout style={{ ...fullStyles.layout }}>
-                    <View style={{ ...fullStyles.view }}>
-                        <View style={{ ...fullStyles.section.full }}>
+                contentContainerStyle={{ ...gloStyles.scrollView, ...ownStyles?.scrollHeight }}>
+                <Layout style={{ ...gloStyles.layout, marginTop: (keyboardSize - 40) * -1 }}>
+                    <View style={{ ...gloStyles.view }}>
+                        <View style={{ ...gloStyles.section.full }}>
 
-                            <Text category='h6' style={{ ...fullStyles?.h6 }}>REGISTRATE EN</Text>
-                            <Text category='h1' style={{ ...fullStyles?.h1 }}>EXPERT GARDEN</Text>
+                            <Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>REGISTRATE EN</Text>
+                            <Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>EXPERT GARDEN</Text>
 
                             <Select
-                                style={{ ...fullStyles.inputs.select }}
+                                style={{ ...gloStyles.inputs.select }}
                                 label='¿Quién eres?'
                                 value={displayValue}
                                 selectedIndex={selectedIndex}
@@ -222,15 +223,25 @@ export const SignUpScreen = ({ debug, navigation }) => {
                                 {userTypes.map(uT => uT.value).map(renderOption)}
                             </Select>
                             <Input
-                                style={{ ...fullStyles.inputs.input }}
-                                label={values.role === 'client' ? 'Nombre completo' : 'Nombre de la empresa'}
-                                placeholder={values.role === 'client' ? 'Introduce tu nombre completo' : 'Introduce el nombre comercial'}
-                                value={values?.fullname || ''}
-                                onChangeText={text => handleChange(text, "fullname")}
+                                style={{ ...gloStyles.inputs.input }}
+                                label={values.role === 'client' ? 'Nombre' : 'Nombre de la empresa'}
+                                placeholder={values.role === 'client' ? 'Introduce tu nombre' : 'Introduce el nombre comercial'}
+                                value={values?.name || ''}
+                                onChangeText={text => handleChange(text, "name")}
                                 accessoryRight={renderKeyboardIcon}
                             />
+                            {values.role === 'client' &&
+                                <Input
+                                    style={{ ...gloStyles.inputs.input }}
+                                    label={'Apellidos'}
+                                    placeholder={'Introduce tus apellidos'}
+                                    value={values?.surnames || ''}
+                                    onChangeText={text => handleChange(text, "surnames")}
+                                    accessoryRight={renderKeyboardIcon}
+                                />
+                            }
                             <Input
-                                style={{ ...fullStyles.inputs.input }}
+                                style={{ ...gloStyles.inputs.input }}
                                 label='Correo electrónico'
                                 placeholder='Introduce tu correo electrónico'
                                 value={values?.email || ''}
@@ -238,7 +249,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
                                 accessoryRight={renderKeyboardIcon}
                             />
                             <Input
-                                style={{ ...fullStyles.inputs.input }}
+                                style={{ ...gloStyles.inputs.input }}
                                 label='Contraseña'
                                 placeholder='Introduce tu contraseña'
                                 value={values?.password || ''}
@@ -248,7 +259,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
                                 onChangeText={text => handleChange(text, "password")}
                             />
                             <Input
-                                style={{ ...fullStyles.inputs.input, marginBottom: 30 }}
+                                style={{ ...gloStyles.inputs.input, marginBottom: 30 }}
                                 label='Contraseña'
                                 placeholder='Confirma la contraseña'
                                 value={values?.password2 || ''}
@@ -257,12 +268,12 @@ export const SignUpScreen = ({ debug, navigation }) => {
                                 onChangeText={text => handleChange(text, "password2")}
                             />
 
-                            <Button style={{ ...fullStyles?.button }} onPress={() => SignUp()}>REGISTRARSE</Button>
+                            <Button style={{ ...gloStyles?.button }} onPress={() => SignUp()}>REGISTRARSE</Button>
 
-                            <Button style={{ ...fullStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("Login")}>¿Ya tienes cuenta?</Button>
+                            <Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("Login")}>¿Ya tienes cuenta?</Button>
 
                             <View style={{ alignItems: 'center' }}>
-                                <LeafIcon width={180} height={60} style={{ ...fullStyles.leaf }} />
+                                <LeafIcon width={180} height={60} style={{ ...gloStyles.leaf }} />
                             </View>
                         </View>
                     </View>

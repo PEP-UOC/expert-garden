@@ -19,33 +19,28 @@ import Device from '../../libs/react-native-device-detection';
 
 
 // eslint-disable-next-line no-unused-vars
-export const TitleScreen = ({ debug, icon, primaryText, secondaryText }) => {
+export const TitleSection = ({ debug, icon, primaryText, secondaryText }) => {
 
     //Styles
     const gloStyles = useStyleSheet(globalStyles);
     const ownStyles = useStyleSheet(styles);
 
     return (
-        <View style={
-            {
-                ...ownStyles?.screenWrapper,
-                flexDirection: icon !== '' ? 'row' : 'column', alignItems: icon !== '' ? 'center' : 'flex-start'
-            }
-        }>
-            {!Device.isPhone && icon !== '' && <Icon width={60} height={40} name={icon} fill='#094c3f' />}
-            <Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.screenText }}>{primaryText}</Text>
-            <Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.screenText }}>{secondaryText}</Text>
-        </View>
+        <View style={{ ...ownStyles?.sectionWrapper }}>
+            {!Device.isPhone && icon !== '' && <Icon width={50} height={37} name={icon} fill='#094c3f' />}
+            <Text category='h2' style={{ ...gloStyles?.h2, ...ownStyles?.sectionText }}>{primaryText}</Text>
+            <Text category='h2' style={{ ...gloStyles?.h2, ...ownStyles?.sectionText }}>{secondaryText}</Text>
+        </View >
     )
 };
 
-TitleScreen.propTypes = {
+TitleSection.propTypes = {
     debug: PropTypes.bool.isRequired,
     icon: PropTypes.string,
     primaryText: PropTypes.string.isRequired,
     secondaryText: PropTypes.string.isRequired,
 };
 
-TitleScreen.defaultProps = {
+TitleSection.defaultProps = {
     debug: Constants.manifest.extra.debug || false,
 };

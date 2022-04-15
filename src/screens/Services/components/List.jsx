@@ -4,16 +4,21 @@ import PropTypes from "prop-types";
 //Constants
 import Constants from 'expo-constants';
 
+//Device Detect
+import Device from '../../../libs/react-native-device-detection';
+
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
-import globalStyles from '../../../styles/globalStyles'
+//import globalStyles from '../../../styles/globalStyles'
 import styles from './styles'
 
-//Store
+//Navigation
 import { useNavigation } from '@react-navigation/native';
 
 //Components
-import { Text, Button, List, ListItem } from '@ui-kitten/components';
+import { View } from 'react-native'
+import { Text, Button, ListItem } from '@ui-kitten/components';
+import { TitleSection } from '../../../components/Titles/Section'
 
 //Icons
 import { ChevronRightIcon } from '../../../assets/icons/ChevronRight'
@@ -32,9 +37,122 @@ export const ServicesList = ({ debug, type }) => {
     const firestore = firebase.firestore;
 
     //Styles
-    const gloStyles = useStyleSheet(globalStyles);
+    //const gloStyles = useStyleSheet(globalStyles);
     const ownStyles = useStyleSheet(styles);
-    const fullStyles = { ...gloStyles, ...ownStyles };
+
+    //State
+    const [services, setServices] = useState([]);
+    const [title, setTitle] = useState(undefined);
+    const [icon, setIcon] = useState('');
+
+    useEffect(() => {
+        switch (type) {
+            case 'requested':
+                setTitle('Servicios solicitados')
+                setIcon('inbox-outline')
+
+                if (auth().currentUser) {
+                    firestore().collection("services").where("uid", "==", auth().currentUser.uid).where("confirmationDate", "==", null).orderBy("requestDateTime", "desc").limit(3)
+                        .onSnapshot(services => {
+                            if (!services.empty) {
+                                const SERVICES = [];
+                                services.forEach(service => {
+                                    SERVICES.push(service.data())
+                                })
+                                console.log(`🌳 Servicios solicitados del usuario ${auth().currentUser.uid}`, SERVICES)
+                                setServices(SERVICES)
+                            }
+                        })
+                } else {
+                    setServices([])
+                }
+                break;
+            case 'inProgress':
+                setTitle('Servicios en curso')
+                setIcon('play-circle-outline')
+
+                if (auth().currentUser) {
+                    firestore().collection("services").where("uid", "==", auth().currentUser.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
+                        .onSnapshot(services => {
+                            if (!services.empty) {
+                                const SERVICES = [];
+                                services.forEach(service => {
+                                    SERVICES.push(service.data())
+                                })
+                                console.log(`🌳 Servicios en curso del usuario ${auth().currentUser.uid}`, SERVICES)
+                                setServices(SERVICES)
+                            }
+                        })
+                } else {
+                    setServices([])
+                }
+                break;
+            case 'inProgressPunctual':
+                setTitle('Servicios en curso puntuales')
+                setIcon('checkmark-circle-outline')
+
+                if (auth().currentUser) {
+                    firestore().collection("services").where("uid", "==", auth().currentUser.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
+                        .onSnapshot(services => {
+                            if (!services.empty) {
+                                const SERVICES = [];
+                                services.forEach(service => {
+                                    SERVICES.push(service.data())
+                                })
+                                console.log(`🌳 Servicios en curso puntuales del usuario ${auth().currentUser.uid}`, SERVICES)
+                                setServices(SERVICES)
+                            }
+                        })
+                } else {
+                    setServices([])
+                }
+                break;
+            case 'inProgressRecurrent':
+                setTitle('Servicios en curso recurrentes')
+                setIcon('clock-outline')
+
+                if (auth().currentUser) {
+                    firestore().collection("services").where("uid", "==", auth().currentUser.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
+                        .onSnapshot(services => {
+                            if (!services.empty) {
+                                const SERVICES = [];
+                                services.forEach(service => {
+                                    SERVICES.push(service.data())
+                                })
+                                console.log(`🌳 Servicios en curso recurrentes del usuario ${auth().currentUser.uid}`, SERVICES)
+                                setServices(SERVICES)
+                            }
+                        })
+                } else {
+                    setServices([])
+                }
+                break;
+            case 'past':
+                setTitle('Servicios anteriores')
+                setIcon('shopping-bag-outline')
+
+                if (auth().currentUser) {
+                    firestore().collection("services").where("uid", "==", auth().currentUser.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
+                        .onSnapshot(services => {
+                            if (!services.empty) {
+                                const SERVICES = [];
+                                services.forEach(service => {
+                                    SERVICES.push(service.data())
+                                })
+                                console.log(`🌳 Servicios anteriores del usuario ${auth().currentUser.uid}`, SERVICES)
+                                setServices(SERVICES)
+                            }
+                        })
+                } else {
+                    setServices([])
+                }
+                break;
+            default:
+                setTitle(undefined)
+                break;
+        }
+
+    }, []);
 
     //Navigation
     const navigateServiceRequest = () => {
@@ -42,67 +160,49 @@ export const ServicesList = ({ debug, type }) => {
     };
 
     //List
-    const renderItem = ({ item }) => {
+    const RenderItem = ({ item }) => {
         return (
             <ListItem
                 onPress={navigateServiceRequest}
-                title={`${item.text}`}
-                description={`${item.uid}`}
-                accessoryRight={renderItemAccessory}
+                title={`${item.type}`}
+                description={`${item.comment}`}
+                accessoryRight={renderItemAccessory(item)}
             />
         )
     };
-    const renderItemAccessory = () => (
-        <Button onPress={navigateServiceRequest}
-            accessoryRight={ChevronRightIcon} size='giant' appearance='ghost'></Button>
+
+    RenderItem.propTypes = {
+        item: PropTypes.object.isRequired,
+    };
+
+    const renderItemAccessory = (item) => (
+        <>
+            {Device?.isPhone
+                ? null
+                // eslint-disable-next-line react/prop-types
+                : <Text category='p1' style={{ marginRight: 10 }}>{item?.requestDate}</Text>
+            }
+            <Button onPress={navigateServiceRequest}
+                accessoryRight={ChevronRightIcon} size='giant' appearance='ghost' />
+        </>
     );
 
-    //State
-    const [services, setServices] = useState([]);
-    const [title, setTitle] = useState(undefined);
-
-    useEffect(() => {
-        switch (type) {
-            case 'solicitados':
-                setTitle('Servicios solicitados')
-                break;
-            default:
-                setTitle(undefined)
-                break;
-        }
-
-        if (auth().currentUser) {
-            firestore().collection("services").where("uid", "==", auth().currentUser.uid)
-                .onSnapshot(services => {
-                    if (!services.empty) {
-                        const SERVICES = [];
-                        services.forEach(service => {
-                            SERVICES.push(service.data())
-                        })
-                        console.log(`🌳 Servicios del usuario ${auth().currentUser.uid}`, SERVICES)
-                        setServices(SERVICES)
-                    }
-                })
-        } else {
-            setServices([])
-        }
-
-    }, []);
-
     return (
-        <>
-            <Text category='h2' style={{ ...fullStyles?.h2 }}>{title}</Text>
-
-            {services?.length ? <List
-                style={{ ...fullStyles?.listContainer }}
-                data={services}
-                renderItem={renderItem}
-            /> :
-                <ListItem
-                    title={'Todavía no has solicitado ningún servicio'}
-                />
+        <View style={{ ...ownStyles?.wrapper }}>
+            <TitleSection icon={icon || ''} primaryText={title || ''} secondaryText={''} />
+            {services?.length
+                ? services?.map((service) => (
+                    <View key={service.sid} style={{ ...ownStyles?.item }}>
+                        <RenderItem item={service} />
+                    </View>
+                ))
+                : <View key={`empty-${type}`}>
+                    <ListItem
+                        title={'Todavía no has solicitado ningún servicio'}
+                    />
+                </View>
             }
-        </>
+        </View>
     )
 };
 

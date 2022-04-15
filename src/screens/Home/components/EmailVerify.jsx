@@ -25,7 +25,6 @@ export const EmailVerify = ({ debug, user }) => {
     //Styles
     const gloStyles = useStyleSheet(globalStyles);
     const ownStyles = useStyleSheet(styles);
-    const fullStyles = { ...gloStyles, ...ownStyles };
 
     //Firebase
     const auth = firebase.auth;
@@ -45,22 +44,22 @@ export const EmailVerify = ({ debug, user }) => {
 
     if (user && !user?.user?.emailVerified) {
         return (
-            <Card style={{ ...fullStyles?.card }} status='danger'>
+            <Card style={{ ...gloStyles?.card }} status='danger'>
                 {user?.additionalUserInfo?.isNewUser ?
                     (
                         <>
-                            <Text category='p1' style={{ ...fullStyles?.textCenter }} >!Gracias por registrarte!</Text>
-                            <Text category='p1' style={{ ...fullStyles?.textCenter }} >Ahora necesitamos verificar tu email: {user?.user?.email}</Text>
+                            <Text category='p1' style={{ ...gloStyles?.textCenter }} >!Gracias por registrarte!</Text>
+                            <Text category='p1' style={{ ...gloStyles?.textCenter }} >Ahora necesitamos verificar tu email: {user?.user?.email}</Text>
                         </>
                     ) : (
-                        <Text category='p1' style={{ ...fullStyles?.textCenter }}>Verifica tu email: {user?.user?.email}</Text>
+                        <Text category='p1' style={{ ...gloStyles?.textCenter }}>Verifica tu email: {user?.user?.email}</Text>
                     )}
-                <Button style={{ ...fullStyles?.verifyEmailButton }} appearance='ghost' size='large' onPress={() => {
+                <Button style={{ ...gloStyles?.button, ...ownStyles?.btnEmailVerify }} appearance='ghost' size='large' onPress={() => {
                     resendEmail(auth)
                     setEmailCounter(180);
                 }} accessoryLeft={PaperPlaneIcon} disabled={emailCounter > 0}>Reenviar email</Button>
                 {emailCounter > 0 &&
-                    <Text category='c1' style={{ ...fullStyles?.smallText }}>Espera {emailCounter}s. para enviar un nuevo email de verificación.</Text>}
+                    <Text category='c1' style={{ ...gloStyles?.smallText }}>Espera {emailCounter}s. para enviar un nuevo email de verificación.</Text>}
             </Card>
         )
     }

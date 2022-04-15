@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from "prop-types";
-
-//Device Detect
-import Device from '../../libs/react-native-device-detection'
 
 //Constants
 import Constants from 'expo-constants';
@@ -14,7 +11,6 @@ import globalStyles from '../../styles/globalStyles'
 //Store
 import { useSelector, useDispatch } from 'react-redux'
 import { setErrorMessage, setLoadingMessage } from '../../store/root/rootAction';
-import { updateUser } from '../../store/user/userAction';
 
 //Components
 import { SafeAreaView, ScrollView, View } from 'react-native'
@@ -22,20 +18,13 @@ import { Divider, Layout, TopNavigation } from '@ui-kitten/components';
 import { SeparatorTop } from '../../components/Separators/Top'
 import { TitleScreen } from '../../components/Titles/Screen'
 import { BtnWithLogo } from '../../components/Buttons/WithLogo'
-import { EmailVerify } from './components/EmailVerify'
-import { NotificationsList } from '../Notifications/components/List'
-import { ServicesList } from '../Services/components/List'
+import { ServicesList } from './components/List'
 
 //Icons
 import { AddIcon } from '../../assets/icons/Add'
 
-//Firebase
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-//import firebaseErrorCodeMap from '../../common/firebaseErrorCodeMap';
-
 // eslint-disable-next-line no-unused-vars
-export const HomeScreen = ({ debug, navigation }) => {
+export const ServicesScreen = ({ debug, navigation }) => {
   const dispatch = useDispatch()
 
   //Styles
@@ -49,42 +38,14 @@ export const HomeScreen = ({ debug, navigation }) => {
     navigation.navigate('ServiceRequest');
   };
 
-  //Firebase
-  const auth = firebase.auth;
-
   useEffect(() => {
     dispatch(setLoadingMessage(false))
     dispatch(setErrorMessage(false))
   }, []);
 
-  useEffect(() => {
-    console.log('👩‍🌾 Usuario', user?.metadata?.fullname, user?.metadata?.email);
-    //console.log(user);
-  }, [user]);
-
-  //Update user
-  const [updateUserCounter, setUpdateUserCounter] = useState(user?.user?.emailVerified ? 0 : 30);
-  useEffect(() => {
-    const timer = updateUserCounter > 0 && setInterval(() => {
-      auth().onIdTokenChanged((updatedUser) => {
-        if (updatedUser && updatedUser?.emailVerified) {
-          setUpdateUserCounter(0)
-          console.log('🧶 Actualizando usuario')
-          dispatch(updateUser({ user: updatedUser }));
-        }
-      })
-      auth()?.currentUser?.reload();
-    }, 30000);
-    return () => clearInterval(timer);
-  }, [updateUserCounter]);
-
-  const device = Device.isPhone ? '📱' : '💻';
-  const role = user?.metadata?.role === 'client' ? '🧔🏻‍♂️' : '💼';
-  const gender = user?.metadata?.gender === 'male' ? '🧑‍🌾' : user?.metadata?.gender === 'female' ? '👩‍🌾' : '🌳';
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <TopNavigation title={debug ? `${device} Inicio ${role}` : 'Inicio'} alignment='center' />
+      <TopNavigation title={'Servicios'} alignment='center' />
       <Divider />
       <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
         contentContainerStyle={{ ...gloStyles.scrollView }}>
@@ -92,8 +53,7 @@ export const HomeScreen = ({ debug, navigation }) => {
           <SeparatorTop />
           <View style={{ ...gloStyles.view }}>
             <View style={{ ...gloStyles.section.primary }}>
-              <TitleScreen icon={''} primaryText={user?.additionalUserInfo?.isNewUser ? 'Bienvenido' : 'Bienvenido'} secondaryText={`${user?.metadata?.name} ${gender}` || ''} />
-              <EmailVerify user={user || {}} />
+              <TitleScreen icon={'car-outline'} primaryText={'Servicios'} secondaryText={''} />
               {
                 {
                   'client': (
@@ -113,9 +73,10 @@ export const HomeScreen = ({ debug, navigation }) => {
                 {
                   'client': (
                     <>
-                      <NotificationsList type={'last'} />
                       <ServicesList type={'requested'} />
-                      <ServicesList type={'inProgress'} />
+                      <ServicesList type={'inProgressPunctual'} />
+                      <ServicesList type={'inProgressRecurrent'} />
+                      <ServicesList type={'past'} />
                     </>
                   ),
                   'business': (
@@ -135,11 +96,11 @@ export const HomeScreen = ({ debug, navigation }) => {
   )
 };
 
-HomeScreen.propTypes = {
+ServicesScreen.propTypes = {
   debug: PropTypes.bool.isRequired,
   navigation: PropTypes.object.isRequired,
 };
 
-HomeScreen.defaultProps = {
+ServicesScreen.defaultProps = {
   debug: Constants.manifest.extra.debug || false,
 };
