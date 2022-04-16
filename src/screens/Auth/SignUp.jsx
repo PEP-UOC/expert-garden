@@ -197,14 +197,12 @@ export const SignUpScreen = ({ debug, navigation }) => {
         <SelectItem key={title} title={title} />
     );
 
-    console.log('keyboardSize', keyboardSize)
-
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
             <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
                 contentContainerStyle={{ ...gloStyles.scrollView, ...ownStyles?.scrollHeight }}>
-                <Layout style={{ ...gloStyles.layout, marginTop: (keyboardSize - 40) * -1 }}>
+                <Layout style={{ ...gloStyles.layout, marginTop: (keyboardSize - 50) * -1 }}>
                     <View style={{ ...gloStyles.view }}>
                         <View style={{ ...gloStyles.section.full }}>
 

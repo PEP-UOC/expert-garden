@@ -14,9 +14,10 @@ import { setErrorMessage, setLoadingMessage } from '../../store/root/rootAction'
 import { updateUser } from '../../store/user/userAction';
 
 //Components
-import { SafeAreaView, ScrollView, View, Image } from 'react-native'
+import { SafeAreaView, ScrollView, View } from 'react-native'
 import { Divider, Layout, TopNavigation } from '@ui-kitten/components';
-import { SeparatorTop } from '../../components/Separators/Top'
+import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
+import { SeparatorTopSection } from '../../components/Separators/TopSection'
 import { TitleScreen } from '../../components/Titles/Screen'
 import { PersonalDataForm } from './components/PersonalData'
 import { BtnPrimary } from '../../components/Buttons/Primary'
@@ -24,6 +25,10 @@ import { ImgClient } from '../../components/Images/Client'
 
 //Icons
 import { AddIcon } from '../../assets/icons/Add'
+
+//Device Detect
+//import Device from '../../libs/react-native-device-detection';
+import { Platform } from 'react-native';
 
 //Firebase
 import firebase from 'firebase/compat/app';
@@ -47,7 +52,6 @@ export const ProfileScreen = ({ debug, navigation }) => {
   const hasNotSavedChanges = useSelector(state => state.userReducer.hasNotSavedChanges);
 
   const saveChanges = () => {
-    console.log(user)
     firestore().collection("users").doc(auth().currentUser.uid).update({
       name: user?.metadata?.name,
       surnames: user?.metadata?.surnames,
@@ -94,48 +98,58 @@ export const ProfileScreen = ({ debug, navigation }) => {
       <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
         contentContainerStyle={{ ...gloStyles.scrollView }}>
         <Layout style={{ ...gloStyles.layout }}>
-          <SeparatorTop />
+          <SeparatorTopScreen />
           <View style={{ ...gloStyles.view }}>
             <View style={{ ...gloStyles.section.primary }}>
-              <TitleScreen icon={'person-outline'} primaryText={user.metadata.name || ''} secondaryText={''} />
+              <TitleScreen icon={'person-outline'} primaryText={user?.metadata?.name || ''} secondaryText={''} />
               <ImgClient uri={'https://reactjs.org/logo-og.png'} />
               {
                 {
                   'client': (
-                    <BtnPrimary disabled={!hasNotSavedChanges} icon={AddIcon} text={"GUARDAR"} onPress={saveChanges} />
+                    <>
+                      {Platform.OS === "web" && <BtnPrimary disabled={!hasNotSavedChanges} icon={AddIcon} text={"GUARDAR CAMBIOS"} onPress={saveChanges} />}
+                    </>
                   ),
                   'business': (
-                    <BtnPrimary disabled={!hasNotSavedChanges} icon={AddIcon} text={"GUARDAR"} onPress={saveChanges} />
+                    <>
+                      {Platform.OS === "web" && <BtnPrimary disabled={!hasNotSavedChanges} icon={AddIcon} text={"GUARDAR CAMBIOS"} onPress={saveChanges} />}
+                    </>
                   ),
                   'worker': (
-                    <BtnPrimary disabled={!hasNotSavedChanges} icon={AddIcon} text={"GUARDAR"} onPress={saveChanges} />
+                    <>
+                      {Platform.OS === "web" && <BtnPrimary disabled={!hasNotSavedChanges} icon={AddIcon} text={"GUARDAR CAMBIOS"} onPress={saveChanges} />}
+                    </>
                   )
                 }[user?.metadata?.role]
               }
             </View>
             <View style={{ ...gloStyles.section.secondary }}>
+              <SeparatorTopSection />
               {
                 {
                   'client': (
                     <>
                       <PersonalDataForm />
+                      {Platform.OS !== "web" && <BtnPrimary disabled={!hasNotSavedChanges} icon={AddIcon} text={"GUARDAR CAMBIOS"} onPress={saveChanges} />}
                     </>
                   ),
                   'business': (
                     <>
                       <PersonalDataForm />
+                      {Platform.OS !== "web" && <BtnPrimary disabled={!hasNotSavedChanges} icon={AddIcon} text={"GUARDAR CAMBIOS"} onPress={saveChanges} />}
                     </>
                   ),
                   'worker': (
                     <>
+                      <PersonalDataForm />
+                      {Platform.OS !== "web" && <BtnPrimary disabled={!hasNotSavedChanges} icon={AddIcon} text={"GUARDAR CAMBIOS"} onPress={saveChanges} />}
                     </>
                   )
                 }[user?.metadata?.role]
               }
             </View>
-
           </View>
-        </Layout >
+        </Layout>
       </ScrollView>
     </SafeAreaView>
   )

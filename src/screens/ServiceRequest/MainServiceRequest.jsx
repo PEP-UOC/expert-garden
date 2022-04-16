@@ -21,7 +21,8 @@ import mainServices from '../../data/mainServices.json'
 import { SafeAreaView, ScrollView, View } from 'react-native'
 import { Divider, Layout, Button, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { TitleScreen } from '../../components/Titles/Screen'
-import { SeparatorTop } from '../../components/Separators/Top'
+import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
+import { SeparatorTopSection } from '../../components/Separators/TopSection'
 
 //Icons
 import { AddIcon } from '../../assets/icons/Add'
@@ -173,13 +174,14 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
       <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
         contentContainerStyle={{ ...gloStyles.scrollView }}>
         <Layout style={{ ...gloStyles.layout }}>
-          <SeparatorTop />
+          <SeparatorTopScreen />
           <View style={{ ...gloStyles.view }}>
             <View style={{ ...gloStyles.section.primary }}>
               <TitleScreen icon={'plus-circle-outline'} primaryText={'Solicita un servicio'} secondaryText={''} />
               <Button style={{ ...gloStyles?.button }} size='tiny' accessoryLeft={AddIcon} status='danger' appearance='outline' onPress={doLogout}>CERRAR SESIÓN</Button>
             </View>
             <View style={{ ...gloStyles.section.secondary }}>
+              <SeparatorTopSection />
               {mainServices.map(service => {
                 //console.log(service)
                 return (<Button style={{ ...gloStyles?.button, ...ownStyles?.btnServiceRequest }}

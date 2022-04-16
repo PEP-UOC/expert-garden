@@ -6,7 +6,7 @@ import Device from '../../../libs/react-native-device-detection';
 
 const styles = StyleService.create({
   wrapper: {
-    marginBottom: 30,
+    marginBottom: 20,
   },
   item: {
     marginLeft: Device.isPhone ? 0 : 37,

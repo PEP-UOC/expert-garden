@@ -21,6 +21,20 @@ const styles = StyleService.create({
   btnPrimary: {
     width: '100%',
   },
+  btnSecondary: {
+    width: '100%',
+  },
+  btnImageCombo: {
+    width: '100%',
+  },
+  btnImageComboCenter: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  btnImageComboTextAlternative: {
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
 });
 
 export default styles;

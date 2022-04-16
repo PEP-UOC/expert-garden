@@ -15,7 +15,8 @@ import { setErrorMessage, setLoadingMessage } from '../../store/root/rootAction'
 //Components
 import { SafeAreaView, ScrollView, View } from 'react-native'
 import { Divider, Layout, TopNavigation } from '@ui-kitten/components';
-import { SeparatorTop } from '../../components/Separators/Top'
+import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
+import { SeparatorTopSection } from '../../components/Separators/TopSection'
 import { TitleScreen } from '../../components/Titles/Screen'
 import { NotificationsList } from './components/List'
 
@@ -41,12 +42,13 @@ export const NotificationsScreen = ({ debug, navigation }) => {
       <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
         contentContainerStyle={{ ...gloStyles.scrollView }}>
         <Layout style={{ ...gloStyles.layout }}>
-          <SeparatorTop />
+          <SeparatorTopScreen />
           <View style={{ ...gloStyles.view }}>
             <View style={{ ...gloStyles.section.primary }}>
               <TitleScreen icon={'bell-outline'} primaryText={'Notificaciones'} secondaryText={''} />
             </View>
             <View style={{ ...gloStyles.section.secondary }}>
+              <SeparatorTopSection />
               {
                 {
                   'client': (

@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import PropTypes from "prop-types";
 
 //Constants
 import Constants from 'expo-constants';
-
-//Device Detect
-import Device from '../../../libs/react-native-device-detection';
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
@@ -17,7 +14,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { updateUser, updateHasNotSavedChanges } from '../../../store/user/userAction';
 
 //Navigation
-import { useNavigation } from '@react-navigation/native';
+//import { useNavigation } from '@react-navigation/native';
 
 //Components
 import { View, TouchableWithoutFeedback, Keyboard } from 'react-native'
@@ -26,10 +23,6 @@ import { TitleSection } from '../../../components/Titles/Section'
 
 //Icons
 import { CornerRightDownIcon } from '../../../assets/icons/CornerRightDown'
-
-//Firebase
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
 
 //Moment
 import moment from "moment";
@@ -42,11 +35,7 @@ import { useKeyboardSize } from "../../../hooks/useKeyboardSize"
 export const PersonalDataForm = ({ debug }) => {
     const dispatch = useDispatch()
 
-    const navigation = useNavigation();
-
-    //Firebase
-    const auth = firebase.auth;
-    const firestore = firebase.firestore;
+    //const navigation = useNavigation();
 
     //Styles
     const gloStyles = useStyleSheet(globalStyles);
@@ -121,7 +110,6 @@ export const PersonalDataForm = ({ debug }) => {
         genderTypes.findIndex(genderType => genderType.name === user?.metadata?.gender) !== -1
             ? new IndexPath(genderTypes.findIndex(genderType => genderType.name === user?.metadata?.gender))
             : new IndexPath(0));
-    console.log('selectedIndex', selectedIndex)
     const displayValue = genderTypes[selectedIndex.row]?.value;
     const renderOption = (title) => (
         <SelectItem key={title} title={title} />

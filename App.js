@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Constants
 import Constants from 'expo-constants';
+import { LogBox } from 'react-native';
 
 // Store
 import { Provider } from 'react-redux';
@@ -30,6 +31,7 @@ import { default as mapping } from './src/styles/ui-kitten/mapping.json';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import 'firebase/compat/storage';
 import { initializeAuth } from 'firebase/auth';
 import { getReactNativePersistence } from 'firebase/auth/react-native';
 
@@ -42,6 +44,8 @@ const firebaseConfig = {
   appId: Constants.manifest.extra.firebaseAppId,
   measurementId: Constants.manifest.extra.firebaseMeasurementId,
 };
+
+LogBox.ignoreLogs([`Setting a timer for a long period`]);
 
 export default function App() {
   const isLoadingComplete = useCachedResources();

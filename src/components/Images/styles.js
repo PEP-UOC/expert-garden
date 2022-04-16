@@ -6,10 +6,7 @@ import { StyleService } from '@ui-kitten/components';
 
 const styles = StyleService.create({
   wrapper: {
-    marginBottom: 15,
-  },
-  client: {
-    width: '100%',
+    marginBottom: 20,
   },
 });
 

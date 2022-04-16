@@ -19,7 +19,8 @@ import { updateUser } from '../../store/user/userAction';
 //Components
 import { SafeAreaView, ScrollView, View } from 'react-native'
 import { Divider, Layout, TopNavigation } from '@ui-kitten/components';
-import { SeparatorTop } from '../../components/Separators/Top'
+import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
+import { SeparatorTopSection } from '../../components/Separators/TopSection'
 import { TitleScreen } from '../../components/Titles/Screen'
 import { BtnWithLogo } from '../../components/Buttons/WithLogo'
 import { EmailVerify } from './components/EmailVerify'
@@ -89,7 +90,7 @@ export const HomeScreen = ({ debug, navigation }) => {
       <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
         contentContainerStyle={{ ...gloStyles.scrollView }}>
         <Layout style={{ ...gloStyles.layout }}>
-          <SeparatorTop />
+          <SeparatorTopScreen />
           <View style={{ ...gloStyles.view }}>
             <View style={{ ...gloStyles.section.primary }}>
               <TitleScreen icon={''} primaryText={user?.additionalUserInfo?.isNewUser ? 'Bienvenido' : 'Bienvenido'} secondaryText={`${user?.metadata?.name} ${gender}` || ''} />
@@ -109,6 +110,7 @@ export const HomeScreen = ({ debug, navigation }) => {
               }
             </View>
             <View style={{ ...gloStyles.section.secondary }}>
+              <SeparatorTopSection />
               {
                 {
                   'client': (

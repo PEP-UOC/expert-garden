@@ -12,20 +12,20 @@ import styles from './styles'
 import { View } from 'react-native';
 
 // eslint-disable-next-line no-unused-vars
-export const SeparatorTop = ({ debug }) => {
+export const SeparatorTopSection = ({ debug }) => {
 
     //Styles
     const ownStyles = useStyleSheet(styles);
 
     return (
-        <View style={{ ...ownStyles.topSeparator }}></View>
+        <View style={{ ...ownStyles.topSection }}></View>
     )
 };
 
-SeparatorTop.propTypes = {
+SeparatorTopSection.propTypes = {
     debug: PropTypes.bool.isRequired,
 };
 
-SeparatorTop.defaultProps = {
+SeparatorTopSection.defaultProps = {
     debug: Constants.manifest.extra.debug || false,
 };
