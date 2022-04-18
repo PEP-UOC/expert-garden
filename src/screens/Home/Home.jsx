@@ -17,7 +17,7 @@ import { setErrorMessage, setLoadingMessage } from '../../store/root/rootAction'
 import { updateUser } from '../../store/user/userAction';
 
 //Components
-import { SafeAreaView, ScrollView, View } from 'react-native'
+import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
 import { Divider, Layout, TopNavigation } from '@ui-kitten/components';
 import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
 import { SeparatorTopSection } from '../../components/Separators/TopSection'
@@ -60,7 +60,7 @@ export const HomeScreen = ({ debug, navigation }) => {
 
   useEffect(() => {
     console.log('👩‍🌾 Usuario', user?.metadata?.fullname, user?.metadata?.email);
-    //console.log(user);
+    console.log(user);
   }, [user]);
 
   //Update user
@@ -80,59 +80,65 @@ export const HomeScreen = ({ debug, navigation }) => {
   }, [updateUserCounter]);
 
   const device = Device.isPhone ? '📱' : '💻';
-  const role = user?.metadata?.role === 'client' ? '🧔🏻‍♂️' : '💼';
+  const role = user?.role === 'client' ? '🧔🏻‍♂️' : '💼';
   const gender = user?.metadata?.gender === 'male' ? '🧑‍🌾' : user?.metadata?.gender === 'female' ? '👩‍🌾' : '🌳';
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <TopNavigation title={debug ? `${device} Inicio ${role}` : 'Inicio'} alignment='center' />
-      <Divider />
-      <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-        contentContainerStyle={{ ...gloStyles.scrollView }}>
-        <Layout style={{ ...gloStyles.layout }}>
-          <SeparatorTopScreen />
-          <View style={{ ...gloStyles.view }}>
-            <View style={{ ...gloStyles.section.primary }}>
-              <TitleScreen icon={''} primaryText={user?.additionalUserInfo?.isNewUser ? 'Bienvenido' : 'Bienvenido'} secondaryText={`${user?.metadata?.name} ${gender}` || ''} />
-              <EmailVerify user={user || {}} />
-              {
-                {
-                  'client': (
-                    <BtnWithLogo icon={AddIcon} text={"SOLICITA UN SERVICIO"} onPress={navigateServiceRequest} />
-                  ),
-                  'business': (
-                    <BtnWithLogo icon={AddIcon} text={"PRÓXIMOS SERVICIOS"} onPress={navigateServiceRequest} />
-                  ),
-                  'worker': (
-                    <BtnWithLogo icon={AddIcon} text={"EMPEZAR A TRABAJAR"} onPress={navigateServiceRequest} />
-                  )
-                }[user?.metadata?.role]
-              }
-            </View>
-            <View style={{ ...gloStyles.section.secondary }}>
-              <SeparatorTopSection />
-              {
-                {
-                  'client': (
-                    <>
-                      <NotificationsList type={'last'} />
-                      <ServicesList type={'requested'} />
-                      <ServicesList type={'inProgress'} />
-                    </>
-                  ),
-                  'business': (
-                    <ServicesList type={'requested'} />
-                  ),
-                  'worker': (
-                    <ServicesList type={'requested'} />
-                  )
-                }[user?.metadata?.role]
-              }
-            </View>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={{ flex: 1, justifyContent: "space-around" }}>
+            <TopNavigation title={debug ? `${device} Inicio ${role}` : 'Inicio'} alignment='center' />
+            <Divider />
+            <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
+              contentContainerStyle={{ ...gloStyles.scrollView }}>
+              <Layout style={{ ...gloStyles.layout }}>
+                <SeparatorTopScreen />
+                <View style={{ ...gloStyles.view }}>
+                  <View style={{ ...gloStyles.section.primary }}>
+                    <TitleScreen icon={''} primaryText={user?.additionalUserInfo?.isNewUser ? 'Bienvenido' : 'Bienvenido'} secondaryText={`${user?.metadata?.name} ${gender}` || ''} />
+                    <EmailVerify user={user || {}} />
+                    {
+                      {
+                        'client': (
+                          <BtnWithLogo icon={AddIcon} text={"SOLICITA UN SERVICIO"} onPress={navigateServiceRequest} />
+                        ),
+                        'business': (
+                          <BtnWithLogo icon={AddIcon} text={"PRÓXIMOS SERVICIOS"} onPress={navigateServiceRequest} />
+                        ),
+                        'worker': (
+                          <BtnWithLogo icon={AddIcon} text={"EMPEZAR A TRABAJAR"} onPress={navigateServiceRequest} />
+                        )
+                      }[user?.role]
+                    }
+                  </View>
+                  <View style={{ ...gloStyles.section.secondary }}>
+                    <SeparatorTopSection />
+                    {
+                      {
+                        'client': (
+                          <>
+                            <NotificationsList type={'last'} />
+                            <ServicesList type={'requested'} />
+                            <ServicesList type={'inProgress'} />
+                          </>
+                        ),
+                        'business': (
+                          <ServicesList type={'requested'} />
+                        ),
+                        'worker': (
+                          <ServicesList type={'requested'} />
+                        )
+                      }[user?.role]
+                    }
+                  </View>
 
+                </View>
+              </Layout >
+            </ScrollView>
           </View>
-        </Layout >
-      </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   )
 };

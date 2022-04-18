@@ -154,8 +154,11 @@ export const BtnImageCombo = ({ debug, showChangeImage, selectedImage, setSelect
 
     const saveImage = (url, firebaseFullPath) => {
         firestore().collection("users").doc(auth().currentUser.uid).update({
-            photoFirebaseURL: url,
-            photoFirebaseFullPath: firebaseFullPath,
+            metadata: {
+                ...user?.metadata,
+                photoFirebaseURL: url,
+                photoFirebaseFullPath: firebaseFullPath,
+            }
         })
             .then(() => {
                 auth().currentUser.updateProfile({
@@ -192,8 +195,6 @@ export const BtnImageCombo = ({ debug, showChangeImage, selectedImage, setSelect
     useEffect(() => {
         if (status?.granted) {
             console.log('✅ Hay permisos para hacer fotos')
-        } else {
-            console.log('❌ Sin permisos para hacer fotos')
         }
     }, [status]);
 
@@ -213,7 +214,7 @@ export const BtnImageCombo = ({ debug, showChangeImage, selectedImage, setSelect
 BtnImageCombo.propTypes = {
     debug: PropTypes.bool.isRequired,
     showChangeImage: PropTypes.bool.isRequired,
-    selectedImage: PropTypes.object.isRequired,
+    selectedImage: PropTypes.object,
     setSelectedImage: PropTypes.func,
 };
 

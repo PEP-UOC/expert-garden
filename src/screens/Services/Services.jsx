@@ -13,7 +13,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setErrorMessage, setLoadingMessage } from '../../store/root/rootAction';
 
 //Components
-import { SafeAreaView, ScrollView, View } from 'react-native'
+import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
 import { Divider, Layout, TopNavigation } from '@ui-kitten/components';
 import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
 import { SeparatorTopSection } from '../../components/Separators/TopSection'
@@ -46,54 +46,60 @@ export const ServicesScreen = ({ debug, navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <TopNavigation title={'Servicios'} alignment='center' />
-      <Divider />
-      <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-        contentContainerStyle={{ ...gloStyles.scrollView }}>
-        <Layout style={{ ...gloStyles.layout }}>
-          <SeparatorTopScreen />
-          <View style={{ ...gloStyles.view }}>
-            <View style={{ ...gloStyles.section.primary }}>
-              <TitleScreen icon={'car-outline'} primaryText={'Servicios'} secondaryText={''} />
-              {
-                {
-                  'client': (
-                    <BtnWithLogo icon={AddIcon} text={"SOLICITA UN SERVICIO"} onPress={navigateServiceRequest} />
-                  ),
-                  'business': (
-                    <BtnWithLogo icon={AddIcon} text={"PRÓXIMOS SERVICIOS"} onPress={navigateServiceRequest} />
-                  ),
-                  'worker': (
-                    <BtnWithLogo icon={AddIcon} text={"EMPEZAR A TRABAJAR"} onPress={navigateServiceRequest} />
-                  )
-                }[user?.metadata?.role]
-              }
-            </View>
-            <View style={{ ...gloStyles.section.secondary }}>
-              <SeparatorTopSection />
-              {
-                {
-                  'client': (
-                    <>
-                      <ServicesList type={'requested'} />
-                      <ServicesList type={'inProgressPunctual'} />
-                      <ServicesList type={'inProgressRecurrent'} />
-                      <ServicesList type={'past'} />
-                    </>
-                  ),
-                  'business': (
-                    <ServicesList type={'requested'} />
-                  ),
-                  'worker': (
-                    <ServicesList type={'requested'} />
-                  )
-                }[user?.metadata?.role]
-              }
-            </View>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={{ flex: 1, justifyContent: "space-around" }}>
+            <TopNavigation title={'Servicios'} alignment='center' />
+            <Divider />
+            <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
+              contentContainerStyle={{ ...gloStyles.scrollView }}>
+              <Layout style={{ ...gloStyles.layout }}>
+                <SeparatorTopScreen />
+                <View style={{ ...gloStyles.view }}>
+                  <View style={{ ...gloStyles.section.primary }}>
+                    <TitleScreen icon={'car-outline'} primaryText={'Servicios'} secondaryText={''} />
+                    {
+                      {
+                        'client': (
+                          <BtnWithLogo icon={AddIcon} text={"SOLICITA UN SERVICIO"} onPress={navigateServiceRequest} />
+                        ),
+                        'business': (
+                          <BtnWithLogo icon={AddIcon} text={"PRÓXIMOS SERVICIOS"} onPress={navigateServiceRequest} />
+                        ),
+                        'worker': (
+                          <BtnWithLogo icon={AddIcon} text={"EMPEZAR A TRABAJAR"} onPress={navigateServiceRequest} />
+                        )
+                      }[user?.role]
+                    }
+                  </View>
+                  <View style={{ ...gloStyles.section.secondary }}>
+                    <SeparatorTopSection />
+                    {
+                      {
+                        'client': (
+                          <>
+                            <ServicesList type={'requested'} />
+                            <ServicesList type={'inProgressPunctual'} />
+                            <ServicesList type={'inProgressRecurrent'} />
+                            <ServicesList type={'past'} />
+                          </>
+                        ),
+                        'business': (
+                          <ServicesList type={'requested'} />
+                        ),
+                        'worker': (
+                          <ServicesList type={'requested'} />
+                        )
+                      }[user?.role]
+                    }
+                  </View>
 
+                </View>
+              </Layout >
+            </ScrollView>
           </View>
-        </Layout >
-      </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   )
 };

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import PropTypes from "prop-types";
 
 //Constants
@@ -18,7 +19,7 @@ import { removeUser } from '../../store/user/userAction';
 import mainServices from '../../data/mainServices.json'
 
 //Components
-import { SafeAreaView, ScrollView, View } from 'react-native'
+import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
 import { Divider, Layout, Button, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { TitleScreen } from '../../components/Titles/Screen'
 import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
@@ -161,6 +162,39 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
       });
   };
 
+  const doClearData = async () => {
+    dispatch(setLoadingMessage(debug ? '🔧 Adiós!' : 'Adiós!'))
+
+    try {
+      await AsyncStorage.clear()
+        .then(() => {
+          auth().signOut()
+            .then(() => {
+              console.info('Logged Out!');
+              dispatch(removeUser())
+              dispatch(setLoggedIn(false))
+              dispatch(setLoadingMessage(false))
+            })
+            .catch((error) => {
+              console.error(error.message);
+              dispatch(setLoggedIn(false))
+              dispatch(setLoadingMessage(false))
+            });
+        })
+        .catch((error) => {
+          console.error(error.message);
+          dispatch(setLoggedIn(false))
+          dispatch(setLoadingMessage(false))
+        });
+    } catch (error) {
+      console.error(error.message);
+      dispatch(setLoggedIn(false))
+      dispatch(setLoadingMessage(false))
+    }
+
+    console.log('Done.')
+  }
+
 
   useEffect(() => {
     dispatch(setLoadingMessage(false))
@@ -169,34 +203,41 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <TopNavigation title={'Solicita un servicio'} alignment='center' accessoryLeft={BackAction} />
-      <Divider />
-      <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-        contentContainerStyle={{ ...gloStyles.scrollView }}>
-        <Layout style={{ ...gloStyles.layout }}>
-          <SeparatorTopScreen />
-          <View style={{ ...gloStyles.view }}>
-            <View style={{ ...gloStyles.section.primary }}>
-              <TitleScreen icon={'plus-circle-outline'} primaryText={'Solicita un servicio'} secondaryText={''} />
-              <Button style={{ ...gloStyles?.button }} size='tiny' accessoryLeft={AddIcon} status='danger' appearance='outline' onPress={doLogout}>CERRAR SESIÓN</Button>
-            </View>
-            <View style={{ ...gloStyles.section.secondary }}>
-              <SeparatorTopSection />
-              {mainServices.map(service => {
-                //console.log(service)
-                return (<Button style={{ ...gloStyles?.button, ...ownStyles?.btnServiceRequest }}
-                  key={service.id} onPress={() => submitService(service.identifier, `Test ${Math.random() * (1000 - 1) + 1}`)} >
-                  {service.label}
-                </Button>)
-              })}
-              <Button style={{ ...gloStyles?.button, ...ownStyles?.btnServiceRequest }}
-                key={'service.id'} onPress={() => submitNotification('PUSH', `Test ${Math.random() * (1000 - 1) + 1}`)} >
-                CREAR NOTIFICACIÓN
-              </Button>
-            </View>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={{ flex: 1, justifyContent: "space-around" }}>
+            <TopNavigation title={'Solicita un servicio'} alignment='center' accessoryLeft={BackAction} />
+            <Divider />
+            <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
+              contentContainerStyle={{ ...gloStyles.scrollView }}>
+              <Layout style={{ ...gloStyles.layout }}>
+                <SeparatorTopScreen />
+                <View style={{ ...gloStyles.view }}>
+                  <View style={{ ...gloStyles.section.primary }}>
+                    <TitleScreen icon={'plus-circle-outline'} primaryText={'Solicita un servicio'} secondaryText={''} />
+                    <Button style={{ ...gloStyles?.button }} size='tiny' accessoryLeft={AddIcon} status='danger' appearance='outline' onPress={doLogout}>CERRAR SESIÓN</Button>
+                    <Button style={{ ...gloStyles?.button }} size='tiny' accessoryLeft={AddIcon} status='danger' appearance='outline' onPress={doClearData}>CLEAR DATA</Button>
+                  </View>
+                  <View style={{ ...gloStyles.section.secondary }}>
+                    <SeparatorTopSection />
+                    {mainServices.map(service => {
+                      //console.log(service)
+                      return (<Button style={{ ...gloStyles?.button, ...ownStyles?.btnServiceRequest }}
+                        key={service.id} onPress={() => submitService(service.identifier, `Test ${Math.random() * (1000 - 1) + 1}`)} >
+                        {service.label}
+                      </Button>)
+                    })}
+                    <Button style={{ ...gloStyles?.button, ...ownStyles?.btnServiceRequest }}
+                      key={'service.id'} onPress={() => submitNotification('PUSH', `Test ${Math.random() * (1000 - 1) + 1}`)} >
+                      CREAR NOTIFICACIÓN
+                    </Button>
+                  </View>
+                </View>
+              </Layout>
+            </ScrollView>
           </View>
-        </Layout>
-      </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   )
 };

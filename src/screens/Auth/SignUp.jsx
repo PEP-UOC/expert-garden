@@ -10,7 +10,7 @@ import { setLoggedIn, setLoadingMessage, setErrorMessage } from '../../store/roo
 import { addUser, updateUser } from '../../store/user/userAction';
 
 //Components
-import { View, TouchableWithoutFeedback, SafeAreaView, ScrollView, Keyboard } from 'react-native'
+import { View, SafeAreaView, ScrollView, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
 import { Text, Button, Layout, Input, Icon, Select, SelectItem, IndexPath } from '@ui-kitten/components';
 
 //Styles
@@ -111,22 +111,25 @@ export const SignUpScreen = ({ debug, navigation }) => {
                                 dispatch(addUser(user))
                                 firestore().collection("users").doc(auth().currentUser.uid).set({
                                     uid: auth().currentUser.uid,
-                                    name,
-                                    surnames,
-                                    fullname: `${name} ${surnames}`,
                                     role,
-                                    email
+                                    metadata: {
+                                        name,
+                                        surnames,
+                                        fullname: `${name} ${surnames}`,
+                                        email,
+                                    }
                                 })
                                     .then(() => {
                                         auth().currentUser.updateProfile({
                                             displayName: `${name} ${surnames}`,
                                         }).then(() => {
                                             dispatch(updateUser({
+                                                uid: auth().currentUser.uid,
+                                                role,
                                                 metadata: {
                                                     name,
                                                     surnames,
                                                     fullname: `${name} ${surnames}`,
-                                                    role,
                                                     email
                                                 }
                                             }))
@@ -200,83 +203,89 @@ export const SignUpScreen = ({ debug, navigation }) => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-            <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-                contentContainerStyle={{ ...gloStyles.scrollView, ...ownStyles?.scrollHeight }}>
-                <Layout style={{ ...gloStyles.layout, marginTop: (keyboardSize - 50) * -1 }}>
-                    <View style={{ ...gloStyles.view }}>
-                        <View style={{ ...gloStyles.section.full }}>
+            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <View style={{ flex: 1, justifyContent: "space-around" }}>
+                        <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
+                            contentContainerStyle={{ ...gloStyles.scrollView, ...ownStyles?.scrollHeight }}>
+                            <Layout style={{ ...gloStyles.layout, marginTop: (keyboardSize - 50) * -1 }}>
+                                <View style={{ ...gloStyles.view }}>
+                                    <View style={{ ...gloStyles.section.full }}>
 
-                            <Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>REGISTRATE EN</Text>
-                            <Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>EXPERT GARDEN</Text>
+                                        <Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>REGISTRATE EN</Text>
+                                        <Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>EXPERT GARDEN</Text>
 
-                            <Select
-                                style={{ ...gloStyles.inputs.select }}
-                                label='¿Quién eres?'
-                                value={displayValue}
-                                selectedIndex={selectedIndex}
-                                onSelect={index => {
-                                    setSelectedIndex(index)
-                                    handleChange(userTypes[index - 1].name, "role")
-                                }}>
-                                {userTypes.map(uT => uT.value).map(renderOption)}
-                            </Select>
-                            <Input
-                                style={{ ...gloStyles.inputs.input }}
-                                label={values.role === 'client' ? 'Nombre' : 'Nombre de la empresa'}
-                                placeholder={values.role === 'client' ? 'Introduce tu nombre' : 'Introduce el nombre comercial'}
-                                value={values?.name || ''}
-                                onChangeText={text => handleChange(text, "name")}
-                                accessoryRight={renderKeyboardIcon}
-                            />
-                            {values.role === 'client' &&
-                                <Input
-                                    style={{ ...gloStyles.inputs.input }}
-                                    label={'Apellidos'}
-                                    placeholder={'Introduce tus apellidos'}
-                                    value={values?.surnames || ''}
-                                    onChangeText={text => handleChange(text, "surnames")}
-                                    accessoryRight={renderKeyboardIcon}
-                                />
-                            }
-                            <Input
-                                style={{ ...gloStyles.inputs.input }}
-                                label='Correo electrónico'
-                                placeholder='Introduce tu correo electrónico'
-                                value={values?.email || ''}
-                                onChangeText={text => handleChange(text, "email")}
-                                accessoryRight={renderKeyboardIcon}
-                            />
-                            <Input
-                                style={{ ...gloStyles.inputs.input }}
-                                label='Contraseña'
-                                placeholder='Introduce tu contraseña'
-                                value={values?.password || ''}
-                                caption={renderCaption}
-                                accessoryRight={renderEyeIcon}
-                                secureTextEntry={secureTextEntry}
-                                onChangeText={text => handleChange(text, "password")}
-                            />
-                            <Input
-                                style={{ ...gloStyles.inputs.input, marginBottom: 30 }}
-                                label='Contraseña'
-                                placeholder='Confirma la contraseña'
-                                value={values?.password2 || ''}
-                                accessoryRight={renderEyeIcon}
-                                secureTextEntry={secureTextEntry}
-                                onChangeText={text => handleChange(text, "password2")}
-                            />
+                                        <Select
+                                            style={{ ...gloStyles.inputs.select }}
+                                            label='¿Quién eres?'
+                                            value={displayValue}
+                                            selectedIndex={selectedIndex}
+                                            onSelect={index => {
+                                                setSelectedIndex(index)
+                                                handleChange(userTypes[index - 1].name, "role")
+                                            }}>
+                                            {userTypes.map(uT => uT.value).map(renderOption)}
+                                        </Select>
+                                        <Input
+                                            style={{ ...gloStyles.inputs.input }}
+                                            label={values.role === 'client' ? 'Nombre' : 'Nombre de la empresa'}
+                                            placeholder={values.role === 'client' ? 'Introduce tu nombre' : 'Introduce el nombre comercial'}
+                                            value={values?.name || ''}
+                                            onChangeText={text => handleChange(text, "name")}
+                                            accessoryRight={renderKeyboardIcon}
+                                        />
+                                        {values.role === 'client' &&
+                                            <Input
+                                                style={{ ...gloStyles.inputs.input }}
+                                                label={'Apellidos'}
+                                                placeholder={'Introduce tus apellidos'}
+                                                value={values?.surnames || ''}
+                                                onChangeText={text => handleChange(text, "surnames")}
+                                                accessoryRight={renderKeyboardIcon}
+                                            />
+                                        }
+                                        <Input
+                                            style={{ ...gloStyles.inputs.input }}
+                                            label='Correo electrónico'
+                                            placeholder='Introduce tu correo electrónico'
+                                            value={values?.email || ''}
+                                            onChangeText={text => handleChange(text, "email")}
+                                            accessoryRight={renderKeyboardIcon}
+                                        />
+                                        <Input
+                                            style={{ ...gloStyles.inputs.input }}
+                                            label='Contraseña'
+                                            placeholder='Introduce tu contraseña'
+                                            value={values?.password || ''}
+                                            caption={renderCaption}
+                                            accessoryRight={renderEyeIcon}
+                                            secureTextEntry={secureTextEntry}
+                                            onChangeText={text => handleChange(text, "password")}
+                                        />
+                                        <Input
+                                            style={{ ...gloStyles.inputs.input, marginBottom: 30 }}
+                                            label='Contraseña'
+                                            placeholder='Confirma la contraseña'
+                                            value={values?.password2 || ''}
+                                            accessoryRight={renderEyeIcon}
+                                            secureTextEntry={secureTextEntry}
+                                            onChangeText={text => handleChange(text, "password2")}
+                                        />
 
-                            <Button style={{ ...gloStyles?.button }} onPress={() => SignUp()}>REGISTRARSE</Button>
+                                        <Button style={{ ...gloStyles?.button }} onPress={() => SignUp()}>REGISTRARSE</Button>
 
-                            <Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("Login")}>¿Ya tienes cuenta?</Button>
+                                        <Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("Login")}>¿Ya tienes cuenta?</Button>
 
-                            <View style={{ alignItems: 'center' }}>
-                                <LeafIcon width={180} height={60} style={{ ...gloStyles.leaf }} />
-                            </View>
-                        </View>
+                                        <View style={{ alignItems: 'center' }}>
+                                            <LeafIcon width={180} height={60} style={{ ...gloStyles.leaf }} />
+                                        </View>
+                                    </View>
+                                </View>
+                            </Layout >
+                        </ScrollView>
                     </View>
-                </Layout >
-            </ScrollView>
+                </TouchableWithoutFeedback>
+            </KeyboardAvoidingView>
         </SafeAreaView>)
 }
 

@@ -11,7 +11,7 @@ import styles from './styles'
 
 //Store
 import { useSelector, useDispatch } from 'react-redux'
-import { updateUser, updateHasNotSavedChanges } from '../../../store/user/userAction';
+import { updateUserTemporal, updateHasNotSavedChanges } from '../../../store/user/userAction';
 
 //Navigation
 //import { useNavigation } from '@react-navigation/native';
@@ -63,15 +63,16 @@ export const PersonalDataForm = ({ debug }) => {
                 [keyName]: value
             }
         })
-        const metadata = { ...user?.metadata }
-        metadata[keyName] = value;
+        const metadata = { ...values }
+        metadata[keyName] = value.trim();
         if (keyName === 'name') {
             metadata['fullname'] = `${value} ${values?.surnames}`;
         }
         if (keyName === 'surnames') {
             metadata['fullname'] = `${values?.name} ${value}`;
         }
-        dispatch(updateUser({ metadata }))
+        console.log('metadata', metadata)
+        dispatch(updateUserTemporal({ metadata }))
         dispatch(updateHasNotSavedChanges())
     }
 

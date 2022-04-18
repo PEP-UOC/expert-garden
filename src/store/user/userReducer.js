@@ -1,6 +1,13 @@
-import { ADD_USER, REMOVE_USER, UPDATE_USER, UPDATE_HAS_NOT_SAVED_CHANGES } from './userTypes';
+import {
+  ADD_USER,
+  REMOVE_USER,
+  UPDATE_USER,
+  UPDATE_USER_TEMPORAL,
+  UPDATE_USER_HAS_NOT_SAVED_CHANGES,
+} from './userTypes';
 const initialState = {
   user: false,
+  userTemporal: false,
   hasNotSavedChanges: false,
 };
 const userReducer = (state = initialState, action) => {
@@ -26,7 +33,16 @@ const userReducer = (state = initialState, action) => {
         },
         hasNotSavedChanges: false,
       };
-    case UPDATE_HAS_NOT_SAVED_CHANGES:
+    case UPDATE_USER_TEMPORAL:
+      return {
+        ...state,
+        userTemporal: {
+          ...state.userTemporal,
+          ...action.payload,
+        },
+        hasNotSavedChanges: false,
+      };
+    case UPDATE_USER_HAS_NOT_SAVED_CHANGES:
       return {
         ...state,
         hasNotSavedChanges: true,
