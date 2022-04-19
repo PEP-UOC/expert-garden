@@ -6,13 +6,13 @@ import Constants from 'expo-constants';
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
-import globalStyles from '../../../styles/globalStyles'
+import globalStyles from '../../../../styles/globalStyles'
 import styles from './styles'
 
 //Components
 import { View } from 'react-native'
 import { List, ListItem } from '@ui-kitten/components';
-import { TitleSection } from '../../../components/Titles/Section'
+import { TitleSection } from '../../../../components/Titles/Section'
 import { GardenItem } from './Garden'
 
 //Firebase

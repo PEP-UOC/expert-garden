@@ -22,51 +22,50 @@ import styles from './styles'
 import { CameraIcon } from '../../assets/icons/Camera'
 
 // eslint-disable-next-line no-unused-vars
-export const ImgClient = ({ debug, uri }) => {
-    const dispatch = useDispatch()
+export const ImgClient = ({ debug }) => {
+	const dispatch = useDispatch()
 
-    //Styles
-    //const gloStyles = useStyleSheet(globalStyles);
-    const ownStyles = useStyleSheet(styles);
+	//Styles
+	//const gloStyles = useStyleSheet(globalStyles);
+	const ownStyles = useStyleSheet(styles);
 
-    //Store
-    const user = useSelector(state => state.userReducer.user);
+	//Store
+	const user = useSelector(state => state.userReducer.user);
 
-    //State
-    const [selectedImage, setSelectedImage] = useState(user?.metadata?.photoFirebaseURL ? { localUri: user?.metadata?.photoFirebaseURL } : null);
-    const [showChangeImage, setShowChangeImage] = useState(false);
+	//State
+	const [selectedImage, setSelectedImage] = useState(user?.metadata?.photoFirebaseURL ? { localUri: user?.metadata?.photoFirebaseURL } : null);
+	const [showChangeImage, setShowChangeImage] = useState(false);
 
-    useEffect(() => {
-        dispatch(setLoadingMessage(false))
-        dispatch(setErrorMessage(false))
-    }, []);
+	useEffect(() => {
+		dispatch(setLoadingMessage(false))
+		dispatch(setErrorMessage(false))
+	}, []);
 
-    return (
-        <View style={{ ...ownStyles?.wrapper }}>
-            {selectedImage !== null
-                ? <TouchableWithoutFeedback onPress={() => setShowChangeImage(!showChangeImage)}>
-                    <Image
-                        source={{ uri: selectedImage.localUri }}
-                        style={{ width: '100%', minHeight: 325, marginBottom: 10 }}
-                    />
-                </TouchableWithoutFeedback>
-                : <BtnSecondary disabled={false} icon={CameraIcon} text={'Añadir foto'} onPress={() => setShowChangeImage(true)} />
-            }
+	return (
+		<View style={{ ...ownStyles?.wrapper }}>
+			{selectedImage !== null
+				? <TouchableWithoutFeedback onPress={() => setShowChangeImage(!showChangeImage)}>
+					<Image
+						source={{ uri: selectedImage.localUri }}
+						style={{ width: '100%', minHeight: 325, marginBottom: 10 }}
+					/>
+				</TouchableWithoutFeedback>
+				: <BtnSecondary disabled={false} icon={CameraIcon} text={'Añadir foto'} onPress={() => setShowChangeImage(true)} />
+			}
 
-            <BtnImageCombo
-                showChangeImage={showChangeImage}
-                selectedImage={selectedImage}
-                setSelectedImage={setSelectedImage}
-            />
-        </View>
-    )
+			<BtnImageCombo
+				showChangeImage={showChangeImage}
+				selectedImage={selectedImage}
+				setSelectedImage={setSelectedImage}
+			/>
+		</View>
+	)
 };
 
 ImgClient.propTypes = {
-    debug: PropTypes.bool.isRequired,
-    uri: PropTypes.string.isRequired,
+	debug: PropTypes.bool.isRequired,
 };
 
 ImgClient.defaultProps = {
-    debug: Constants.manifest.extra.debug || false,
+	debug: Constants.manifest.extra.debug || false,
 };

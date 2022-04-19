@@ -6,30 +6,33 @@ import Constants from 'expo-constants';
 
 //Styles
 import { useStyleSheet, IndexPath } from '@ui-kitten/components';
-import globalStyles from '../../../styles/globalStyles';
+import globalStyles from '../../../../styles/globalStyles';
 import styles from './styles';
 
 //Store
 import { useDispatch, useSelector } from 'react-redux';
-import { updateHasNotSavedChanges, updateUserTemporal } from '../../../store/user/userAction';
+import { updateHasNotSavedChanges, updateUserTemporal } from '../../../../store/user/userAction';
 
 //Navigation
-//import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 //Components
+import { View, TouchableOpacity } from 'react-native';
 import { Button, Card, Input, Select, SelectItem, Text } from '@ui-kitten/components';
-import { View } from 'react-native';
 
 //Data
-import { provinces } from '../../../data/provinces';
-import { towns } from '../../../data/towns';
+import { provinces } from '../../../../data/provinces';
+import { towns } from '../../../../data/towns';
 
 //Icons
-import { GridIcon } from '../../../assets/icons/Grid';
+import { GridIcon } from '../../../../assets/icons/Grid';
 
 // eslint-disable-next-line no-unused-vars
 export const GardenItem = ({ debug, garden }) => {
 	const dispatch = useDispatch()
+
+	//Navigation
+	const navigation = useNavigation();
 
 	//Styles
 	const gloStyles = useStyleSheet(globalStyles);
@@ -126,14 +129,19 @@ export const GardenItem = ({ debug, garden }) => {
 				style={{ ...ownStyles?.garden?.cardAddGarden }}
 				status='primary'
 			>
-				<View style={{ ...gloStyles?.inputs?.row, ...ownStyles?.garden?.row }}>
-					<GridIcon
-						fill={ownStyles?.addGardenIcon?.fill}
-						width={120}
-						height={80}
-					/>
-					<Text category='p1' style={{ ...gloStyles?.textCenter }}>Añadir jardín</Text>
-				</View>
+				<TouchableOpacity
+					style={styles.button}
+					onPress={() => navigation.push("AddGardenScreen", { garden })}
+				>
+					<View style={{ ...gloStyles?.inputs?.row, ...ownStyles?.garden?.row }}>
+						<GridIcon
+							fill={ownStyles?.addGardenIcon?.fill}
+							width={120}
+							height={80}
+						/>
+						<Text category='p1' style={{ ...gloStyles?.textCenter }}>Añadir jardín</Text>
+					</View>
+				</TouchableOpacity>
 			</Card>
 		)
 	}
@@ -198,7 +206,7 @@ export const GardenItem = ({ debug, garden }) => {
 						}
 					}
 					size='medium'
-					onPress={(event) => console.log(event)}
+					onPress={() => navigation.push("GardenDetailScreen", { garden })}
 					accessoryLeft={GridIcon}
 				>
 					Detalles

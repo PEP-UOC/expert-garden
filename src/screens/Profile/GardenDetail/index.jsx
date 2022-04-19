@@ -6,36 +6,38 @@ import Constants from 'expo-constants';
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
-import globalStyles from '../../styles/globalStyles'
+import globalStyles from '../../../styles/globalStyles'
 
 //Store
 import { useSelector, useDispatch } from 'react-redux'
-import { setErrorMessage, setLoadingMessage } from '../../store/root/rootAction';
-import { updateUser, removeUserTemporal } from '../../store/user/userAction';
+import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootAction';
+import { updateUser, removeUserTemporal } from '../../../store/user/userAction';
 
 //Components
 import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
-import { Divider, Layout, TopNavigation } from '@ui-kitten/components';
-import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
-import { SeparatorTopSection } from '../../components/Separators/TopSection'
-import { TitleScreen } from '../../components/Titles/Screen'
-import { BtnPrimary } from '../../components/Buttons/Primary'
-import { ImgClient } from '../../components/Images/Client'
+import { Divider, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
+import { SeparatorTopSection } from '../../../components/Separators/TopSection'
+import { TitleScreen } from '../../../components/Titles/Screen'
+import { BtnPrimary } from '../../../components/Buttons/Primary'
+import { ImgClient } from '../../../components/Images/Client'
 import { PersonalDataForm } from './components/PersonalData'
 import { GardensDataForm } from './components/GardensData'
 import { BankDataForm } from './components/BankData'
 
 //Icons
-import { AddIcon } from '../../assets/icons/Add'
+import { AddIcon } from '../../../assets/icons/Add'
+import { BackIcon } from '../../../assets/icons/Back'
 
 //Firebase
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import "firebase/compat/firestore";
-import firebaseErrorCodeMap from '../../common/firebaseErrorCodeMap';
+import firebaseErrorCodeMap from '../../../common/firebaseErrorCodeMap';
 
 // eslint-disable-next-line no-unused-vars
-export const ProfileScreen = ({ debug, navigation }) => {
+export const GardenDetailScreen = ({ debug, navigation, route }) => {
+	const gardenInfo = route.params.garden;
 	const dispatch = useDispatch()
 
 	//Firebase
@@ -137,11 +139,21 @@ export const ProfileScreen = ({ debug, navigation }) => {
 			});
 	}
 
+	//Navigation
+	const BackAction = () => (
+		<TopNavigationAction icon={BackIcon} onPress={navigateBack} />
+	);
+
+	const navigateBack = () => {
+		navigation.goBack();
+	};
+
 	useEffect(() => {
 		console.log('🧹 Limpiando UserTemporal')
 		dispatch(removeUserTemporal())
 		dispatch(setLoadingMessage(false))
 		dispatch(setErrorMessage(false))
+		console.log('gardenInfo', gardenInfo)
 	}, []);
 
 
@@ -150,7 +162,7 @@ export const ProfileScreen = ({ debug, navigation }) => {
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
 				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 					<View style={{ flex: 1, justifyContent: "space-around" }}>
-						<TopNavigation title={'Perfil'} alignment='center' />
+						<TopNavigation title={'Jardín'} alignment='center' accessoryLeft={BackAction} />
 						<Divider />
 						<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 							contentContainerStyle={{ ...gloStyles.scrollView }}>
@@ -158,8 +170,8 @@ export const ProfileScreen = ({ debug, navigation }) => {
 								<SeparatorTopScreen />
 								<View style={{ ...gloStyles.view }}>
 									<View style={{ ...gloStyles.section.primary }}>
-										<TitleScreen icon={'person-outline'} primaryText={user?.metadata?.name || ''} secondaryText={''} />
-										<ImgClient uri={'https://reactjs.org/logo-og.png'} />
+										<TitleScreen icon={'person-outline'} primaryText={gardenInfo?.item?.type || ''} secondaryText={''} />
+										<ImgClient />
 										{
 											{
 												'client': (
@@ -221,11 +233,12 @@ export const ProfileScreen = ({ debug, navigation }) => {
 	)
 };
 
-ProfileScreen.propTypes = {
+GardenDetailScreen.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	navigation: PropTypes.object.isRequired,
+	route: PropTypes.object.isRequired,
 };
 
-ProfileScreen.defaultProps = {
+GardenDetailScreen.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 };
