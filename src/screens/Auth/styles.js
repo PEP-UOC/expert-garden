@@ -6,8 +6,13 @@ import { StyleService } from '@ui-kitten/components';
 
 const styles = StyleService.create({
   scrollHeight: { minHeight: undefined },
-  mainTitle: { alignSelf: 'center', textAlign: 'center' },
-  topSubTitle: { marginBottom: 0, alignSelf: 'center', textAlign: 'center' },
+  mainTitle: { alignSelf: 'center', textAlign: 'center', color: 'color-primary-500' },
+  topSubTitle: {
+    marginBottom: 0,
+    alignSelf: 'center',
+    textAlign: 'center',
+    color: 'color-primary-500',
+  },
 });
 
 export default styles;

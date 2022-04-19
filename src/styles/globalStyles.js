@@ -132,6 +132,7 @@ const globalStyles = StyleService.create({
       textAlign: 'center',
     },
   },
+  colorPrimary500: { color: 'color-primary-500' },
 });
 
 export default globalStyles;

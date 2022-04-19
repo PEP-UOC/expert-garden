@@ -60,7 +60,7 @@ export const HomeScreen = ({ debug, navigation }) => {
 
   useEffect(() => {
     console.log('👩‍🌾 Usuario', user?.metadata?.fullname, user?.metadata?.email);
-    console.log(user);
+    //console.log(user);
   }, [user]);
 
   //Update user

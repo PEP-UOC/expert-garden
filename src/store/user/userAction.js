@@ -1,6 +1,7 @@
 import {
   ADD_USER,
   REMOVE_USER,
+  REMOVE_USER_TEMPORAL,
   UPDATE_USER,
   UPDATE_USER_TEMPORAL,
   UPDATE_USER_HAS_NOT_SAVED_CHANGES,
@@ -11,6 +12,10 @@ export const addUser = (user) => ({
 });
 export const removeUser = () => ({
   type: REMOVE_USER,
+  payload: '',
+});
+export const removeUserTemporal = () => ({
+  type: REMOVE_USER_TEMPORAL,
   payload: '',
 });
 export const updateUser = (user) => ({

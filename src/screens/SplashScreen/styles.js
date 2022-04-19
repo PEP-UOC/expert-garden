@@ -8,7 +8,7 @@ const styles = StyleService.create({
   view: {
     alignItems: 'center',
   },
-  title: { alignSelf: 'center', textAlign: 'center' },
+  title: { alignSelf: 'center', textAlign: 'center', color: 'color-primary-500' },
   logo: {
     marginTop: 40,
     fill: 'color-primary-500',

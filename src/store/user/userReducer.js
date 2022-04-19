@@ -1,6 +1,7 @@
 import {
   ADD_USER,
   REMOVE_USER,
+  REMOVE_USER_TEMPORAL,
   UPDATE_USER,
   UPDATE_USER_TEMPORAL,
   UPDATE_USER_HAS_NOT_SAVED_CHANGES,
@@ -22,6 +23,12 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         user: false,
+        hasNotSavedChanges: false,
+      };
+    case REMOVE_USER_TEMPORAL:
+      return {
+        ...state,
+        userTemporal: false,
         hasNotSavedChanges: false,
       };
     case UPDATE_USER:

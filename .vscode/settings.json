@@ -1,0 +1,33 @@
+{
+	"workbench.colorCustomizations": {
+		"activityBar.background": "#011310",
+		"activityBar.foreground": "#D7FAD8",
+		"titleBar.activeBackground": "#011310",
+		"titleBar.activeForeground": "#D7FAD8"
+	},
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": false
+	},
+	"typescriptHero.imports.disableImportsSorting": true,
+	"typescriptHero.imports.organizeOnSave": false,
+	"files.exclude": {
+		".expo": true,
+		".firebase": true,
+		".github": true,
+		".expo-shared": true,
+		"node_modules": true,
+		"web-build": true,
+		".editorconfig": true,
+		".eslintrc.json": true,
+		".firebaserc": true,
+		".prettierignore": true,
+		".prettierrc.json": true,
+		"babel.config.js": true,
+		"firebase.json": true,
+		"firestore.indexes.json": true,
+		"firestore.rules": true,
+		"package-lock.json": true,
+		".vscode": true
+	},
+	"workspace.isHidden": true
+}

@@ -133,6 +133,40 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
         dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
       });
   };
+  const submitGarden = (type, content) => {
+    const now = moment();
+    const ref = firestore().collection("notifications").doc();
+    const creationDateTime = now.format();
+    const creationDate = now.format("DD-MM-YYYY");
+    const creationTime = now.format("HH:mm");
+    firestore().collection("gardens").doc(ref.id).set({
+      gid: ref.id,
+      uid: auth().currentUser.uid,
+      type,
+      content,
+      creationDateTime,
+      creationDate,
+      creationTime,
+      address: 'AAA',
+      addressExtra: 'BBB',
+      postalCode: 'CCC',
+      province: 'DDD',
+      town: 'EEE',
+      details: []
+    })
+      .then(() => {
+        // Añadir a firestore links relacionados con el nid
+        // Añadir a firestore proposed dates relacionadas con el sid
+        // Añadir a firestore selected companies relacionadas con el sid
+        navigation.navigate('Profile')
+      })
+      .catch((error) => {
+        console.error(error.message);
+        dispatch(setLoggedIn(false))
+        dispatch(setLoadingMessage(false))
+        dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
+      });
+  };
 
   //Navigation
   const BackAction = () => (
@@ -228,8 +262,16 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
                       </Button>)
                     })}
                     <Button style={{ ...gloStyles?.button, ...ownStyles?.btnServiceRequest }}
-                      key={'service.id'} onPress={() => submitNotification('PUSH', `Test ${Math.random() * (1000 - 1) + 1}`)} >
+                      key={'notification'} onPress={() => submitNotification('PUSH', `Test ${Math.random() * (1000 - 1) + 1}`)} >
                       CREAR NOTIFICACIÓN
+                    </Button>
+                    <Button style={{ ...gloStyles?.button, ...ownStyles?.btnServiceRequest }}
+                      key={'garden.chalet'} onPress={() => submitGarden('CHALET', `Test ${Math.random() * (1000 - 1) + 1}`)} >
+                      CREAR JARDÍN CHALET
+                    </Button>
+                    <Button style={{ ...gloStyles?.button, ...ownStyles?.btnServiceRequest }}
+                      key={'garden.casa'} onPress={() => submitGarden('CASA', `Test ${Math.random() * (1000 - 1) + 1}`)} >
+                      CREAR JARDÍN CASA
                     </Button>
                   </View>
                 </View>

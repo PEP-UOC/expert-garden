@@ -19,7 +19,6 @@ import globalStyles from '../../styles/globalStyles'
 import styles from './styles'
 
 //Icons
-import { CornerRightDownIcon } from '../../assets/icons/CornerRightDown'
 import { LeafIcon } from '../../assets/icons/Leaf'
 
 //Firebase
@@ -170,18 +169,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
     }
 
     //Keyboard
-    const [keyboardSize, keyboardIsOpen] = useKeyboardSize()
-
-    function hideKeyboard() {
-        console.log("⌨️ HIDE Keyboard")
-        Keyboard.dismiss()
-    }
-
-    const renderKeyboardIcon = (props) => (
-        <TouchableWithoutFeedback onPress={hideKeyboard}>
-            {keyboardIsOpen ? <CornerRightDownIcon {...props} /> : <></>}
-        </TouchableWithoutFeedback>
-    );
+    const [keyboardSize] = useKeyboardSize()
 
     //Checks
     function allFilled() {
@@ -232,7 +220,6 @@ export const SignUpScreen = ({ debug, navigation }) => {
                                             placeholder={values.role === 'client' ? 'Introduce tu nombre' : 'Introduce el nombre comercial'}
                                             value={values?.name || ''}
                                             onChangeText={text => handleChange(text, "name")}
-                                            accessoryRight={renderKeyboardIcon}
                                         />
                                         {values.role === 'client' &&
                                             <Input
@@ -241,7 +228,6 @@ export const SignUpScreen = ({ debug, navigation }) => {
                                                 placeholder={'Introduce tus apellidos'}
                                                 value={values?.surnames || ''}
                                                 onChangeText={text => handleChange(text, "surnames")}
-                                                accessoryRight={renderKeyboardIcon}
                                             />
                                         }
                                         <Input
@@ -250,7 +236,6 @@ export const SignUpScreen = ({ debug, navigation }) => {
                                             placeholder='Introduce tu correo electrónico'
                                             value={values?.email || ''}
                                             onChangeText={text => handleChange(text, "email")}
-                                            accessoryRight={renderKeyboardIcon}
                                         />
                                         <Input
                                             style={{ ...gloStyles.inputs.input }}

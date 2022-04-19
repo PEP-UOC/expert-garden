@@ -19,7 +19,6 @@ import globalStyles from '../../styles/globalStyles'
 import styles from './styles'
 
 //Icons
-import { CornerRightDownIcon } from '../../assets/icons/CornerRightDown'
 import { LeafIcon } from '../../assets/icons/Leaf'
 
 
@@ -28,9 +27,6 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import "firebase/compat/firestore";
 import firebaseErrorCodeMap from '../../common/firebaseErrorCodeMap';
-
-//Hooks
-import { useKeyboardSize } from "../../hooks/useKeyboardSize"
 
 // eslint-disable-next-line no-unused-vars
 export const LoginScreen = ({ debug, navigation }) => {
@@ -87,7 +83,7 @@ export const LoginScreen = ({ debug, navigation }) => {
                 firestore().collection("users").doc(auth().currentUser.uid).get()
                     .then((user) => {
                         const userData = user.data();
-                        console.log('userData', userData)
+                        console.log('👩‍🌾 Firestore Data', userData)
                         dispatch(updateUser(
                             {
                                 uid: userData?.uid,
@@ -115,20 +111,6 @@ export const LoginScreen = ({ debug, navigation }) => {
             });
     }
 
-    //Keyboard
-    const [keyboardIsOpen] = useKeyboardSize()
-
-    function hideKeyboard() {
-        console.log("⌨️ HIDE Keyboard")
-        Keyboard.dismiss()
-    }
-
-    const renderKeyboardIcon = (props) => (
-        <TouchableWithoutFeedback onPress={hideKeyboard}>
-            {keyboardIsOpen ? <CornerRightDownIcon {...props} /> : <></>}
-        </TouchableWithoutFeedback>
-    );
-
     useEffect(() => {
         dispatch(setLoadingMessage(false))
         //dispatch(setErrorMessage(false))
@@ -152,7 +134,6 @@ export const LoginScreen = ({ debug, navigation }) => {
                                             label='Correo electrónico'
                                             placeholder='Introduce tu correo electrónico'
                                             value={values?.email || ''}
-                                            accessoryRight={renderKeyboardIcon}
                                             onChangeText={text => handleChange(text, "email")}
                                         />
                                         <Input
