@@ -159,7 +159,7 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 								<View style={{ ...gloStyles.view }}>
 									<View style={{ ...gloStyles.section.primary }}>
 										<TitleScreen icon={'person-outline'} primaryText={user?.metadata?.name || ''} secondaryText={''} />
-										<ImgClient uri={'https://reactjs.org/logo-og.png'} />
+										<ImgClient />
 										{
 											{
 												'client': (

@@ -36,46 +36,46 @@ import { initializeAuth } from 'firebase/auth';
 import { getReactNativePersistence } from 'firebase/auth/react-native';
 
 const firebaseConfig = {
-  apiKey: Constants.manifest.extra.firebaseApiKey,
-  authDomain: Constants.manifest.extra.firebaseAuthDomain,
-  projectId: Constants.manifest.extra.firebaseProjectId,
-  storageBucket: Constants.manifest.extra.firebaseStorageBucket,
-  messagingSenderId: Constants.manifest.extra.firebaseMessagingSenderId,
-  appId: Constants.manifest.extra.firebaseAppId,
-  measurementId: Constants.manifest.extra.firebaseMeasurementId,
+	apiKey: Constants.manifest.extra.firebaseApiKey,
+	authDomain: Constants.manifest.extra.firebaseAuthDomain,
+	projectId: Constants.manifest.extra.firebaseProjectId,
+	storageBucket: Constants.manifest.extra.firebaseStorageBucket,
+	messagingSenderId: Constants.manifest.extra.firebaseMessagingSenderId,
+	appId: Constants.manifest.extra.firebaseAppId,
+	measurementId: Constants.manifest.extra.firebaseMeasurementId,
 };
 
 LogBox.ignoreLogs([`Setting a timer for a long period`]);
 
 export default function App() {
-  const isLoadingComplete = useCachedResources();
+	const isLoadingComplete = useCachedResources();
 
-  //Firebase
-  if (!firebase?.apps.length) {
-    console.info('Initializing app!');
-    const app = firebase?.initializeApp(firebaseConfig);
-    initializeAuth(app, {
-      persistence: getReactNativePersistence(AsyncStorage),
-    });
-  } else {
-    console.info('Already initialized app!');
-    firebase?.app();
-  }
+	//Firebase
+	if (!firebase?.apps.length) {
+		console.info('Initializing app!');
+		const app = firebase?.initializeApp(firebaseConfig);
+		initializeAuth(app, {
+			persistence: getReactNativePersistence(AsyncStorage),
+		});
+	} else {
+		console.info('Already initialized app!');
+		firebase?.app();
+	}
 
-  if (!isLoadingComplete) {
-    return null;
-  } else {
-    return (
-      <>
-        <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }} customMapping={mapping}>
-          <Provider store={store.store}>
-            <RootNavigation />
-            <ModalFullScreen />
-            <ModalError />
-          </Provider>
-        </ApplicationProvider>
-      </>
-    );
-  }
+	if (!isLoadingComplete) {
+		return null;
+	} else {
+		return (
+			<>
+				<IconRegistry icons={EvaIconsPack} />
+				<ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }} customMapping={mapping}>
+					<Provider store={store.store}>
+						<RootNavigation />
+						<ModalFullScreen />
+						<ModalError />
+					</Provider>
+				</ApplicationProvider>
+			</>
+		);
+	}
 }
