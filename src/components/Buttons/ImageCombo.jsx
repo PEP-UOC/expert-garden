@@ -32,7 +32,7 @@ import { Camera } from 'expo-camera';
 
 
 // eslint-disable-next-line no-unused-vars
-export const BtnImageCombo = ({ debug, showImageChangeCombo, showingCamera, setShowCamera, selectedImage, handleImagePicked }) => {
+export const BtnImageCombo = ({ debug, showImageChangeCombo, showingCamera, setShowCamera, selectedImage, handleImagePicked, changeOrAdd }) => {
 	const dispatch = useDispatch()
 
 	//Styles
@@ -109,13 +109,19 @@ export const BtnImageCombo = ({ debug, showImageChangeCombo, showingCamera, setS
 		}
 	}, [cameraHasPermission]);
 
+	//COMBO TEXT
+	// eslint-disable-next-line no-unused-vars
+	const [changeOrAddMainText, setChangeOrAddMainText] = useState(changeOrAdd === 'change' ? 'Cambiar' : 'Añadir');
+	// eslint-disable-next-line no-unused-vars
+	const [changeOrAddSecoText, setChangeOrAddSecoText] = useState(changeOrAdd === 'change' ? 'cambiarla' : 'añadir más');
+
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
 			{showImageChangeCombo
 				? <>
 					<ButtonGroup style={{ ...ownStyles?.btnImageCombo }} appearance='outline'>
 						<Button accessoryLeft={showingCamera ? CloseIcon : CameraIcon} onPress={openCameraAsync} />
-						<Button style={{ ...ownStyles?.btnImageComboCenter }}>{selectedImage === null ? "← Añadir foto →" : "← Cambiar foto →"}</Button>
+						<Button style={{ ...ownStyles?.btnImageComboCenter }}>{selectedImage === null ? "← Añadir foto →" : `← ${changeOrAddMainText} foto →`}</Button>
 						<Button accessoryLeft={ImageIcon} onPress={openImagePickerAsync} />
 					</ButtonGroup>
 					{
@@ -131,7 +137,7 @@ export const BtnImageCombo = ({ debug, showImageChangeCombo, showingCamera, setS
 						</Text>
 					}
 				</>
-				: <Text category='c1' style={{ ...gloStyles?.smallText, ...ownStyles?.btnImageComboTextAlternative }} >{Platform.OS === "web" ? `Haz click en` : `Toca`} la foto para cambiarla</Text>}
+				: <Text category='c1' style={{ ...gloStyles?.smallText, ...ownStyles?.btnImageComboTextAlternative }} >{Platform.OS === "web" ? `Haz click en` : `Toca`} la foto para {changeOrAddSecoText}</Text>}
 		</View>
 	)
 };
@@ -143,6 +149,7 @@ BtnImageCombo.propTypes = {
 	setShowCamera: PropTypes.func,
 	selectedImage: PropTypes.object,
 	handleImagePicked: PropTypes.func,
+	changeOrAdd: PropTypes.string.isRequired,
 };
 
 BtnImageCombo.defaultProps = {

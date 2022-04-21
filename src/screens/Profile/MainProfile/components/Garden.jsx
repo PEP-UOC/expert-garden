@@ -11,6 +11,7 @@ import styles from './styles';
 
 //Store
 import { useDispatch, useSelector } from 'react-redux';
+import { setLoadingMessage } from '../../../../store/root/rootAction';
 import { updateHasNotSavedChanges, updateUserTemporal } from '../../../../store/user/userAction';
 
 //Navigation
@@ -206,10 +207,13 @@ export const GardenItem = ({ debug, garden }) => {
 						}
 					}
 					size='medium'
-					onPress={() => navigation.push("GardenDetailScreen", { garden })}
+					onPress={() => {
+						dispatch(setLoadingMessage(debug ? '🔧 Cargando' : 'Cargando'))
+						navigation.push("GardenDetailScreen", { gid: garden?.item?.gid })
+					}}
 					accessoryLeft={GridIcon}
 				>
-					Detalles
+					Más detalles
 				</Button>
 			</View>
 		</Card>

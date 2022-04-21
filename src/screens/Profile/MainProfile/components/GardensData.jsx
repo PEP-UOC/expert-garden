@@ -41,8 +41,8 @@ export const GardensDataForm = ({ debug }) => {
 					setGardensLoading(true);
 					const GARDENS = [];
 					if (!gardens.empty) {
-						gardens.forEach(service => {
-							GARDENS.push(service.data())
+						gardens.forEach(garden => {
+							GARDENS.push(garden.data())
 						})
 					}
 					GARDENS.push({

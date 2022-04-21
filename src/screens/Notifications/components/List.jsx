@@ -60,8 +60,8 @@ export const NotificationsList = ({ debug, type }) => {
 						.onSnapshot(notifications => {
 							if (!notifications.empty) {
 								const NOTIFICATIONS = [];
-								notifications.forEach(service => {
-									NOTIFICATIONS.push(service.data())
+								notifications.forEach(notification => {
+									NOTIFICATIONS.push(notification.data())
 								})
 								console.log(`🐳 Notificaciones del usuario ${auth().currentUser.uid}`, NOTIFICATIONS.length)
 								setNotifications(NOTIFICATIONS)
@@ -80,8 +80,8 @@ export const NotificationsList = ({ debug, type }) => {
 						.onSnapshot(notifications => {
 							if (!notifications.empty) {
 								const NOTIFICATIONS = [];
-								notifications.forEach(service => {
-									NOTIFICATIONS.push(service.data())
+								notifications.forEach(notification => {
+									NOTIFICATIONS.push(notification.data())
 								})
 								console.log(`🐳 Notificaciones nuevas del usuario ${auth().currentUser.uid}`, NOTIFICATIONS.length)
 								setNotifications(NOTIFICATIONS)
@@ -100,8 +100,8 @@ export const NotificationsList = ({ debug, type }) => {
 						.onSnapshot(notifications => {
 							if (!notifications.empty) {
 								const NOTIFICATIONS = [];
-								notifications.forEach(service => {
-									NOTIFICATIONS.push(service.data())
+								notifications.forEach(notification => {
+									NOTIFICATIONS.push(notification.data())
 								})
 								console.log(`🐳 Notificaciones leídas del usuario ${auth().currentUser.uid}`, NOTIFICATIONS.length)
 								setNotifications(NOTIFICATIONS)

@@ -11,7 +11,6 @@ import { setErrorMessage, setLoadingMessage } from '../../store/root/rootAction'
 //Components
 import { View, Image, TouchableWithoutFeedback, TouchableOpacity } from 'react-native'
 import { BtnImageCombo } from '../Buttons/ImageCombo'
-import { BtnSecondary } from '../Buttons/Secondary'
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
@@ -48,6 +47,7 @@ export const ImgWithPicker = ({ debug, entity, entityType }) => {
 
 	//State
 	const [showImageChangeCombo, setShowImageChangeCombo] = useState(false);
+	const [changeOrAdd, setChangeOrAdd] = useState('change');
 
 	//Camera state
 	const [showCamera, setShowCamera] = useState(false);
@@ -71,25 +71,37 @@ export const ImgWithPicker = ({ debug, entity, entityType }) => {
 	}, [setShowCamera]);
 
 	useEffect(() => {
+		switch (entityType) {
+			case 'user':
+				setChangeOrAdd('change')
+				break;
+			case 'garden':
+				setChangeOrAdd('add')
+				break;
+			default:
+				setChangeOrAdd('change')
+				break;
+		}
 		dispatch(setLoadingMessage(false))
 		dispatch(setErrorMessage(false))
 	}, []);
 
 	useEffect(() => {
-		console.log(`🖼  Nueva imágen ${selectedImage?.localUri}`)
+		if (selectedImage?.localUri) {
+			console.log(`🖼  Nueva imágen ${selectedImage?.localUri}`)
+			return
+		}
+		if (selectedImage === null) {
+			setShowImageChangeCombo(true)
+			return
+		}
 	}, [selectedImage]);
 
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
-			{selectedImage !== null
-				? !showCamera
-					? <TouchableWithoutFeedback onPress={() => setShowImageChangeCombo(!showImageChangeCombo)}>
-						<Image
-							source={{ uri: selectedImage?.localUri }}
-							style={{ ...ownStyles?.image }}
-						/>
-					</TouchableWithoutFeedback>
-					: <Camera
+			{
+				showCamera
+					? <Camera
 						style={{ ...ownStyles?.camera }}
 						type={cameraType}
 						ratio={'1:1'}
@@ -148,7 +160,14 @@ export const ImgWithPicker = ({ debug, entity, entityType }) => {
 							</TouchableOpacity>
 						</View>
 					</Camera>
-				: <BtnSecondary disabled={false} icon={CameraIcon} text={'Añadir foto'} onPress={() => setShowImageChangeCombo(true)} />
+					: selectedImage !== null
+						? <TouchableWithoutFeedback onPress={() => setShowImageChangeCombo(!showImageChangeCombo)}>
+							<Image
+								source={{ uri: selectedImage?.localUri }}
+								style={{ ...ownStyles?.image }}
+							/>
+						</TouchableWithoutFeedback>
+						: null
 			}
 
 			<BtnImageCombo
@@ -157,6 +176,7 @@ export const ImgWithPicker = ({ debug, entity, entityType }) => {
 				setShowCamera={setShowCamera}
 				selectedImage={selectedImage}
 				handleImagePicked={handleImagePicked}
+				changeOrAdd={changeOrAdd}
 			/>
 		</View>
 	)

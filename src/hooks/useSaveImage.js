@@ -13,6 +13,7 @@ import { Platform } from 'react-native';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import { arrayUnion, increment } from 'firebase/firestore';
 import 'firebase/compat/storage';
 import { uploadBytes, getDownloadURL } from 'firebase/storage';
 import firebaseErrorCodeMap from '../common/firebaseErrorCodeMap';
@@ -41,6 +42,19 @@ export function useSaveImage(debug, entity, entityType) {
 				);
 				setStoragePath('userImages');
 				setStorageIdentifier(auth().currentUser.uid);
+				break;
+			case 'garden':
+				if (entity?.imageCounter > 0) {
+					setSelectedImage(
+						entity?.images[entity?.imageCounter - 1]?.photoFirebaseURL
+							? { localUri: entity?.images[entity?.imageCounter - 1]?.photoFirebaseURL }
+							: null,
+					);
+				} else {
+					setSelectedImage(null);
+				}
+				setStoragePath('gardenImages');
+				setStorageIdentifier(`${entity.gid}_${entity.imageCounter}`);
 				break;
 			default:
 				console.log('entityType no contemplado en src/hooks/useSaveImage.js');
@@ -163,6 +177,34 @@ export function useSaveImage(debug, entity, entityType) {
 							),
 						);
 					});
+				break;
+			case 'garden':
+				firestore()
+					.collection('gardens')
+					.doc(entity.gid)
+					.update({
+						images: arrayUnion({
+							photoFirebaseURL: url,
+							photoFirebaseFullPath: firebaseFullPath,
+						}),
+						imageCounter: increment(1),
+					})
+					.then(() => {
+						dispatch(setLoadingMessage(false));
+						dispatch(setErrorMessage(false));
+					})
+					.catch((error) => {
+						console.error(error.message);
+						dispatch(setLoadingMessage(false));
+						dispatch(
+							setErrorMessage(
+								debug
+									? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+									: firebaseErrorCodeMap(error.code),
+							),
+						);
+					});
+
 				break;
 			default:
 				console.log('entityType no contemplado en src/hooks/useSaveImage.js');

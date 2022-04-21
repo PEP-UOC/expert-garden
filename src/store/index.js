@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import rootReducer from './root/rootReducer';
 //import serviceReducer from './service/serviceReducer';
 import userReducer from './user/userReducer';
+import gardenReducer from './garden/gardenReducer';
 
 import thunk from 'redux-thunk';
 
@@ -14,14 +15,15 @@ import { composeWithDevToolsDevelopmentOnly } from '@redux-devtools/extension';
 //TODO Configuración de producción: https://github.com/reduxjs/redux-devtools/tree/main/extension#14-using-in-production
 
 const mainReducer = combineReducers({
-  rootReducer,
-  //serviceReducer,
-  userReducer,
+	rootReducer,
+	//serviceReducer,
+	userReducer,
+	gardenReducer,
 });
 
 const persistConfig = {
-  key: 'root',
-  storage: AsyncStorage,
+	key: 'root',
+	storage: AsyncStorage,
 };
 
 const persistedReducer = persistReducer(persistConfig, mainReducer);
@@ -29,9 +31,9 @@ const persistedReducer = persistReducer(persistConfig, mainReducer);
 const composeEnhancers = composeWithDevToolsDevelopmentOnly({ trace: true, traceLimit: 25 });
 
 const rootStore = () => {
-  const store = createStore(persistedReducer, composeEnhancers(applyMiddleware(thunk)));
-  const persistor = persistStore(store);
-  return { store, persistor };
+	const store = createStore(persistedReducer, composeEnhancers(applyMiddleware(thunk)));
+	const persistor = persistStore(store);
+	return { store, persistor };
 };
 
 export const store = rootStore();

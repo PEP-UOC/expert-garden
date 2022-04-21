@@ -32,7 +32,7 @@ import { i18n } from "../../../../styles/ui-kitten/calendarLocale"
 import { useKeyboardSize } from "../../../../hooks/useKeyboardSize"
 
 // eslint-disable-next-line no-unused-vars
-export const PersonalDataForm = ({ debug }) => {
+export const GardenDataForm = ({ debug }) => {
 	const dispatch = useDispatch()
 
 	//const navigation = useNavigation();
@@ -219,10 +219,10 @@ export const PersonalDataForm = ({ debug }) => {
 	)
 };
 
-PersonalDataForm.propTypes = {
+GardenDataForm.propTypes = {
 	debug: PropTypes.bool.isRequired,
 };
 
-PersonalDataForm.defaultProps = {
+GardenDataForm.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 };
