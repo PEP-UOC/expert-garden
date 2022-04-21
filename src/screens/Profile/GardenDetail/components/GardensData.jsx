@@ -48,7 +48,7 @@ export const GardensDataForm = ({ debug }) => {
 					GARDENS.push({
 						type: 'addGarden'
 					})
-					console.log(`🍀 Jardines del usuario ${auth().currentUser.uid}`, GARDENS)
+					console.log(`🍀 Jardines del usuario ${auth().currentUser.uid}`, GARDENS.length - 1)
 					setGardens(GARDENS)
 					setGardensLoading(false);
 				})

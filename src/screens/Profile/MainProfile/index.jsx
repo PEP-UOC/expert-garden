@@ -20,7 +20,7 @@ import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
 import { SeparatorTopSection } from '../../../components/Separators/TopSection'
 import { TitleScreen } from '../../../components/Titles/Screen'
 import { BtnPrimary } from '../../../components/Buttons/Primary'
-import { ImgClient } from '../../../components/Images/Client'
+import { ImgWithPicker } from '../../../components/Images/WithPicker'
 import { PersonalDataForm } from './components/PersonalData'
 import { GardensDataForm } from './components/GardensData'
 import { BankDataForm } from './components/BankData'
@@ -159,7 +159,7 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 								<View style={{ ...gloStyles.view }}>
 									<View style={{ ...gloStyles.section.primary }}>
 										<TitleScreen icon={'person-outline'} primaryText={user?.metadata?.name || ''} secondaryText={''} />
-										<ImgClient />
+										<ImgWithPicker entity={user} entityType={'user'} />
 										{
 											{
 												'client': (

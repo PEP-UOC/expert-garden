@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import Constants from 'expo-constants';
 
 //Store
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setErrorMessage, setLoadingMessage } from '../../store/root/rootAction';
 
 //Components
@@ -36,18 +36,15 @@ let camera = Camera;
 import { useSaveImage } from "../../hooks/useSaveImage"
 
 // eslint-disable-next-line no-unused-vars
-export const ImgClient = ({ debug }) => {
+export const ImgWithPicker = ({ debug, entity, entityType }) => {
 	const dispatch = useDispatch()
 
 	//Styles
 	//const gloStyles = useStyleSheet(globalStyles);
 	const ownStyles = useStyleSheet(styles);
 
-	//Store
-	const user = useSelector(state => state.userReducer.user);
-
 	//Image Hook
-	const [selectedImage, handleImagePicked] = useSaveImage(debug, user)
+	const [selectedImage, handleImagePicked] = useSaveImage(debug, entity, entityType)
 
 	//State
 	const [showImageChangeCombo, setShowImageChangeCombo] = useState(false);
@@ -79,7 +76,7 @@ export const ImgClient = ({ debug }) => {
 	}, []);
 
 	useEffect(() => {
-		console.log(`🖼  Nueva imágen ${selectedImage.localUri}`)
+		console.log(`🖼  Nueva imágen ${selectedImage?.localUri}`)
 	}, [selectedImage]);
 
 	return (
@@ -88,7 +85,7 @@ export const ImgClient = ({ debug }) => {
 				? !showCamera
 					? <TouchableWithoutFeedback onPress={() => setShowImageChangeCombo(!showImageChangeCombo)}>
 						<Image
-							source={{ uri: selectedImage.localUri }}
+							source={{ uri: selectedImage?.localUri }}
 							style={{ ...ownStyles?.image }}
 						/>
 					</TouchableWithoutFeedback>
@@ -165,10 +162,12 @@ export const ImgClient = ({ debug }) => {
 	)
 };
 
-ImgClient.propTypes = {
+ImgWithPicker.propTypes = {
 	debug: PropTypes.bool.isRequired,
+	entity: PropTypes.object.isRequired,
+	entityType: PropTypes.string.isRequired,
 };
 
-ImgClient.defaultProps = {
+ImgWithPicker.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 };
