@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from "prop-types";
 
 //Constants
@@ -30,9 +30,10 @@ import { i18n } from "../../../../styles/ui-kitten/calendarLocale"
 
 //Hooks
 import { useKeyboardSize } from "../../../../hooks/useKeyboardSize"
+import useGetOne from '../../../../hooks/useGetOne'
 
 // eslint-disable-next-line no-unused-vars
-export const GardenDataForm = ({ debug }) => {
+export const GardenDataForm = ({ debug, gid }) => {
 	const dispatch = useDispatch()
 
 	//const navigation = useNavigation();
@@ -43,6 +44,9 @@ export const GardenDataForm = ({ debug }) => {
 
 	//Store
 	const user = useSelector(state => state.userReducer.user);
+
+	//Hooks
+	const { loading: gardenLoading, result: garden, error: gardenError } = useGetOne(debug, 'gardens', 'gid', gid);
 
 	//State
 	const [values, setValues] = useState({
@@ -129,6 +133,26 @@ export const GardenDataForm = ({ debug }) => {
 			{keyboardIsOpen ? <CornerRightDownIcon {...props} /> : <></>}
 		</TouchableWithoutFeedback>
 	);
+
+	useEffect(() => {
+		console.log('🧹 Limpiando GardenTemporal')
+		//dispatch(removeGardenTemporal())
+		//dispatch(setErrorMessage(false))
+	}, []);
+
+	useEffect(() => {
+		if (garden?.gid) {
+			console.log(`🍀 Jardín ${gid}`, garden)
+			//dispatch(setLoadingMessage(false))
+		}
+	}, [garden]);
+
+	useEffect(() => {
+		if (gardenError) {
+			console.log(`🩸 ${gardenError}`)
+			//dispatch(setErrorMessage(gardenError))
+		}
+	}, [gardenError]);
 
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
@@ -221,6 +245,7 @@ export const GardenDataForm = ({ debug }) => {
 
 GardenDataForm.propTypes = {
 	debug: PropTypes.bool.isRequired,
+	gid: PropTypes.string.isRequired,
 };
 
 GardenDataForm.defaultProps = {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from "prop-types";
 
 //Constants
@@ -34,7 +34,11 @@ import 'firebase/compat/auth';
 import "firebase/compat/firestore";
 import firebaseErrorCodeMap from '../../../common/firebaseErrorCodeMap';
 
+//Lodash
 import { toLower, upperFirst } from 'lodash';
+
+//Hooks
+import useGetOne from '../../../hooks/useGetOne'
 
 // eslint-disable-next-line no-unused-vars
 export const GardenDetailScreen = ({ debug, navigation, route }) => {
@@ -54,29 +58,8 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 	const gardenTemporal = useSelector(state => state.gardenReducer.gardenTemporal);
 	const hasNotSavedChanges = useSelector(state => state.gardenReducer.hasNotSavedChanges);
 
-
-	//State
-	const [garden, setGarden] = useState({});
-	const [gardenLoading, setGardenLoading] = useState(false);
-
-	useEffect(() => {
-		if (auth().currentUser) {
-			firestore().collection("gardens").where("gid", "==", gid)
-				.onSnapshot(garden => {
-					setGardenLoading(true);
-					const GARDEN = [];
-					if (!garden.empty) {
-						garden.forEach(garden => {
-							GARDEN.push(garden.data())
-						})
-					}
-					setGarden(GARDEN[0])
-					setGardenLoading(false);
-				})
-		} else {
-			setGarden({})
-		}
-	}, []);
+	//Hooks
+	const { loading: gardenLoading, result: garden, error: gardenError } = useGetOne(debug, 'gardens', 'gid', gid);
 
 	const saveGardenChanges = () => {
 		console.log('garden', garden)
@@ -187,6 +170,13 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 		}
 	}, [garden]);
 
+	useEffect(() => {
+		if (gardenError) {
+			console.log(`🩸 ${gardenError}`)
+			dispatch(setErrorMessage(gardenError))
+		}
+	}, [gardenError]);
+
 
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -235,7 +225,7 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 											{
 												'client': (
 													<>
-														<GardenDataForm />
+														<GardenDataForm gid={gid} />
 														{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
 													</>
 												),
@@ -260,7 +250,7 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 					</View>
 				</TouchableWithoutFeedback>
 			</KeyboardAvoidingView>
-		</SafeAreaView >
+		</SafeAreaView>
 	)
 };
 
