@@ -34,201 +34,201 @@ import Device from '../../libs/react-native-device-detection';
 
 // eslint-disable-next-line no-unused-vars
 export const ValidatingScreen = ({ debug, mode, actionCode }) => {
-    const dispatch = useDispatch()
+	const dispatch = useDispatch()
 
-    //State
-    const [isValidating, setIsValidating] = useState(false)
-    const [isActionCodeValid, setIsActionCodeValid] = useState(false)
-    const [isPassResetValid, setIsPassResetValid] = useState(false)
-    const [redirectURL, setRedirectURL] = useState('')
-    const [values, setValues] = useState({
-        email: "",
-        password: "",
-        password2: ""
-    })
+	//State
+	const [isValidating, setIsValidating] = useState(false)
+	const [isActionCodeValid, setIsActionCodeValid] = useState(false)
+	const [isPassResetValid, setIsPassResetValid] = useState(false)
+	const [redirectURL, setRedirectURL] = useState('')
+	const [values, setValues] = useState({
+		email: "",
+		password: "",
+		password2: ""
+	})
 
-    //Handle
-    function handleChange(value, keyName) {
-        setValues(prevValues => {
-            return {
-                ...prevValues,
-                [keyName]: value
-            }
-        })
-    }
+	//Handle
+	function handleChange(value, keyName) {
+		setValues(prevValues => {
+			return {
+				...prevValues,
+				[keyName]: value?.trim()
+			}
+		})
+	}
 
-    //Secure pass
-    const [secureTextEntry, setSecureTextEntry] = useState(true);
-    const toggleSecureEntry = () => {
-        setSecureTextEntry(!secureTextEntry);
-    };
-    const renderEyeIcon = (props) => (
-        <TouchableWithoutFeedback onPress={toggleSecureEntry} onClick={toggleSecureEntry}>
-            <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
-        </TouchableWithoutFeedback>
-    );
+	//Secure pass
+	const [secureTextEntry, setSecureTextEntry] = useState(true);
+	const toggleSecureEntry = () => {
+		setSecureTextEntry(!secureTextEntry);
+	};
+	const renderEyeIcon = (props) => (
+		<TouchableWithoutFeedback onPress={toggleSecureEntry} onClick={toggleSecureEntry}>
+			<Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
+		</TouchableWithoutFeedback>
+	);
 
-    const renderCaption = () => {
-        return (
-            <Text style={{ ...gloStyles.inputs.captionText }}>Utiliza un mínimo de 6 carácteres</Text>
-        )
-    }
+	const renderCaption = () => {
+		return (
+			<Text style={{ ...gloStyles.inputs.captionText }}>Utiliza un mínimo de 6 carácteres</Text>
+		)
+	}
 
-    //Loading
-    const validatingMessage = useSelector(state => state.rootReducer.validatingMessage);
+	//Loading
+	const validatingMessage = useSelector(state => state.rootReducer.validatingMessage);
 
-    //Styles
-    const gloStyles = useStyleSheet(globalStyles);
-    const ownStyles = useStyleSheet(styles);
+	//Styles
+	const gloStyles = useStyleSheet(globalStyles);
+	const ownStyles = useStyleSheet(styles);
 
-    //Firebase
-    const auth = firebase.auth;
+	//Firebase
+	const auth = firebase.auth;
 
-    useEffect(() => {
+	useEffect(() => {
 
-        console.log('🚨 mode', mode)
-        console.log('🎲 actionCode', actionCode)
+		console.log('🚨 mode', mode)
+		console.log('🎲 actionCode', actionCode)
 
-        setIsValidating(true);
-        switch (mode) {
-            case 'verifyEmail':
-                auth().applyActionCode(actionCode).then(() => {
-                    // Email address has been verified.
-                    dispatch(setValidatingMessage('Gracias! Email verificado!'))
-                    setIsActionCodeValid(true)
-                }).catch((error) => {
-                    //console.log('error', error)
-                    dispatch(setErrorMessage(
-                        debug
-                            ? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
-                            : firebaseErrorCodeMap(error.code)
-                    ))
-                    dispatch(setValidatingMessage('No hemos podido validar tu email...'))
-                    setIsActionCodeValid(false)
-                }).finally(() => {
-                    console.log('💻 Device', Device)
-                    let redirectURL = Linking.createURL('/', {});
-                    if (Device.isPhone) {
-                        redirectURL = 'exp://192.168.1.65:19000'
-                    }
-                    setRedirectURL(redirectURL);
-                    setIsValidating(false);
-                });
-                break;
-            case 'resetPassword':
-                auth().verifyPasswordResetCode(actionCode).then((email) => {
-                    // Email address has been verified.
-                    handleChange(email, "email")
-                    dispatch(setValidatingMessage('Introduce tu nueva contraseña'))
-                    setIsActionCodeValid(true)
-                }).catch((error) => {
-                    //console.log('error', error)
-                    dispatch(setErrorMessage(
-                        debug
-                            ? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
-                            : firebaseErrorCodeMap(error.code)
-                    ))
-                    dispatch(setValidatingMessage('No hemos podido validar tu código de recuperación de contraseña...'))
-                    setIsActionCodeValid(false)
-                    setIsPassResetValid(false)
-                }).finally(() => {
-                    console.log('💻 Device', Device)
-                    let redirectURL = Linking.createURL('/', {});
-                    if (Device.isPhone) {
-                        redirectURL = 'exp://192.168.1.65:19000'
-                    }
-                    setRedirectURL(redirectURL);
-                    setIsValidating(false);
-                });
-                break;
-        }
+		setIsValidating(true);
+		switch (mode) {
+			case 'verifyEmail':
+				auth().applyActionCode(actionCode).then(() => {
+					// Email address has been verified.
+					dispatch(setValidatingMessage('Gracias! Email verificado!'))
+					setIsActionCodeValid(true)
+				}).catch((error) => {
+					//console.log('error', error)
+					dispatch(setErrorMessage(
+						debug
+							? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+							: firebaseErrorCodeMap(error.code)
+					))
+					dispatch(setValidatingMessage('No hemos podido validar tu email...'))
+					setIsActionCodeValid(false)
+				}).finally(() => {
+					console.log('💻 Device', Device)
+					let redirectURL = Linking.createURL('/', {});
+					if (Device.isPhone) {
+						redirectURL = 'exp://192.168.1.65:19000'
+					}
+					setRedirectURL(redirectURL);
+					setIsValidating(false);
+				});
+				break;
+			case 'resetPassword':
+				auth().verifyPasswordResetCode(actionCode).then((email) => {
+					// Email address has been verified.
+					handleChange(email, "email")
+					dispatch(setValidatingMessage('Introduce tu nueva contraseña'))
+					setIsActionCodeValid(true)
+				}).catch((error) => {
+					//console.log('error', error)
+					dispatch(setErrorMessage(
+						debug
+							? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+							: firebaseErrorCodeMap(error.code)
+					))
+					dispatch(setValidatingMessage('No hemos podido validar tu código de recuperación de contraseña...'))
+					setIsActionCodeValid(false)
+					setIsPassResetValid(false)
+				}).finally(() => {
+					console.log('💻 Device', Device)
+					let redirectURL = Linking.createURL('/', {});
+					if (Device.isPhone) {
+						redirectURL = 'exp://192.168.1.65:19000'
+					}
+					setRedirectURL(redirectURL);
+					setIsValidating(false);
+				});
+				break;
+		}
 
-    }, [])
+	}, [])
 
-    const resetPass = () => {
-        setIsValidating(true);
-        auth().confirmPasswordReset(actionCode, values.password).then(() => {
-            dispatch(setValidatingMessage('Contraseña modificada!'))
-            setIsPassResetValid(true)
-        }).catch((error) => {
-            //console.log('error', error)
-            dispatch(setErrorMessage(
-                debug
-                    ? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
-                    : firebaseErrorCodeMap(error.code)
-            ))
-            dispatch(setValidatingMessage('No hemos podido modificar tu contraseña...'))
-            setIsPassResetValid(false)
-        }).finally(() => {
-            setIsValidating(false);
-        });
-    }
+	const resetPass = () => {
+		setIsValidating(true);
+		auth().confirmPasswordReset(actionCode, values.password).then(() => {
+			dispatch(setValidatingMessage('Contraseña modificada!'))
+			setIsPassResetValid(true)
+		}).catch((error) => {
+			//console.log('error', error)
+			dispatch(setErrorMessage(
+				debug
+					? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+					: firebaseErrorCodeMap(error.code)
+			))
+			dispatch(setValidatingMessage('No hemos podido modificar tu contraseña...'))
+			setIsPassResetValid(false)
+		}).finally(() => {
+			setIsValidating(false);
+		});
+	}
 
-    return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-            <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-                contentContainerStyle={{ ...gloStyles.scrollView }}>
-                <Layout style={{ ...gloStyles.layout }}>
-                    <View style={{ ...ownStyles.view }}>
-                        <Text category='h2' style={{ ...gloStyles?.h2, ...ownStyles?.title }}>
-                            {validatingMessage}
-                        </Text>
-                        {
-                            mode === 'verifyEmail' ?
-                                isValidating
-                                    ? <Spinner size='giant' />
-                                    : <BtnExternalLink href={redirectURL}>{isActionCodeValid ? 'ACCEDER' : 'ACCEDER DE NUEVO'}</BtnExternalLink>
-                                : mode === 'resetPassword'
-                                    ? isValidating
-                                        ? <Spinner size='giant' />
-                                        : isActionCodeValid
-                                            ? isPassResetValid
-                                                ? <BtnExternalLink href={redirectURL}>{'ACCEDER'}</BtnExternalLink>
-                                                : (
-                                                    <>
-                                                        <Input
-                                                            style={{ ...gloStyles.inputs.input }}
-                                                            label='Contraseña'
-                                                            placeholder='Introduce tu contraseña'
-                                                            value={values?.password || ''}
-                                                            caption={renderCaption}
-                                                            accessoryRight={renderEyeIcon}
-                                                            secureTextEntry={secureTextEntry}
-                                                            onChangeText={text => handleChange(text, "password")}
-                                                        />
-                                                        <Input
-                                                            style={{ ...gloStyles.inputs.input, marginBottom: 30 }}
-                                                            label='Contraseña'
-                                                            placeholder='Confirma la contraseña'
-                                                            value={values?.password2 || ''}
-                                                            accessoryRight={renderEyeIcon}
-                                                            secureTextEntry={secureTextEntry}
-                                                            onChangeText={text => handleChange(text, "password2")}
-                                                        />
+	return (
+		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+			<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
+				contentContainerStyle={{ ...gloStyles.scrollView }}>
+				<Layout style={{ ...gloStyles.layout }}>
+					<View style={{ ...ownStyles.view }}>
+						<Text category='h2' style={{ ...gloStyles?.h2, ...ownStyles?.title }}>
+							{validatingMessage}
+						</Text>
+						{
+							mode === 'verifyEmail' ?
+								isValidating
+									? <Spinner size='giant' />
+									: <BtnExternalLink href={redirectURL}>{isActionCodeValid ? 'ACCEDER' : 'ACCEDER DE NUEVO'}</BtnExternalLink>
+								: mode === 'resetPassword'
+									? isValidating
+										? <Spinner size='giant' />
+										: isActionCodeValid
+											? isPassResetValid
+												? <BtnExternalLink href={redirectURL}>{'ACCEDER'}</BtnExternalLink>
+												: (
+													<>
+														<Input
+															style={{ ...gloStyles.inputs.input }}
+															label='Contraseña'
+															placeholder='Introduce tu contraseña'
+															value={values?.password || ''}
+															caption={renderCaption}
+															accessoryRight={renderEyeIcon}
+															secureTextEntry={secureTextEntry}
+															onChangeText={text => handleChange(text, "password")}
+														/>
+														<Input
+															style={{ ...gloStyles.inputs.input, marginBottom: 30 }}
+															label='Contraseña'
+															placeholder='Confirma la contraseña'
+															value={values?.password2 || ''}
+															accessoryRight={renderEyeIcon}
+															secureTextEntry={secureTextEntry}
+															onChangeText={text => handleChange(text, "password2")}
+														/>
 
-                                                        <Button style={{ ...gloStyles?.button }} onPress={() => resetPass()} disabled={values.password === '' || values.password2 === ''}>Crear nueva contraseña</Button>
-                                                    </>
-                                                )
-                                            : <BtnExternalLink href={redirectURL}>{'ACCEDER DE NUEVO'}</BtnExternalLink>
-                                    : null
-                        }
+														<Button style={{ ...gloStyles?.button }} onPress={() => resetPass()} disabled={values.password === '' || values.password2 === ''}>Crear nueva contraseña</Button>
+													</>
+												)
+											: <BtnExternalLink href={redirectURL}>{'ACCEDER DE NUEVO'}</BtnExternalLink>
+									: null
+						}
 
-                        <View style={{ alignItems: 'center' }}>
-                            <LeafIcon width={180} height={60} style={{ ...gloStyles?.leaf }} />
-                        </View>
-                    </View>
-                </Layout >
-            </ScrollView>
-        </SafeAreaView>
-    )
+						<View style={{ alignItems: 'center' }}>
+							<LeafIcon width={180} height={60} style={{ ...gloStyles?.leaf }} />
+						</View>
+					</View>
+				</Layout >
+			</ScrollView>
+		</SafeAreaView>
+	)
 };
 
 ValidatingScreen.propTypes = {
-    debug: PropTypes.bool.isRequired,
-    mode: PropTypes.string,
-    actionCode: PropTypes.string
+	debug: PropTypes.bool.isRequired,
+	mode: PropTypes.string,
+	actionCode: PropTypes.string
 };
 
 ValidatingScreen.defaultProps = {
-    debug: Constants.manifest.extra.debug || false,
+	debug: Constants.manifest.extra.debug || false,
 };

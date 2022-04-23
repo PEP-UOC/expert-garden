@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types";
 
 //Constants
@@ -43,6 +43,7 @@ import useGetOne from '../../../hooks/useGetOne'
 // eslint-disable-next-line no-unused-vars
 export const GardenDetailScreen = ({ debug, navigation, route }) => {
 	const gid = route.params.gid;
+	const gardenIndex = parseInt(route.params.index);
 
 	const dispatch = useDispatch()
 
@@ -55,27 +56,27 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 
 	//Store
 	const user = useSelector(state => state.userReducer.user);
-	const gardenTemporal = useSelector(state => state.gardenReducer.gardenTemporal);
-	const hasNotSavedChanges = useSelector(state => state.gardenReducer.hasNotSavedChanges);
+	const userTemporal = useSelector(state => state.userReducer.userTemporal);
+	const hasNotSavedChanges = useSelector(state => state.userReducer.hasNotSavedChanges);
 
 	//Hooks
 	const { loading: gardenLoading, result: garden, error: gardenError } = useGetOne(debug, 'gardens', 'gid', gid);
 
 	const saveGardenChanges = () => {
-		console.log('garden', garden)
-		console.log('gardenTemporal', gardenTemporal)
+		//console.log('user', user)
+		console.log('userTemporal', userTemporal)
 
 		//Metadata
-		const name = gardenTemporal?.metadata?.name || garden?.metadata?.name || '';
-		const surnames = gardenTemporal?.metadata?.surnames || garden?.metadata?.surnames || '';
-		const fullname = gardenTemporal?.metadata?.fullname || `${garden?.metadata?.name} ${garden?.metadata?.surnames}` || '';
-		const email = gardenTemporal?.metadata?.email || garden?.metadata?.email || '';
-		const phoneNumber = gardenTemporal?.metadata?.phoneNumber || garden?.metadata?.phoneNumber || '';
-		const gender = gardenTemporal?.metadata?.gender || garden?.metadata?.gender || '';
-		const birthday = gardenTemporal?.metadata?.birthday || garden?.metadata?.birthdayDateTime || '';
-		const birthdayDateTime = gardenTemporal?.metadata?.birthdayDateTime || garden?.metadata?.birthdayDateTime || '';
+		const name = userTemporal?.metadata?.name || user?.metadata?.name || '';
+		const surnames = userTemporal?.metadata?.surnames || user?.metadata?.surnames || '';
+		const fullname = userTemporal?.metadata?.fullname || `${user?.metadata?.name} ${user?.metadata?.surnames}` || '';
+		const email = userTemporal?.metadata?.email || user?.metadata?.email || '';
+		const phoneNumber = userTemporal?.metadata?.phoneNumber || user?.metadata?.phoneNumber || '';
+		const gender = userTemporal?.metadata?.gender || user?.metadata?.gender || '';
+		const birthday = userTemporal?.metadata?.birthday || user?.metadata?.birthdayDateTime || '';
+		const birthdayDateTime = userTemporal?.metadata?.birthdayDateTime || user?.metadata?.birthdayDateTime || '';
 		const metadata = {
-			...garden.metadata,
+			...user.metadata,
 			name,
 			surnames,
 			fullname,
@@ -87,18 +88,18 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 		};
 
 		//Bank details
-		const cardNumber = gardenTemporal?.bankDetails?.cardNumber || garden?.bankDetails?.cardNumber || '';
-		const cardExpiration = gardenTemporal?.bankDetails?.cardExpiration || garden?.bankDetails?.cardExpiration || '';
-		const cardHolder = gardenTemporal?.bankDetails?.cardHolder || garden?.bankDetails?.cardHolder || '';
+		const cardNumber = userTemporal?.bankDetails?.cardNumber || user?.bankDetails?.cardNumber || '';
+		const cardExpiration = userTemporal?.bankDetails?.cardExpiration || user?.bankDetails?.cardExpiration || '';
+		const cardHolder = userTemporal?.bankDetails?.cardHolder || user?.bankDetails?.cardHolder || '';
 		const bankDetails = {
-			...garden.bankDetails,
+			...user.bankDetails,
 			cardNumber,
 			cardExpiration,
 			cardHolder
 		}
 
 		//Gardens
-		const gardens = gardenTemporal?.gardens || [];
+		const gardens = userTemporal?.gardens || [];
 
 		firestore().collection("users").doc(auth().currentUser.uid).update({
 			metadata,
@@ -157,22 +158,28 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 		navigation.goBack();
 	};
 
+	//State
+	const [loadComponents, setLoadComponents] = useState(false);
+
 	useEffect(() => {
 		console.log('🧹 Limpiando GardenTemporal')
 		dispatch(removeGardenTemporal())
 		dispatch(setErrorMessage(false))
+		console.log(`🌀 GDET - Cargando ${gid} | ${gardenLoading}`)
 	}, []);
 
 	useEffect(() => {
 		if (garden?.gid) {
-			console.log(`🍀 Jardín ${gid}`, garden)
+			console.log(`🍀 GDET - Jardín   ${gid} |`, garden?.type)
+			console.log(`🌀 GDET - Cargando ${gid} | ${gardenLoading}`)
+			setLoadComponents(true);
 			dispatch(setLoadingMessage(false))
 		}
 	}, [garden]);
 
 	useEffect(() => {
 		if (gardenError) {
-			console.log(`🩸 ${gardenError}`)
+			console.log(`🩸 GDET - Error ${gid} | ${gardenError}`)
 			dispatch(setErrorMessage(gardenError))
 		}
 	}, [gardenError]);
@@ -190,60 +197,55 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 							<Layout style={{ ...gloStyles.layout }}>
 								<SeparatorTopScreen />
 								<View style={{ ...gloStyles.view }}>
-									<View style={{ ...gloStyles.section.primary }}>
-										{garden?.gid && !gardenLoading ?
-											(
-												<>
+									{loadComponents ?
+										(
+											<>
+												<View style={{ ...gloStyles.section.primary }}>
 													<TitleScreen icon={'person-outline'} primaryText={'Detalles de ' + upperFirst(toLower(garden?.type)) || ''} secondaryText={''} />
 													<ImgWithPicker entity={garden} entityType={'garden'} />
-													{
-														{
-															'client': (
-																<>
-																	{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
-																</>
-															),
-															'business': (
-																<>
-																	{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
-																</>
-															),
-															'worker': (
-																<>
-																	{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
-																</>
-															)
-														}[user?.role]
-													}
-												</>
-											)
-											: null}
-									</View>
-									<View style={{ ...gloStyles.section.secondary }}>
-										<SeparatorTopSection />
-										{
-											{
-												'client': (
-													<>
-														<GardenDataForm gid={gid} />
-														{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
-													</>
-												),
-												'business': (
-													<>
-														<GardenDataForm />
-														{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
-													</>
-												),
-												'worker': (
-													<>
-														<GardenDataForm />
-														{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
-													</>
-												)
-											}[user?.role]
-										}
-									</View>
+													{{
+														'client': (
+															<>
+																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
+															</>
+														),
+														'business': (
+															<>
+																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
+															</>
+														),
+														'worker': (
+															<>
+																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
+															</>
+														)
+													}[user?.role]}
+												</View>
+												<View style={{ ...gloStyles.section.secondary }}>
+													<SeparatorTopSection />
+													{{
+														'client': (
+															<>
+																<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
+																{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
+															</>
+														),
+														'business': (
+															<>
+																<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
+																{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
+															</>
+														),
+														'worker': (
+															<>
+																<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
+																{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
+															</>
+														)
+													}[user?.role]}
+												</View></>
+										)
+										: null}
 								</View>
 							</Layout>
 						</ScrollView>

@@ -60,7 +60,7 @@ export const PersonalDataForm = ({ debug }) => {
 		setValues(prevValues => {
 			return {
 				...prevValues,
-				[keyName]: value
+				[keyName]: value?.trim()
 			}
 		})
 		const metadata = { ...values }

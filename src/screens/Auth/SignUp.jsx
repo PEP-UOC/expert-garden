@@ -32,253 +32,253 @@ import { useKeyboardSize } from "../../hooks/useKeyboardSize"
 
 //Select Options
 const userTypes = [
-    {
-        name: 'client',
-        value: 'Soy un Cliente'
-    },
-    {
-        name: 'business',
-        value: 'Soy una Empresa'
-    },
+	{
+		name: 'client',
+		value: 'Soy un Cliente'
+	},
+	{
+		name: 'business',
+		value: 'Soy una Empresa'
+	},
 ];
 
 // eslint-disable-next-line no-unused-vars
 export const SignUpScreen = ({ debug, navigation }) => {
-    const dispatch = useDispatch()
+	const dispatch = useDispatch()
 
-    //Firebase
-    const auth = firebase.auth;
-    const firestore = firebase.firestore;
+	//Firebase
+	const auth = firebase.auth;
+	const firestore = firebase.firestore;
 
-    //Styles
-    const gloStyles = useStyleSheet(globalStyles);
-    const ownStyles = useStyleSheet(styles);
+	//Styles
+	const gloStyles = useStyleSheet(globalStyles);
+	const ownStyles = useStyleSheet(styles);
 
-    //State
-    const [values, setValues] = useState({
-        name: "",
-        surnames: "",
-        role: "client",
-        email: "",
-        password: "",
-        password2: ""
-    })
+	//State
+	const [values, setValues] = useState({
+		name: "",
+		surnames: "",
+		role: "client",
+		email: "",
+		password: "",
+		password2: ""
+	})
 
-    //Secure pass
-    const [secureTextEntry, setSecureTextEntry] = useState(true);
-    const toggleSecureEntry = () => {
-        setSecureTextEntry(!secureTextEntry);
-    };
-    const renderEyeIcon = (props) => (
-        <TouchableWithoutFeedback onPress={toggleSecureEntry} onClick={toggleSecureEntry}>
-            <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
-        </TouchableWithoutFeedback>
-    );
+	//Secure pass
+	const [secureTextEntry, setSecureTextEntry] = useState(true);
+	const toggleSecureEntry = () => {
+		setSecureTextEntry(!secureTextEntry);
+	};
+	const renderEyeIcon = (props) => (
+		<TouchableWithoutFeedback onPress={toggleSecureEntry} onClick={toggleSecureEntry}>
+			<Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
+		</TouchableWithoutFeedback>
+	);
 
-    const renderCaption = () => {
-        return (
-            <Text style={{ ...gloStyles.inputs.captionText }}>Utiliza un mínimo de 6 carácteres</Text>
-        )
-    }
+	const renderCaption = () => {
+		return (
+			<Text style={{ ...gloStyles.inputs.captionText }}>Utiliza un mínimo de 6 carácteres</Text>
+		)
+	}
 
-    //Handle
-    function handleChange(value, keyName) {
-        setValues(prevValues => {
-            return {
-                ...prevValues,
-                [keyName]: value
-            }
-        })
-    }
+	//Handle
+	function handleChange(value, keyName) {
+		setValues(prevValues => {
+			return {
+				...prevValues,
+				[keyName]: value?.trim()
+			}
+		})
+	}
 
-    //SignUp
-    function SignUp() {
+	//SignUp
+	function SignUp() {
 
-        const { email, password, password2, name, surnames, role } = values
+		const { email, password, password2, name, surnames, role } = values
 
-        dispatch(setLoadingMessage(debug ? '🔧 Registrándote!' : 'Registrándote!'))
+		dispatch(setLoadingMessage(debug ? '🔧 Registrándote!' : 'Registrándote!'))
 
-        if (!allFilled()) {
-            if (password == password2) {
-                auth().createUserWithEmailAndPassword(email, password)
-                    .then((user) => {
-                        console.info('Registered!');
-                        console.info(user.user.email);
-                        auth().currentUser.sendEmailVerification()
-                            .then(() => {
-                                console.info('Email verification sent!');
-                                dispatch(addUser(user))
-                                firestore().collection("users").doc(auth().currentUser.uid).set({
-                                    uid: auth().currentUser.uid,
-                                    role,
-                                    metadata: {
-                                        name,
-                                        surnames,
-                                        fullname: `${name} ${surnames}`,
-                                        email,
-                                    }
-                                })
-                                    .then(() => {
-                                        auth().currentUser.updateProfile({
-                                            displayName: `${name} ${surnames}`,
-                                        }).then(() => {
-                                            dispatch(updateUser({
-                                                uid: auth().currentUser.uid,
-                                                role,
-                                                metadata: {
-                                                    name,
-                                                    surnames,
-                                                    fullname: `${name} ${surnames}`,
-                                                    email
-                                                }
-                                            }))
-                                            dispatch(setLoggedIn(true))
-                                            dispatch(setLoadingMessage(false))
-                                            dispatch(setErrorMessage(false))
-                                        }).catch((error) => {
-                                            console.error(error.message);
-                                            dispatch(setLoggedIn(false))
-                                            dispatch(setLoadingMessage(false))
-                                            dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
-                                        });
-                                    })
-                                    .catch((error) => {
-                                        console.error(error.message);
-                                        dispatch(setLoggedIn(false))
-                                        dispatch(setLoadingMessage(false))
-                                        dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
-                                    });
-                            });
-                    })
-                    .catch((error) => {
-                        console.error(error.message);
-                        dispatch(setLoggedIn(false))
-                        dispatch(setLoadingMessage(false))
-                        dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
-                    });
-            } else {
-                dispatch(setLoggedIn(false))
-                dispatch(setLoadingMessage(false))
-                dispatch(setErrorMessage('Las contraseñas no coinciden'))
-            }
-        } else {
-            dispatch(setLoggedIn(false))
-            dispatch(setLoadingMessage(false))
-            dispatch(setErrorMessage('Rellena todos los campos'))
-        }
-    }
+		if (!allFilled()) {
+			if (password == password2) {
+				auth().createUserWithEmailAndPassword(email, password)
+					.then((user) => {
+						console.info('Registered!');
+						console.info(user.user.email);
+						auth().currentUser.sendEmailVerification()
+							.then(() => {
+								console.info('Email verification sent!');
+								dispatch(addUser(user))
+								firestore().collection("users").doc(auth().currentUser.uid).set({
+									uid: auth().currentUser.uid,
+									role,
+									metadata: {
+										name,
+										surnames,
+										fullname: `${name} ${surnames}`,
+										email,
+									}
+								})
+									.then(() => {
+										auth().currentUser.updateProfile({
+											displayName: `${name} ${surnames}`,
+										}).then(() => {
+											dispatch(updateUser({
+												uid: auth().currentUser.uid,
+												role,
+												metadata: {
+													name,
+													surnames,
+													fullname: `${name} ${surnames}`,
+													email
+												}
+											}))
+											dispatch(setLoggedIn(true))
+											dispatch(setLoadingMessage(false))
+											dispatch(setErrorMessage(false))
+										}).catch((error) => {
+											console.error(error.message);
+											dispatch(setLoggedIn(false))
+											dispatch(setLoadingMessage(false))
+											dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
+										});
+									})
+									.catch((error) => {
+										console.error(error.message);
+										dispatch(setLoggedIn(false))
+										dispatch(setLoadingMessage(false))
+										dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
+									});
+							});
+					})
+					.catch((error) => {
+						console.error(error.message);
+						dispatch(setLoggedIn(false))
+						dispatch(setLoadingMessage(false))
+						dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
+					});
+			} else {
+				dispatch(setLoggedIn(false))
+				dispatch(setLoadingMessage(false))
+				dispatch(setErrorMessage('Las contraseñas no coinciden'))
+			}
+		} else {
+			dispatch(setLoggedIn(false))
+			dispatch(setLoadingMessage(false))
+			dispatch(setErrorMessage('Rellena todos los campos'))
+		}
+	}
 
-    //Keyboard
-    const [keyboardSize] = useKeyboardSize()
+	//Keyboard
+	const [keyboardSize] = useKeyboardSize()
 
-    //Checks
-    function allFilled() {
-        return values?.name === '' || (values?.surnames === '' && values?.role === 'client') || values?.role === '' || values?.email === '' || values?.password === '' || values?.password2 === ''
-    }
+	//Checks
+	function allFilled() {
+		return values?.name === '' || (values?.surnames === '' && values?.role === 'client') || values?.role === '' || values?.email === '' || values?.password === '' || values?.password2 === ''
+	}
 
-    useEffect(() => {
-        dispatch(setLoadingMessage(false))
-        dispatch(setErrorMessage(false))
-    }, []);
+	useEffect(() => {
+		dispatch(setLoadingMessage(false))
+		dispatch(setErrorMessage(false))
+	}, []);
 
-    //Select
-    const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
-    const displayValue = userTypes[selectedIndex.row].value;
-    const renderOption = (title) => (
-        <SelectItem key={title} title={title} />
-    );
+	//Select
+	const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
+	const displayValue = userTypes[selectedIndex.row].value;
+	const renderOption = (title) => (
+		<SelectItem key={title} title={title} />
+	);
 
 
-    return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                    <View style={{ flex: 1, justifyContent: "space-around" }}>
-                        <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-                            contentContainerStyle={{ ...gloStyles.scrollView, ...ownStyles?.scrollHeight }}>
-                            <Layout style={{ ...gloStyles.layout, marginTop: (keyboardSize - 50) * -1 }}>
-                                <View style={{ ...gloStyles.view }}>
-                                    <View style={{ ...gloStyles.section.full }}>
+	return (
+		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+					<View style={{ flex: 1, justifyContent: "space-around" }}>
+						<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
+							contentContainerStyle={{ ...gloStyles.scrollView, ...ownStyles?.scrollHeight }}>
+							<Layout style={{ ...gloStyles.layout, marginTop: (keyboardSize - 50) * -1 }}>
+								<View style={{ ...gloStyles.view }}>
+									<View style={{ ...gloStyles.section.full }}>
 
-                                        <Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>REGISTRATE EN</Text>
-                                        <Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>EXPERT GARDEN</Text>
+										<Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>REGISTRATE EN</Text>
+										<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>EXPERT GARDEN</Text>
 
-                                        <Select
-                                            style={{ ...gloStyles.inputs.select }}
-                                            label='¿Quién eres?'
-                                            value={displayValue}
-                                            selectedIndex={selectedIndex}
-                                            onSelect={index => {
-                                                setSelectedIndex(index)
-                                                handleChange(userTypes[index - 1].name, "role")
-                                            }}>
-                                            {userTypes.map(uT => uT.value).map(renderOption)}
-                                        </Select>
-                                        <Input
-                                            style={{ ...gloStyles.inputs.input }}
-                                            label={values.role === 'client' ? 'Nombre' : 'Nombre de la empresa'}
-                                            placeholder={values.role === 'client' ? 'Introduce tu nombre' : 'Introduce el nombre comercial'}
-                                            value={values?.name || ''}
-                                            onChangeText={text => handleChange(text, "name")}
-                                        />
-                                        {values.role === 'client' &&
-                                            <Input
-                                                style={{ ...gloStyles.inputs.input }}
-                                                label={'Apellidos'}
-                                                placeholder={'Introduce tus apellidos'}
-                                                value={values?.surnames || ''}
-                                                onChangeText={text => handleChange(text, "surnames")}
-                                            />
-                                        }
-                                        <Input
-                                            style={{ ...gloStyles.inputs.input }}
-                                            label='Correo electrónico'
-                                            placeholder='Introduce tu correo electrónico'
-                                            value={values?.email || ''}
-                                            onChangeText={text => handleChange(text, "email")}
-                                        />
-                                        <Input
-                                            style={{ ...gloStyles.inputs.input }}
-                                            label='Contraseña'
-                                            placeholder='Introduce tu contraseña'
-                                            value={values?.password || ''}
-                                            caption={renderCaption}
-                                            accessoryRight={renderEyeIcon}
-                                            secureTextEntry={secureTextEntry}
-                                            onChangeText={text => handleChange(text, "password")}
-                                        />
-                                        <Input
-                                            style={{ ...gloStyles.inputs.input, marginBottom: 30 }}
-                                            label='Contraseña'
-                                            placeholder='Confirma la contraseña'
-                                            value={values?.password2 || ''}
-                                            accessoryRight={renderEyeIcon}
-                                            secureTextEntry={secureTextEntry}
-                                            onChangeText={text => handleChange(text, "password2")}
-                                        />
+										<Select
+											style={{ ...gloStyles.inputs.select }}
+											label='¿Quién eres?'
+											value={displayValue}
+											selectedIndex={selectedIndex}
+											onSelect={index => {
+												setSelectedIndex(index)
+												handleChange(userTypes[index - 1].name, "role")
+											}}>
+											{userTypes.map(uT => uT.value).map(renderOption)}
+										</Select>
+										<Input
+											style={{ ...gloStyles.inputs.input }}
+											label={values.role === 'client' ? 'Nombre' : 'Nombre de la empresa'}
+											placeholder={values.role === 'client' ? 'Introduce tu nombre' : 'Introduce el nombre comercial'}
+											value={values?.name || ''}
+											onChangeText={text => handleChange(text, "name")}
+										/>
+										{values.role === 'client' &&
+											<Input
+												style={{ ...gloStyles.inputs.input }}
+												label={'Apellidos'}
+												placeholder={'Introduce tus apellidos'}
+												value={values?.surnames || ''}
+												onChangeText={text => handleChange(text, "surnames")}
+											/>
+										}
+										<Input
+											style={{ ...gloStyles.inputs.input }}
+											label='Correo electrónico'
+											placeholder='Introduce tu correo electrónico'
+											value={values?.email || ''}
+											onChangeText={text => handleChange(text, "email")}
+										/>
+										<Input
+											style={{ ...gloStyles.inputs.input }}
+											label='Contraseña'
+											placeholder='Introduce tu contraseña'
+											value={values?.password || ''}
+											caption={renderCaption}
+											accessoryRight={renderEyeIcon}
+											secureTextEntry={secureTextEntry}
+											onChangeText={text => handleChange(text, "password")}
+										/>
+										<Input
+											style={{ ...gloStyles.inputs.input, marginBottom: 30 }}
+											label='Contraseña'
+											placeholder='Confirma la contraseña'
+											value={values?.password2 || ''}
+											accessoryRight={renderEyeIcon}
+											secureTextEntry={secureTextEntry}
+											onChangeText={text => handleChange(text, "password2")}
+										/>
 
-                                        <Button style={{ ...gloStyles?.button }} onPress={() => SignUp()}>REGISTRARSE</Button>
+										<Button style={{ ...gloStyles?.button }} onPress={() => SignUp()}>REGISTRARSE</Button>
 
-                                        <Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("Login")}>¿Ya tienes cuenta?</Button>
+										<Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("Login")}>¿Ya tienes cuenta?</Button>
 
-                                        <View style={{ alignItems: 'center' }}>
-                                            <LeafIcon width={180} height={60} style={{ ...gloStyles.leaf }} />
-                                        </View>
-                                    </View>
-                                </View>
-                            </Layout >
-                        </ScrollView>
-                    </View>
-                </TouchableWithoutFeedback>
-            </KeyboardAvoidingView>
-        </SafeAreaView>)
+										<View style={{ alignItems: 'center' }}>
+											<LeafIcon width={180} height={60} style={{ ...gloStyles.leaf }} />
+										</View>
+									</View>
+								</View>
+							</Layout >
+						</ScrollView>
+					</View>
+				</TouchableWithoutFeedback>
+			</KeyboardAvoidingView>
+		</SafeAreaView>)
 }
 
 SignUpScreen.propTypes = {
-    debug: PropTypes.bool.isRequired,
-    navigation: PropTypes.object.isRequired,
+	debug: PropTypes.bool.isRequired,
+	navigation: PropTypes.object.isRequired,
 };
 
 SignUpScreen.defaultProps = {
-    debug: Constants.manifest.extra.debug || false,
+	debug: Constants.manifest.extra.debug || false,
 };

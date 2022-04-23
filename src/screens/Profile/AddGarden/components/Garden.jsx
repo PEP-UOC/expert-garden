@@ -56,7 +56,7 @@ export const GardenItem = ({ debug, garden }) => {
 		setValues(prevValues => {
 			return {
 				...prevValues,
-				[keyName]: value
+				[keyName]: value?.trim()
 			}
 		})
 		const gardens = { ...values }
