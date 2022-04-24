@@ -65,7 +65,7 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
 		const ref = firestore().collection("services").doc();
 		firestore().collection("services").doc(ref.id).set({
 			sid: ref.id,
-			uid: auth().currentUser.uid,
+			uid: auth()?.currentUser?.uid,
 			type,
 			comment,
 			requestDateTime,
@@ -109,8 +109,8 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
 		const sendTime = now.format("HH:mm");
 		firestore().collection("notifications").doc(ref.id).set({
 			nid: ref.id,
-			uidSender: auth().currentUser.uid,
-			uidReceiver: auth().currentUser.uid,
+			uidSender: auth()?.currentUser?.uid,
+			uidReceiver: auth()?.currentUser?.uid,
 			type,
 			content,
 			sendDateTime,
@@ -141,7 +141,7 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
 		const creationTime = now.format("HH:mm");
 		firestore().collection("gardens").doc(ref.id).set({
 			gid: ref.id,
-			uid: auth().currentUser.uid,
+			uid: auth()?.currentUser?.uid,
 			type,
 			content,
 			creationDateTime,

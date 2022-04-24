@@ -23,7 +23,7 @@ import { Input, Select, SelectItem } from '@ui-kitten/components';
 import { TitleSection } from '../../../../components/Titles/Section'
 
 //Hooks
-import useGetOne from '../../../../hooks/useGetOne'
+import useFirebaseGetOne from '../../../../hooks/useFirebaseGetOne'
 import { useProvinceTown } from '../../../../hooks/useProvinceTown'
 
 // eslint-disable-next-line no-unused-vars
@@ -48,7 +48,7 @@ export const GardenDataForm = ({ debug, gid, gardenIndex }) => {
 	})
 
 	//Hooks
-	const { loading: gardenLoading, result: garden, error: gardenError } = useGetOne(debug, 'gardens', 'gid', gid);
+	const { loading: gardenLoading, result: garden, error: gardenError } = useFirebaseGetOne(debug, 'gardens', 'gid', gid);
 
 	const [setPostalCode, province, townsList, townsSelectedIndex, setTownsSelectedIndex, townDisplayValue] = useProvinceTown(values.postalCode, values.province, values.town);
 
@@ -61,7 +61,7 @@ export const GardenDataForm = ({ debug, gid, gardenIndex }) => {
 			}
 		})
 		const newGarden = { ...values }
-		newGarden[keyName] = value.trim();
+		newGarden[keyName] = value?.trim();
 		//console.log('newGarden', newGarden)
 
 		const gardensArray = [...userTemporal?.gardens || []];

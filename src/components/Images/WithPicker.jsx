@@ -32,7 +32,7 @@ import { Camera } from 'expo-camera';
 let camera = Camera;
 
 //Hooks
-import { useSaveImage } from "../../hooks/useSaveImage"
+import { useFirebaseSaveImage } from "../../hooks/useFirebaseSaveImage"
 
 // eslint-disable-next-line no-unused-vars
 export const ImgWithPicker = ({ debug, entity, entityType }) => {
@@ -43,7 +43,11 @@ export const ImgWithPicker = ({ debug, entity, entityType }) => {
 	const ownStyles = useStyleSheet(styles);
 
 	//Image Hook
-	const [selectedImage, handleImagePicked] = useSaveImage(debug, entity, entityType)
+	let [selectedImage, handleImagePicked, setNewEntity] = useFirebaseSaveImage(debug, entity, entityType)
+
+	useEffect(() => {
+		setNewEntity(entity)
+	}, [entity]);
 
 	//State
 	const [showImageChangeCombo, setShowImageChangeCombo] = useState(false);

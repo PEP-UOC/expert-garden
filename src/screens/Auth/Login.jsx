@@ -7,7 +7,7 @@ import Constants from 'expo-constants';
 //Store
 import { useDispatch } from 'react-redux'
 import { setErrorMessage, setLoadingMessage, setLoggedIn } from '../../store/root/rootAction';
-import { addUser, updateUser } from '../../store/user/userAction';
+import { addUser } from '../../store/user/userAction';
 
 //Components
 import { View, SafeAreaView, ScrollView, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
@@ -21,7 +21,6 @@ import styles from './styles'
 //Icons
 import { LeafIcon } from '../../assets/icons/Leaf'
 
-
 //Firebase
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
@@ -34,7 +33,6 @@ export const LoginScreen = ({ debug, navigation }) => {
 
 	//Firebase
 	const auth = firebase.auth;
-	const firestore = firebase.firestore;
 
 	//Styles
 	const gloStyles = useStyleSheet(globalStyles);
@@ -74,34 +72,14 @@ export const LoginScreen = ({ debug, navigation }) => {
 
 		dispatch(setLoadingMessage(debug ? '🔧 Accediendo' : 'Accediendo'))
 
-
 		auth().signInWithEmailAndPassword(email, password)
 			.then((user) => {
 				console.info('Logged In!');
 				console.info(user.user.email);
 				dispatch(addUser(user))
-				firestore().collection("users").doc(auth().currentUser.uid).get()
-					.then((user) => {
-						const userData = user.data();
-						console.log('👩‍🌾 Firestore Data', userData)
-						dispatch(updateUser(
-							{
-								uid: userData?.uid,
-								role: userData?.role,
-								metadata: userData?.metadata,
-								bankDetails: userData?.bankDetails
-							}
-						))
-						dispatch(setLoggedIn(true))
-						dispatch(setLoadingMessage(false))
-						dispatch(setErrorMessage(false))
-					})
-					.catch((error) => {
-						console.error(error.message);
-						dispatch(setLoggedIn(false))
-						dispatch(setLoadingMessage(false))
-						dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
-					});
+				dispatch(setLoadingMessage(false))
+				dispatch(setErrorMessage(false))
+				dispatch(setLoggedIn(true))
 			})
 			.catch((error) => {
 				console.error(error.message);

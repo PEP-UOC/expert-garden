@@ -7,7 +7,7 @@ import Constants from 'expo-constants';
 //Store
 import { useDispatch } from 'react-redux'
 import { setLoggedIn, setLoadingMessage, setErrorMessage } from '../../store/root/rootAction';
-import { addUser, updateUser } from '../../store/user/userAction';
+import { addUser } from '../../store/user/userAction';
 
 //Components
 import { View, SafeAreaView, ScrollView, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
@@ -108,30 +108,21 @@ export const SignUpScreen = ({ debug, navigation }) => {
 							.then(() => {
 								console.info('Email verification sent!');
 								dispatch(addUser(user))
-								firestore().collection("users").doc(auth().currentUser.uid).set({
-									uid: auth().currentUser.uid,
+								firestore().collection("users").doc(auth()?.currentUser?.uid).set({
+									uid: auth()?.currentUser?.uid,
 									role,
+									verified: false,
 									metadata: {
 										name,
 										surnames,
 										fullname: `${name} ${surnames}`,
-										email,
+										email
 									}
 								})
 									.then(() => {
 										auth().currentUser.updateProfile({
 											displayName: `${name} ${surnames}`,
 										}).then(() => {
-											dispatch(updateUser({
-												uid: auth().currentUser.uid,
-												role,
-												metadata: {
-													name,
-													surnames,
-													fullname: `${name} ${surnames}`,
-													email
-												}
-											}))
 											dispatch(setLoggedIn(true))
 											dispatch(setLoadingMessage(false))
 											dispatch(setErrorMessage(false))

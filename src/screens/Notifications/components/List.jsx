@@ -56,14 +56,14 @@ export const NotificationsList = ({ debug, type }) => {
 				setIcon('bell-outline')
 
 				if (auth().currentUser) {
-					firestore().collection("notifications").where("uidReceiver", "==", auth().currentUser.uid).orderBy("sendDateTime", "desc").limit(3)
+					firestore().collection("notifications").where("uidReceiver", "==", auth()?.currentUser?.uid).orderBy("sendDateTime", "desc").limit(3)
 						.onSnapshot(notifications => {
 							if (!notifications.empty) {
 								const NOTIFICATIONS = [];
 								notifications.forEach(notification => {
 									NOTIFICATIONS.push(notification.data())
 								})
-								console.log(`🐳 Notificaciones del usuario ${auth().currentUser.uid}`, NOTIFICATIONS.length)
+								console.log(`🐳 Notificaciones del usuario ${auth()?.currentUser?.uid}`, NOTIFICATIONS.length)
 								setNotifications(NOTIFICATIONS)
 							}
 						})
@@ -76,14 +76,14 @@ export const NotificationsList = ({ debug, type }) => {
 				setIcon('radio-button-on-outline')
 
 				if (auth().currentUser) {
-					firestore().collection("notifications").where("uidReceiver", "==", auth().currentUser.uid).where("readDateTime", "==", null).orderBy("sendDateTime", "desc").limit(3)
+					firestore().collection("notifications").where("uidReceiver", "==", auth()?.currentUser?.uid).where("readDateTime", "==", null).orderBy("sendDateTime", "desc").limit(3)
 						.onSnapshot(notifications => {
 							if (!notifications.empty) {
 								const NOTIFICATIONS = [];
 								notifications.forEach(notification => {
 									NOTIFICATIONS.push(notification.data())
 								})
-								console.log(`🐳 Notificaciones nuevas del usuario ${auth().currentUser.uid}`, NOTIFICATIONS.length)
+								console.log(`🐳 Notificaciones nuevas del usuario ${auth()?.currentUser?.uid}`, NOTIFICATIONS.length)
 								setNotifications(NOTIFICATIONS)
 							}
 						})
@@ -96,14 +96,14 @@ export const NotificationsList = ({ debug, type }) => {
 				setIcon('radio-button-off-outline')
 
 				if (auth().currentUser) {
-					firestore().collection("notifications").where("uidReceiver", "==", auth().currentUser.uid).where("readDateTime", "!=", null).orderBy("readDateTime", "desc").limit(3)
+					firestore().collection("notifications").where("uidReceiver", "==", auth()?.currentUser?.uid).where("readDateTime", "!=", null).orderBy("readDateTime", "desc").limit(3)
 						.onSnapshot(notifications => {
 							if (!notifications.empty) {
 								const NOTIFICATIONS = [];
 								notifications.forEach(notification => {
 									NOTIFICATIONS.push(notification.data())
 								})
-								console.log(`🐳 Notificaciones leídas del usuario ${auth().currentUser.uid}`, NOTIFICATIONS.length)
+								console.log(`🐳 Notificaciones leídas del usuario ${auth()?.currentUser?.uid}`, NOTIFICATIONS.length)
 								setNotifications(NOTIFICATIONS)
 							}
 						})

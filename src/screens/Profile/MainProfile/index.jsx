@@ -11,7 +11,7 @@ import globalStyles from '../../../styles/globalStyles'
 //Store
 import { useSelector, useDispatch } from 'react-redux'
 import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootAction';
-import { updateUser, removeUserTemporal } from '../../../store/user/userAction';
+import { removeUserTemporal } from '../../../store/user/userAction';
 
 //Components
 import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
@@ -89,7 +89,7 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 		//Gardens
 		const gardens = userTemporal?.gardens || [];
 
-		firestore().collection("users").doc(auth().currentUser.uid).update({
+		firestore().collection("users").doc(auth()?.currentUser?.uid).update({
 			metadata,
 			bankDetails
 		})
@@ -108,21 +108,10 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 						})
 					}));
 
-					auth().onAuthStateChanged((updatedUser) => {
-						if (updatedUser) {
-							dispatch(updateUser(
-								{
-									metadata,
-									bankDetails,
-									user: updatedUser
-								}
-							))
-							dispatch(setLoadingMessage(false))
-							dispatch(setErrorMessage(false))
-							console.log('🧹 Limpiando UserTemporal')
-							dispatch(removeUserTemporal())
-						}
-					});
+					dispatch(setLoadingMessage(false))
+					dispatch(setErrorMessage(false))
+					console.log('🧹 Limpiando UserTemporal')
+					dispatch(removeUserTemporal())
 
 				}).catch((error) => {
 					console.error(error.message);
@@ -159,7 +148,7 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 								<View style={{ ...gloStyles.view }}>
 									<View style={{ ...gloStyles.section.primary }}>
 										<TitleScreen icon={'person-outline'} primaryText={user?.metadata?.name || ''} secondaryText={''} />
-										<ImgWithPicker entity={user} entityType={'user'} />
+										<ImgWithPicker entity={user || {}} entityType={'user'} />
 										{
 											{
 												'client': (

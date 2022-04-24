@@ -24,6 +24,7 @@ import BtnExternalLink from '../../components/Buttons/ExternalLink'
 //Firebase
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import "firebase/compat/firestore";
 import firebaseErrorCodeMap from '../../common/firebaseErrorCodeMap';
 
 //Linking
@@ -83,6 +84,7 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
 
 	//Firebase
 	const auth = firebase.auth;
+	const firestore = firebase.firestore;
 
 	useEffect(() => {
 
@@ -94,8 +96,21 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
 			case 'verifyEmail':
 				auth().applyActionCode(actionCode).then(() => {
 					// Email address has been verified.
-					dispatch(setValidatingMessage('Gracias! Email verificado!'))
-					setIsActionCodeValid(true)
+					firestore().collection("users").doc(auth()?.currentUser?.uid).update({
+						verified: true
+					}).then(() => {
+						dispatch(setValidatingMessage('Gracias! Email verificado!'))
+						setIsActionCodeValid(true)
+					}).catch((error) => {
+						console.log('error', error)
+						//dispatch(setErrorMessage(
+						//	debug
+						//		? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+						//		: firebaseErrorCodeMap(error.code)
+						//))
+						//dispatch(setValidatingMessage('No hemos podido validar tu email...'))
+						//setIsActionCodeValid(false)
+					})
 				}).catch((error) => {
 					//console.log('error', error)
 					dispatch(setErrorMessage(

@@ -11,7 +11,6 @@ import globalStyles from '../../../styles/globalStyles'
 //Store
 import { useSelector, useDispatch } from 'react-redux'
 import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootAction';
-import { updateUser } from '../../../store/user/userAction';
 import { removeGardenTemporal } from '../../../store/garden/gardenAction';
 
 //Components
@@ -38,7 +37,7 @@ import firebaseErrorCodeMap from '../../../common/firebaseErrorCodeMap';
 import { toLower, upperFirst } from 'lodash';
 
 //Hooks
-import useGetOne from '../../../hooks/useGetOne'
+import useFirebaseGetOne from '../../../hooks/useFirebaseGetOne'
 
 // eslint-disable-next-line no-unused-vars
 export const GardenDetailScreen = ({ debug, navigation, route }) => {
@@ -60,7 +59,7 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 	const hasNotSavedChanges = useSelector(state => state.userReducer.hasNotSavedChanges);
 
 	//Hooks
-	const { loading: gardenLoading, result: garden, error: gardenError } = useGetOne(debug, 'gardens', 'gid', gid);
+	const { loading: gardenLoading, result: garden, error: gardenError } = useFirebaseGetOne(debug, 'gardens', 'gid', gid);
 
 	const saveGardenChanges = () => {
 		//console.log('user', user)
@@ -101,7 +100,7 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 		//Gardens
 		const gardens = userTemporal?.gardens || [];
 
-		firestore().collection("users").doc(auth().currentUser.uid).update({
+		firestore().collection("users").doc(auth()?.currentUser?.uid).update({
 			metadata,
 			bankDetails
 		})
@@ -119,22 +118,10 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 							town: garden?.town
 						})
 					}));
-
-					auth().onAuthStateChanged((updatedUser) => {
-						if (updatedUser) {
-							dispatch(updateUser(
-								{
-									metadata,
-									bankDetails,
-									user: updatedUser
-								}
-							))
-							dispatch(setLoadingMessage(false))
-							dispatch(setErrorMessage(false))
-							console.log('🧹 Limpiando UserTemporal')
-							dispatch(removeGardenTemporal())
-						}
-					});
+					dispatch(setLoadingMessage(false))
+					dispatch(setErrorMessage(false))
+					console.log('🧹 Limpiando UserTemporal')
+					dispatch(removeGardenTemporal())
 
 				}).catch((error) => {
 					console.error(error.message);
@@ -165,13 +152,15 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 		console.log('🧹 Limpiando GardenTemporal')
 		dispatch(removeGardenTemporal())
 		dispatch(setErrorMessage(false))
-		console.log(`🌀 GDET - Cargando ${gid} | ${gardenLoading}`)
 	}, []);
+
+	useEffect(() => {
+		console.log(`🌀 GDET - Cargando ${gid} | ${gardenLoading.toString()}`)
+	}, [gardenLoading]);
 
 	useEffect(() => {
 		if (garden?.gid) {
 			console.log(`🍀 GDET - Jardín   ${gid} |`, garden?.type)
-			console.log(`🌀 GDET - Cargando ${gid} | ${gardenLoading}`)
 			setLoadComponents(true);
 			dispatch(setLoadingMessage(false))
 		}
@@ -202,7 +191,7 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 											<>
 												<View style={{ ...gloStyles.section.primary }}>
 													<TitleScreen icon={'person-outline'} primaryText={'Detalles de ' + upperFirst(toLower(garden?.type)) || ''} secondaryText={''} />
-													<ImgWithPicker entity={garden} entityType={'garden'} />
+													<ImgWithPicker entity={garden || {}} entityType={'garden'} />
 													{{
 														'client': (
 															<>

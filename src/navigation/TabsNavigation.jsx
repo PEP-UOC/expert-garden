@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from "prop-types";
 
 //Constants
@@ -46,10 +46,53 @@ BottomTabBar.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 };
 
+//Store
+import { useDispatch } from 'react-redux'
+import { updateUser } from '../store/user/userAction';
+
+//Firebase
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import "firebase/compat/firestore";
+
 const Tabs = createBottomTabNavigator()
 export const TabsNavigation = () => {
+	const dispatch = useDispatch()
+
+	//Firebase
+	const auth = firebase.auth;
+	const firestore = firebase.firestore;
+
+	//State
+	const [dispatched, setDispatched] = useState(false);
+
+	useEffect(() => {
+		firestore().collection("users").doc(auth()?.currentUser?.uid)
+			.onSnapshot({
+				// Listen for document metadata changes
+				includeMetadataChanges: true
+			}, (item) => {
+				const userData = item.data();
+				console.log('👩‍🌾 Firestore userData', userData)
+				dispatch(updateUser(
+					{
+						uid: userData?.uid,
+						role: userData?.role,
+						verified: userData?.verified,
+						metadata: userData?.metadata,
+						bankDetails: userData?.bankDetails
+					}
+				))
+				setDispatched(true)
+			});
+	}, []);
+
+	if (!dispatched) {
+		return (null)
+	}
+
 	return (
-		<Tabs.Navigator initialRouteName="Profile" screenOptions={{ headerShown: false }} tabBar={props => {
+		<Tabs.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }} tabBar={props => {
 			return <BottomTabBar {...props} />
 		}}>
 			<Tabs.Screen name='Home' component={HomeScreen} />

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from "prop-types";
 
 //Device Detect
@@ -14,7 +14,6 @@ import globalStyles from '../../styles/globalStyles'
 //Store
 import { useSelector, useDispatch } from 'react-redux'
 import { setErrorMessage, setLoadingMessage } from '../../store/root/rootAction';
-import { updateUser } from '../../store/user/userAction';
 
 //Components
 import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
@@ -30,124 +29,100 @@ import { ServicesList } from '../Services/components/List'
 //Icons
 import { AddIcon } from '../../assets/icons/Add'
 
-//Firebase
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-//import firebaseErrorCodeMap from '../../common/firebaseErrorCodeMap';
-
 // eslint-disable-next-line no-unused-vars
 export const HomeScreen = ({ debug, navigation }) => {
-  const dispatch = useDispatch()
+	const dispatch = useDispatch()
 
-  //Styles
-  const gloStyles = useStyleSheet(globalStyles);
+	//Styles
+	const gloStyles = useStyleSheet(globalStyles);
 
-  //Store
-  const user = useSelector(state => state.userReducer.user);
+	//Store
+	const user = useSelector(state => state.userReducer.user);
 
-  //Navigation
-  const navigateServiceRequest = () => {
-    navigation.navigate('ServiceRequest');
-  };
+	//Navigation
+	const navigateServiceRequest = () => {
+		navigation.navigate('ServiceRequest');
+	};
 
-  //Firebase
-  const auth = firebase.auth;
+	useEffect(() => {
+		dispatch(setLoadingMessage(false))
+		dispatch(setErrorMessage(false))
+	}, []);
 
-  useEffect(() => {
-    dispatch(setLoadingMessage(false))
-    dispatch(setErrorMessage(false))
-  }, []);
+	useEffect(() => {
+		console.log('👩‍🌾 Usuario', user?.metadata?.fullname, user?.metadata?.email);
+		//console.log(user);
+	}, [user]);
 
-  useEffect(() => {
-    console.log('👩‍🌾 Usuario', user?.metadata?.fullname, user?.metadata?.email);
-    //console.log(user);
-  }, [user]);
+	const device = Device.isPhone ? '📱' : '💻';
+	const role = user?.role === 'client' ? '🧔🏻‍♂️' : '💼';
+	const gender = user?.metadata?.gender === 'male' ? '🧑‍🌾' : user?.metadata?.gender === 'female' ? '👩‍🌾' : '🌳';
 
-  //Update user
-  const [updateUserCounter, setUpdateUserCounter] = useState(user?.user?.emailVerified ? 0 : 30);
-  useEffect(() => {
-    const timer = updateUserCounter > 0 && setInterval(() => {
-      auth().onIdTokenChanged((updatedUser) => {
-        if (updatedUser && updatedUser?.emailVerified) {
-          setUpdateUserCounter(0)
-          console.log('🧶 Actualizando usuario')
-          dispatch(updateUser({ user: updatedUser }));
-        }
-      })
-      auth()?.currentUser?.reload();
-    }, 30000);
-    return () => clearInterval(timer);
-  }, [updateUserCounter]);
+	return (
+		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+					<View style={{ flex: 1, justifyContent: "space-around" }}>
+						<TopNavigation title={debug ? `${device} Inicio ${role}` : 'Inicio'} alignment='center' />
+						<Divider />
+						<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
+							contentContainerStyle={{ ...gloStyles.scrollView }}>
+							<Layout style={{ ...gloStyles.layout }}>
+								<SeparatorTopScreen />
+								<View style={{ ...gloStyles.view }}>
+									<View style={{ ...gloStyles.section.primary }}>
+										<TitleScreen icon={''} primaryText={user?.additionalUserInfo?.isNewUser ? 'Bienvenido' : 'Bienvenido'} secondaryText={`${user?.metadata?.name} ${gender}` || ''} />
+										<EmailVerify user={user || {}} />
+										{
+											{
+												'client': (
+													<BtnWithLogo icon={AddIcon} text={"SOLICITA UN SERVICIO"} onPress={navigateServiceRequest} />
+												),
+												'business': (
+													<BtnWithLogo icon={AddIcon} text={"PRÓXIMOS SERVICIOS"} onPress={navigateServiceRequest} />
+												),
+												'worker': (
+													<BtnWithLogo icon={AddIcon} text={"EMPEZAR A TRABAJAR"} onPress={navigateServiceRequest} />
+												)
+											}[user?.role]
+										}
+									</View>
+									<View style={{ ...gloStyles.section.secondary }}>
+										<SeparatorTopSection />
+										{
+											{
+												'client': (
+													<>
+														<NotificationsList type={'last'} />
+														<ServicesList type={'requested'} />
+														<ServicesList type={'inProgress'} />
+													</>
+												),
+												'business': (
+													<ServicesList type={'requested'} />
+												),
+												'worker': (
+													<ServicesList type={'requested'} />
+												)
+											}[user?.role]
+										}
+									</View>
 
-  const device = Device.isPhone ? '📱' : '💻';
-  const role = user?.role === 'client' ? '🧔🏻‍♂️' : '💼';
-  const gender = user?.metadata?.gender === 'male' ? '🧑‍🌾' : user?.metadata?.gender === 'female' ? '👩‍🌾' : '🌳';
-
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={{ flex: 1, justifyContent: "space-around" }}>
-            <TopNavigation title={debug ? `${device} Inicio ${role}` : 'Inicio'} alignment='center' />
-            <Divider />
-            <ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-              contentContainerStyle={{ ...gloStyles.scrollView }}>
-              <Layout style={{ ...gloStyles.layout }}>
-                <SeparatorTopScreen />
-                <View style={{ ...gloStyles.view }}>
-                  <View style={{ ...gloStyles.section.primary }}>
-                    <TitleScreen icon={''} primaryText={user?.additionalUserInfo?.isNewUser ? 'Bienvenido' : 'Bienvenido'} secondaryText={`${user?.metadata?.name} ${gender}` || ''} />
-                    <EmailVerify user={user || {}} />
-                    {
-                      {
-                        'client': (
-                          <BtnWithLogo icon={AddIcon} text={"SOLICITA UN SERVICIO"} onPress={navigateServiceRequest} />
-                        ),
-                        'business': (
-                          <BtnWithLogo icon={AddIcon} text={"PRÓXIMOS SERVICIOS"} onPress={navigateServiceRequest} />
-                        ),
-                        'worker': (
-                          <BtnWithLogo icon={AddIcon} text={"EMPEZAR A TRABAJAR"} onPress={navigateServiceRequest} />
-                        )
-                      }[user?.role]
-                    }
-                  </View>
-                  <View style={{ ...gloStyles.section.secondary }}>
-                    <SeparatorTopSection />
-                    {
-                      {
-                        'client': (
-                          <>
-                            <NotificationsList type={'last'} />
-                            <ServicesList type={'requested'} />
-                            <ServicesList type={'inProgress'} />
-                          </>
-                        ),
-                        'business': (
-                          <ServicesList type={'requested'} />
-                        ),
-                        'worker': (
-                          <ServicesList type={'requested'} />
-                        )
-                      }[user?.role]
-                    }
-                  </View>
-
-                </View>
-              </Layout >
-            </ScrollView>
-          </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
-  )
+								</View>
+							</Layout >
+						</ScrollView>
+					</View>
+				</TouchableWithoutFeedback>
+			</KeyboardAvoidingView>
+		</SafeAreaView>
+	)
 };
 
 HomeScreen.propTypes = {
-  debug: PropTypes.bool.isRequired,
-  navigation: PropTypes.object.isRequired,
+	debug: PropTypes.bool.isRequired,
+	navigation: PropTypes.object.isRequired,
 };
 
 HomeScreen.defaultProps = {
-  debug: Constants.manifest.extra.debug || false,
+	debug: Constants.manifest.extra.debug || false,
 };

@@ -52,14 +52,14 @@ export const ServicesList = ({ debug, type }) => {
 				setIcon('inbox-outline')
 
 				if (auth().currentUser) {
-					firestore().collection("services").where("uid", "==", auth().currentUser.uid).where("confirmationDate", "==", null).orderBy("requestDateTime", "desc").limit(3)
+					firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDate", "==", null).orderBy("requestDateTime", "desc").limit(3)
 						.onSnapshot(services => {
 							if (!services.empty) {
 								const SERVICES = [];
 								services.forEach(service => {
 									SERVICES.push(service.data())
 								})
-								console.log(`🌳 Servicios solicitados del usuario ${auth().currentUser.uid}`, SERVICES.length)
+								console.log(`🌳 Servicios solicitados del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 								setServices(SERVICES)
 							}
 						})
@@ -72,14 +72,14 @@ export const ServicesList = ({ debug, type }) => {
 				setIcon('play-circle-outline')
 
 				if (auth().currentUser) {
-					firestore().collection("services").where("uid", "==", auth().currentUser.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
+					firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
 						.onSnapshot(services => {
 							if (!services.empty) {
 								const SERVICES = [];
 								services.forEach(service => {
 									SERVICES.push(service.data())
 								})
-								console.log(`🌳 Servicios en curso del usuario ${auth().currentUser.uid}`, SERVICES.length)
+								console.log(`🌳 Servicios en curso del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 								setServices(SERVICES)
 							}
 						})
@@ -92,14 +92,14 @@ export const ServicesList = ({ debug, type }) => {
 				setIcon('checkmark-circle-outline')
 
 				if (auth().currentUser) {
-					firestore().collection("services").where("uid", "==", auth().currentUser.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
+					firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
 						.onSnapshot(services => {
 							if (!services.empty) {
 								const SERVICES = [];
 								services.forEach(service => {
 									SERVICES.push(service.data())
 								})
-								console.log(`🌳 Servicios en curso puntuales del usuario ${auth().currentUser.uid}`, SERVICES.length)
+								console.log(`🌳 Servicios en curso puntuales del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 								setServices(SERVICES)
 							}
 						})
@@ -112,14 +112,14 @@ export const ServicesList = ({ debug, type }) => {
 				setIcon('clock-outline')
 
 				if (auth().currentUser) {
-					firestore().collection("services").where("uid", "==", auth().currentUser.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
+					firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
 						.onSnapshot(services => {
 							if (!services.empty) {
 								const SERVICES = [];
 								services.forEach(service => {
 									SERVICES.push(service.data())
 								})
-								console.log(`🌳 Servicios en curso recurrentes del usuario ${auth().currentUser.uid}`, SERVICES.length)
+								console.log(`🌳 Servicios en curso recurrentes del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 								setServices(SERVICES)
 							}
 						})
@@ -132,14 +132,14 @@ export const ServicesList = ({ debug, type }) => {
 				setIcon('shopping-bag-outline')
 
 				if (auth().currentUser) {
-					firestore().collection("services").where("uid", "==", auth().currentUser.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
+					firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
 						.onSnapshot(services => {
 							if (!services.empty) {
 								const SERVICES = [];
 								services.forEach(service => {
 									SERVICES.push(service.data())
 								})
-								console.log(`🌳 Servicios anteriores del usuario ${auth().currentUser.uid}`, SERVICES.length)
+								console.log(`🌳 Servicios anteriores del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 								setServices(SERVICES)
 							}
 						})

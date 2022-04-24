@@ -5,7 +5,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
-function useGetOne(debug, collection, entityIdentifier, entityValue) {
+function useFirebaseGetOne(debug, collection, entityIdentifier, entityValue) {
 	//Firebase
 	const auth = firebase.auth;
 	const firestore = firebase.firestore;
@@ -16,21 +16,25 @@ function useGetOne(debug, collection, entityIdentifier, entityValue) {
 	const [error, setError] = useState('');
 
 	useEffect(() => {
-		async function fetchData() {
+		let isMounted = true;
+		const fetchData = async () => {
 			try {
 				if (auth().currentUser) {
 					firestore()
 						.collection(collection)
 						.where(entityIdentifier, '==', entityValue)
 						.onSnapshot((item) => {
-							const ITEMS = [];
-							if (!item.empty) {
-								item.forEach((item) => {
-									ITEMS.push(item.data());
-								});
+							if (isMounted) {
+								setLoading(true);
+								const ITEMS = [];
+								if (!item.empty) {
+									item.forEach((item) => {
+										ITEMS.push(item.data());
+									});
+								}
+								setResult(ITEMS[0]);
+								setLoading(false);
 							}
-							setResult(ITEMS[0]);
-							setLoading(false);
 						});
 				} else {
 					setLoading(false);
@@ -40,18 +44,21 @@ function useGetOne(debug, collection, entityIdentifier, entityValue) {
 				setLoading(false);
 				setError(error.message);
 			}
-
 			setLoading(false);
-		}
+		};
 
 		fetchData();
+		return () => {
+			// cancel the subscription
+			isMounted = false;
+		};
 	}, [entityValue]);
 
 	return {
-		error,
 		loading,
 		result,
+		error,
 	};
 }
 
-export default useGetOne;
+export default useFirebaseGetOne;

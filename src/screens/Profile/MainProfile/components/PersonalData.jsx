@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from "prop-types";
 
 //Constants
@@ -55,6 +55,18 @@ export const PersonalDataForm = ({ debug }) => {
 		birthdayDateTime: user?.metadata?.birthdayDateTime || ""
 	})
 
+	useEffect(() => {
+		setValues({
+			name: user?.metadata?.name || "",
+			surnames: user?.metadata?.surnames || "",
+			email: user?.metadata?.email || "",
+			phoneNumber: user?.metadata?.phoneNumber || "",
+			gender: user?.metadata?.gender || "",
+			birthday: user?.metadata?.birthdayDateTime ? moment(user?.metadata?.birthdayDateTime).format("DD/MM/YYYY") : "",
+			birthdayDateTime: user?.metadata?.birthdayDateTime || ""
+		})
+	}, [user]);
+
 	//Handle
 	function handleChange(value, keyName) {
 		setValues(prevValues => {
@@ -64,7 +76,7 @@ export const PersonalDataForm = ({ debug }) => {
 			}
 		})
 		const metadata = { ...values }
-		metadata[keyName] = value.trim();
+		metadata[keyName] = value?.trim();
 		if (keyName === 'name') {
 			metadata['fullname'] = `${value} ${values?.surnames}`;
 		}

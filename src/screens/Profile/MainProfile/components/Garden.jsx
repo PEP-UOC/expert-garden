@@ -1,5 +1,5 @@
-import PropTypes from "prop-types";
 import React, { useState } from 'react';
+import PropTypes from "prop-types";
 
 //Constants
 import Constants from 'expo-constants';
@@ -52,23 +52,25 @@ export const GardenItem = ({ debug, garden }) => {
 
 	//Handle
 	function handleChange(value, keyName, auto = false) {
-		setValues(prevValues => {
-			return {
-				...prevValues,
-				[keyName]: value?.trim()
+		if (value) {
+			setValues(prevValues => {
+				return {
+					...prevValues,
+					[keyName]: value?.trim()
+				}
+			})
+			const newGarden = { ...values }
+			newGarden[keyName] = value?.trim();
+			//console.log('newGarden', newGarden)
+
+			const gardensArray = [...userTemporal?.gardens || []];
+			gardensArray[garden?.index] = newGarden;
+			//console.log('gardensArray', gardensArray)
+
+			dispatch(updateUserTemporal({ gardens: gardensArray }))
+			if (!auto) {
+				dispatch(updateHasNotSavedChanges())
 			}
-		})
-		const newGarden = { ...values }
-		newGarden[keyName] = value.trim();
-		//console.log('newGarden', newGarden)
-
-		const gardensArray = [...userTemporal?.gardens || []];
-		gardensArray[garden?.index] = newGarden;
-		//console.log('gardensArray', gardensArray)
-
-		dispatch(updateUserTemporal({ gardens: gardensArray }))
-		if (!auto) {
-			dispatch(updateHasNotSavedChanges())
 		}
 	}
 

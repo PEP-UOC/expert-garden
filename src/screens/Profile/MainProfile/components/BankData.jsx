@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from "prop-types";
 
 //Constants
@@ -47,6 +47,14 @@ export const BankDataForm = ({ debug }) => {
 		cardHolder: user?.bankDetails?.cardHolder || ""
 	})
 
+	useEffect(() => {
+		setValues({
+			cardNumber: user?.bankDetails?.cardNumber || "",
+			cardExpiration: user?.bankDetails?.cardExpiration || "",
+			cardHolder: user?.bankDetails?.cardHolder || ""
+		})
+	}, [user]);
+
 	//Handle
 	function handleChange(value, keyName) {
 		setValues(prevValues => {
@@ -56,7 +64,7 @@ export const BankDataForm = ({ debug }) => {
 			}
 		})
 		const bankDetails = { ...values }
-		bankDetails[keyName] = value.trim();
+		bankDetails[keyName] = value?.trim();
 		console.log('bankDetails', bankDetails)
 		dispatch(updateUserTemporal({ bankDetails }))
 		dispatch(updateHasNotSavedChanges())

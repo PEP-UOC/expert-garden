@@ -11,22 +11,22 @@ import globalStyles from '../../../styles/globalStyles'
 //Store
 import { useSelector, useDispatch } from 'react-redux'
 import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootAction';
-import { updateUser, removeUserTemporal } from '../../../store/user/userAction';
+import { removeUserTemporal } from '../../../store/user/userAction';
 
 //Components
-import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
-import { Divider, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
-import { SeparatorTopSection } from '../../../components/Separators/TopSection'
-import { TitleScreen } from '../../../components/Titles/Screen'
-import { BtnPrimary } from '../../../components/Buttons/Primary'
-import { ImgWithPicker } from '../../../components/Images/WithPicker'
-import { PersonalDataForm } from './components/PersonalData'
-import { GardensDataForm } from './components/GardensData'
-import { BankDataForm } from './components/BankData'
+//import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
+//import { Divider, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+//import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
+//import { SeparatorTopSection } from '../../../components/Separators/TopSection'
+//import { TitleScreen } from '../../../components/Titles/Screen'
+//import { BtnPrimary } from '../../../components/Buttons/Primary'
+//import { ImgWithPicker } from '../../../components/Images/WithPicker'
+//import { PersonalDataForm } from './components/PersonalData'
+//import { GardensDataForm } from './components/GardensData'
+//import { BankDataForm } from './components/BankData'
 
 //Icons
-import { AddIcon } from '../../../assets/icons/Add'
+//import { AddIcon } from '../../../assets/icons/Add'
 import { BackIcon } from '../../../assets/icons/Back'
 
 //Firebase
@@ -45,12 +45,12 @@ export const AddGardenScreen = ({ debug, navigation, route }) => {
 	const firestore = firebase.firestore;
 
 	//Styles
-	const gloStyles = useStyleSheet(globalStyles);
+	//const gloStyles = useStyleSheet(globalStyles);
 
 	//Store
 	const user = useSelector(state => state.userReducer.user);
 	const userTemporal = useSelector(state => state.userReducer.userTemporal);
-	const hasNotSavedChanges = useSelector(state => state.userReducer.hasNotSavedChanges);
+	//const hasNotSavedChanges = useSelector(state => state.userReducer.hasNotSavedChanges);
 
 	const saveChanges = () => {
 		//console.log('user', user)
@@ -91,7 +91,7 @@ export const AddGardenScreen = ({ debug, navigation, route }) => {
 		//Gardens
 		const gardens = userTemporal?.gardens || [];
 
-		firestore().collection("users").doc(auth().currentUser.uid).update({
+		firestore().collection("users").doc(auth()?.currentUser?.uid).update({
 			metadata,
 			bankDetails
 		})
@@ -110,21 +110,10 @@ export const AddGardenScreen = ({ debug, navigation, route }) => {
 						})
 					}));
 
-					auth().onAuthStateChanged((updatedUser) => {
-						if (updatedUser) {
-							dispatch(updateUser(
-								{
-									metadata,
-									bankDetails,
-									user: updatedUser
-								}
-							))
-							dispatch(setLoadingMessage(false))
-							dispatch(setErrorMessage(false))
-							console.log('🧹 Limpiando UserTemporal')
-							dispatch(removeUserTemporal())
-						}
-					});
+					dispatch(setLoadingMessage(false))
+					dispatch(setErrorMessage(false))
+					console.log('🧹 Limpiando UserTemporal')
+					dispatch(removeUserTemporal())
 
 				}).catch((error) => {
 					console.error(error.message);
@@ -158,78 +147,7 @@ export const AddGardenScreen = ({ debug, navigation, route }) => {
 
 
 	return (
-		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-					<View style={{ flex: 1, justifyContent: "space-around" }}>
-						<TopNavigation title={'Nuevo jardín'} alignment='center' accessoryLeft={BackAction} />
-						<Divider />
-						<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-							contentContainerStyle={{ ...gloStyles.scrollView }}>
-							<Layout style={{ ...gloStyles.layout }}>
-								<SeparatorTopScreen />
-								<View style={{ ...gloStyles.view }}>
-									<View style={{ ...gloStyles.section.primary }}>
-										<TitleScreen icon={'person-outline'} primaryText={gardenInfo?.item?.type || ''} secondaryText={''} />
-										<ImgWithPicker />
-										{
-											{
-												'client': (
-													<>
-														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-													</>
-												),
-												'business': (
-													<>
-														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-													</>
-												),
-												'worker': (
-													<>
-														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-													</>
-												)
-											}[user?.role]
-										}
-									</View>
-									<View style={{ ...gloStyles.section.secondary }}>
-										<SeparatorTopSection />
-										{
-											{
-												'client': (
-													<>
-														<PersonalDataForm />
-														{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-
-														<GardensDataForm />
-														{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-
-														<BankDataForm />
-														{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-													</>
-												),
-												'business': (
-													<>
-														<PersonalDataForm />
-														{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-													</>
-												),
-												'worker': (
-													<>
-														<PersonalDataForm />
-														{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-													</>
-												)
-											}[user?.role]
-										}
-									</View>
-								</View>
-							</Layout>
-						</ScrollView>
-					</View>
-				</TouchableWithoutFeedback>
-			</KeyboardAvoidingView>
-		</SafeAreaView >
+		null
 	)
 };
 
