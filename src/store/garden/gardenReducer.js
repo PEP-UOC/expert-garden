@@ -1,20 +1,9 @@
-import {
-	REMOVE_GARDEN_TEMPORAL,
-	UPDATE_GARDEN_TEMPORAL,
-	UPDATE_GARDEN_HAS_NOT_SAVED_CHANGES,
-} from './gardenTypes';
+import { UPDATE_GARDEN_TEMPORAL, REMOVE_GARDEN_TEMPORAL } from './gardenTypes';
 const initialState = {
 	gardenTemporal: false,
-	hasNotSavedChanges: false,
 };
 const gardenReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case REMOVE_GARDEN_TEMPORAL:
-			return {
-				...state,
-				gardenTemporal: false,
-				hasNotSavedChanges: false,
-			};
 		case UPDATE_GARDEN_TEMPORAL:
 			return {
 				...state,
@@ -24,10 +13,11 @@ const gardenReducer = (state = initialState, action) => {
 				},
 				hasNotSavedChanges: false,
 			};
-		case UPDATE_GARDEN_HAS_NOT_SAVED_CHANGES:
+		case REMOVE_GARDEN_TEMPORAL:
 			return {
 				...state,
-				hasNotSavedChanges: true,
+				gardenTemporal: false,
+				hasNotSavedChanges: false,
 			};
 		default:
 			return state;

@@ -24,6 +24,8 @@ export function useFirebaseSaveAllChanges(debug) {
 		//console.log('🙋‍♂️ FISA - user', user)
 		console.log('🚨 FISA - changesToSave', changesToSave);
 
+		dispatch(setLoadingMessage(debug ? '🔧 Guardando' : 'Guardando'));
+
 		//Metadata
 		const name = changesToSave?.metadata?.name || user?.metadata?.name || '';
 		const surnames = changesToSave?.metadata?.surnames || user?.metadata?.surnames || '';

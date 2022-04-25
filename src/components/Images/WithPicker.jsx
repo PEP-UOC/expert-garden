@@ -6,7 +6,7 @@ import Constants from 'expo-constants';
 
 //Store
 import { useDispatch } from 'react-redux'
-import { setErrorMessage, setLoadingMessage } from '../../store/root/rootAction';
+import { setErrorMessage } from '../../store/root/rootAction';
 
 //Components
 import { View, Image, TouchableWithoutFeedback, TouchableOpacity } from 'react-native'
@@ -86,7 +86,6 @@ export const ImgWithPicker = ({ debug, entity, entityType }) => {
 				setChangeOrAdd('change')
 				break;
 		}
-		dispatch(setLoadingMessage(false))
 		dispatch(setErrorMessage(false))
 	}, []);
 

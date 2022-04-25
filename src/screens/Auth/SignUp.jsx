@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import PropTypes from "prop-types";
 
 //Constants
@@ -124,7 +124,6 @@ export const SignUpScreen = ({ debug, navigation }) => {
 											displayName: `${name} ${surnames}`,
 										}).then(() => {
 											dispatch(setLoggedIn(true))
-											dispatch(setLoadingMessage(false))
 											dispatch(setErrorMessage(false))
 										}).catch((error) => {
 											console.error(error.message);
@@ -166,11 +165,6 @@ export const SignUpScreen = ({ debug, navigation }) => {
 	function allFilled() {
 		return values?.name === '' || (values?.surnames === '' && values?.role === 'client') || values?.role === '' || values?.email === '' || values?.password === '' || values?.password2 === ''
 	}
-
-	useEffect(() => {
-		dispatch(setLoadingMessage(false))
-		dispatch(setErrorMessage(false))
-	}, []);
 
 	//Select
 	const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));

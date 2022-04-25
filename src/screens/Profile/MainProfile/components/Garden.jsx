@@ -12,6 +12,7 @@ import styles from './styles';
 //Store
 import { useDispatch, useSelector } from 'react-redux';
 import { updateChangesToSave } from '../../../../store/change/changeAction';
+import { setLoadingMessage } from '../../../../store/root/rootAction';
 
 //Navigation
 import { useNavigation } from '@react-navigation/native';
@@ -101,7 +102,10 @@ export const GardenItem = ({ debug, garden }) => {
 			>
 				<TouchableOpacity
 					style={styles.button}
-					onPress={() => navigation.push("AddGardenScreen", { index: garden?.index })}
+					onPress={() => {
+						dispatch(setLoadingMessage(debug ? '🔧 Cargando' : 'Cargando'));
+						navigation.push("AddGardenScreen", { index: garden?.index })
+					}}
 				>
 					<View style={{ ...gloStyles?.inputs?.row, ...ownStyles?.garden?.row }}>
 						<GridIcon
@@ -179,7 +183,10 @@ export const GardenItem = ({ debug, garden }) => {
 						}
 					}
 					size='medium'
-					onPress={() => navigation.push("GardenDetailScreen", { gid: garden?.item?.gid, index: garden?.index })}
+					onPress={() => {
+						dispatch(setLoadingMessage(debug ? '🔧 Cargando' : 'Cargando'));
+						navigation.push("GardenDetailScreen", { gid: garden?.item?.gid, index: garden?.index })
+					}}
 					accessoryLeft={GridIcon}
 				>
 					Detalles

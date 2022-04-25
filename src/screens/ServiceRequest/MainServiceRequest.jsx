@@ -20,14 +20,13 @@ import mainServices from '../../data/mainServices.json'
 
 //Components
 import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
-import { Divider, Layout, Button, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { Divider, Layout, Button, TopNavigation } from '@ui-kitten/components';
 import { TitleScreen } from '../../components/Titles/Screen'
 import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
 import { SeparatorTopSection } from '../../components/Separators/TopSection'
 
 //Icons
 import { AddIcon } from '../../assets/icons/Add'
-import { BackIcon } from '../../assets/icons/Back'
 
 //Firebase
 import firebase from 'firebase/compat/app';
@@ -170,15 +169,6 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
 			});
 	};
 
-	//Navigation
-	const BackAction = () => (
-		<TopNavigationAction icon={BackIcon} onPress={navigateBack} />
-	);
-
-	const navigateBack = () => {
-		navigation.goBack();
-	};
-
 	//Logout
 	const doLogout = () => {
 
@@ -242,7 +232,7 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
 				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 					<View style={{ flex: 1, justifyContent: "space-around" }}>
-						<TopNavigation title={'Solicita un servicio'} alignment='center' accessoryLeft={BackAction} />
+						<TopNavigation title={'Solicita un servicio'} alignment='center' />
 						<Divider />
 						<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 							contentContainerStyle={{ ...gloStyles.scrollView }}>

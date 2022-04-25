@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import PropTypes from "prop-types";
 
 //Constants
@@ -76,7 +76,6 @@ export const LoginScreen = ({ debug, navigation }) => {
 			.then((user) => {
 				console.info('🔑 LOGI - Logged In!', user.user.email);
 				dispatch(addUser(user))
-				dispatch(setLoadingMessage(false))
 				dispatch(setErrorMessage(false))
 				dispatch(setLoggedIn(true))
 			})
@@ -87,11 +86,6 @@ export const LoginScreen = ({ debug, navigation }) => {
 				dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 			});
 	}
-
-	useEffect(() => {
-		dispatch(setLoadingMessage(false))
-		//dispatch(setErrorMessage(false))
-	}, []);
 
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>

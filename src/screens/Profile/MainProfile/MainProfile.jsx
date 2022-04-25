@@ -48,7 +48,6 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 	useEffect(() => {
 		console.log('🧹 MAPR - Limpiando changesToSave')
 		dispatch(removeChangesToSave())
-		dispatch(setLoadingMessage(false))
 		dispatch(setErrorMessage(false))
 	}, []);
 
