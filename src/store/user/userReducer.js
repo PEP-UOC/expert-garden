@@ -3,13 +3,13 @@ import {
 	REMOVE_USER,
 	REMOVE_USER_TEMPORAL,
 	UPDATE_USER,
-	UPDATE_USER_TEMPORAL,
+	UPDATE_USER_CHANGES_TO_SAVE,
 	UPDATE_USER_HAS_NOT_SAVED_CHANGES,
 } from './userTypes';
 
 const initialState = {
 	user: false,
-	userTemporal: false,
+	changesToSave: false,
 	hasNotSavedChanges: false,
 };
 
@@ -30,7 +30,7 @@ const userReducer = (state = initialState, action) => {
 		case REMOVE_USER_TEMPORAL:
 			return {
 				...state,
-				userTemporal: false,
+				changesToSave: false,
 				hasNotSavedChanges: false,
 			};
 		case UPDATE_USER:
@@ -42,11 +42,11 @@ const userReducer = (state = initialState, action) => {
 				},
 				hasNotSavedChanges: false,
 			};
-		case UPDATE_USER_TEMPORAL:
+		case UPDATE_USER_CHANGES_TO_SAVE:
 			return {
 				...state,
-				userTemporal: {
-					...state.userTemporal,
+				changesToSave: {
+					...state.changesToSave,
 					...action.payload,
 				},
 				hasNotSavedChanges: false,

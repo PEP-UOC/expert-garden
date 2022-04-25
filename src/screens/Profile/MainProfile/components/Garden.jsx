@@ -11,7 +11,7 @@ import styles from './styles';
 
 //Store
 import { useDispatch, useSelector } from 'react-redux';
-import { updateHasNotSavedChanges, updateUserTemporal } from '../../../../store/user/userAction';
+import { updateHasNotSavedChanges, updateChangesToSave } from '../../../../store/user/userAction';
 
 //Navigation
 import { useNavigation } from '@react-navigation/native';
@@ -38,7 +38,7 @@ export const GardenItem = ({ debug, garden }) => {
 	const ownStyles = useStyleSheet(styles);
 
 	//Store
-	const userTemporal = useSelector(state => state.userReducer.userTemporal);
+	const changesToSave = useSelector(state => state.userReducer.changesToSave);
 
 	//Inputs State
 	const [values, setValues] = useState({
@@ -63,11 +63,11 @@ export const GardenItem = ({ debug, garden }) => {
 			newGarden[keyName] = value?.trim();
 			//console.log('🌳 GDAT - newGarden', newGarden)
 
-			const gardensArray = [...userTemporal?.gardens || []];
+			const gardensArray = [...changesToSave?.gardens || []];
 			gardensArray[garden?.index] = newGarden;
 			//console.log('🌳 GDAT - gardensArray', gardensArray)
 
-			dispatch(updateUserTemporal({ gardens: gardensArray }))
+			dispatch(updateChangesToSave({ gardens: gardensArray }))
 			if (!auto) {
 				dispatch(updateHasNotSavedChanges())
 			}

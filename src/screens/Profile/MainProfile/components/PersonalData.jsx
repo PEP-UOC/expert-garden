@@ -11,7 +11,7 @@ import styles from './styles'
 
 //Store
 import { useSelector, useDispatch } from 'react-redux'
-import { updateUserTemporal, updateHasNotSavedChanges } from '../../../../store/user/userAction';
+import { updateChangesToSave, updateHasNotSavedChanges } from '../../../../store/user/userAction';
 
 //Navigation
 //import { useNavigation } from '@react-navigation/native';
@@ -82,7 +82,7 @@ export const PersonalDataForm = ({ debug }) => {
 		}
 		//console.log('📜 PEDA - newMetadata', newMetadata)
 
-		dispatch(updateUserTemporal({ metadata: newMetadata }))
+		dispatch(updateChangesToSave({ metadata: newMetadata }))
 		dispatch(updateHasNotSavedChanges())
 	}
 

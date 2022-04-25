@@ -12,7 +12,7 @@ import styles from './styles'
 //Store
 import { useSelector, useDispatch } from 'react-redux'
 import { setErrorMessage } from '../../../../store/root/rootAction';
-import { updateUserTemporal, updateHasNotSavedChanges } from '../../../../store/user/userAction';
+import { updateChangesToSave, updateHasNotSavedChanges } from '../../../../store/user/userAction';
 
 //Navigation
 //import { useNavigation } from '@react-navigation/native';
@@ -35,7 +35,7 @@ export const GardenDataForm = ({ debug, gid, gardenIndex }) => {
 	const ownStyles = useStyleSheet(styles);
 
 	//Store
-	const userTemporal = useSelector(state => state.userReducer.userTemporal);
+	const changesToSave = useSelector(state => state.userReducer.changesToSave);
 
 	//State
 	const [values, setValues] = useState({
@@ -64,11 +64,11 @@ export const GardenDataForm = ({ debug, gid, gardenIndex }) => {
 		newGarden[keyName] = value?.trim();
 		//console.log('🌳 GDAT - newGarden', newGarden)
 
-		const gardensArray = [...userTemporal?.gardens || []];
+		const gardensArray = [...changesToSave?.gardens || []];
 		gardensArray[gardenIndex] = newGarden;
 		//console.log('🌳 GDAT - gardensArray', gardensArray)
 
-		dispatch(updateUserTemporal({ gardens: gardensArray }))
+		dispatch(updateChangesToSave({ gardens: gardensArray }))
 		if (!auto) {
 			dispatch(updateHasNotSavedChanges())
 		}

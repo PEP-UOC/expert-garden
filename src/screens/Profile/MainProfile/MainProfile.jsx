@@ -11,7 +11,7 @@ import globalStyles from '../../../styles/globalStyles'
 //Store
 import { useSelector, useDispatch } from 'react-redux'
 import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootAction';
-import { removeUserTemporal } from '../../../store/user/userAction';
+import { removeChangesToSave } from '../../../store/user/userAction';
 
 //Components
 import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
@@ -46,8 +46,8 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 	const [saveChanges] = useFirebaseSaveAllChanges(debug);
 
 	useEffect(() => {
-		console.log('🧹 MAPR - Limpiando UserTemporal')
-		dispatch(removeUserTemporal())
+		console.log('🧹 MAPR - Limpiando changesToSave')
+		dispatch(removeChangesToSave())
 		dispatch(setLoadingMessage(false))
 		dispatch(setErrorMessage(false))
 	}, []);

@@ -1,7 +1,7 @@
 //Store
 import { useSelector, useDispatch } from 'react-redux';
 import { setErrorMessage, setLoadingMessage } from '../store/root/rootAction';
-import { removeUserTemporal } from '../store/user/userAction';
+import { removeChangesToSave } from '../store/user/userAction';
 
 //Firebase
 import firebase from 'firebase/compat/app';
@@ -18,25 +18,25 @@ export function useFirebaseSaveAllChanges(debug) {
 
 	//Store
 	const user = useSelector((state) => state.userReducer.user);
-	const userTemporal = useSelector((state) => state.userReducer.userTemporal);
+	const changesToSave = useSelector((state) => state.userReducer.changesToSave);
 
 	const saveChanges = async () => {
 		//console.log('🙋‍♂️ FISA - user', user)
-		console.log('🔄 FISA - userTemporal', userTemporal);
+		console.log('🔄 FISA - changesToSave', changesToSave);
 
 		//Metadata
-		const name = userTemporal?.metadata?.name || user?.metadata?.name || '';
-		const surnames = userTemporal?.metadata?.surnames || user?.metadata?.surnames || '';
+		const name = changesToSave?.metadata?.name || user?.metadata?.name || '';
+		const surnames = changesToSave?.metadata?.surnames || user?.metadata?.surnames || '';
 		const fullname =
-			userTemporal?.metadata?.fullname ||
+			changesToSave?.metadata?.fullname ||
 			`${user?.metadata?.name} ${user?.metadata?.surnames}` ||
 			'';
-		const email = userTemporal?.metadata?.email || user?.metadata?.email || '';
-		const phoneNumber = userTemporal?.metadata?.phoneNumber || user?.metadata?.phoneNumber || '';
-		const gender = userTemporal?.metadata?.gender || user?.metadata?.gender || '';
-		const birthday = userTemporal?.metadata?.birthday || user?.metadata?.birthdayDateTime || '';
+		const email = changesToSave?.metadata?.email || user?.metadata?.email || '';
+		const phoneNumber = changesToSave?.metadata?.phoneNumber || user?.metadata?.phoneNumber || '';
+		const gender = changesToSave?.metadata?.gender || user?.metadata?.gender || '';
+		const birthday = changesToSave?.metadata?.birthday || user?.metadata?.birthdayDateTime || '';
 		const birthdayDateTime =
-			userTemporal?.metadata?.birthdayDateTime || user?.metadata?.birthdayDateTime || '';
+			changesToSave?.metadata?.birthdayDateTime || user?.metadata?.birthdayDateTime || '';
 		const metadata = {
 			...user.metadata,
 			name,
@@ -50,10 +50,12 @@ export function useFirebaseSaveAllChanges(debug) {
 		};
 
 		//Bank details
-		const cardNumber = userTemporal?.bankDetails?.cardNumber || user?.bankDetails?.cardNumber || '';
+		const cardNumber =
+			changesToSave?.bankDetails?.cardNumber || user?.bankDetails?.cardNumber || '';
 		const cardExpiration =
-			userTemporal?.bankDetails?.cardExpiration || user?.bankDetails?.cardExpiration || '';
-		const cardHolder = userTemporal?.bankDetails?.cardHolder || user?.bankDetails?.cardHolder || '';
+			changesToSave?.bankDetails?.cardExpiration || user?.bankDetails?.cardExpiration || '';
+		const cardHolder =
+			changesToSave?.bankDetails?.cardHolder || user?.bankDetails?.cardHolder || '';
 		const bankDetails = {
 			...user.bankDetails,
 			cardNumber,
@@ -62,7 +64,7 @@ export function useFirebaseSaveAllChanges(debug) {
 		};
 
 		//Gardens
-		const gardens = userTemporal?.gardens || [];
+		const gardens = changesToSave?.gardens || [];
 
 		firestore()
 			.collection('users')
@@ -93,8 +95,8 @@ export function useFirebaseSaveAllChanges(debug) {
 						console.log('🟢 FISA - gardens UPDATED');
 						dispatch(setLoadingMessage(false));
 						dispatch(setErrorMessage(false));
-						console.log('🧹 FISA - Limpiando UserTemporal');
-						dispatch(removeUserTemporal());
+						console.log('🧹 FISA - Limpiando changesToSave');
+						dispatch(removeChangesToSave());
 					})
 					.catch((error) => {
 						console.error(error.message);
