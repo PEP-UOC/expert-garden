@@ -11,7 +11,7 @@ import styles from './styles'
 
 //Store
 import { useSelector, useDispatch } from 'react-redux'
-import { updateChangesToSave, updateHasNotSavedChanges } from '../../../../store/user/userAction';
+import { updateChangesToSave } from '../../../../store/change/changeAction';
 
 //Navigation
 //import { useNavigation } from '@react-navigation/native';
@@ -82,8 +82,7 @@ export const PersonalDataForm = ({ debug }) => {
 		}
 		//console.log('📜 PEDA - newMetadata', newMetadata)
 
-		dispatch(updateChangesToSave({ metadata: newMetadata }))
-		dispatch(updateHasNotSavedChanges())
+		dispatch(updateChangesToSave({ metadata: newMetadata }, true))
 	}
 
 	//Keyboard

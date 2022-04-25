@@ -21,7 +21,6 @@ export function useProvinceTown(savedPostalCode, savedProvince, savedTown) {
 	//Provinces
 	useEffect(() => {
 		setProvince('');
-		setTownsSelectedIndex(new IndexPath(0));
 		const provinceFound = provinces.find(
 			(province) => province.value.substring(0, 2) === postalCode.substring(0, 2),
 		);
@@ -34,6 +33,7 @@ export function useProvinceTown(savedPostalCode, savedProvince, savedTown) {
 				return prov.label === province;
 			});
 			const townsList = towns.filter((town) => town.CPRO === provinceFound?.value);
+			setTownsSelectedIndex(new IndexPath(0));
 			setTownsList(townsList);
 		}
 	}, [province]);
@@ -45,7 +45,7 @@ export function useProvinceTown(savedPostalCode, savedProvince, savedTown) {
 
 	return [
 		(newPostalCode) => {
-			//console.log('⚪️ PRTO - SET newPostalCode', newPostalCode);
+			console.log('⚪️ PRTO - SET newPostalCode', newPostalCode);
 			setPostalCode(newPostalCode);
 		},
 		province,

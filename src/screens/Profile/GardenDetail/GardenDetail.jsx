@@ -11,7 +11,6 @@ import globalStyles from '../../../styles/globalStyles'
 //Store
 import { useSelector, useDispatch } from 'react-redux'
 import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootAction';
-import { removeGardenTemporal } from '../../../store/garden/gardenAction';
 
 //Components
 import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
@@ -46,7 +45,7 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 
 	//Store
 	const user = useSelector(state => state.userReducer.user);
-	const hasNotSavedChanges = useSelector(state => state.userReducer.hasNotSavedChanges);
+	const thereAreNotSavedChanges = useSelector(state => state.changeReducer.thereAreNotSavedChanges);
 
 	//Hooks
 	const { loading: gardenLoading, result: garden, error: gardenError } = useFirebaseGetOne(debug, 'gardens', 'gid', gid);
@@ -66,7 +65,6 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 
 	useEffect(() => {
 		console.log('🧹 GDET - Limpiando GardenTemporal')
-		dispatch(removeGardenTemporal())
 		dispatch(setErrorMessage(false))
 	}, []);
 
@@ -111,17 +109,17 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 													{{
 														'client': (
 															<>
-																{Platform.OS === "web" && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														),
 														'business': (
 															<>
-																{Platform.OS === "web" && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														),
 														'worker': (
 															<>
-																{Platform.OS === "web" && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														)
 													}[user?.role]}
@@ -132,19 +130,19 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 														'client': (
 															<>
 																<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
-																{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+																{Platform.OS !== "web" && thereAreNotSavedChanges && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														),
 														'business': (
 															<>
 																<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
-																{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+																{Platform.OS !== "web" && thereAreNotSavedChanges && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														),
 														'worker': (
 															<>
 																<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
-																{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+																{Platform.OS !== "web" && thereAreNotSavedChanges && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														)
 													}[user?.role]}

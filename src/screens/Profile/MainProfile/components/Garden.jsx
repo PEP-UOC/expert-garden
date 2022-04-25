@@ -11,14 +11,14 @@ import styles from './styles';
 
 //Store
 import { useDispatch, useSelector } from 'react-redux';
-import { updateHasNotSavedChanges, updateChangesToSave } from '../../../../store/user/userAction';
+import { updateChangesToSave } from '../../../../store/change/changeAction';
 
 //Navigation
 import { useNavigation } from '@react-navigation/native';
 
 //Components
 import { Button, Card, Input, Select, SelectItem, Text } from '@ui-kitten/components';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 
 //Icons
 import { GridIcon } from '../../../../assets/icons/Grid';
@@ -38,7 +38,7 @@ export const GardenItem = ({ debug, garden }) => {
 	const ownStyles = useStyleSheet(styles);
 
 	//Store
-	const changesToSave = useSelector(state => state.userReducer.changesToSave);
+	const changesToSave = useSelector(state => state.changeReducer.changesToSave);
 
 	//Inputs State
 	const [values, setValues] = useState({
@@ -67,10 +67,7 @@ export const GardenItem = ({ debug, garden }) => {
 			gardensArray[garden?.index] = newGarden;
 			//console.log('🌳 GDAT - gardensArray', gardensArray)
 
-			dispatch(updateChangesToSave({ gardens: gardensArray }))
-			if (!auto) {
-				dispatch(updateHasNotSavedChanges())
-			}
+			dispatch(updateChangesToSave({ gardens: gardensArray }, !auto))
 		}
 	}
 
@@ -87,6 +84,10 @@ export const GardenItem = ({ debug, garden }) => {
 	//Hooks
 	const [setPostalCode, province, townsList, townsSelectedIndex, setTownsSelectedIndex, townDisplayValue] = useProvinceTown(values.postalCode, values.province, values.town);
 
+	if (garden?.item?.type === 'CHALET') {
+		//console.log('⛱  DEBU - townDisplayValue', townDisplayValue)
+	}
+
 	const townRenderOption = (title) => (
 		<SelectItem key={title} title={title} />
 	);
@@ -98,14 +99,19 @@ export const GardenItem = ({ debug, garden }) => {
 				style={{ ...ownStyles?.garden?.cardAddGarden }}
 				status='primary'
 			>
-				<View style={{ ...gloStyles?.inputs?.row, ...ownStyles?.garden?.row }}>
-					<GridIcon
-						fill={ownStyles?.addGardenIcon?.fill}
-						width={120}
-						height={80}
-					/>
-					<Text category='p1' style={{ ...gloStyles?.textCenter }}>Añadir jardín</Text>
-				</View>
+				<TouchableOpacity
+					style={styles.button}
+					onPress={() => navigation.push("AddGardenScreen", { index: garden?.index })}
+				>
+					<View style={{ ...gloStyles?.inputs?.row, ...ownStyles?.garden?.row }}>
+						<GridIcon
+							fill={ownStyles?.addGardenIcon?.fill}
+							width={120}
+							height={80}
+						/>
+						<Text category='p1' style={{ ...gloStyles?.textCenter }}>Añadir jardín</Text>
+					</View>
+				</TouchableOpacity>
 			</Card>
 		)
 	}

@@ -11,7 +11,7 @@ import styles from './styles'
 
 //Store
 import { useSelector, useDispatch } from 'react-redux'
-import { updateChangesToSave, updateHasNotSavedChanges } from '../../../../store/user/userAction';
+import { updateChangesToSave } from '../../../../store/change/changeAction';
 
 //Navigation
 //import { useNavigation } from '@react-navigation/native';
@@ -61,8 +61,7 @@ export const BankDataForm = ({ debug }) => {
 		newBankDetails[keyName] = value?.trim();
 		//console.log('💶 BKDA - newBankDetails', newBankDetails)
 
-		dispatch(updateChangesToSave({ bankDetails: newBankDetails }))
-		dispatch(updateHasNotSavedChanges())
+		dispatch(updateChangesToSave({ bankDetails: newBankDetails }, true))
 	}
 
 	return (

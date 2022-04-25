@@ -1,7 +1,7 @@
 //Store
 import { useSelector, useDispatch } from 'react-redux';
 import { setErrorMessage, setLoadingMessage } from '../store/root/rootAction';
-import { removeChangesToSave } from '../store/user/userAction';
+import { removeChangesToSave } from '../store/change/changeAction';
 
 //Firebase
 import firebase from 'firebase/compat/app';
@@ -18,11 +18,11 @@ export function useFirebaseSaveAllChanges(debug) {
 
 	//Store
 	const user = useSelector((state) => state.userReducer.user);
-	const changesToSave = useSelector((state) => state.userReducer.changesToSave);
+	const changesToSave = useSelector((state) => state.changeReducer.changesToSave);
 
 	const saveChanges = async () => {
 		//console.log('🙋‍♂️ FISA - user', user)
-		console.log('🔄 FISA - changesToSave', changesToSave);
+		console.log('🚨 FISA - changesToSave', changesToSave);
 
 		//Metadata
 		const name = changesToSave?.metadata?.name || user?.metadata?.name || '';

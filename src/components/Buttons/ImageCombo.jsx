@@ -39,6 +39,12 @@ export const BtnImageCombo = ({ debug, showImageChangeCombo, showingCamera, setS
 	const gloStyles = useStyleSheet(globalStyles);
 	const ownStyles = useStyleSheet(styles);
 
+	//Más información: https://docs.expo.dev/versions/latest/sdk/media-library/
+	//TODO Configuración de producción: https://docs.expo.dev/versions/latest/sdk/media-library/#permissions
+
+	//Más información: https://docs.expo.dev/versions/latest/sdk/camera/
+	//TODO Configuración de producción: https://docs.expo.dev/versions/latest/sdk/camera/#camerarequestpermissionsasync
+
 	//PICKER
 	const [pickerHasPermission, setPickerHasPermission] = useState(null);
 	const [pickerPermissionError, setPickerPermissionError] = useState(null);

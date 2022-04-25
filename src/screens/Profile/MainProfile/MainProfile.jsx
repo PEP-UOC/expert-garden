@@ -11,7 +11,7 @@ import globalStyles from '../../../styles/globalStyles'
 //Store
 import { useSelector, useDispatch } from 'react-redux'
 import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootAction';
-import { removeChangesToSave } from '../../../store/user/userAction';
+import { removeChangesToSave } from '../../../store/change/changeAction';
 
 //Components
 import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
@@ -40,7 +40,7 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 
 	//Store
 	const user = useSelector(state => state.userReducer.user);
-	const hasNotSavedChanges = useSelector(state => state.userReducer.hasNotSavedChanges);
+	const thereAreNotSavedChanges = useSelector(state => state.changeReducer.thereAreNotSavedChanges);
 
 	//Hooks
 	const [saveChanges] = useFirebaseSaveAllChanges(debug);
@@ -72,17 +72,17 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 											{
 												'client': (
 													<>
-														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 													</>
 												),
 												'business': (
 													<>
-														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 													</>
 												),
 												'worker': (
 													<>
-														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 													</>
 												)
 											}[user?.role]
@@ -94,18 +94,18 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 											{
 												'client': (
 													<>
-														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
+														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
 
 														<PersonalDataForm />
 														<GardensDataForm />
 														<BankDataForm />
 
-														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
+														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
 													</>
 												),
 												'business': (
 													<>
-														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
+														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
 
 														<PersonalDataForm />
 														<BankDataForm />
@@ -113,7 +113,7 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 												),
 												'worker': (
 													<>
-														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
+														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
 
 														<PersonalDataForm />
 														<BankDataForm />

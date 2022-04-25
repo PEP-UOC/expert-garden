@@ -1,16 +1,7 @@
-import {
-	ADD_USER,
-	REMOVE_USER,
-	REMOVE_USER_TEMPORAL,
-	UPDATE_USER,
-	UPDATE_USER_CHANGES_TO_SAVE,
-	UPDATE_USER_HAS_NOT_SAVED_CHANGES,
-} from './userTypes';
+import { ADD_USER, UPDATE_USER, REMOVE_USER } from './userTypes';
 
 const initialState = {
 	user: false,
-	changesToSave: false,
-	hasNotSavedChanges: false,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -19,19 +10,7 @@ const userReducer = (state = initialState, action) => {
 			return {
 				...state,
 				user: action.payload,
-				hasNotSavedChanges: false,
-			};
-		case REMOVE_USER:
-			return {
-				...state,
-				user: false,
-				hasNotSavedChanges: false,
-			};
-		case REMOVE_USER_TEMPORAL:
-			return {
-				...state,
-				changesToSave: false,
-				hasNotSavedChanges: false,
+				thereAreNotSavedChanges: false,
 			};
 		case UPDATE_USER:
 			return {
@@ -40,21 +19,13 @@ const userReducer = (state = initialState, action) => {
 					...state.user,
 					...action.payload,
 				},
-				hasNotSavedChanges: false,
+				thereAreNotSavedChanges: false,
 			};
-		case UPDATE_USER_CHANGES_TO_SAVE:
+		case REMOVE_USER:
 			return {
 				...state,
-				changesToSave: {
-					...state.changesToSave,
-					...action.payload,
-				},
-				hasNotSavedChanges: false,
-			};
-		case UPDATE_USER_HAS_NOT_SAVED_CHANGES:
-			return {
-				...state,
-				hasNotSavedChanges: true,
+				user: false,
+				thereAreNotSavedChanges: false,
 			};
 		default:
 			return state;

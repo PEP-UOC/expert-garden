@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from "prop-types";
 
 //Constants
@@ -10,8 +10,7 @@ import globalStyles from '../../../styles/globalStyles'
 
 //Store
 import { useSelector, useDispatch } from 'react-redux'
-import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootAction';
-import { removeGardenTemporal } from '../../../store/garden/gardenAction';
+import { setErrorMessage } from '../../../store/root/rootAction';
 
 //Components
 import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
@@ -21,7 +20,7 @@ import { SeparatorTopSection } from '../../../components/Separators/TopSection'
 import { TitleScreen } from '../../../components/Titles/Screen'
 import { BtnPrimary } from '../../../components/Buttons/Primary'
 import { ImgWithPicker } from '../../../components/Images/WithPicker'
-//import { GardenDataForm } from './components/GardenData'
+import { GardenDataForm } from './components/GardenData'
 
 //Icons
 import { AddIcon } from '../../../assets/icons/Add'
@@ -31,12 +30,10 @@ import { BackIcon } from '../../../assets/icons/Back'
 import { toLower, upperFirst } from 'lodash';
 
 //Hooks
-import useFirebaseGetOne from '../../../hooks/useFirebaseGetOne'
 import { useFirebaseSaveAllChanges } from '../../../hooks/useFirebaseSaveAllChanges'
 
 // eslint-disable-next-line no-unused-vars
 export const AddGardenScreen = ({ debug, navigation, route }) => {
-	const gid = route.params.gid;
 	const gardenIndex = parseInt(route.params.index);
 
 	const dispatch = useDispatch()
@@ -46,10 +43,9 @@ export const AddGardenScreen = ({ debug, navigation, route }) => {
 
 	//Store
 	const user = useSelector(state => state.userReducer.user);
-	const hasNotSavedChanges = useSelector(state => state.userReducer.hasNotSavedChanges);
+	const thereAreNotSavedChanges = useSelector(state => state.changeReducer.thereAreNotSavedChanges);
 
 	//Hooks
-	const { loading: gardenLoading, result: garden, error: gardenError } = useFirebaseGetOne(debug, 'gardens', 'gid', gid);
 	const [saveChanges] = useFirebaseSaveAllChanges(debug);
 
 	//Navigation
@@ -61,33 +57,10 @@ export const AddGardenScreen = ({ debug, navigation, route }) => {
 		navigation.goBack();
 	};
 
-	//State
-	const [loadComponents, setLoadComponents] = useState(false);
-
 	useEffect(() => {
 		console.log('🧹 GADD - Limpiando GardenTemporal')
-		dispatch(removeGardenTemporal())
 		dispatch(setErrorMessage(false))
 	}, []);
-
-	useEffect(() => {
-		//console.log(`🌀 GADD - Cargando   ${gid} | ${gardenLoading.toString()}`)
-	}, [gardenLoading]);
-
-	useEffect(() => {
-		if (garden?.gid) {
-			//console.log(`🍀 GADD - Jardín     ${gid} |`, garden?.type)
-			setLoadComponents(true);
-			dispatch(setLoadingMessage(false))
-		}
-	}, [garden]);
-
-	useEffect(() => {
-		if (gardenError) {
-			console.log(`🩸 GADD - Error   ${gid} | ${gardenError}`)
-			dispatch(setErrorMessage(gardenError))
-		}
-	}, [gardenError]);
 
 
 	return (
@@ -102,55 +75,55 @@ export const AddGardenScreen = ({ debug, navigation, route }) => {
 							<Layout style={{ ...gloStyles.layout }}>
 								<SeparatorTopScreen />
 								<View style={{ ...gloStyles.view }}>
-									{loadComponents ?
-										(
-											<>
-												<View style={{ ...gloStyles.section.primary }}>
-													<TitleScreen icon={'person-outline'} primaryText={'Detalles de ' + upperFirst(toLower(garden?.type)) || ''} secondaryText={''} />
-													<ImgWithPicker entity={garden || {}} entityType={'garden'} />
-													{{
-														'client': (
-															<>
-																{Platform.OS === "web" && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-															</>
-														),
-														'business': (
-															<>
-																{Platform.OS === "web" && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-															</>
-														),
-														'worker': (
-															<>
-																{Platform.OS === "web" && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-															</>
-														)
-													}[user?.role]}
-												</View>
-												<View style={{ ...gloStyles.section.secondary }}>
-													<SeparatorTopSection />
-													{{
-														'client': (
-															<>
-																{/*<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />*/}
-																{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-															</>
-														),
-														'business': (
-															<>
-																{/*<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />*/}
-																{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-															</>
-														),
-														'worker': (
-															<>
-																{/*<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />*/}
-																{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-															</>
-														)
-													}[user?.role]}
-												</View></>
-										)
-										: null}
+									<View style={{ ...gloStyles.section.primary }}>
+										{/*<TitleScreen icon={'person-outline'} primaryText={'Detalles de ' + upperFirst(toLower(garden?.type)) || ''} secondaryText={''} />*/}
+										<TitleScreen icon={'person-outline'} primaryText={'Detalles de '} secondaryText={''} />
+										{/*<ImgWithPicker entity={garden || {}} entityType={'garden'} />*/}
+										<ImgWithPicker entity={{}} entityType={'garden'} />
+										{{
+											'client': (
+												<>
+													{Platform.OS === "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+												</>
+											),
+											'business': (
+												<>
+													{Platform.OS === "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+												</>
+											),
+											'worker': (
+												<>
+													{Platform.OS === "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+												</>
+											)
+										}[user?.role]}
+									</View>
+									<View style={{ ...gloStyles.section.secondary }}>
+										<SeparatorTopSection />
+										{{
+											'client': (
+												<>
+													{/*<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />*/}
+													<GardenDataForm gid={''} gardenIndex={gardenIndex || 0} />
+													{Platform.OS !== "web" && thereAreNotSavedChanges && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+												</>
+											),
+											'business': (
+												<>
+													{/*<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />*/}
+													<GardenDataForm gid={''} gardenIndex={gardenIndex || 0} />
+													{Platform.OS !== "web" && thereAreNotSavedChanges && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+												</>
+											),
+											'worker': (
+												<>
+													{/*<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />*/}
+													<GardenDataForm gid={''} gardenIndex={gardenIndex || 0} />
+													{Platform.OS !== "web" && thereAreNotSavedChanges && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+												</>
+											)
+										}[user?.role]}
+									</View>
 								</View>
 							</Layout>
 						</ScrollView>
