@@ -63,7 +63,7 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 				setStorageIdentifier(`${entity.gid}_${entity.imageCounter}`);
 				break;
 			default:
-				console.log('entityType no contemplado en src/hooks/useFirebaseSaveImage.js');
+				console.log('🩸 FISI - entityType no contemplado en src/hooks/useFirebaseSaveImage.js');
 				break;
 		}
 	}, [entity]);
@@ -100,7 +100,7 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 				resolve(xhr.response);
 			};
 			xhr.onerror = function (error) {
-				console.log(error);
+				console.log('🩸 FISI -', error);
 				reject(new TypeError('Network request failed'));
 			};
 			xhr.responseType = 'blob';
@@ -111,7 +111,7 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 		const fileRef = storageRef.child(`/${storagePath}/${storageIdentifier}`);
 		const result = await uploadBytes(fileRef, blob);
 		console.log(
-			`📤 Fotografía de tipo ${entityType} subida a Firebase Storage | Bucket: ${result.metadata.bucket} | Path: ${result.metadata.fullPath}`,
+			`📤 FISI - Fotografía de tipo ${entityType} subida a Firebase Storage | Bucket: ${result.metadata.bucket} | Path: ${result.metadata.fullPath}`,
 		);
 
 		// We're done with the blob, close and release it
@@ -197,7 +197,7 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 
 				break;
 			default:
-				console.log('entityType no contemplado en src/hooks/useFirebaseSaveImage.js');
+				console.log('🩸 FISI - entityType no contemplado en src/hooks/useFirebaseSaveImage.js');
 				break;
 		}
 	};
@@ -206,7 +206,7 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 		selectedImage,
 		handleImagePicked,
 		(newEntity) => {
-			//console.log('⚪️ SET newEntity', newEntity.row);
+			//console.log('⚪️ FISI - SET newEntity', newEntity.row);
 			setNewEntity(newEntity);
 		},
 	];

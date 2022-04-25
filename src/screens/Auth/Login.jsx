@@ -74,8 +74,7 @@ export const LoginScreen = ({ debug, navigation }) => {
 
 		auth().signInWithEmailAndPassword(email, password)
 			.then((user) => {
-				console.info('Logged In!');
-				console.info(user.user.email);
+				console.info('🔑 LOGI - Logged In!', user.user.email);
 				dispatch(addUser(user))
 				dispatch(setLoadingMessage(false))
 				dispatch(setErrorMessage(false))

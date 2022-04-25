@@ -5,6 +5,9 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
+//Lodash
+import { toLower, upperFirst } from 'lodash';
+
 function useFirebaseGetOne(debug, collection, entityIdentifier, entityValue) {
 	//Firebase
 	const auth = firebase.auth;
@@ -32,6 +35,12 @@ function useFirebaseGetOne(debug, collection, entityIdentifier, entityValue) {
 										ITEMS.push(item.data());
 									});
 								}
+								console.log(
+									`🌳 FIGO - ${upperFirst(
+										toLower(collection.slice(0, -1)),
+									)} ${entityIdentifier} ${entityValue} |`,
+									ITEMS[0]?.type,
+								);
 								setResult(ITEMS[0]);
 								setLoading(false);
 							}

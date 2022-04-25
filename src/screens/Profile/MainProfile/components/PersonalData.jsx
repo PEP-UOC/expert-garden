@@ -17,12 +17,9 @@ import { updateUserTemporal, updateHasNotSavedChanges } from '../../../../store/
 //import { useNavigation } from '@react-navigation/native';
 
 //Components
-import { View, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View } from 'react-native'
 import { Input, Select, SelectItem, IndexPath, Calendar, NativeDateService, Modal, Card } from '@ui-kitten/components';
 import { TitleSection } from '../../../../components/Titles/Section'
-
-//Icons
-import { CornerRightDownIcon } from '../../../../assets/icons/CornerRightDown'
 
 //Moment
 import moment from "moment";
@@ -75,19 +72,22 @@ export const PersonalDataForm = ({ debug }) => {
 				[keyName]: value?.trim()
 			}
 		})
-		const metadata = { ...values }
-		metadata[keyName] = value?.trim();
+		const newMetadata = { ...values }
+		newMetadata[keyName] = value?.trim();
 		if (keyName === 'name') {
-			metadata['fullname'] = `${value} ${values?.surnames}`;
+			newMetadata['fullname'] = `${value} ${values?.surnames}`;
 		}
 		if (keyName === 'surnames') {
-			metadata['fullname'] = `${values?.name} ${value}`;
+			newMetadata['fullname'] = `${values?.name} ${value}`;
 		}
-		console.log('metadata', metadata)
-		dispatch(updateUserTemporal({ metadata }))
+		//console.log('📜 PEDA - newMetadata', newMetadata)
+
+		dispatch(updateUserTemporal({ metadata: newMetadata }))
 		dispatch(updateHasNotSavedChanges())
 	}
 
+	//Keyboard
+	const [keyboardSize] = useKeyboardSize()
 
 	const [calendarVisible, setCalendarVisible] = useState(false);
 	const [birthdayDate, setBirthdayDate] = useState(values?.birthday
@@ -128,20 +128,6 @@ export const PersonalDataForm = ({ debug }) => {
 		<SelectItem key={title} title={title} />
 	);
 
-	//Keyboard
-	const [keyboardSize, keyboardIsOpen] = useKeyboardSize()
-
-	function hideKeyboard() {
-		console.log("⌨️ HIDE Keyboard")
-		Keyboard.dismiss()
-	}
-
-	const renderKeyboardIcon = (props) => (
-		<TouchableWithoutFeedback onPress={hideKeyboard}>
-			{keyboardIsOpen ? <CornerRightDownIcon {...props} /> : <></>}
-		</TouchableWithoutFeedback>
-	);
-
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
 			<TitleSection icon={'person-outline'} primaryText={'Datos personales'} secondaryText={''} />
@@ -152,7 +138,6 @@ export const PersonalDataForm = ({ debug }) => {
 						label='Nombre'
 						placeholder='Introduce tu nombre'
 						value={values?.name || ''}
-						accessoryRight={renderKeyboardIcon}
 						onChangeText={text => handleChange(text, "name")}
 					/>
 
@@ -161,7 +146,6 @@ export const PersonalDataForm = ({ debug }) => {
 						label='Apellidos'
 						placeholder='Introduce tus apellidos'
 						value={values?.surnames || ''}
-						accessoryRight={renderKeyboardIcon}
 						onChangeText={text => handleChange(text, "surnames")}
 					/>
 				</View>
@@ -173,7 +157,6 @@ export const PersonalDataForm = ({ debug }) => {
 						label='Correo electrónico'
 						placeholder='Introduce tu correo electrónico'
 						value={values?.email || ''}
-						accessoryRight={renderKeyboardIcon}
 						onChangeText={text => handleChange(text, "email")}
 					/>
 
@@ -182,7 +165,6 @@ export const PersonalDataForm = ({ debug }) => {
 						label='Número de teléfono'
 						placeholder='Introduce tu número de teléfono'
 						value={values?.phoneNumber || ''}
-						accessoryRight={renderKeyboardIcon}
 						onChangeText={text => handleChange(text, "phoneNumber")}
 					/>
 				</View>
@@ -205,7 +187,6 @@ export const PersonalDataForm = ({ debug }) => {
 						label='Fecha de nacmiento'
 						placeholder='xx/xx/xxxx'
 						value={values?.birthday || ''}
-						accessoryRight={renderKeyboardIcon}
 						onFocus={() => { setCalendarVisible(true) }}
 					/>
 				</View>

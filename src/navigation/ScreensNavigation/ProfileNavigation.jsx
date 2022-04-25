@@ -1,9 +1,9 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { MainProfileScreen } from '../../screens/Profile/MainProfile';
-import { GardenDetailScreen } from '../../screens/Profile/GardenDetail';
-import { AddGardenScreen } from '../../screens/Profile/AddGarden';
+import { MainProfileScreen } from '../../screens/Profile/MainProfile/MainProfile';
+import { GardenDetailScreen } from '../../screens/Profile/GardenDetail/GardenDetail';
+import { AddGardenScreen } from '../../screens/Profile/AddGarden/AddGarden';
 
 const Profile = createNativeStackNavigator()
 export const ProfileNavigation = () => (

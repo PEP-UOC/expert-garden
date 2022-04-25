@@ -43,7 +43,7 @@ export const ImgWithPicker = ({ debug, entity, entityType }) => {
 	const ownStyles = useStyleSheet(styles);
 
 	//Image Hook
-	let [selectedImage, handleImagePicked, setNewEntity] = useFirebaseSaveImage(debug, entity, entityType)
+	const [selectedImage, handleImagePicked, setNewEntity] = useFirebaseSaveImage(debug, entity, entityType)
 
 	useEffect(() => {
 		setNewEntity(entity)
@@ -92,7 +92,7 @@ export const ImgWithPicker = ({ debug, entity, entityType }) => {
 
 	useEffect(() => {
 		if (selectedImage?.localUri) {
-			console.log(`🖼  Nueva imágen ${selectedImage?.localUri}`)
+			console.log(`🖼  WIPI - Nueva imágen ${selectedImage?.localUri}`)
 			return
 		}
 		if (selectedImage === null) {
@@ -153,7 +153,7 @@ export const ImgWithPicker = ({ debug, entity, entityType }) => {
 								onPress={async () => {
 									const pickerResult = await camera.takePictureAsync()
 
-									console.log('🎞 Nueva fotografía desde la cámara', `H: ${pickerResult?.height}px`, `W: ${pickerResult?.width}px`);
+									console.log('🎞  WIPI - Nueva fotografía desde la cámara', `H: ${pickerResult?.height}px`, `W: ${pickerResult?.width}px`);
 
 									setShowCamera(false)
 

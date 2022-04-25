@@ -73,7 +73,7 @@ export const TabsNavigation = () => {
 				includeMetadataChanges: true
 			}, (item) => {
 				const userData = item.data();
-				console.log('👩‍🌾 Firestore userData', userData)
+				console.log('👩‍🌾 TNAV - Firestore userData', userData)
 				dispatch(updateUser(
 					{
 						uid: userData?.uid,

@@ -50,8 +50,8 @@ export const HomeScreen = ({ debug, navigation }) => {
 	}, []);
 
 	useEffect(() => {
-		console.log('👩‍🌾 Usuario', user?.metadata?.fullname, user?.metadata?.email);
-		//console.log(user);
+		console.log('👩‍🌾 HOME - Usuario', user?.metadata?.fullname, user?.metadata?.email);
+		//console.log('🙋‍♂️ HOME - user', user)
 	}, [user]);
 
 	const device = Device.isPhone ? '📱' : '💻';

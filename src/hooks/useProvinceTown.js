@@ -45,14 +45,14 @@ export function useProvinceTown(savedPostalCode, savedProvince, savedTown) {
 
 	return [
 		(newPostalCode) => {
-			//console.log('⚪️ SET newPostalCode', newPostalCode);
+			//console.log('⚪️ PRTO - SET newPostalCode', newPostalCode);
 			setPostalCode(newPostalCode);
 		},
 		province,
 		townsList,
 		townsSelectedIndex,
 		(newTownsSelectedIndex) => {
-			//console.log('⚪️ SET newTownsSelectedIndex', newTownsSelectedIndex.row);
+			//console.log('⚪️ PRTO - SET newTownsSelectedIndex', newTownsSelectedIndex.row);
 			setTownsSelectedIndex(newTownsSelectedIndex);
 		},
 		townDisplayValue,

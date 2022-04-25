@@ -62,11 +62,11 @@ export const GardenDataForm = ({ debug, gid, gardenIndex }) => {
 		})
 		const newGarden = { ...values }
 		newGarden[keyName] = value?.trim();
-		//console.log('newGarden', newGarden)
+		//console.log('🌳 GDAT - newGarden', newGarden)
 
 		const gardensArray = [...userTemporal?.gardens || []];
 		gardensArray[gardenIndex] = newGarden;
-		//console.log('gardensArray', gardensArray)
+		//console.log('🌳 GDAT - gardensArray', gardensArray)
 
 		dispatch(updateUserTemporal({ gardens: gardensArray }))
 		if (!auto) {
@@ -96,20 +96,19 @@ export const GardenDataForm = ({ debug, gid, gardenIndex }) => {
 	}, [loadFormValues]);
 
 	useEffect(() => {
-		console.log(`🌀 GDAT - Cargando ${gid} | ${gardenLoading}`)
-	}, []);
+		//console.log(`🌀 GDAT - Cargando   ${gid} | ${gardenLoading}`)
+	}, [gardenLoading]);
 
 	useEffect(() => {
 		if (garden?.gid) {
-			console.log(`🍀 GDAT - Jardín   ${gid} |`, garden?.type)
-			console.log(`🌀 GDAT - Cargando ${gid} | ${gardenLoading}`)
+			//console.log(`🍀 GDAT - Jardín     ${gid} |`, garden?.type)
 			setLoadFormValues(true);
 		}
 	}, [garden]);
 
 	useEffect(() => {
 		if (gardenError) {
-			console.log(`🩸 GDAT - Error ${gid} | ${gardenError}`)
+			console.log(`🩸 GDAT - Error   ${gid} | ${gardenError}`)
 			dispatch(setErrorMessage(gardenError))
 		}
 	}, [gardenError]);

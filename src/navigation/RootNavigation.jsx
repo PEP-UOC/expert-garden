@@ -37,7 +37,7 @@ const RootScreen = () => {
 	async function getInitialURL() {
 		try {
 			const url = await Linking.getInitialURL();
-			console.log('👨‍🦯 Initial URL', url)
+			console.log('👨‍🦯 RNAV - Initial URL', url)
 			setUrlReceived(url);
 			return;
 		} catch (e) {

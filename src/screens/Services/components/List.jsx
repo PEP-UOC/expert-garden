@@ -59,7 +59,7 @@ export const ServicesList = ({ debug, type }) => {
 								services.forEach(service => {
 									SERVICES.push(service.data())
 								})
-								console.log(`🌳 Servicios solicitados del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+								console.log(`🌳 SELI - Servicios solicitados del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 								setServices(SERVICES)
 							}
 						})
@@ -79,7 +79,7 @@ export const ServicesList = ({ debug, type }) => {
 								services.forEach(service => {
 									SERVICES.push(service.data())
 								})
-								console.log(`🌳 Servicios en curso del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+								console.log(`🌳 SELI - Servicios en curso del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 								setServices(SERVICES)
 							}
 						})
@@ -99,7 +99,7 @@ export const ServicesList = ({ debug, type }) => {
 								services.forEach(service => {
 									SERVICES.push(service.data())
 								})
-								console.log(`🌳 Servicios en curso puntuales del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+								console.log(`🌳 SELI - Servicios en curso puntuales del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 								setServices(SERVICES)
 							}
 						})
@@ -119,7 +119,7 @@ export const ServicesList = ({ debug, type }) => {
 								services.forEach(service => {
 									SERVICES.push(service.data())
 								})
-								console.log(`🌳 Servicios en curso recurrentes del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+								console.log(`🌳 SELI - Servicios en curso recurrentes del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 								setServices(SERVICES)
 							}
 						})
@@ -139,7 +139,7 @@ export const ServicesList = ({ debug, type }) => {
 								services.forEach(service => {
 									SERVICES.push(service.data())
 								})
-								console.log(`🌳 Servicios anteriores del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+								console.log(`🌳 SELI - Servicios anteriores del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 								setServices(SERVICES)
 							}
 						})

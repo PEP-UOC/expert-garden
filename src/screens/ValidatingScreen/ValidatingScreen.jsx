@@ -88,8 +88,8 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
 
 	useEffect(() => {
 
-		console.log('🚨 mode', mode)
-		console.log('🎲 actionCode', actionCode)
+		console.log('🚨 VALI - mode', mode)
+		console.log('🎲 VALI - actionCode', actionCode)
 
 		setIsValidating(true);
 		switch (mode) {
@@ -102,7 +102,7 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
 						dispatch(setValidatingMessage('Gracias! Email verificado!'))
 						setIsActionCodeValid(true)
 					}).catch((error) => {
-						console.log('error', error)
+						console.log('🩸 VALI - error', error)
 						//dispatch(setErrorMessage(
 						//	debug
 						//		? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
@@ -112,7 +112,7 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
 						//setIsActionCodeValid(false)
 					})
 				}).catch((error) => {
-					//console.log('error', error)
+					console.log('🩸 VALI - error', error)
 					dispatch(setErrorMessage(
 						debug
 							? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
@@ -121,7 +121,7 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
 					dispatch(setValidatingMessage('No hemos podido validar tu email...'))
 					setIsActionCodeValid(false)
 				}).finally(() => {
-					console.log('💻 Device', Device)
+					console.log('💻 VALI - Device', Device)
 					let redirectURL = Linking.createURL('/', {});
 					if (Device.isPhone) {
 						redirectURL = 'exp://192.168.1.65:19000'
@@ -137,7 +137,7 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
 					dispatch(setValidatingMessage('Introduce tu nueva contraseña'))
 					setIsActionCodeValid(true)
 				}).catch((error) => {
-					//console.log('error', error)
+					console.log('🩸 VALI - error', error)
 					dispatch(setErrorMessage(
 						debug
 							? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
@@ -147,7 +147,7 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
 					setIsActionCodeValid(false)
 					setIsPassResetValid(false)
 				}).finally(() => {
-					console.log('💻 Device', Device)
+					console.log('💻 VALI - Device', Device)
 					let redirectURL = Linking.createURL('/', {});
 					if (Device.isPhone) {
 						redirectURL = 'exp://192.168.1.65:19000'
@@ -166,7 +166,7 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
 			dispatch(setValidatingMessage('Contraseña modificada!'))
 			setIsPassResetValid(true)
 		}).catch((error) => {
-			//console.log('error', error)
+			console.log('🩸 VALI - error', error)
 			dispatch(setErrorMessage(
 				debug
 					? `${firebaseErrorCodeMap(error.code)} || ${error.message}`

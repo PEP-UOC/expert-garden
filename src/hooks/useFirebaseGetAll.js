@@ -5,6 +5,9 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
+//Lodash
+import { toLower, upperFirst } from 'lodash';
+
 function useFirebaseGetAll(debug, collection, entityIdentifier, entityValue, extraElement) {
 	//Firebase
 	const auth = firebase.auth;
@@ -35,6 +38,10 @@ function useFirebaseGetAll(debug, collection, entityIdentifier, entityValue, ext
 								if (extraElement) {
 									ITEMS.push(extraElement);
 								}
+								console.log(
+									`🌳 FIGA - ${upperFirst(toLower(collection))} ${entityIdentifier} ${entityValue}`,
+									ITEMS.length,
+								);
 								setResult(ITEMS);
 								setLoading(false);
 							}

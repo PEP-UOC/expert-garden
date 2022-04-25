@@ -69,13 +69,13 @@ export const BtnImageCombo = ({ debug, showImageChangeCombo, showingCamera, setS
 			aspect: [1, 1],
 		});
 
-		console.log('🎞 Nueva fotografía desde la galería', `H: ${pickerResult?.height}px`, `W: ${pickerResult?.width}px`);
+		console.log('🎞  IMCO - Nueva fotografía desde la galería', `H: ${pickerResult?.height}px`, `W: ${pickerResult?.width}px`);
 
 		await handleImagePicked(pickerResult);
 	}
 	useEffect(() => {
 		if (pickerHasPermission) {
-			console.log('✅ Hay permisos para adjuntar fotos desde el dispositivo')
+			console.log('✅ IMCO - Hay permisos para adjuntar fotos desde el dispositivo')
 		}
 	}, [pickerHasPermission]);
 
@@ -105,7 +105,7 @@ export const BtnImageCombo = ({ debug, showImageChangeCombo, showingCamera, setS
 	}
 	useEffect(() => {
 		if (cameraHasPermission) {
-			console.log('✅ Hay permisos para hacer fotos')
+			console.log('✅ IMCO - Hay permisos para hacer fotos')
 		}
 	}, [cameraHasPermission]);
 

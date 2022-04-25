@@ -17,15 +17,9 @@ import { updateUserTemporal, updateHasNotSavedChanges } from '../../../../store/
 //import { useNavigation } from '@react-navigation/native';
 
 //Components
-import { View, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View } from 'react-native'
 import { Input } from '@ui-kitten/components';
 import { TitleSection } from '../../../../components/Titles/Section'
-
-//Icons
-import { CornerRightDownIcon } from '../../../../assets/icons/CornerRightDown'
-
-//Hooks
-import { useKeyboardSize } from "../../../../hooks/useKeyboardSize"
 
 // eslint-disable-next-line no-unused-vars
 export const BankDataForm = ({ debug }) => {
@@ -63,27 +57,13 @@ export const BankDataForm = ({ debug }) => {
 				[keyName]: value?.trim()
 			}
 		})
-		const bankDetails = { ...values }
-		bankDetails[keyName] = value?.trim();
-		console.log('bankDetails', bankDetails)
-		dispatch(updateUserTemporal({ bankDetails }))
+		const newBankDetails = { ...values }
+		newBankDetails[keyName] = value?.trim();
+		//console.log('💶 BKDA - newBankDetails', newBankDetails)
+
+		dispatch(updateUserTemporal({ bankDetails: newBankDetails }))
 		dispatch(updateHasNotSavedChanges())
 	}
-
-
-	//Keyboard
-	const [keyboardIsOpen] = useKeyboardSize()
-
-	function hideKeyboard() {
-		console.log("⌨️ HIDE Keyboard")
-		Keyboard.dismiss()
-	}
-
-	const renderKeyboardIcon = (props) => (
-		<TouchableWithoutFeedback onPress={hideKeyboard}>
-			{keyboardIsOpen ? <CornerRightDownIcon {...props} /> : <></>}
-		</TouchableWithoutFeedback>
-	);
 
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
@@ -95,7 +75,6 @@ export const BankDataForm = ({ debug }) => {
 						label='Número de la tarjeta'
 						placeholder='XXXX XXXX XXXX XXXX'
 						value={values?.cardNumber || ''}
-						accessoryRight={renderKeyboardIcon}
 						onChangeText={text => handleChange(text, "cardNumber")}
 					/>
 
@@ -104,7 +83,6 @@ export const BankDataForm = ({ debug }) => {
 						label='Fecha de expiración'
 						placeholder='XX/XX'
 						value={values?.cardExpiration || ''}
-						accessoryRight={renderKeyboardIcon}
 						onChangeText={text => handleChange(text, "cardExpiration")}
 					/>
 				</View>
@@ -116,7 +94,6 @@ export const BankDataForm = ({ debug }) => {
 						label='Nombre y apellidos del titular'
 						placeholder='XXXX XXXXXX XXXXXX'
 						value={values?.cardHolder || user?.metadata?.fullname.toUpperCase()}
-						accessoryRight={renderKeyboardIcon}
 						onChangeText={text => handleChange(text, "cardHolder")}
 					/>
 				</View>

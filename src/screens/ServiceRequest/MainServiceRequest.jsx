@@ -186,7 +186,7 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
 
 		auth().signOut()
 			.then(() => {
-				console.info('Logged Out!');
+				console.info('🔐 MSRQ - Logged Out!');
 				dispatch(removeUser())
 				dispatch(setLoggedIn(false))
 				dispatch(setLoadingMessage(false))
@@ -206,7 +206,7 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
 				.then(() => {
 					auth().signOut()
 						.then(() => {
-							console.info('Logged Out!');
+							console.info('🔐 MSRQ - Logged Out!');
 							dispatch(removeUser())
 							dispatch(setLoggedIn(false))
 							dispatch(setLoadingMessage(false))
@@ -228,7 +228,7 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
 			dispatch(setLoadingMessage(false))
 		}
 
-		console.log('Done.')
+		console.log('✅ MSRQ - Done.')
 	}
 
 
@@ -257,7 +257,6 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
 									<View style={{ ...gloStyles.section.secondary }}>
 										<SeparatorTopSection />
 										{mainServices.map(service => {
-											//console.log(service)
 											return (<Button style={{ ...gloStyles?.button, ...ownStyles?.btnServiceRequest }}
 												key={service.id} onPress={() => submitService(service.identifier, `Test ${Math.random() * (1000 - 1) + 1}`)} >
 												{service.label}

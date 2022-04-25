@@ -27,17 +27,12 @@ import { GardenDataForm } from './components/GardenData'
 import { AddIcon } from '../../../assets/icons/Add'
 import { BackIcon } from '../../../assets/icons/Back'
 
-//Firebase
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import "firebase/compat/firestore";
-import firebaseErrorCodeMap from '../../../common/firebaseErrorCodeMap';
-
 //Lodash
 import { toLower, upperFirst } from 'lodash';
 
 //Hooks
 import useFirebaseGetOne from '../../../hooks/useFirebaseGetOne'
+import { useFirebaseSaveAllChanges } from '../../../hooks/useFirebaseSaveAllChanges'
 
 // eslint-disable-next-line no-unused-vars
 export const GardenDetailScreen = ({ debug, navigation, route }) => {
@@ -46,95 +41,16 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 
 	const dispatch = useDispatch()
 
-	//Firebase
-	const auth = firebase.auth;
-	const firestore = firebase.firestore;
-
 	//Styles
 	const gloStyles = useStyleSheet(globalStyles);
 
 	//Store
 	const user = useSelector(state => state.userReducer.user);
-	const userTemporal = useSelector(state => state.userReducer.userTemporal);
 	const hasNotSavedChanges = useSelector(state => state.userReducer.hasNotSavedChanges);
 
 	//Hooks
 	const { loading: gardenLoading, result: garden, error: gardenError } = useFirebaseGetOne(debug, 'gardens', 'gid', gid);
-
-	const saveGardenChanges = () => {
-		//console.log('user', user)
-		console.log('userTemporal', userTemporal)
-
-		//Metadata
-		const name = userTemporal?.metadata?.name || user?.metadata?.name || '';
-		const surnames = userTemporal?.metadata?.surnames || user?.metadata?.surnames || '';
-		const fullname = userTemporal?.metadata?.fullname || `${user?.metadata?.name} ${user?.metadata?.surnames}` || '';
-		const email = userTemporal?.metadata?.email || user?.metadata?.email || '';
-		const phoneNumber = userTemporal?.metadata?.phoneNumber || user?.metadata?.phoneNumber || '';
-		const gender = userTemporal?.metadata?.gender || user?.metadata?.gender || '';
-		const birthday = userTemporal?.metadata?.birthday || user?.metadata?.birthdayDateTime || '';
-		const birthdayDateTime = userTemporal?.metadata?.birthdayDateTime || user?.metadata?.birthdayDateTime || '';
-		const metadata = {
-			...user.metadata,
-			name,
-			surnames,
-			fullname,
-			email,
-			phoneNumber,
-			gender,
-			birthday,
-			birthdayDateTime,
-		};
-
-		//Bank details
-		const cardNumber = userTemporal?.bankDetails?.cardNumber || user?.bankDetails?.cardNumber || '';
-		const cardExpiration = userTemporal?.bankDetails?.cardExpiration || user?.bankDetails?.cardExpiration || '';
-		const cardHolder = userTemporal?.bankDetails?.cardHolder || user?.bankDetails?.cardHolder || '';
-		const bankDetails = {
-			...user.bankDetails,
-			cardNumber,
-			cardExpiration,
-			cardHolder
-		}
-
-		//Gardens
-		const gardens = userTemporal?.gardens || [];
-
-		firestore().collection("users").doc(auth()?.currentUser?.uid).update({
-			metadata,
-			bankDetails
-		})
-			.then(() => {
-				auth().currentUser.updateProfile({
-					displayName: fullname,
-				}).then(() => {
-					const gardensList = gardens.filter(garden => garden?.gid && garden?.gid !== '')
-					Promise.all(gardensList.map(async (garden) => {
-						firestore().collection("gardens").doc(garden?.gid).update({
-							address: garden?.address,
-							addressExtra: garden?.addressExtra,
-							postalCode: garden?.postalCode,
-							province: garden?.province,
-							town: garden?.town
-						})
-					}));
-					dispatch(setLoadingMessage(false))
-					dispatch(setErrorMessage(false))
-					console.log('🧹 Limpiando UserTemporal')
-					dispatch(removeGardenTemporal())
-
-				}).catch((error) => {
-					console.error(error.message);
-					dispatch(setLoadingMessage(false))
-					dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
-				});
-			})
-			.catch((error) => {
-				console.error(error.message);
-				dispatch(setLoadingMessage(false))
-				dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
-			});
-	}
+	const [saveChanges] = useFirebaseSaveAllChanges(debug);
 
 	//Navigation
 	const BackAction = () => (
@@ -149,18 +65,18 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 	const [loadComponents, setLoadComponents] = useState(false);
 
 	useEffect(() => {
-		console.log('🧹 Limpiando GardenTemporal')
+		console.log('🧹 GDET - Limpiando GardenTemporal')
 		dispatch(removeGardenTemporal())
 		dispatch(setErrorMessage(false))
 	}, []);
 
 	useEffect(() => {
-		console.log(`🌀 GDET - Cargando ${gid} | ${gardenLoading.toString()}`)
+		//console.log(`🌀 GDET - Cargando   ${gid} | ${gardenLoading.toString()}`)
 	}, [gardenLoading]);
 
 	useEffect(() => {
 		if (garden?.gid) {
-			console.log(`🍀 GDET - Jardín   ${gid} |`, garden?.type)
+			//console.log(`🍀 GDET - Jardín     ${gid} |`, garden?.type)
 			setLoadComponents(true);
 			dispatch(setLoadingMessage(false))
 		}
@@ -168,7 +84,7 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 
 	useEffect(() => {
 		if (gardenError) {
-			console.log(`🩸 GDET - Error ${gid} | ${gardenError}`)
+			console.log(`🩸 GDET - Error   ${gid} | ${gardenError}`)
 			dispatch(setErrorMessage(gardenError))
 		}
 	}, [gardenError]);
@@ -195,17 +111,17 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 													{{
 														'client': (
 															<>
-																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
+																{Platform.OS === "web" && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														),
 														'business': (
 															<>
-																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
+																{Platform.OS === "web" && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														),
 														'worker': (
 															<>
-																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
+																{Platform.OS === "web" && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														)
 													}[user?.role]}
@@ -216,19 +132,19 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 														'client': (
 															<>
 																<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
-																{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
+																{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														),
 														'business': (
 															<>
 																<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
-																{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
+																{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														),
 														'worker': (
 															<>
 																<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
-																{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'medium'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveGardenChanges} />}
+																{Platform.OS !== "web" && hasNotSavedChanges && <BtnPrimary size={'small'} disabled={!hasNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														)
 													}[user?.role]}

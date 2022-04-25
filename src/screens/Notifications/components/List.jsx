@@ -63,7 +63,7 @@ export const NotificationsList = ({ debug, type }) => {
 								notifications.forEach(notification => {
 									NOTIFICATIONS.push(notification.data())
 								})
-								console.log(`🐳 Notificaciones del usuario ${auth()?.currentUser?.uid}`, NOTIFICATIONS.length)
+								console.log(`🐳 NOLI - Notificaciones del usuario ${auth()?.currentUser?.uid}`, NOTIFICATIONS.length)
 								setNotifications(NOTIFICATIONS)
 							}
 						})
@@ -83,7 +83,7 @@ export const NotificationsList = ({ debug, type }) => {
 								notifications.forEach(notification => {
 									NOTIFICATIONS.push(notification.data())
 								})
-								console.log(`🐳 Notificaciones nuevas del usuario ${auth()?.currentUser?.uid}`, NOTIFICATIONS.length)
+								console.log(`🐳 NOLI - Notificaciones nuevas del usuario ${auth()?.currentUser?.uid}`, NOTIFICATIONS.length)
 								setNotifications(NOTIFICATIONS)
 							}
 						})
@@ -103,7 +103,7 @@ export const NotificationsList = ({ debug, type }) => {
 								notifications.forEach(notification => {
 									NOTIFICATIONS.push(notification.data())
 								})
-								console.log(`🐳 Notificaciones leídas del usuario ${auth()?.currentUser?.uid}`, NOTIFICATIONS.length)
+								console.log(`🐳 NOLI - Notificaciones leídas del usuario ${auth()?.currentUser?.uid}`, NOTIFICATIONS.length)
 								setNotifications(NOTIFICATIONS)
 							}
 						})

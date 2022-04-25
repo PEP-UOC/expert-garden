@@ -38,18 +38,18 @@ export const GardensDataForm = ({ debug }) => {
 	const { loading: gardensLoading, result: gardens, error: gardensError } = useFirebaseGetAll(debug, 'gardens', 'uid', user?.uid, extraElement);
 
 	useEffect(() => {
-		console.log(`🌀 GDAT - LOADING | ${gardensLoading.toString()}`)
+		//console.log(`🌀 GSDA - Cargando          | ${gardensLoading.toString()}`)
 	}, [gardensLoading]);
 
 	useEffect(() => {
 		if (gardens) {
-			console.log(`🍀 GDAT - NEW GAR | ${gardens?.length || 0}`)
+			//console.log(`🍀 GSDA - Nuevos jardines   |`, gardens?.length || 0)
 		}
 	}, [gardens]);
 
 	useEffect(() => {
 		if (gardensError) {
-			console.log(`🩸 GDAT - ERROR | ${gardensError}`)
+			console.log(`🩸 GSDA - Error          | ${gardensError}`)
 			dispatch(setErrorMessage(gardensError))
 		}
 	}, [gardensError]);

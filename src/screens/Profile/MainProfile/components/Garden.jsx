@@ -61,11 +61,11 @@ export const GardenItem = ({ debug, garden }) => {
 			})
 			const newGarden = { ...values }
 			newGarden[keyName] = value?.trim();
-			//console.log('newGarden', newGarden)
+			//console.log('🌳 GDAT - newGarden', newGarden)
 
 			const gardensArray = [...userTemporal?.gardens || []];
 			gardensArray[garden?.index] = newGarden;
-			//console.log('gardensArray', gardensArray)
+			//console.log('🌳 GDAT - gardensArray', gardensArray)
 
 			dispatch(updateUserTemporal({ gardens: gardensArray }))
 			if (!auto) {
