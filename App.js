@@ -12,7 +12,7 @@ import { store } from './src/store';
 // Navigation
 import { RootNavigation } from './src/navigation/RootNavigation';
 
-// Modal General
+// Modales
 import { ModalFullScreen } from './src/components/Modals/FullScreen';
 import { ModalError } from './src/components/Modals/Error';
 

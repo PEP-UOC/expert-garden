@@ -15,41 +15,46 @@ import styles from './styles'
 
 
 // eslint-disable-next-line no-unused-vars
-export const BtnPrimary = ({ debug, icon, text, onPress, disabled, size }) => {
+export const BtnPrimary = ({ debug, icon, text, onPress, disabled, size, btnStyle }) => {
 
-    //Styles
-    const gloStyles = useStyleSheet(globalStyles);
-    const ownStyles = useStyleSheet(styles);
+	//Styles
+	const gloStyles = useStyleSheet(globalStyles);
+	const ownStyles = useStyleSheet(styles);
 
-    return (
-        <View style={{ ...ownStyles?.wrapper }}>
-            <Button
-                style={
-                    {
-                        ...gloStyles?.button,
-                        ...ownStyles?.btnPrimary
-                    }
-                }
-                size={size}
-                onPress={onPress}
-                accessoryLeft={icon}
-                disabled={disabled}>
-                {text}
-            </Button>
-        </View>
-    )
+	return (
+		<View style={{ ...ownStyles?.wrapper }}>
+			<Button
+				style={
+					{
+						...gloStyles?.button,
+						...ownStyles?.btnPrimary,
+						...btnStyle
+					}
+				}
+				size={size}
+				onPress={onPress}
+				accessoryLeft={icon}
+				disabled={disabled}>
+				{text}
+			</Button>
+		</View>
+	)
 };
 
 BtnPrimary.propTypes = {
-    debug: PropTypes.bool.isRequired,
-    icon: PropTypes.func.isRequired,
-    text: PropTypes.string.isRequired,
-    onPress: PropTypes.func,
-    disabled: PropTypes.bool.isRequired,
-    size: PropTypes.string.isRequired,
+	debug: PropTypes.bool.isRequired,
+	icon: PropTypes.func,
+	text: PropTypes.string.isRequired,
+	onPress: PropTypes.func,
+	disabled: PropTypes.bool.isRequired,
+	size: PropTypes.string.isRequired,
+	btnStyle: PropTypes.object.isRequired,
 };
 
 BtnPrimary.defaultProps = {
-    debug: Constants.manifest.extra.debug || false,
-    size: 'large',
+	debug: Constants.manifest.extra.debug || false,
+	size: 'large',
+	icon: undefined,
+	disabled: false,
+	btnStyle: {},
 };

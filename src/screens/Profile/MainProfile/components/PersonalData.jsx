@@ -149,7 +149,6 @@ export const PersonalDataForm = ({ debug }) => {
 					/>
 				</View>
 
-
 				<View style={{ ...gloStyles?.inputs?.row }}>
 					<Input
 						style={{ ...gloStyles?.inputs?.input }}

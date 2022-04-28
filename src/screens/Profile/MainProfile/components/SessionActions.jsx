@@ -27,11 +27,9 @@ export const SessionActionsBtns = ({ debug }) => {
 
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
-			<TitleSection icon={'folder-outline'} primaryText={'Otros'} secondaryText={''} />
+			<TitleSection icon={'options-outline'} primaryText={'Otros'} secondaryText={''} />
 			<View style={{ ...gloStyles?.inputs?.wrapper }}>
-				<View style={{ ...gloStyles?.inputs?.row }}>
-					<BtnLogout />
-				</View>
+				<BtnLogout />
 			</View>
 		</View>
 	)

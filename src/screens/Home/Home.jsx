@@ -27,7 +27,7 @@ import { NotificationsList } from '../Notifications/components/List'
 import { ServicesList } from '../Services/components/List'
 
 //Icons
-import { AddIcon } from '../../assets/icons/Add'
+import { TruckIcon } from '../../assets/icons/Truck'
 
 // eslint-disable-next-line no-unused-vars
 export const HomeScreen = ({ debug, navigation }) => {
@@ -76,13 +76,13 @@ export const HomeScreen = ({ debug, navigation }) => {
 										{
 											{
 												'client': (
-													<BtnWithLogo icon={AddIcon} text={"SOLICITA UN SERVICIO"} onPress={navigateServiceRequest} />
+													<BtnWithLogo icon={TruckIcon} text={"SOLICITA UN SERVICIO"} onPress={navigateServiceRequest} />
 												),
 												'business': (
-													<BtnWithLogo icon={AddIcon} text={"PRÓXIMOS SERVICIOS"} onPress={navigateServiceRequest} />
+													<BtnWithLogo icon={TruckIcon} text={"PRÓXIMOS SERVICIOS"} onPress={navigateServiceRequest} />
 												),
 												'worker': (
-													<BtnWithLogo icon={AddIcon} text={"EMPEZAR A TRABAJAR"} onPress={navigateServiceRequest} />
+													<BtnWithLogo icon={TruckIcon} text={"EMPEZAR A TRABAJAR"} onPress={navigateServiceRequest} />
 												)
 											}[user?.role]
 										}

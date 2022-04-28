@@ -19,11 +19,13 @@ import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
 import { SeparatorTopSection } from '../../../components/Separators/TopSection'
 import { TitleScreen } from '../../../components/Titles/Screen'
 import { BtnPrimary } from '../../../components/Buttons/Primary'
+import { BtnSecondary } from '../../../components/Buttons/Secondary'
 import { ImgWithPicker } from '../../../components/Images/WithPicker'
 import { GardenDataForm } from './components/GardenData'
 
 //Icons
 import { AddIcon } from '../../../assets/icons/Add'
+import { SaveIcon } from '../../../assets/icons/Save'
 import { BackIcon } from '../../../assets/icons/Back'
 
 //Lodash
@@ -74,7 +76,8 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 
 	useEffect(() => {
 		if (garden?.gid) {
-			//console.log(`🍀 GDET - Jardín     ${gid} |`, garden?.type)
+			console.log(`🍀 GDET - Jardín     ${gid} |`, garden?.type)
+			//console.log(`🍀 GDET - Jardín     ${gid} |`, garden)
 			setLoadComponents(true);
 			dispatch(setLoadingMessage(false))
 		}
@@ -104,22 +107,24 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 										(
 											<>
 												<View style={{ ...gloStyles.section.primary }}>
-													<TitleScreen icon={'person-outline'} primaryText={'Detalles de ' + upperFirst(toLower(garden?.type)) || ''} secondaryText={''} />
+													<TitleScreen icon={'sun-outline'} primaryText={upperFirst(toLower(garden?.type)) || ''} secondaryText={''} />
 													<ImgWithPicker entity={garden || {}} entityType={'garden'} />
 													{{
 														'client': (
 															<>
-																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+																{Platform.OS === "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("AddDetailScreen", { gid: garden?.gid, name: garden?.type })} />}
+
+																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														),
 														'business': (
 															<>
-																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														),
 														'worker': (
 															<>
-																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														)
 													}[user?.role]}
@@ -129,20 +134,31 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 													{{
 														'client': (
 															<>
+																{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+
 																<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
-																{Platform.OS !== "web" && thereAreNotSavedChanges && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+
+																{Platform.OS !== "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("AddDetailScreen", { gid: garden?.gid, name: garden?.type })} />}
+
+																{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														),
 														'business': (
 															<>
+																{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+
 																<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
-																{Platform.OS !== "web" && thereAreNotSavedChanges && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+
+																{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														),
 														'worker': (
 															<>
+																{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+
 																<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
-																{Platform.OS !== "web" && thereAreNotSavedChanges && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+
+																{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
 														)
 													}[user?.role]}

@@ -27,7 +27,7 @@ import { BankDataForm } from './components/BankData'
 import { SessionActionsBtns } from './components/SessionActions'
 
 //Icons
-import { AddIcon } from '../../../assets/icons/Add'
+import { SaveIcon } from '../../../assets/icons/Save'
 
 //Hooks
 import { useFirebaseSaveAllChanges } from '../../../hooks/useFirebaseSaveAllChanges'
@@ -72,17 +72,17 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 											{
 												'client': (
 													<>
-														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 													</>
 												),
 												'business': (
 													<>
-														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 													</>
 												),
 												'worker': (
 													<>
-														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 													</>
 												)
 											}[user?.role]
@@ -94,20 +94,20 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 											{
 												'client': (
 													<>
-														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
+														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
 
 														<PersonalDataForm />
 														<GardensDataForm />
 														<BankDataForm />
 
-														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
+														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
 
 														<SessionActionsBtns />
 													</>
 												),
 												'business': (
 													<>
-														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
+														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
 
 														<PersonalDataForm />
 														<BankDataForm />
@@ -116,7 +116,7 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 												),
 												'worker': (
 													<>
-														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
+														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
 
 														<PersonalDataForm />
 														<BankDataForm />
