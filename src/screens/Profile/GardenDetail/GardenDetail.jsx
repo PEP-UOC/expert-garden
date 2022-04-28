@@ -22,6 +22,7 @@ import { BtnPrimary } from '../../../components/Buttons/Primary'
 import { BtnSecondary } from '../../../components/Buttons/Secondary'
 import { ImgWithPicker } from '../../../components/Images/WithPicker'
 import { GardenDataForm } from './components/GardenData'
+import { DetailsList } from './components/DetailsList'
 
 //Icons
 import { AddIcon } from '../../../assets/icons/Add'
@@ -79,6 +80,7 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 			console.log(`🍀 GDET - Jardín     ${gid} |`, garden?.type)
 			//console.log(`🍀 GDET - Jardín     ${gid} |`, garden)
 			setLoadComponents(true);
+			console.log(`🕳  GDET - Dispatch Loading STOP`)
 			dispatch(setLoadingMessage(false))
 		}
 	}, [garden]);
@@ -112,7 +114,7 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 													{{
 														'client': (
 															<>
-																{Platform.OS === "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("AddDetailScreen", { gid: garden?.gid, name: garden?.type })} />}
+																{Platform.OS === "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.type })} />}
 
 																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
@@ -134,13 +136,13 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 													{{
 														'client': (
 															<>
-																{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-
 																<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
 
-																{Platform.OS !== "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("AddDetailScreen", { gid: garden?.gid, name: garden?.type })} />}
-
 																{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+
+																{Platform.OS !== "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.type })} />}
+
+																<DetailsList gid={gid || ''} gardenIndex={gardenIndex || 0} />
 															</>
 														),
 														'business': (

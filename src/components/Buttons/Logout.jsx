@@ -40,31 +40,36 @@ export const BtnLogout = ({ debug }) => {
 	//Logout
 
 	const doClearData = async () => {
+		console.log(`🕳  BTLG - Dispatch Loading START`)
 		dispatch(setLoadingMessage(debug ? '🔧 Adiós!' : 'Adiós!'))
 		try {
 			await AsyncStorage.clear()
 				.then(() => {
 					auth().signOut()
 						.then(() => {
-							console.info('🔐 MSRQ - Logged Out!');
+							console.info('🔐 BTLG - Logged Out!');
 							dispatch(removeUser())
 							dispatch(setLoggedIn(false))
+							console.log(`🕳  BTLG - Dispatch Loading STOP`)
 							dispatch(setLoadingMessage(false))
 						})
 						.catch((error) => {
 							console.error(error.message);
 							dispatch(setLoggedIn(false))
+							console.log(`🕳  BTLG - Dispatch Loading STOP`)
 							dispatch(setLoadingMessage(false))
 						});
 				})
 				.catch((error) => {
 					console.error(error.message);
 					dispatch(setLoggedIn(false))
+					console.log(`🕳  BTLG - Dispatch Loading STOP`)
 					dispatch(setLoadingMessage(false))
 				});
 		} catch (error) {
 			console.error(error.message);
 			dispatch(setLoggedIn(false))
+			console.log(`🕳  BTLG - Dispatch Loading STOP`)
 			dispatch(setLoadingMessage(false))
 		}
 	}

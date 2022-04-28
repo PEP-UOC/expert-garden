@@ -96,17 +96,18 @@ export const SignUpScreen = ({ debug, navigation }) => {
 
 		const { email, password, password2, name, surnames, role } = values
 
+		console.log(`🕳  SNUP - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Registrándote!' : 'Registrándote!'))
 
 		if (!allFilled()) {
 			if (password == password2) {
 				auth().createUserWithEmailAndPassword(email, password)
 					.then((user) => {
-						console.info('Registered!');
+						console.info('🚀 SNUP - Registered!');
 						console.info(user.user.email);
 						auth().currentUser.sendEmailVerification()
 							.then(() => {
-								console.info('Email verification sent!');
+								console.info('🚀 SNUP - Email verification sent!');
 								dispatch(addUser(user))
 								firestore().collection("users").doc(auth()?.currentUser?.uid).set({
 									uid: auth()?.currentUser?.uid,
@@ -128,6 +129,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 										}).catch((error) => {
 											console.error(error.message);
 											dispatch(setLoggedIn(false))
+											console.log(`🕳  SNUP - Dispatch Loading STOP`)
 											dispatch(setLoadingMessage(false))
 											dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 										});
@@ -135,6 +137,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 									.catch((error) => {
 										console.error(error.message);
 										dispatch(setLoggedIn(false))
+										console.log(`🕳  SNUP - Dispatch Loading STOP`)
 										dispatch(setLoadingMessage(false))
 										dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 									});
@@ -143,16 +146,19 @@ export const SignUpScreen = ({ debug, navigation }) => {
 					.catch((error) => {
 						console.error(error.message);
 						dispatch(setLoggedIn(false))
+						console.log(`🕳  SNUP - Dispatch Loading STOP`)
 						dispatch(setLoadingMessage(false))
 						dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 					});
 			} else {
 				dispatch(setLoggedIn(false))
+				console.log(`🕳  SNUP - Dispatch Loading STOP`)
 				dispatch(setLoadingMessage(false))
 				dispatch(setErrorMessage('Las contraseñas no coinciden'))
 			}
 		} else {
 			dispatch(setLoggedIn(false))
+			console.log(`🕳  SNUP - Dispatch Loading STOP`)
 			dispatch(setLoadingMessage(false))
 			dispatch(setErrorMessage('Rellena todos los campos'))
 		}

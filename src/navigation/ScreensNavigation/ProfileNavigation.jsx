@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MainProfileScreen } from '../../screens/Profile/MainProfile/MainProfile';
 import { GardenDetailScreen } from '../../screens/Profile/GardenDetail/GardenDetail';
 import { AddGardenScreen } from '../../screens/Profile/AddGarden/AddGarden';
-import { AddDetailScreen } from '../../screens/Profile/AddDetail/AddDetail';
+import { DetailScreen } from '../../screens/Profile/GardenDetail/components/Detail';
 
 const Profile = createNativeStackNavigator()
 export const ProfileNavigation = () => (
@@ -12,6 +12,6 @@ export const ProfileNavigation = () => (
 		<Profile.Screen name='MainProfileScreen' component={MainProfileScreen} />
 		<Profile.Screen name='GardenDetailScreen' component={GardenDetailScreen} />
 		<Profile.Screen name='AddGardenScreen' component={AddGardenScreen} />
-		<Profile.Screen name='AddDetailScreen' component={AddDetailScreen} />
+		<Profile.Screen name='DetailScreen' component={DetailScreen} />
 	</Profile.Navigator>
 )

@@ -69,6 +69,7 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 	}, [entity]);
 
 	const handleImagePicked = async (pickerResult) => {
+		console.log(`🕳  FISI - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Guardando' : 'Guardando'));
 		try {
 			if (!pickerResult.cancelled) {
@@ -87,6 +88,7 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 				),
 			);
 		} finally {
+			console.log(`🕳  FISI - Dispatch Loading STOP`);
 			dispatch(setLoadingMessage(false));
 		}
 	};
@@ -146,6 +148,7 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 							.then(() => {})
 							.catch((error) => {
 								console.error(error.message);
+								console.log(`🕳  FISI - Dispatch Loading STOP`);
 								dispatch(setLoadingMessage(false));
 								dispatch(
 									setErrorMessage(
@@ -158,6 +161,7 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 					})
 					.catch((error) => {
 						console.error(error.message);
+						console.log(`🕳  FISI - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 						dispatch(
 							setErrorMessage(
@@ -180,11 +184,13 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 						imageCounter: increment(1),
 					})
 					.then(() => {
+						console.log(`🕳  FISI - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 						dispatch(setErrorMessage(false));
 					})
 					.catch((error) => {
 						console.error(error.message);
+						console.log(`🕳  FISI - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 						dispatch(
 							setErrorMessage(

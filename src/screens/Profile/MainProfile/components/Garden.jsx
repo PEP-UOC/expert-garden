@@ -103,6 +103,7 @@ export const GardenItem = ({ debug, garden }) => {
 				<TouchableOpacity
 					style={styles.button}
 					onPress={() => {
+						console.log(`🕳  GADN - Dispatch Loading START`);
 						dispatch(setLoadingMessage(debug ? '🔧 Cargando' : 'Cargando'));
 						navigation.push("AddGardenScreen", { index: garden?.index })
 					}}
@@ -184,6 +185,7 @@ export const GardenItem = ({ debug, garden }) => {
 					}
 					size='medium'
 					onPress={() => {
+						console.log(`🕳  GADN - Dispatch Loading START`);
 						dispatch(setLoadingMessage(debug ? '🔧 Cargando' : 'Cargando'));
 						navigation.push("GardenDetailScreen", { gid: garden?.item?.gid, index: garden?.index })
 					}}

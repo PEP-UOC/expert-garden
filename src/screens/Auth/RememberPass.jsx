@@ -40,6 +40,7 @@ export const RememberPass = ({ debug, navigation }) => {
 
 	//Password reset
 	const sendResetEmail = (auth) => {
+		console.log(`🕳  RMPA - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Enviando' : 'Enviando'));
 		auth()?.sendPasswordResetEmail(email)
 			.then(() => {
@@ -47,6 +48,7 @@ export const RememberPass = ({ debug, navigation }) => {
 			})
 			.catch((error) => {
 				console.error(error.message);
+				console.log(`🕳  RMPA - Dispatch Loading STOP`)
 				dispatch(setLoadingMessage(false))
 				dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 			});

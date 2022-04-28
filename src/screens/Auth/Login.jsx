@@ -70,6 +70,7 @@ export const LoginScreen = ({ debug, navigation }) => {
 
 		const { email, password } = values
 
+		console.log(`🕳  LOGI - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Accediendo' : 'Accediendo'))
 
 		auth().signInWithEmailAndPassword(email, password)
@@ -82,6 +83,7 @@ export const LoginScreen = ({ debug, navigation }) => {
 			.catch((error) => {
 				console.error(error.message);
 				dispatch(setLoggedIn(false))
+				console.log(`🕳  LOGI - Dispatch Loading STOP`)
 				dispatch(setLoadingMessage(false))
 				dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 			});

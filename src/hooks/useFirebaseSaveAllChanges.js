@@ -24,6 +24,7 @@ export function useFirebaseSaveAllChanges(debug) {
 		//console.log('🙋‍♂️ FISA - user', user)
 		console.log('🚨 FISA - changesToSave', changesToSave);
 
+		console.log(`🕳  FISA - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Guardando' : 'Guardando'));
 
 		//Metadata
@@ -95,6 +96,7 @@ export function useFirebaseSaveAllChanges(debug) {
 							}),
 						);
 						console.log('🟢 FISA - gardens UPDATED');
+						console.log(`🕳  FISA - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 						dispatch(setErrorMessage(false));
 						console.log('🧹 FISA - Limpiando changesToSave');
@@ -102,6 +104,7 @@ export function useFirebaseSaveAllChanges(debug) {
 					})
 					.catch((error) => {
 						console.error(error.message);
+						console.log(`🕳  FISA - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 						dispatch(
 							setErrorMessage(
@@ -114,6 +117,7 @@ export function useFirebaseSaveAllChanges(debug) {
 			})
 			.catch((error) => {
 				console.error(error.message);
+				console.log(`🕳  FISA - Dispatch Loading STOP`);
 				dispatch(setLoadingMessage(false));
 				dispatch(
 					setErrorMessage(

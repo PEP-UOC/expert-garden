@@ -45,6 +45,7 @@ export const HomeScreen = ({ debug, navigation }) => {
 	};
 
 	useEffect(() => {
+		console.log(`🕳  HOME - Dispatch Loading STOP`)
 		dispatch(setLoadingMessage(false))
 		dispatch(setErrorMessage(false))
 	}, []);

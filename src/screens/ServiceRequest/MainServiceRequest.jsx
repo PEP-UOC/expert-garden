@@ -91,6 +91,7 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
 			.catch((error) => {
 				console.error(error.message);
 				dispatch(setLoggedIn(false))
+				console.log(`🕳  MSRQ - Dispatch Loading STOP`)
 				dispatch(setLoadingMessage(false))
 				dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 			});
@@ -123,6 +124,7 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
 			.catch((error) => {
 				console.error(error.message);
 				dispatch(setLoggedIn(false))
+				console.log(`🕳  MSRQ - Dispatch Loading STOP`)
 				dispatch(setLoadingMessage(false))
 				dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 			});
@@ -159,12 +161,14 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
 			.catch((error) => {
 				console.error(error.message);
 				dispatch(setLoggedIn(false))
+				console.log(`🕳  MSRQ - Dispatch Loading STOP`)
 				dispatch(setLoadingMessage(false))
 				dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 			});
 	};
 
 	useEffect(() => {
+		console.log(`🕳  MSRQ - Dispatch Loading STOP`)
 		dispatch(setLoadingMessage(false))
 		dispatch(setErrorMessage(false))
 	}, []);

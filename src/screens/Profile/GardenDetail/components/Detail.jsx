@@ -5,37 +5,80 @@ import PropTypes from "prop-types";
 import Constants from 'expo-constants';
 
 import { View, SafeAreaView, ScrollView, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from "react-native"
-import { Divider, Text, Button, Layout, Input, TopNavigation, TopNavigationAction, Select, SelectItem } from '@ui-kitten/components';
-import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
+import { Divider, Text, Button, Layout, Input, TopNavigation, TopNavigationAction, Select, SelectItem, IndexPath } from '@ui-kitten/components';
+import { SeparatorTopScreen } from '../../../../components/Separators/TopScreen'
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
-import globalStyles from '../../../styles/globalStyles'
-import styles from './styles'
+import globalStyles from '../../../../styles/globalStyles'
+import styles from '../../AddDetail/styles'
+
+//Store
+import { useDispatch } from 'react-redux'
+import { setLoadingMessage } from '../../../../store/root/rootAction';
 
 //Icons
-import { LeafIcon } from '../../../assets/icons/Leaf'
-import { BackIcon } from '../../../assets/icons/Back'
+import { LeafIcon } from '../../../../assets/icons/Leaf'
+import { BackIcon } from '../../../../assets/icons/Back'
 
 //Data
-import { gardenDetailTypes } from '../../../data/gardenDetailTypes'
+import { gardenDetailTypes } from '../../../../data/gardenDetailTypes'
 
 //Hooks
-import { useFirebaseSaveGardenDetail } from "../../../hooks/useFirebaseSaveGardenDetail"
+import { useFirebaseSaveGardenDetail } from "../../../../hooks/useFirebaseSaveGardenDetail"
 
 //Lodash
 import { forIn } from 'lodash';
 
 //Modales
-import { ModalOptions } from '../../../components/Modals/Options';
+import { ModalOptions } from '../../../../components/Modals/Options';
 
 //uuid
 import uuid from 'react-native-uuid';
 
 // eslint-disable-next-line no-unused-vars
-export const AddDetailScreen = ({ debug, navigation, route }) => {
+export const DetailScreen = ({ debug, navigation, route }) => {
+	const dispatch = useDispatch()
+
 	const gardenId = route.params.gid;
+
+	const [gardenDetailId, setGardenDetalId] = useState(route.params?.gdid || false);
+	const [gardenDetail, setGardenDetal] = useState(route.params?.detail || false);
+
 	const gardenName = route.params.name;
+
+	const [isEdit, setIsEdit] = useState(false);
+
+	//Edit
+	const [autoFindSubType, setAutoFindSubType] = useState(false);
+	useEffect(() => {
+		if (gardenDetailId) {
+			setValues(prevValues => {
+				return {
+					...prevValues,
+					gdid: gardenDetail.gdid
+				}
+			})
+			const mainIndex = gardenDetailTypes.findIndex(type => type.name === gardenDetail.mainType)
+			setSelectedIndexMainType(new IndexPath(mainIndex))
+			handleChange(gardenDetailTypes[mainIndex]?.name, "mainType")
+			setIsEdit(true);
+		}
+	}, []);
+
+	useEffect(() => {
+		if (gardenDetailId) {
+			const subIndex = listSubType.findIndex(type => type.name === gardenDetail.subType)
+			setSelectedIndexSubType(new IndexPath(subIndex))
+			handleChange(listSubType[subIndex]?.name, "subType")
+			setValues(prevValues => {
+				return {
+					...prevValues,
+					inputs: gardenDetail.inputs
+				}
+			})
+		}
+	}, [autoFindSubType]);
 
 	//Styles
 	const gloStyles = useStyleSheet(globalStyles);
@@ -51,6 +94,11 @@ export const AddDetailScreen = ({ debug, navigation, route }) => {
 	})
 
 	const resetForm = () => {
+		console.log(`🕳  DETA - Dispatch Loading STOP`);
+		dispatch(setLoadingMessage(false));
+		setGardenDetalId(false)
+		setGardenDetal(false)
+		setIsEdit(false)
 		setSelectedIndexMainType()
 		setSelectedIndexSubType()
 		setListInputs([])
@@ -103,11 +151,12 @@ export const AddDetailScreen = ({ debug, navigation, route }) => {
 			setSelectedIndexSubType()
 			setListSubType(gardenDetailTypes[selectedIndexMainType.row]?.subTypes)
 			setShowSubType(true)
+			setAutoFindSubType(true)
 		}
 	}, [values.mainType]);
 
 	useEffect(() => {
-		if (values?.subType && listSubType.length) {
+		if (values?.subType && listSubType?.length) {
 			setListInputs(listSubType[selectedIndexSubType?.row]?.inputs)
 			setShowInputs(true)
 		}
@@ -132,6 +181,8 @@ export const AddDetailScreen = ({ debug, navigation, route }) => {
 	);
 
 	const navigateBack = () => {
+		console.log(`🕳  DETA - Dispatch Loading STOP`);
+		dispatch(setLoadingMessage(false));
 		navigation.goBack();
 	};
 
@@ -158,7 +209,7 @@ export const AddDetailScreen = ({ debug, navigation, route }) => {
 								<SeparatorTopScreen />
 								<View style={{ ...gloStyles?.view }}>
 									<View style={{ ...gloStyles.section.full }}>
-										<Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>AÑADIR DETALLE A</Text>
+										<Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>{isEdit ? 'EDITAR DETALLE DE' : 'AÑADIR DETALLE A'}</Text>
 										<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>{gardenName}</Text>
 
 										<View style={{ ...gloStyles?.inputs?.row }}>
@@ -170,7 +221,7 @@ export const AddDetailScreen = ({ debug, navigation, route }) => {
 												selectedIndex={selectedIndexMainType}
 												onSelect={index => {
 													setSelectedIndexMainType(index)
-													handleChange(gardenDetailTypes[index - 1].name, "mainType")
+													handleChange(gardenDetailTypes[index - 1]?.name, "mainType")
 												}}>
 												{gardenDetailTypes.map(gdT => gdT.value).map(renderOption)}
 											</Select>
@@ -185,13 +236,13 @@ export const AddDetailScreen = ({ debug, navigation, route }) => {
 														selectedIndex={selectedIndexSubType}
 														onSelect={index => {
 															setSelectedIndexSubType(index)
-															handleChange(listSubType[index - 1].name, "subType")
+															handleChange(listSubType[index - 1]?.name, "subType")
 														}}>
 														{listSubType.map(sT => sT.value).map(renderOption)}
 													</Select>
 												)}
 
-											{showInputs && listInputs.map(input => {
+											{showInputs && listInputs?.map(input => {
 												return (
 													<Input
 														key={input.inputId}
@@ -210,7 +261,7 @@ export const AddDetailScreen = ({ debug, navigation, route }) => {
 
 										</View>
 
-										<Button style={{ ...gloStyles?.button }} onPress={() => handleSaveGardenDetail(values)} disabled={isDisabled()}>Guardar detalle</Button>
+										<Button style={{ ...gloStyles?.button }} onPress={() => handleSaveGardenDetail(values, isEdit)} disabled={isDisabled()}>Guardar detalle</Button>
 
 										<Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={navigateBack}>Volver</Button>
 
@@ -231,12 +282,12 @@ export const AddDetailScreen = ({ debug, navigation, route }) => {
 	)
 };
 
-AddDetailScreen.propTypes = {
+DetailScreen.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	navigation: PropTypes.object.isRequired,
 	route: PropTypes.object.isRequired,
 };
 
-AddDetailScreen.defaultProps = {
+DetailScreen.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 };
