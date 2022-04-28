@@ -45,7 +45,7 @@ export function useProvinceTown(savedPostalCode, savedProvince, savedTown) {
 
 	return [
 		(newPostalCode) => {
-			console.log('⚪️ PRTO - SET newPostalCode', newPostalCode);
+			//console.log('⚪️ PRTO - SET newPostalCode', newPostalCode);
 			setPostalCode(newPostalCode);
 		},
 		province,

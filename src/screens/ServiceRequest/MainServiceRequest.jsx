@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import PropTypes from "prop-types";
 
 //Constants
@@ -13,7 +12,6 @@ import styles from './styles'
 //Store
 import { useDispatch } from 'react-redux'
 import { setErrorMessage, setLoadingMessage, setLoggedIn } from '../../store/root/rootAction';
-import { removeUser } from '../../store/user/userAction';
 
 //Data
 import mainServices from '../../data/mainServices.json'
@@ -24,9 +22,6 @@ import { Divider, Layout, Button, TopNavigation } from '@ui-kitten/components';
 import { TitleScreen } from '../../components/Titles/Screen'
 import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
 import { SeparatorTopSection } from '../../components/Separators/TopSection'
-
-//Icons
-import { AddIcon } from '../../assets/icons/Add'
 
 //Firebase
 import firebase from 'firebase/compat/app';
@@ -169,59 +164,6 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
 			});
 	};
 
-	//Logout
-	const doLogout = () => {
-
-		dispatch(setLoadingMessage(debug ? '🔧 Adiós!' : 'Adiós!'))
-
-		auth().signOut()
-			.then(() => {
-				console.info('🔐 MSRQ - Logged Out!');
-				dispatch(removeUser())
-				dispatch(setLoggedIn(false))
-				dispatch(setLoadingMessage(false))
-			})
-			.catch((error) => {
-				console.error(error.message);
-				dispatch(setLoggedIn(false))
-				dispatch(setLoadingMessage(false))
-			});
-	};
-
-	const doClearData = async () => {
-		dispatch(setLoadingMessage(debug ? '🔧 Adiós!' : 'Adiós!'))
-
-		try {
-			await AsyncStorage.clear()
-				.then(() => {
-					auth().signOut()
-						.then(() => {
-							console.info('🔐 MSRQ - Logged Out!');
-							dispatch(removeUser())
-							dispatch(setLoggedIn(false))
-							dispatch(setLoadingMessage(false))
-						})
-						.catch((error) => {
-							console.error(error.message);
-							dispatch(setLoggedIn(false))
-							dispatch(setLoadingMessage(false))
-						});
-				})
-				.catch((error) => {
-					console.error(error.message);
-					dispatch(setLoggedIn(false))
-					dispatch(setLoadingMessage(false))
-				});
-		} catch (error) {
-			console.error(error.message);
-			dispatch(setLoggedIn(false))
-			dispatch(setLoadingMessage(false))
-		}
-
-		console.log('✅ MSRQ - Done.')
-	}
-
-
 	useEffect(() => {
 		dispatch(setLoadingMessage(false))
 		dispatch(setErrorMessage(false))
@@ -241,8 +183,6 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
 								<View style={{ ...gloStyles.view }}>
 									<View style={{ ...gloStyles.section.primary }}>
 										<TitleScreen icon={'plus-circle-outline'} primaryText={'Solicita un servicio'} secondaryText={''} />
-										<Button style={{ ...gloStyles?.button }} size='tiny' accessoryLeft={AddIcon} status='danger' appearance='outline' onPress={doLogout}>CERRAR SESIÓN</Button>
-										<Button style={{ ...gloStyles?.button }} size='tiny' accessoryLeft={AddIcon} status='danger' appearance='outline' onPress={doClearData}>CLEAR DATA</Button>
 									</View>
 									<View style={{ ...gloStyles.section.secondary }}>
 										<SeparatorTopSection />

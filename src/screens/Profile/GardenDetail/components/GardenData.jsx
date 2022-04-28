@@ -93,7 +93,6 @@ export const GardenDataForm = ({ debug, gid, gardenIndex }) => {
 				town: garden?.town || ""
 			})
 			setPostalCode(garden?.postalCode)
-			console.log('new IndexPath(townsList.findIndex((town) => town.NOMBRE === garden?.town))', new IndexPath(townsList.findIndex((town) => town.NOMBRE === garden?.town)))
 			setTownsSelectedIndex(new IndexPath(townsList.findIndex((town) => town.NOMBRE === garden?.town)))
 			setLoadFormValues(false);
 		}

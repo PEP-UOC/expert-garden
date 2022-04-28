@@ -10,7 +10,7 @@ import globalStyles from '../../../styles/globalStyles'
 
 //Store
 import { useSelector, useDispatch } from 'react-redux'
-import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootAction';
+import { setErrorMessage } from '../../../store/root/rootAction';
 import { removeChangesToSave } from '../../../store/change/changeAction';
 
 //Components
@@ -24,6 +24,7 @@ import { ImgWithPicker } from '../../../components/Images/WithPicker'
 import { PersonalDataForm } from './components/PersonalData'
 import { GardensDataForm } from './components/GardensData'
 import { BankDataForm } from './components/BankData'
+import { SessionActionsBtns } from './components/SessionActions'
 
 //Icons
 import { AddIcon } from '../../../assets/icons/Add'
@@ -100,6 +101,8 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 														<BankDataForm />
 
 														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={AddIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
+
+														<SessionActionsBtns />
 													</>
 												),
 												'business': (
@@ -108,6 +111,7 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 
 														<PersonalDataForm />
 														<BankDataForm />
+														<SessionActionsBtns />
 													</>
 												),
 												'worker': (
@@ -116,6 +120,7 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 
 														<PersonalDataForm />
 														<BankDataForm />
+														<SessionActionsBtns />
 													</>
 												)
 											}[user?.role]
