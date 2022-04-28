@@ -38,6 +38,14 @@ const styles = StyleService.create({
 	addGardenIcon: {
 		fill: 'color-primary-500',
 	},
+	scrollHeight: { minHeight: undefined },
+	mainTitle: { alignSelf: 'center', textAlign: 'center', color: 'color-primary-500' },
+	topSubTitle: {
+		marginBottom: 0,
+		alignSelf: 'center',
+		textAlign: 'center',
+		color: 'color-primary-500',
+	},
 });
 
 export default styles;

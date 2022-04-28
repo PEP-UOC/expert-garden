@@ -53,7 +53,7 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
 		setValues(prevValues => {
 			return {
 				...prevValues,
-				[keyName]: value?.trim()
+				[keyName]: value
 			}
 		})
 	}

@@ -69,11 +69,11 @@ export const PersonalDataForm = ({ debug }) => {
 		setValues(prevValues => {
 			return {
 				...prevValues,
-				[keyName]: value?.trim()
+				[keyName]: value
 			}
 		})
 		const newMetadata = { ...values }
-		newMetadata[keyName] = value?.trim();
+		newMetadata[keyName] = value;
 		if (keyName === 'name') {
 			newMetadata['fullname'] = `${value} ${values?.surnames}`;
 		}
@@ -82,7 +82,7 @@ export const PersonalDataForm = ({ debug }) => {
 		}
 		//console.log('📜 PEDA - newMetadata', newMetadata)
 
-		dispatch(updateChangesToSave({ metadata: newMetadata }, true))
+		dispatch(updateChangesToSave({ metadata: newMetadata }, false))
 	}
 
 	//Keyboard

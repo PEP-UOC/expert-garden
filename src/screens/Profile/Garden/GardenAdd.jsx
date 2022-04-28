@@ -37,8 +37,9 @@ import useFirebaseGetOne from '../../../hooks/useFirebaseGetOne'
 import { useFirebaseSaveAllChanges } from '../../../hooks/useFirebaseSaveAllChanges'
 
 // eslint-disable-next-line no-unused-vars
-export const GardenDetailScreen = ({ debug, navigation, route }) => {
-	const gid = route.params.gid;
+export const GardenAddScreen = ({ debug, navigation, route }) => {
+	const [gid, setGid] = useState('new');
+	//const gid = route.params.gid;
 	const gardenIndex = parseInt(route.params.index);
 
 	const dispatch = useDispatch()
@@ -51,6 +52,7 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 	const thereAreNotSavedChanges = useSelector(state => state.changeReducer.thereAreNotSavedChanges);
 
 	//Hooks
+	//const garden = {};
 	const { loading: gardenLoading, result: garden, error: gardenError } = useFirebaseGetOne(debug, 'gardens', 'gid', gid);
 	const [saveChanges] = useFirebaseSaveAllChanges(debug);
 
@@ -67,27 +69,27 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 	const [loadComponents, setLoadComponents] = useState(false);
 
 	useEffect(() => {
-		console.log('🧹 GDET - Limpiando GardenTemporal')
 		dispatch(setErrorMessage(false))
 	}, []);
 
 	useEffect(() => {
-		//console.log(`🌀 GDET - Cargando   ${gid} | ${gardenLoading.toString()}`)
+		//console.log(`🌀 GADD - Cargando   ${gid} | ${gardenLoading.toString()}`)
 	}, [gardenLoading]);
 
 	useEffect(() => {
 		if (garden?.gid) {
-			console.log(`🍀 GDET - Jardín     ${gid} |`, garden?.type)
-			//console.log(`🍀 GDET - Jardín     ${gid} |`, garden)
+			setGid(garden?.gid)
+			console.log(`🍀 GADD - Jardín     ${garden?.gid} |`, garden?.name)
+			//console.log(`🍀 GADD - Jardín     ${garden?.gid} |`, garden)
 			setLoadComponents(true);
-			console.log(`🕳  GDET - Dispatch Loading STOP`)
+			console.log(`🕳  GADD - Dispatch Loading STOP`)
 			dispatch(setLoadingMessage(false))
 		}
 	}, [garden]);
 
 	useEffect(() => {
 		if (gardenError) {
-			console.log(`🩸 GDET - Error   ${gid} | ${gardenError}`)
+			console.log(`🩸 GADD - Error   ${gid} | ${gardenError}`)
 			dispatch(setErrorMessage(gardenError))
 		}
 	}, [gardenError]);
@@ -109,12 +111,12 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 										(
 											<>
 												<View style={{ ...gloStyles.section.primary }}>
-													<TitleScreen icon={'sun-outline'} primaryText={upperFirst(toLower(garden?.type)) || ''} secondaryText={''} />
+													<TitleScreen icon={'sun-outline'} primaryText={upperFirst(toLower(garden?.name)) || ''} secondaryText={''} />
 													<ImgWithPicker entity={garden || {}} entityType={'garden'} />
 													{{
 														'client': (
 															<>
-																{Platform.OS === "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.type })} />}
+																{Platform.OS === "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.name })} />}
 
 																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 															</>
@@ -140,7 +142,7 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 
 																{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 
-																{Platform.OS !== "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.type })} />}
+																{Platform.OS !== "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.name })} />}
 
 																<DetailsList gid={gid || ''} gardenIndex={gardenIndex || 0} />
 															</>
@@ -177,12 +179,12 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 	)
 };
 
-GardenDetailScreen.propTypes = {
+GardenAddScreen.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	navigation: PropTypes.object.isRequired,
 	route: PropTypes.object.isRequired,
 };
 
-GardenDetailScreen.defaultProps = {
+GardenAddScreen.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 };

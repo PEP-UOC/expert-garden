@@ -44,6 +44,8 @@ export const GardenDataForm = ({ debug, gid, gardenIndex }) => {
 	//State
 	const [values, setValues] = useState({
 		gid: "",
+		name: "",
+		description: "",
 		address: "",
 		addressExtra: "",
 		postalCode: "",
@@ -56,23 +58,32 @@ export const GardenDataForm = ({ debug, gid, gardenIndex }) => {
 
 	const [setPostalCode, province, townsList, townsSelectedIndex, setTownsSelectedIndex, townDisplayValue] = useProvinceTown(values.postalCode, values.province, values.town);
 
+	useEffect(() => {
+		setValues(prevValues => {
+			return {
+				...prevValues,
+				province
+			}
+		})
+	}, [province]);
+
 	//Handle
 	function handleChange(value, keyName, auto = false) {
 		setValues(prevValues => {
 			return {
 				...prevValues,
-				[keyName]: value?.trim()
+				[keyName]: value
 			}
 		})
 		const newGarden = { ...values }
-		newGarden[keyName] = value?.trim();
+		newGarden[keyName] = value;
 		//console.log('🌳 GDAT - newGarden', newGarden)
 
 		const gardensArray = [...changesToSave?.gardens || []];
 		gardensArray[gardenIndex] = newGarden;
 		//console.log('🌳 GDAT - gardensArray', gardensArray)
 
-		dispatch(updateChangesToSave({ gardens: gardensArray }, !auto))
+		dispatch(updateChangesToSave({ gardens: gardensArray }, auto))
 	}
 
 	const townRenderOption = (title) => (
@@ -86,6 +97,8 @@ export const GardenDataForm = ({ debug, gid, gardenIndex }) => {
 		if (loadFormValues) {
 			setValues({
 				gid: garden?.gid || "",
+				name: garden?.name || "",
+				description: garden?.description || "",
 				address: garden?.address || "",
 				addressExtra: garden?.addressExtra || "",
 				postalCode: garden?.postalCode || "",
@@ -104,7 +117,7 @@ export const GardenDataForm = ({ debug, gid, gardenIndex }) => {
 
 	useEffect(() => {
 		if (garden?.gid) {
-			//console.log(`🍀 GDAT - Jardín     ${gid} |`, garden?.type)
+			//console.log(`🍀 GDAT - Jardín     ${gid} |`, garden?.name)
 			setLoadFormValues(true);
 		}
 	}, [garden]);
@@ -118,7 +131,30 @@ export const GardenDataForm = ({ debug, gid, gardenIndex }) => {
 
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
-			<TitleSection icon={'person-outline'} primaryText={'Localización'} secondaryText={''} />
+			<TitleSection icon={'pin-outline'} primaryText={'General'} secondaryText={''} />
+			<View style={{ ...gloStyles?.inputs?.wrapper }}>
+				<View style={{ ...gloStyles?.inputs?.row, flexDirection: 'column' }}>
+					<Input
+						style={{ ...gloStyles?.inputs?.input, width: '100%' }}
+						label='Nombre del jardín'
+						placeholder={garden?.name}
+						value={values?.name || ''}
+						onChangeText={text => handleChange(text, "name")}
+					/>
+
+					<Input
+						style={{ ...gloStyles?.inputs?.input, width: '100%' }}
+						label={'Descripción'}
+						placeholder='Descripción del jardín...'
+						value={values?.description || ''}
+						onChangeText={text => handleChange(text, "description")}
+						multiline={true}
+						textStyle={{ minHeight: 96 }}
+					/>
+				</View>
+			</View>
+
+			<TitleSection icon={'pin-outline'} primaryText={'Localización'} secondaryText={''} />
 			<View style={{ ...gloStyles?.inputs?.wrapper }}>
 				<View style={{ ...gloStyles?.inputs?.row }}>
 					<Input

@@ -27,6 +27,9 @@ import { ChevronRightIcon } from '../../../../assets/icons/ChevronRight'
 //Hooks
 import useFirebaseGetOne from '../../../../hooks/useFirebaseGetOne'
 
+//Data
+import { gardenDetailTypes, gardenDetailSubTypes } from '../../../../data/gardenDetailTypes'
+
 //Lodash
 import { forIn, toLower, upperFirst } from 'lodash';
 
@@ -48,7 +51,7 @@ export const DetailsList = ({ debug, gid, gardenIndex }) => {
 
 	//Navigation
 	const navigateServiceRequest = (gdid, detail) => {
-		navigation.navigate('DetailScreen', { gid: garden?.gid, name: garden?.type, gdid: gdid, detail: detail });
+		navigation.navigate('DetailScreen', { gid: garden?.gid, name: garden?.name, gdid: gdid, detail: detail });
 	};
 
 	//List
@@ -56,7 +59,8 @@ export const DetailsList = ({ debug, gid, gardenIndex }) => {
 		return (
 			<ListItem
 				onPress={() => navigateServiceRequest(item.gdid, item)}
-				title={`${item.subType}`}
+				//title={`${item.mainType} - ${item.subType}`}
+				title={`${gardenDetailTypes.find((type) => type.name === item.mainType).value} - ${gardenDetailSubTypes.find((type) => type.name === item.subType).value}`}
 				description={renderDescription(item)}
 				accessoryRight={renderItemAccessory(item.gdid, item)}
 			/>
@@ -87,7 +91,7 @@ export const DetailsList = ({ debug, gid, gardenIndex }) => {
 
 	useEffect(() => {
 		if (garden?.gid) {
-			//console.log(`🍀 GDAT - Jardín     ${gid} |`, garden?.type)
+			//console.log(`🍀 GDAT - Jardín     ${gid} |`, garden?.name)
 			setDetails(garden?.details);
 		}
 	}, [garden]);

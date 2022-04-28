@@ -1,3 +1,6 @@
+//Lodash
+import { flatten } from 'lodash';
+
 export const gardenDetailTypes = [
 	{
 		typeId: '01',
@@ -7,7 +10,7 @@ export const gardenDetailTypes = [
 			{
 				subTypeId: '01-01',
 				name: 'plantas_ornamentales',
-				value: 'Plantas ornamentales',
+				value: 'Ornamentales',
 				inputs: [
 					{
 						inputId: '01-01-01',
@@ -413,3 +416,11 @@ export const gardenDetailTypes = [
 		],
 	},
 ];
+
+export const gardenDetailSubTypes = flatten(
+	gardenDetailTypes.map((type) => {
+		return type.subTypes.map((subtype) => {
+			return { name: subtype.name, value: subtype.value };
+		});
+	}),
+);

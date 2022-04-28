@@ -94,10 +94,13 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 											{
 												'client': (
 													<>
+														<PersonalDataForm />
 														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
 
-														<PersonalDataForm />
 														<GardensDataForm />
+
+														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
+
 														<BankDataForm />
 
 														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}

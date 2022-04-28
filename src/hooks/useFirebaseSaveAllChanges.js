@@ -87,6 +87,8 @@ export function useFirebaseSaveAllChanges(debug) {
 						Promise.all(
 							gardensList.map(async (garden) => {
 								firestore().collection('gardens').doc(garden?.gid).update({
+									name: garden?.name,
+									description: garden?.description,
 									address: garden?.address,
 									addressExtra: garden?.addressExtra,
 									postalCode: garden?.postalCode,

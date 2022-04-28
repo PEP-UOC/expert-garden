@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
 
 //Constants
@@ -44,6 +44,8 @@ export const GardenItem = ({ debug, garden }) => {
 	//Inputs State
 	const [values, setValues] = useState({
 		gid: garden?.item?.gid || "",
+		name: garden?.item?.name || "",
+		description: garden?.item?.description || "",
 		address: garden?.item?.address || "",
 		addressExtra: garden?.item?.addressExtra || "",
 		postalCode: garden?.item?.postalCode || "",
@@ -57,18 +59,18 @@ export const GardenItem = ({ debug, garden }) => {
 			setValues(prevValues => {
 				return {
 					...prevValues,
-					[keyName]: value?.trim()
+					[keyName]: value
 				}
 			})
 			const newGarden = { ...values }
-			newGarden[keyName] = value?.trim();
+			newGarden[keyName] = value;
 			//console.log('🌳 GDAT - newGarden', newGarden)
 
 			const gardensArray = [...changesToSave?.gardens || []];
 			gardensArray[garden?.index] = newGarden;
 			//console.log('🌳 GDAT - gardensArray', gardensArray)
 
-			dispatch(updateChangesToSave({ gardens: gardensArray }, !auto))
+			dispatch(updateChangesToSave({ gardens: gardensArray }, auto))
 		}
 	}
 
@@ -76,7 +78,10 @@ export const GardenItem = ({ debug, garden }) => {
 		return (
 			<View {...headerProps}>
 				<Text category='h6'>
-					{garden?.item?.type}
+					{garden?.item?.name}
+				</Text>
+				<Text category='c1'>
+					{garden?.item?.description}
 				</Text>
 			</View>
 		)
@@ -85,7 +90,16 @@ export const GardenItem = ({ debug, garden }) => {
 	//Hooks
 	const [setPostalCode, province, townsList, townsSelectedIndex, setTownsSelectedIndex, townDisplayValue] = useProvinceTown(values.postalCode, values.province, values.town);
 
-	if (garden?.item?.type === 'CHALET') {
+	useEffect(() => {
+		setValues(prevValues => {
+			return {
+				...prevValues,
+				province
+			}
+		})
+	}, [province]);
+
+	if (garden?.item?.name === 'CHALET') {
 		//console.log('⛱  DEBU - townDisplayValue', townDisplayValue)
 	}
 
@@ -94,7 +108,7 @@ export const GardenItem = ({ debug, garden }) => {
 	);
 
 	//Add Garden
-	if (garden?.item?.type === 'addGarden') {
+	if (garden?.item?.name === 'addGarden') {
 		return (
 			<Card
 				style={{ ...ownStyles?.garden?.cardAddGarden }}
@@ -105,7 +119,7 @@ export const GardenItem = ({ debug, garden }) => {
 					onPress={() => {
 						console.log(`🕳  GADN - Dispatch Loading START`);
 						dispatch(setLoadingMessage(debug ? '🔧 Cargando' : 'Cargando'));
-						navigation.push("AddGardenScreen", { index: garden?.index })
+						navigation.push("GardenAddScreen", { index: garden?.index })
 					}}
 				>
 					<View style={{ ...gloStyles?.inputs?.row, ...ownStyles?.garden?.row }}>

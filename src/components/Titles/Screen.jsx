@@ -21,31 +21,31 @@ import Device from '../../libs/react-native-device-detection';
 // eslint-disable-next-line no-unused-vars
 export const TitleScreen = ({ debug, icon, primaryText, secondaryText }) => {
 
-    //Styles
-    const gloStyles = useStyleSheet(globalStyles);
-    const ownStyles = useStyleSheet(styles);
+	//Styles
+	const gloStyles = useStyleSheet(globalStyles);
+	const ownStyles = useStyleSheet(styles);
 
-    return (
-        <View style={
-            {
-                ...ownStyles?.screenWrapper,
-                flexDirection: icon !== '' ? 'row' : 'column', alignItems: icon !== '' ? 'center' : 'flex-start'
-            }
-        }>
-            {!Device.isPhone && icon !== '' && <Icon width={60} height={40} name={icon} fill='#094c3f' />}
-            <Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.screenText }}>{primaryText}</Text>
-            <Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.screenText }}>{secondaryText}</Text>
-        </View>
-    )
+	return (
+		<View style={
+			{
+				...ownStyles?.screenWrapper,
+				flexDirection: icon !== '' ? 'row' : 'column', alignItems: icon !== '' ? 'center' : 'flex-start'
+			}
+		}>
+			{!Device.isPhone && icon !== '' && <Icon width={60} height={40} name={icon} fill='#094c3f' />}
+			<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.screenText }}>{primaryText}</Text>
+			<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.screenText }}>{secondaryText}</Text>
+		</View>
+	)
 };
 
 TitleScreen.propTypes = {
-    debug: PropTypes.bool.isRequired,
-    icon: PropTypes.string,
-    primaryText: PropTypes.string.isRequired,
-    secondaryText: PropTypes.string.isRequired,
+	debug: PropTypes.bool.isRequired,
+	icon: PropTypes.string,
+	primaryText: PropTypes.string.isRequired,
+	secondaryText: PropTypes.string.isRequired,
 };
 
 TitleScreen.defaultProps = {
-    debug: Constants.manifest.extra.debug || false,
+	debug: Constants.manifest.extra.debug || false,
 };

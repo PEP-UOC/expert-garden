@@ -8,6 +8,9 @@ import 'firebase/compat/firestore';
 //Lodash
 import { toLower, upperFirst } from 'lodash';
 
+//Moment
+import moment from 'moment';
+
 function useFirebaseGetOne(debug, collection, entityIdentifier, entityValue) {
 	//Firebase
 	const auth = firebase.auth;
@@ -39,7 +42,7 @@ function useFirebaseGetOne(debug, collection, entityIdentifier, entityValue) {
 									`🌳 FIGO - ${upperFirst(
 										toLower(collection.slice(0, -1)),
 									)} ${entityIdentifier} ${entityValue} |`,
-									ITEMS[0]?.type,
+									ITEMS[0]?.name,
 								);
 								setResult(ITEMS[0]);
 								setLoading(false);
@@ -55,8 +58,67 @@ function useFirebaseGetOne(debug, collection, entityIdentifier, entityValue) {
 			}
 			setLoading(false);
 		};
+		const createData = async () => {
+			try {
+				if (auth().currentUser) {
+					const now = moment();
+					const ref = firestore().collection(collection).doc();
+					const creationDateTime = now.format();
+					const creationDate = now.format('DD-MM-YYYY');
+					const creationTime = now.format('HH:mm');
+					let entity = {};
+					switch (entityIdentifier) {
+						case 'gid':
+							entity = {
+								gid: ref.id,
+								uid: auth()?.currentUser?.uid,
+								name: 'Nuevo jardín',
+								content: 'Descripción',
+								creationDateTime,
+								creationDate,
+								creationTime,
+								address: '',
+								addressExtra: '',
+								postalCode: '',
+								province: '',
+								town: '',
+								details: [],
+								imageCounter: 0,
+								images: [],
+							};
+							break;
+						default:
+							break;
+					}
+					firestore()
+						.collection(collection)
+						.doc(ref.id)
+						.set(entity)
+						.then(() => {
+							setResult(entity);
+							setLoading(false);
+						})
+						.catch((error) => {
+							setLoading(false);
+							setError(error.message);
+						});
+				} else {
+					setLoading(false);
+					setError('Vuelva a iniciar sessión');
+				}
+			} catch (error) {
+				setLoading(false);
+				setError(error.message);
+			}
+			setLoading(false);
+		};
 
-		fetchData();
+		if (entityValue !== 'new') {
+			fetchData();
+		} else {
+			createData();
+		}
+
 		return () => {
 			// cancel the subscription
 			isMounted = false;

@@ -14,7 +14,7 @@ const changeReducer = (state = initialState, action) => {
 					...state.changesToSave,
 					...action.payload.changesToSave,
 				},
-				thereAreNotSavedChanges: action.payload.thereAreNotSavedChanges,
+				thereAreNotSavedChanges: !action.payload.thereAreNotSavedChanges,
 			};
 		case REMOVE_CHANGES_TO_SAVE:
 			return {

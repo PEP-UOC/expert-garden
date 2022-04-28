@@ -11,7 +11,7 @@ import { SeparatorTopScreen } from '../../../../components/Separators/TopScreen'
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
 import globalStyles from '../../../../styles/globalStyles'
-import styles from '../../AddDetail/styles'
+import styles from './styles'
 
 //Store
 import { useDispatch } from 'react-redux'
@@ -32,6 +32,9 @@ import { forIn } from 'lodash';
 
 //Modales
 import { ModalOptions } from '../../../../components/Modals/Options';
+
+//Device Detect
+import Device from '../../../../libs/react-native-device-detection';
 
 //uuid
 import uuid from 'react-native-uuid';
@@ -118,7 +121,7 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 		setValues(prevValues => {
 			return {
 				...prevValues,
-				[keyName]: value?.trim()
+				[keyName]: value
 			}
 		})
 	}
@@ -204,15 +207,15 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 						<TopNavigation title={''} alignment='center' accessoryLeft={BackAction} />
 						<Divider />
 						<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-							contentContainerStyle={{ ...gloStyles?.scrollView, ...ownStyles?.scrollHeight }}>
+							contentContainerStyle={{ ...gloStyles?.scrollView }}>
 							<Layout style={{ ...gloStyles?.layout }}>
 								<SeparatorTopScreen />
-								<View style={{ ...gloStyles?.view }}>
+								<View style={{ ...gloStyles?.view, alignItems: 'flex-start' }}>
 									<View style={{ ...gloStyles.section.full }}>
 										<Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>{isEdit ? 'EDITAR DETALLE DE' : 'AÑADIR DETALLE A'}</Text>
 										<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>{gardenName}</Text>
 
-										<View style={{ ...gloStyles?.inputs?.row }}>
+										<View style={{ ...gloStyles?.inputs?.row, width: Device?.isPhone ? '100%' : 700, justifyContent: showSubType ? 'space-between' : 'center' }}>
 											<Select
 												style={{ ...gloStyles.inputs.select }}
 												label='Tipo'
@@ -242,24 +245,24 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 													</Select>
 												)}
 
-											{showInputs && listInputs?.map(input => {
-												return (
-													<Input
-														key={input.inputId}
-														style={{ ...gloStyles?.inputs?.input }}
-														label={input.label}
-														caption={renderCaption(input.caption)}
-														placeholder={input.placeholder}
-														value={values.inputs[input?.name] || ''}
-														onChangeText={text => handleInputChange(text, input.name)}
-														multiline={input.type === 'textarea'}
-														textStyle={input.type === 'textarea' && { minHeight: 96 }}
-													/>
-												)
-											})
-											}
 
 										</View>
+										{showInputs && listInputs?.map(input => {
+											return (
+												<Input
+													key={input.inputId}
+													style={{ ...gloStyles?.inputs?.input }}
+													label={input.label}
+													caption={renderCaption(input.caption)}
+													placeholder={input.placeholder}
+													value={values.inputs[input?.name] || ''}
+													onChangeText={text => handleInputChange(text, input.name)}
+													multiline={input.type === 'textarea'}
+													textStyle={input.type === 'textarea' && { minHeight: 96 }}
+												/>
+											)
+										})
+										}
 
 										<Button style={{ ...gloStyles?.button }} onPress={() => handleSaveGardenDetail(values, isEdit)} disabled={isDisabled()}>Guardar detalle</Button>
 

@@ -129,17 +129,17 @@ export const MainServiceRequestScreen = ({ debug, navigation }) => {
 				dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 			});
 	};
-	const submitGarden = (type, content) => {
+	const submitGarden = (name, description) => {
 		const now = moment();
-		const ref = firestore().collection("notifications").doc();
+		const ref = firestore().collection("gardens").doc();
 		const creationDateTime = now.format();
 		const creationDate = now.format("DD-MM-YYYY");
 		const creationTime = now.format("HH:mm");
 		firestore().collection("gardens").doc(ref.id).set({
 			gid: ref.id,
 			uid: auth()?.currentUser?.uid,
-			type,
-			content,
+			name,
+			description,
 			creationDateTime,
 			creationDate,
 			creationTime,

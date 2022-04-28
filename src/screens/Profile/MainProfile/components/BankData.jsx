@@ -54,14 +54,14 @@ export const BankDataForm = ({ debug }) => {
 		setValues(prevValues => {
 			return {
 				...prevValues,
-				[keyName]: value?.trim()
+				[keyName]: value
 			}
 		})
 		const newBankDetails = { ...values }
-		newBankDetails[keyName] = value?.trim();
+		newBankDetails[keyName] = value;
 		//console.log('💶 BKDA - newBankDetails', newBankDetails)
 
-		dispatch(updateChangesToSave({ bankDetails: newBankDetails }, true))
+		dispatch(updateChangesToSave({ bankDetails: newBankDetails }, false))
 	}
 
 	return (

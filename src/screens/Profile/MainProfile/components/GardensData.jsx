@@ -34,7 +34,7 @@ export const GardensDataForm = ({ debug }) => {
 	const user = useSelector(state => state.userReducer.user);
 
 	//Hooks
-	const extraElement = { type: 'addGarden' };
+	const extraElement = { name: 'addGarden' };
 	const { loading: gardensLoading, result: gardens, error: gardensError } = useFirebaseGetAll(debug, 'gardens', 'uid', user?.uid, extraElement);
 
 	useEffect(() => {
@@ -62,7 +62,7 @@ export const GardensDataForm = ({ debug }) => {
 					? <List
 						data={gardens}
 						horizontal={true}
-						keyExtractor={(item) => item?.gid || item?.type}
+						keyExtractor={(item) => item?.gid || item?.name}
 						renderItem={(garden) => <GardenItem garden={garden} />}
 						style={{ width: '100%' }}
 					/>

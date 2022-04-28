@@ -60,7 +60,7 @@ export const LoginScreen = ({ debug, navigation }) => {
 		setValues(prevValues => {
 			return {
 				...prevValues,
-				[keyName]: value?.trim()
+				[keyName]: value
 			}
 		})
 	}

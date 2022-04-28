@@ -86,7 +86,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 		setValues(prevValues => {
 			return {
 				...prevValues,
-				[keyName]: value?.trim()
+				[keyName]: value
 			}
 		})
 	}
