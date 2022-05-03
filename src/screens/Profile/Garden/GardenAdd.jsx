@@ -100,18 +100,18 @@ export const GardenAddScreen = ({ debug, navigation, route }) => {
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
 				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 					<View style={{ flex: 1, justifyContent: "space-around" }}>
-						<TopNavigation title={'Jardín'} alignment='center' accessoryLeft={BackAction} />
+						<TopNavigation title={'Añadir nuevo Jardín'} alignment='center' accessoryLeft={BackAction} />
 						<Divider />
 						<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 							contentContainerStyle={{ ...gloStyles.scrollView }}>
 							<Layout style={{ ...gloStyles.layout }}>
-								<SeparatorTopScreen />
+								<SeparatorTopScreen hasTopNavigation={true} />
 								<View style={{ ...gloStyles.view }}>
 									{loadComponents ?
 										(
 											<>
 												<View style={{ ...gloStyles.section.primary }}>
-													<TitleScreen icon={'sun-outline'} primaryText={upperFirst(toLower(garden?.name)) || ''} secondaryText={''} />
+													<TitleScreen icon={'sun-outline'} exterStyles={{ wrapper: { marginBottom: 15 } }} primaryText={upperFirst(toLower(garden?.name)) || ''} secondaryText={''} />
 													<ImgWithPicker entity={garden || {}} entityType={'garden'} />
 													{{
 														'client': (

@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import Constants from 'expo-constants';
 
 import { View, SafeAreaView, ScrollView, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from "react-native"
-import { Divider, Text, Button, Layout, Input, TopNavigation, TopNavigationAction, Select, SelectItem, IndexPath } from '@ui-kitten/components';
+import { Text, Button, Layout, Input, TopNavigation, TopNavigationAction, Select, SelectItem, IndexPath } from '@ui-kitten/components';
 import { SeparatorTopScreen } from '../../../../components/Separators/TopScreen'
 
 //Styles
@@ -45,8 +45,8 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 
 	const gardenId = route.params.gid;
 
-	const [gardenDetailId, setGardenDetalId] = useState(route.params?.gdid || false);
-	const [gardenDetail, setGardenDetal] = useState(route.params?.detail || false);
+	const [gardenDetailId, setGardenDetailId] = useState(route.params?.gdid || false);
+	const [gardenDetail, setGardenDetail] = useState(route.params?.detail || false);
 
 	const gardenName = route.params.name;
 
@@ -62,18 +62,18 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 					gdid: gardenDetail.gdid
 				}
 			})
-			const mainIndex = gardenDetailTypes.findIndex(type => type.name === gardenDetail.mainType)
+			const mainIndex = gardenDetailTypes.findIndex(type => type.identifier === gardenDetail.mainType)
 			setSelectedIndexMainType(new IndexPath(mainIndex))
-			handleChange(gardenDetailTypes[mainIndex]?.name, "mainType")
+			handleChange(gardenDetailTypes[mainIndex]?.identifier, "mainType")
 			setIsEdit(true);
 		}
 	}, []);
 
 	useEffect(() => {
 		if (gardenDetailId) {
-			const subIndex = listSubType.findIndex(type => type.name === gardenDetail.subType)
+			const subIndex = listSubType.findIndex(type => type.identifier === gardenDetail.subType)
 			setSelectedIndexSubType(new IndexPath(subIndex))
-			handleChange(listSubType[subIndex]?.name, "subType")
+			handleChange(listSubType[subIndex]?.identifier, "subType")
 			setValues(prevValues => {
 				return {
 					...prevValues,
@@ -99,8 +99,8 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 	const resetForm = () => {
 		console.log(`🕳  DETA - Dispatch Loading STOP`);
 		dispatch(setLoadingMessage(false));
-		setGardenDetalId(false)
-		setGardenDetal(false)
+		setGardenDetailId(false)
+		setGardenDetail(false)
 		setIsEdit(false)
 		setSelectedIndexMainType()
 		setSelectedIndexSubType()
@@ -205,13 +205,12 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 					<View style={{ flex: 1, justifyContent: "space-around" }}>
 						<TopNavigation title={''} alignment='center' accessoryLeft={BackAction} />
-						<Divider />
 						<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 							contentContainerStyle={{ ...gloStyles?.scrollView }}>
 							<Layout style={{ ...gloStyles?.layout }}>
-								<SeparatorTopScreen />
+								<SeparatorTopScreen hasTopNavigation={true} />
 								<View style={{ ...gloStyles?.view, alignItems: 'flex-start' }}>
-									<View style={{ ...gloStyles.section.full }}>
+									<View style={{ ...gloStyles.section.fullStart }}>
 										<Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>{isEdit ? 'EDITAR DETALLE DE' : 'AÑADIR DETALLE A'}</Text>
 										<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>{gardenName}</Text>
 
@@ -224,7 +223,7 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 												selectedIndex={selectedIndexMainType}
 												onSelect={index => {
 													setSelectedIndexMainType(index)
-													handleChange(gardenDetailTypes[index - 1]?.name, "mainType")
+													handleChange(gardenDetailTypes[index - 1]?.identifier, "mainType")
 												}}>
 												{gardenDetailTypes.map(gdT => gdT.value).map(renderOption)}
 											</Select>
@@ -239,7 +238,7 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 														selectedIndex={selectedIndexSubType}
 														onSelect={index => {
 															setSelectedIndexSubType(index)
-															handleChange(listSubType[index - 1]?.name, "subType")
+															handleChange(listSubType[index - 1]?.identifier, "subType")
 														}}>
 														{listSubType.map(sT => sT.value).map(renderOption)}
 													</Select>
@@ -255,8 +254,8 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 													label={input.label}
 													caption={renderCaption(input.caption)}
 													placeholder={input.placeholder}
-													value={values.inputs[input?.name] || ''}
-													onChangeText={text => handleInputChange(text, input.name)}
+													value={values.inputs[input?.identifier] || ''}
+													onChangeText={text => handleInputChange(text, input.identifier)}
 													multiline={input.type === 'textarea'}
 													textStyle={input.type === 'textarea' && { minHeight: 96 }}
 												/>

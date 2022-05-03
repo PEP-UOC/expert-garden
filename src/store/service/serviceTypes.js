@@ -1,3 +1,2 @@
-export const ADD_SERVICE = "ADD_SERVICE";
-export const DELETE_SERVICE = "DELETE_SERVICE";
-export const DID_SERVICE = "DID_SERVICE";
+export const ADD_DETAIL = 'ADD_DETAIL';
+export const DELETE_DETAIL = 'DELETE_DETAIL';

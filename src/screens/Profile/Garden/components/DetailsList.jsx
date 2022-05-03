@@ -60,7 +60,7 @@ export const DetailsList = ({ debug, gid, gardenIndex }) => {
 			<ListItem
 				onPress={() => navigateServiceRequest(item.gdid, item)}
 				//title={`${item.mainType} - ${item.subType}`}
-				title={`${gardenDetailTypes.find((type) => type.name === item.mainType).value} - ${gardenDetailSubTypes.find((type) => type.name === item.subType).value}`}
+				title={`${gardenDetailTypes.find((type) => type.identifier === item.mainType).value} - ${gardenDetailSubTypes.find((type) => type.identifier === item.subType).value}`}
 				description={renderDescription(item)}
 				accessoryRight={renderItemAccessory(item.gdid, item)}
 			/>

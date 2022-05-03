@@ -15,7 +15,7 @@ import { removeChangesToSave } from '../../../store/change/changeAction';
 
 //Components
 import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
-import { Divider, Layout, TopNavigation } from '@ui-kitten/components';
+import { Layout } from '@ui-kitten/components';
 import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
 import { SeparatorTopSection } from '../../../components/Separators/TopSection'
 import { TitleScreen } from '../../../components/Titles/Screen'
@@ -58,15 +58,13 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
 				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 					<View style={{ flex: 1, justifyContent: "space-around" }}>
-						<TopNavigation title={'Perfil'} alignment='center' />
-						<Divider />
 						<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 							contentContainerStyle={{ ...gloStyles.scrollView }}>
 							<Layout style={{ ...gloStyles.layout }}>
 								<SeparatorTopScreen />
 								<View style={{ ...gloStyles.view }}>
 									<View style={{ ...gloStyles.section.primary }}>
-										<TitleScreen icon={'person-outline'} primaryText={user?.metadata?.name || ''} secondaryText={''} />
+										<TitleScreen icon={'person-outline'} exterStyles={{ wrapper: { marginBottom: 15 } }} primaryText={user?.metadata?.name || ''} secondaryText={''} />
 										<ImgWithPicker entity={user || {}} entityType={'user'} />
 										{
 											{

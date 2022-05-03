@@ -6,11 +6,11 @@ import Constants from 'expo-constants';
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
-import globalStyles from '../../styles/globalStyles'
+//import globalStyles from '../../styles/globalStyles'
 import styles from './styles'
 
 //Icons
-import { LeafIcon } from '../../assets/icons/Leaf'
+//import { LeafIcon } from '../../assets/icons/Leaf'
 
 //Components
 import { View } from 'react-native'
@@ -22,7 +22,7 @@ import { BtnSecondary } from '../../components/Buttons/Secondary'
 export const ModalOptions = ({ debug, mainText, show, setShow, option1text, option1onPress, option2text, option2onPress }) => {
 
 	//Styles
-	const gloStyles = useStyleSheet(globalStyles);
+	//const gloStyles = useStyleSheet(globalStyles);
 	const ownStyles = useStyleSheet(styles);
 
 	return (
@@ -39,9 +39,9 @@ export const ModalOptions = ({ debug, mainText, show, setShow, option1text, opti
 					<BtnPrimary size={'small'} text={option1text} onPress={option1onPress} btnStyle={{ marginBottom: 5 }} />
 					<BtnSecondary size={'small'} text={option2text} onPress={option2onPress} btnStyle={{ marginBottom: 0 }} />
 
-					<View style={{ alignItems: 'center' }}>
+					{/*<View style={{ alignItems: 'center' }}>
 						<LeafIcon width={180} height={60} style={{ ...gloStyles?.leaf }} />
-					</View>
+					</View>*/}
 				</View>
 			</Card>
 		</Modal>

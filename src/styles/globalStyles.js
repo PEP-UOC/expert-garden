@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { StyleService } from '@ui-kitten/components';
 
 //Device Detect
@@ -29,17 +30,29 @@ const globalStyles = StyleService.create({
 	view: {
 		flex: 1,
 		width: '100%',
-		alignItems: 'center',
+		alignItems: 'flex-start',
 		maxWidth: Device?.isPhone ? undefined : 1200,
 		flexDirection: Device?.isPhone ? 'column' : 'row',
 		//backgroundColor: 'red',
 	},
 	section: {
-		full: {
+		fullCentered: {
 			flexDirection: 'column',
-			width: Device?.isPhone ? '100%' : 700,
+			height: Device?.isPhone ? undefined : '100%',
+			width: Device?.isPhone ? '100%' : '100%',
 			marginLeft: 'auto',
 			marginRight: 'auto',
+			alignItems: 'center',
+			justifyContent: 'center',
+			//backgroundColor: 'blue',
+		},
+		fullStart: {
+			flexDirection: 'column',
+			minHeight: Device?.isPhone ? undefined : '100%',
+			width: Device?.isPhone ? '100%' : '100%',
+			marginLeft: 'auto',
+			marginRight: 'auto',
+			alignItems: 'center',
 			//backgroundColor: 'blue',
 		},
 		primary: {

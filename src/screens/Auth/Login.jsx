@@ -98,7 +98,7 @@ export const LoginScreen = ({ debug, navigation }) => {
 							contentContainerStyle={{ ...gloStyles?.scrollView, ...ownStyles?.scrollHeight }}>
 							<Layout style={{ ...gloStyles?.layout }}>
 								<View style={{ ...gloStyles?.view }}>
-									<View style={{ ...gloStyles.section.full }}>
+									<View style={{ ...gloStyles.section.fullCentered }}>
 										<Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>ACCEDE A</Text>
 										<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>EXPERT GARDEN</Text>
 

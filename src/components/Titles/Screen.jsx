@@ -19,7 +19,7 @@ import Device from '../../libs/react-native-device-detection';
 
 
 // eslint-disable-next-line no-unused-vars
-export const TitleScreen = ({ debug, icon, primaryText, secondaryText }) => {
+export const TitleScreen = ({ debug, exterStyles, icon, primaryText, secondaryText, secondaryTextMain }) => {
 
 	//Styles
 	const gloStyles = useStyleSheet(globalStyles);
@@ -28,24 +28,43 @@ export const TitleScreen = ({ debug, icon, primaryText, secondaryText }) => {
 	return (
 		<View style={
 			{
-				...ownStyles?.screenWrapper,
-				flexDirection: icon !== '' ? 'row' : 'column', alignItems: icon !== '' ? 'center' : 'flex-start'
+				...exterStyles?.wrapper,
+				flexDirection: 'column', alignItems: 'flex-start', alignSelf: 'flex-start'
 			}
 		}>
-			{!Device.isPhone && icon !== '' && <Icon width={60} height={40} name={icon} fill='#094c3f' />}
-			<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.screenText }}>{primaryText}</Text>
-			<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.screenText }}>{secondaryText}</Text>
+
+			<View style={
+				{
+					flexDirection: 'row', alignItems: 'center'
+				}
+			}>
+				{!Device.isPhone && icon !== '' && <Icon width={60} height={40} name={icon} fill='#094c3f' />}
+				<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.screenText, ...exterStyles?.primaryText }}>{primaryText}</Text>
+			</View>
+
+			<Text
+				category={secondaryTextMain ? 'h1' : 's1'}
+				style={secondaryTextMain
+					? { ...gloStyles?.h1, ...ownStyles?.screenText, ...exterStyles?.secondaryText }
+					: { ...ownStyles?.screenText, ...exterStyles?.secondaryText, marginLeft: Device.isPhone ? 0 : 61 }}
+			>
+				{secondaryText}
+			</Text>
 		</View>
 	)
 };
 
 TitleScreen.propTypes = {
 	debug: PropTypes.bool.isRequired,
+	exterStyles: PropTypes.object.isRequired,
 	icon: PropTypes.string,
 	primaryText: PropTypes.string.isRequired,
 	secondaryText: PropTypes.string.isRequired,
+	secondaryTextMain: PropTypes.bool.isRequired,
 };
 
 TitleScreen.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
+	exterStyles: { primaryText: {}, secondaryText: {} },
+	secondaryTextMain: false,
 };

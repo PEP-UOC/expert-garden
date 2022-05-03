@@ -4,17 +4,17 @@ import { flatten } from 'lodash';
 export const gardenDetailTypes = [
 	{
 		typeId: '01',
-		name: 'plantas',
+		identifier: 'plantas',
 		value: 'Plantas',
 		subTypes: [
 			{
 				subTypeId: '01-01',
-				name: 'plantas_ornamentales',
+				identifier: 'plantas_ornamentales',
 				value: 'Ornamentales',
 				inputs: [
 					{
 						inputId: '01-01-01',
-						name: 'especie',
+						identifier: 'especie',
 						label: 'Especie',
 						caption: 'Si la sabes',
 						placeholder: 'Especie de la planta',
@@ -22,7 +22,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '01-01-02',
-						name: 'cantidad',
+						identifier: 'cantidad',
 						label: 'Cantidad',
 						caption: 'De esta especie',
 						placeholder: 'Número de plantas',
@@ -30,7 +30,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '01-01-03',
-						name: 'dimensiones',
+						identifier: 'dimensiones',
 						label: 'Dimensiones',
 						caption: 'Ancho x Alto en centimientros aprox.',
 						placeholder: 'Dimensiones de la planta',
@@ -38,7 +38,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '01-01-04',
-						name: 'extra',
+						identifier: 'extra',
 						label: 'Comentarios extra',
 						caption: '',
 						placeholder:
@@ -49,12 +49,12 @@ export const gardenDetailTypes = [
 			},
 			{
 				subTypeId: '01-02',
-				name: 'cesped',
+				identifier: 'cesped',
 				value: 'Césped',
 				inputs: [
 					{
 						inputId: '01-02-01',
-						name: 'especie',
+						identifier: 'especie',
 						label: 'Tipo / Especie',
 						caption: 'Si lo sabes',
 						placeholder: 'Especie del cesped',
@@ -62,15 +62,15 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '01-02-02',
-						name: 'superficie',
+						identifier: 'superficie',
 						label: 'Superficie',
-						caption: 'En m2 aproximadamente',
+						caption: 'En m2. Aproximadamente.',
 						placeholder: 'Superficie del cesped',
 						type: 'number',
 					},
 					{
 						inputId: '01-02-03',
-						name: 'extra',
+						identifier: 'extra',
 						label: 'Comentarios extra',
 						caption: '',
 						placeholder:
@@ -81,12 +81,12 @@ export const gardenDetailTypes = [
 			},
 			{
 				subTypeId: '01-03',
-				name: 'setos',
+				identifier: 'setos',
 				value: 'Setos',
 				inputs: [
 					{
 						inputId: '01-03-01',
-						name: 'tipo',
+						identifier: 'tipo',
 						label: 'Tipo',
 						caption: 'Si lo sabes',
 						placeholder: 'Lineal / De valla',
@@ -94,7 +94,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '01-03-02',
-						name: 'especie',
+						identifier: 'especie',
 						label: 'Especie',
 						caption: 'Si lo sabes',
 						placeholder: 'Especie del seto',
@@ -102,7 +102,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '01-03-03',
-						name: 'dimensiones',
+						identifier: 'dimensiones',
 						label: 'Dimensiones',
 						caption: 'Ancho x Alto x Largo en metros aprox.',
 						placeholder: 'Dimensiones del seto',
@@ -110,7 +110,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '01-03-04',
-						name: 'extra',
+						identifier: 'extra',
 						label: 'Comentarios extra',
 						caption: '',
 						placeholder:
@@ -121,12 +121,12 @@ export const gardenDetailTypes = [
 			},
 			{
 				subTypeId: '01-04',
-				name: 'arbustos',
+				identifier: 'arbustos',
 				value: 'Arbustos',
 				inputs: [
 					{
 						inputId: '01-04-01',
-						name: 'especie',
+						identifier: 'especie',
 						label: 'Especie',
 						caption: 'Si lo sabes',
 						placeholder: 'Especie del arbusto',
@@ -134,7 +134,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '01-04-02',
-						name: 'cantidad',
+						identifier: 'cantidad',
 						label: 'Cantidad',
 						caption: 'De esta especie',
 						placeholder: 'Número de arbustos',
@@ -142,7 +142,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '01-04-03',
-						name: 'dimensiones',
+						identifier: 'dimensiones',
 						label: 'Dimensiones',
 						caption: 'Ancho x Alto en centimetros aprox.',
 						placeholder: 'Dimensiones del arbusto',
@@ -150,7 +150,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '01-04-04',
-						name: 'extra',
+						identifier: 'extra',
 						label: 'Comentarios extra',
 						caption: '',
 						placeholder:
@@ -161,12 +161,12 @@ export const gardenDetailTypes = [
 			},
 			{
 				subTypeId: '01-05',
-				name: 'arboles',
+				identifier: 'arboles',
 				value: 'Árboles',
 				inputs: [
 					{
 						inputId: '01-05-01',
-						name: 'especie',
+						identifier: 'especie',
 						label: 'Especie',
 						caption: 'Si lo sabes',
 						placeholder: 'Especie del árbol',
@@ -174,7 +174,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '01-05-02',
-						name: 'cantidad',
+						identifier: 'cantidad',
 						label: 'Cantidad',
 						caption: 'De esta especie',
 						placeholder: 'Número de árboles',
@@ -182,7 +182,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '01-05-03',
-						name: 'dimensiones',
+						identifier: 'dimensiones',
 						label: 'Dimensiones',
 						caption: 'Ancho x Alto en metros aprox.',
 						placeholder: 'Dimensiones del árbol',
@@ -190,7 +190,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '01-05-04',
-						name: 'extra',
+						identifier: 'extra',
 						label: 'Comentarios extra',
 						caption: '',
 						placeholder:
@@ -201,12 +201,12 @@ export const gardenDetailTypes = [
 			},
 			{
 				subTypeId: '01-06',
-				name: 'palmeras',
+				identifier: 'palmeras',
 				value: 'Palmeras',
 				inputs: [
 					{
 						inputId: '01-06-01',
-						name: 'especie',
+						identifier: 'especie',
 						label: 'Especie',
 						caption: 'Si la sabes',
 						placeholder: 'Especie de la palmera',
@@ -214,7 +214,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '01-06-02',
-						name: 'cantidad',
+						identifier: 'cantidad',
 						label: 'Cantidad',
 						caption: 'De este tipo',
 						placeholder: 'Número de palmeras',
@@ -222,7 +222,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '01-06-03',
-						name: 'dimensiones',
+						identifier: 'dimensiones',
 						label: 'Dimensiones',
 						caption: 'Ancho x Alto en metros aprox.',
 						placeholder: 'Dimensiones de la palmera',
@@ -230,7 +230,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '01-06-04',
-						name: 'extra',
+						identifier: 'extra',
 						label: 'Comentarios extra',
 						caption: '',
 						placeholder:
@@ -243,17 +243,17 @@ export const gardenDetailTypes = [
 	},
 	{
 		typeId: '02',
-		name: 'riego',
+		identifier: 'riego',
 		value: 'Riego',
 		subTypes: [
 			{
 				subTypeId: '02-01',
-				name: 'manual',
+				identifier: 'manual',
 				value: 'Manual',
 				inputs: [
 					{
 						inputId: '02-01-01',
-						name: 'extra',
+						identifier: 'extra',
 						label: 'Comentarios extra',
 						caption: '',
 						placeholder:
@@ -264,12 +264,12 @@ export const gardenDetailTypes = [
 			},
 			{
 				subTypeId: '02-02',
-				name: 'automatizado',
+				identifier: 'automatizado',
 				value: 'Automatizado',
 				inputs: [
 					{
 						inputId: '02-01-02',
-						name: 'extra',
+						identifier: 'extra',
 						label: 'Comentarios extra',
 						caption: '',
 						placeholder:
@@ -282,17 +282,17 @@ export const gardenDetailTypes = [
 	},
 	{
 		typeId: '03',
-		name: 'mobiliario',
+		identifier: 'mobiliario',
 		value: 'Mobiliario',
 		subTypes: [
 			{
 				subTypeId: '03-01',
-				name: 'iluminacion',
+				identifier: 'iluminacion',
 				value: 'Iluminación',
 				inputs: [
 					{
 						inputId: '03-01-01',
-						name: 'tipo',
+						identifier: 'tipo',
 						label: 'Tipo',
 						caption: '',
 						placeholder: 'Tipo de iluminación',
@@ -300,7 +300,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '03-01-02',
-						name: 'cantidad',
+						identifier: 'cantidad',
 						label: 'Cantidad',
 						caption: '',
 						placeholder: 'Cantidad de luces',
@@ -308,7 +308,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '03-01-03',
-						name: 'extra',
+						identifier: 'extra',
 						label: 'Comentarios extra',
 						caption: '',
 						placeholder:
@@ -319,12 +319,12 @@ export const gardenDetailTypes = [
 			},
 			{
 				subTypeId: '03-02',
-				name: 'fuentes',
+				identifier: 'fuentes',
 				value: 'Fuentes',
 				inputs: [
 					{
 						inputId: '03-02-01',
-						name: 'tipo',
+						identifier: 'tipo',
 						label: 'Tipo',
 						caption: '',
 						placeholder: 'Tipo de fuente',
@@ -332,7 +332,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '03-02-02',
-						name: 'cantidad',
+						identifier: 'cantidad',
 						label: 'Cantidad',
 						caption: '',
 						placeholder: 'Cantidad de fuentes',
@@ -340,7 +340,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '03-02-03',
-						name: 'extra',
+						identifier: 'extra',
 						label: 'Comentarios extra',
 						caption: '',
 						placeholder:
@@ -351,12 +351,12 @@ export const gardenDetailTypes = [
 			},
 			{
 				subTypeId: '03-03',
-				name: 'piscinas',
+				identifier: 'piscinas',
 				value: 'Piscinas',
 				inputs: [
 					{
 						inputId: '03-03-01',
-						name: 'tipo',
+						identifier: 'tipo',
 						label: 'Tipo',
 						caption: '',
 						placeholder: 'Tipo de piscina',
@@ -364,7 +364,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '03-03-02',
-						name: 'cantidad',
+						identifier: 'cantidad',
 						label: 'Cantidad',
 						caption: '',
 						placeholder: 'Cantidad de piscinas',
@@ -372,7 +372,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '03-03-03',
-						name: 'extra',
+						identifier: 'extra',
 						label: 'Comentarios extra',
 						caption: '',
 						placeholder:
@@ -383,12 +383,12 @@ export const gardenDetailTypes = [
 			},
 			{
 				subTypeId: '03-04',
-				name: 'muebles',
+				identifier: 'muebles',
 				value: 'Muebles',
 				inputs: [
 					{
 						inputId: '03-04-01',
-						name: 'tipo',
+						identifier: 'tipo',
 						label: 'Tipo',
 						caption: '',
 						placeholder: 'Tipo de mobiliario',
@@ -396,7 +396,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '03-04-02',
-						name: 'cantidad',
+						identifier: 'cantidad',
 						label: 'Cantidad',
 						caption: '',
 						placeholder: 'Cantidad',
@@ -404,7 +404,7 @@ export const gardenDetailTypes = [
 					},
 					{
 						inputId: '03-04-03',
-						name: 'extra',
+						identifier: 'extra',
 						label: 'Comentarios extra',
 						caption: '',
 						placeholder:
@@ -420,7 +420,7 @@ export const gardenDetailTypes = [
 export const gardenDetailSubTypes = flatten(
 	gardenDetailTypes.map((type) => {
 		return type.subTypes.map((subtype) => {
-			return { name: subtype.name, value: subtype.value };
+			return { identifier: subtype.identifier, value: subtype.value };
 		});
 	}),
 );

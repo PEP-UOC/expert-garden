@@ -14,7 +14,7 @@ import { setErrorMessage, setLoadingMessage } from '../../store/root/rootAction'
 
 //Components
 import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
-import { Divider, Layout, TopNavigation } from '@ui-kitten/components';
+import { Layout } from '@ui-kitten/components';
 import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
 import { SeparatorTopSection } from '../../components/Separators/TopSection'
 import { TitleScreen } from '../../components/Titles/Screen'
@@ -50,15 +50,13 @@ export const ServicesScreen = ({ debug, navigation }) => {
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
 				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 					<View style={{ flex: 1, justifyContent: "space-around" }}>
-						<TopNavigation title={'Servicios'} alignment='center' />
-						<Divider />
 						<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 							contentContainerStyle={{ ...gloStyles.scrollView }}>
 							<Layout style={{ ...gloStyles.layout }}>
 								<SeparatorTopScreen />
 								<View style={{ ...gloStyles.view }}>
 									<View style={{ ...gloStyles.section.primary }}>
-										<TitleScreen icon={'car-outline'} primaryText={'Servicios'} secondaryText={''} />
+										<TitleScreen icon={'car-outline'} exterStyles={{ wrapper: { marginBottom: 15 } }} primaryText={'Servicios'} secondaryText={''} />
 										{
 											{
 												'client': (

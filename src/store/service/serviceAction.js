@@ -1,13 +1,9 @@
-import { ADD_SERVICE, DELETE_SERVICE, DID_SERVICE } from "./serviceTypes"
-export const addService = (service) => ({
-  type: ADD_SERVICE,
-  payload: service
-})
-export const deleteService = (id) => ({
-  type: DELETE_SERVICE,
-  payload: id
-})
-export const didService = (id) => ({
-  type: DID_SERVICE,
-  payload: id
-})
+import { ADD_DETAIL, DELETE_DETAIL } from './serviceTypes';
+export const addDetail = (detail) => ({
+	type: ADD_DETAIL,
+	payload: detail,
+});
+export const deleteDetail = (id) => ({
+	type: DELETE_DETAIL,
+	payload: id,
+});

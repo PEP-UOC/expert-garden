@@ -47,11 +47,15 @@ export const BtnLogout = ({ debug }) => {
 				.then(() => {
 					auth().signOut()
 						.then(() => {
+							dispatch({
+								type: 'SIGNOUT_REQUEST',
+								payload: undefined,
+							})
 							console.info('🔐 BTLG - Logged Out!');
-							dispatch(removeUser())
 							dispatch(setLoggedIn(false))
 							console.log(`🕳  BTLG - Dispatch Loading STOP`)
 							dispatch(setLoadingMessage(false))
+							dispatch(removeUser())
 						})
 						.catch((error) => {
 							console.error(error.message);

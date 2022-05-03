@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import rootReducer from './root/rootReducer';
 import userReducer from './user/userReducer';
 import changeReducer from './change/changeReducer';
-//import serviceReducer from './service/serviceReducer';
+import serviceReducer from './service/serviceReducer';
 //import gardenReducer from './garden/gardenReducer';
 
 import thunk from 'redux-thunk';
@@ -15,13 +15,21 @@ import { composeWithDevToolsDevelopmentOnly } from '@redux-devtools/extension';
 //Más información: https://github.com/reduxjs/redux-devtools/tree/main/extension#13-use-redux-devtoolsextension-package-from-npm
 //TODO Configuración de producción: https://github.com/reduxjs/redux-devtools/tree/main/extension#14-using-in-production
 
-const mainReducer = combineReducers({
+const appReducer = combineReducers({
 	rootReducer,
 	userReducer,
 	changeReducer,
-	//serviceReducer,
+	serviceReducer,
 	//gardenReducer,
 });
+
+const mainReducer = (state, action) => {
+	if (action.type === 'SIGNOUT_REQUEST') {
+		AsyncStorage.removeItem('persist:root');
+		return appReducer(undefined, action);
+	}
+	return appReducer(state, action);
+};
 
 const persistConfig = {
 	key: 'root',

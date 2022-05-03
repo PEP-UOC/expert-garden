@@ -58,6 +58,7 @@ function useFirebaseGetOne(debug, collection, entityIdentifier, entityValue) {
 			}
 			setLoading(false);
 		};
+
 		const createData = async () => {
 			try {
 				if (auth().currentUser) {

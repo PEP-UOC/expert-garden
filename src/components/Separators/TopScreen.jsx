@@ -4,28 +4,31 @@ import PropTypes from "prop-types";
 //Constants
 import Constants from 'expo-constants';
 
-//Styles
-import { useStyleSheet } from '@ui-kitten/components';
-import styles from './styles'
-
 //Components
 import { View } from 'react-native';
 
+//Device Detect
+import Device from '../../libs/react-native-device-detection';
+//import { Platform } from 'react-native';
+
 // eslint-disable-next-line no-unused-vars
-export const SeparatorTopScreen = ({ debug }) => {
+export const SeparatorTopScreen = ({ debug, hasTopNavigation }) => {
 
-    //Styles
-    const ownStyles = useStyleSheet(styles);
-
-    return (
-        <View style={{ ...ownStyles.topScreen }}></View>
-    )
+	return (
+		<View style={{
+			marginTop: Device?.isPhone ? hasTopNavigation ? 0 : 10 : 15,
+			marginBottom: Device?.isPhone ? hasTopNavigation ? 0 : 10 : 15,
+			width: '100%',
+		}}></View>
+	)
 };
 
 SeparatorTopScreen.propTypes = {
-    debug: PropTypes.bool.isRequired,
+	debug: PropTypes.bool.isRequired,
+	hasTopNavigation: PropTypes.bool.isRequired,
 };
 
 SeparatorTopScreen.defaultProps = {
-    debug: Constants.manifest.extra.debug || false,
+	debug: Constants.manifest.extra.debug || false,
+	hasTopNavigation: false,
 };

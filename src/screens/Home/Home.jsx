@@ -17,7 +17,7 @@ import { setErrorMessage, setLoadingMessage } from '../../store/root/rootAction'
 
 //Components
 import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
-import { Divider, Layout, TopNavigation } from '@ui-kitten/components';
+import { Layout } from '@ui-kitten/components';
 import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
 import { SeparatorTopSection } from '../../components/Separators/TopSection'
 import { TitleScreen } from '../../components/Titles/Screen'
@@ -64,15 +64,13 @@ export const HomeScreen = ({ debug, navigation }) => {
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
 				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 					<View style={{ flex: 1, justifyContent: "space-around" }}>
-						<TopNavigation title={debug ? `${device} Inicio ${role}` : 'Inicio'} alignment='center' />
-						<Divider />
 						<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 							contentContainerStyle={{ ...gloStyles.scrollView }}>
 							<Layout style={{ ...gloStyles.layout }}>
 								<SeparatorTopScreen />
 								<View style={{ ...gloStyles.view }}>
 									<View style={{ ...gloStyles.section.primary }}>
-										<TitleScreen icon={''} primaryText={user?.additionalUserInfo?.isNewUser ? 'Bienvenido' : 'Bienvenido'} secondaryText={`${user?.metadata?.name} ${gender}` || ''} />
+										<TitleScreen icon={''} exterStyles={{ wrapper: { marginBottom: 30 } }} primaryText={user?.additionalUserInfo?.isNewUser ? 'Bienvenido' : 'Bienvenido'} secondaryText={`${user?.metadata?.name} ${gender}` + ` ${device} ${role}` || ''} secondaryTextMain={true} />
 										<EmailVerify user={user || {}} />
 										{
 											{
