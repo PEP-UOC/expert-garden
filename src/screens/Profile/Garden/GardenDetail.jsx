@@ -13,7 +13,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootAction';
 
 //Components
-import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
+import { SafeAreaView, ScrollView, View, KeyboardAvoidingView, Platform } from 'react-native'
 import { Divider, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
 import { SeparatorTopSection } from '../../../components/Separators/TopSection'
@@ -95,85 +95,83 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-					<View style={{ flex: 1, justifyContent: "space-around" }}>
-						<TopNavigation title={'Detalles del Jardín'} alignment='center' accessoryLeft={BackAction} />
-						<Divider />
-						<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-							contentContainerStyle={{ ...gloStyles.scrollView }}>
-							<Layout style={{ ...gloStyles.layout }}>
-								<SeparatorTopScreen hasTopNavigation={true} />
-								<View style={{ ...gloStyles.view }}>
-									{loadComponents ?
-										(
-											<>
-												<View style={{ ...gloStyles.section.primary }}>
-													<TitleScreen icon={'sun-outline'} exterStyles={{ wrapper: { marginBottom: 15 } }} primaryText={upperFirst(toLower(garden?.name)) || ''} secondaryText={''} />
-													<ImgWithPicker entity={garden || {}} entityType={'garden'} />
-													{{
-														'client': (
-															<>
-																{Platform.OS === "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.name })} />}
+				<View style={{ flex: 1, justifyContent: "space-around" }}>
+					<TopNavigation title={'Detalles del Jardín'} alignment='center' accessoryLeft={BackAction} />
+					<Divider />
+					<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
+						contentContainerStyle={{ ...gloStyles.scrollView }}>
+						<Layout style={{ ...gloStyles.layout }}>
+							<SeparatorTopScreen hasTopNavigation={true} />
+							<View style={{ ...gloStyles.view }}>
+								{loadComponents ?
+									(
+										<>
+											<View style={{ ...gloStyles.section.primary }}>
+												<TitleScreen icon={'sun-outline'} exterStyles={{ wrapper: { marginBottom: 15 } }} primaryText={upperFirst(toLower(garden?.name)) || ''} secondaryText={''} />
+												<ImgWithPicker entity={garden || {}} entityType={'garden'} />
+												{{
+													'client': (
+														<>
+															{Platform.OS === "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.name })} />}
 
-																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-															</>
-														),
-														'business': (
-															<>
-																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-															</>
-														),
-														'worker': (
-															<>
-																{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-															</>
-														)
-													}[user?.role]}
-												</View>
-												<View style={{ ...gloStyles.section.secondary }}>
-													<SeparatorTopSection />
-													{{
-														'client': (
-															<>
+															{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+														</>
+													),
+													'business': (
+														<>
+															{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+														</>
+													),
+													'worker': (
+														<>
+															{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+														</>
+													)
+												}[user?.role]}
+											</View>
+											<View style={{ ...gloStyles.section.secondary }}>
+												<SeparatorTopSection />
+												{{
+													'client': (
+														<>
 
-																{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+															{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 
-																<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
+															<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
 
-																{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+															{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 
-																{Platform.OS !== "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.name })} />}
+															{Platform.OS !== "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.name })} />}
 
-																<DetailsList gid={gid || ''} gardenIndex={gardenIndex || 0} />
-															</>
-														),
-														'business': (
-															<>
-																{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+															<DetailsList gid={gid || ''} gardenIndex={gardenIndex || 0} />
+														</>
+													),
+													'business': (
+														<>
+															{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 
-																<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
+															<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
 
-																{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-															</>
-														),
-														'worker': (
-															<>
-																{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+															{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+														</>
+													),
+													'worker': (
+														<>
+															{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 
-																<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
+															<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
 
-																{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-															</>
-														)
-													}[user?.role]}
-												</View></>
-										)
-										: null}
-								</View>
-							</Layout>
-						</ScrollView>
-					</View>
-				</TouchableWithoutFeedback>
+															{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+														</>
+													)
+												}[user?.role]}
+											</View></>
+									)
+									: null}
+							</View>
+						</Layout>
+					</ScrollView>
+				</View>
 			</KeyboardAvoidingView>
 		</SafeAreaView>
 	)

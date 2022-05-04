@@ -10,7 +10,7 @@ import { setErrorMessage, setLoadingMessage, setLoggedIn } from '../../store/roo
 import { addUser } from '../../store/user/userAction';
 
 //Components
-import { View, SafeAreaView, ScrollView, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
+import { View, SafeAreaView, ScrollView, TouchableWithoutFeedback, KeyboardAvoidingView, Platform } from 'react-native'
 import { Text, Button, Layout, Input, Icon } from '@ui-kitten/components';
 
 //Styles
@@ -92,48 +92,46 @@ export const LoginScreen = ({ debug, navigation }) => {
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-					<View style={{ flex: 1, justifyContent: "space-around" }}>
-						<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-							contentContainerStyle={{ ...gloStyles?.scrollView, ...ownStyles?.scrollHeight }}>
-							<Layout style={{ ...gloStyles?.layout }}>
-								<View style={{ ...gloStyles?.view }}>
-									<View style={{ ...gloStyles.section.fullCentered }}>
-										<Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>ACCEDE A</Text>
-										<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>EXPERT GARDEN</Text>
+				<View style={{ flex: 1, justifyContent: "space-around" }}>
+					<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
+						contentContainerStyle={{ ...gloStyles?.scrollView, ...ownStyles?.scrollHeight }}>
+						<Layout style={{ ...gloStyles?.layout }}>
+							<View style={{ ...gloStyles?.view }}>
+								<View style={{ ...gloStyles.section.fullCentered }}>
+									<Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>ACCEDE A</Text>
+									<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>EXPERT GARDEN</Text>
 
-										<Input
-											style={{ ...gloStyles?.inputs?.input }}
-											label='Correo electrónico'
-											placeholder='Introduce tu correo electrónico'
-											value={values?.email || ''}
-											onChangeText={text => handleChange(text, "email")}
-										/>
-										<Input
-											style={{ ...gloStyles?.inputs?.input, marginBottom: 30 }}
-											label='Contraseña'
-											placeholder='Introduce tu contraseña'
-											value={values?.password || ''}
-											accessoryRight={renderEyeIcon}
-											secureTextEntry={secureTextEntry}
-											onChangeText={text => handleChange(text, "password")}
-										/>
+									<Input
+										style={{ ...gloStyles?.inputs?.input }}
+										label='Correo electrónico'
+										placeholder='Introduce tu correo electrónico'
+										value={values?.email || ''}
+										onChangeText={text => handleChange(text, "email")}
+									/>
+									<Input
+										style={{ ...gloStyles?.inputs?.input, marginBottom: 30 }}
+										label='Contraseña'
+										placeholder='Introduce tu contraseña'
+										value={values?.password || ''}
+										accessoryRight={renderEyeIcon}
+										secureTextEntry={secureTextEntry}
+										onChangeText={text => handleChange(text, "password")}
+									/>
 
-										<Button style={{ ...gloStyles?.button }} onPress={() => Login()}>ACCEDER</Button>
+									<Button style={{ ...gloStyles?.button }} onPress={() => Login()}>ACCEDER</Button>
 
-										<Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("SignUp")}>¿Necesitas una cuenta?</Button>
+									<Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("SignUp")}>¿Necesitas una cuenta?</Button>
 
-										<Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("RememberPass")}>¿Has olvidado la contraseña?</Button>
+									<Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("RememberPass")}>¿Has olvidado la contraseña?</Button>
 
-										<View style={{ alignItems: 'center' }}>
-											<LeafIcon width={180} height={60} style={{ ...gloStyles?.leaf }} />
-										</View>
+									<View style={{ alignItems: 'center' }}>
+										<LeafIcon width={180} height={60} style={{ ...gloStyles?.leaf }} />
 									</View>
 								</View>
-							</Layout>
-						</ScrollView>
-					</View>
-				</TouchableWithoutFeedback>
+							</View>
+						</Layout>
+					</ScrollView>
+				</View>
 			</KeyboardAvoidingView>
 		</SafeAreaView>
 	)

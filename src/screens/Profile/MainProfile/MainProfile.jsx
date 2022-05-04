@@ -14,7 +14,7 @@ import { setErrorMessage } from '../../../store/root/rootAction';
 import { removeChangesToSave } from '../../../store/change/changeAction';
 
 //Components
-import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
+import { SafeAreaView, ScrollView, View, KeyboardAvoidingView, Platform } from 'react-native'
 import { Layout } from '@ui-kitten/components';
 import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
 import { SeparatorTopSection } from '../../../components/Separators/TopSection'
@@ -56,82 +56,80 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-					<View style={{ flex: 1, justifyContent: "space-around" }}>
-						<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-							contentContainerStyle={{ ...gloStyles.scrollView }}>
-							<Layout style={{ ...gloStyles.layout }}>
-								<SeparatorTopScreen />
-								<View style={{ ...gloStyles.view }}>
-									<View style={{ ...gloStyles.section.primary }}>
-										<TitleScreen icon={'person-outline'} exterStyles={{ wrapper: { marginBottom: 15 } }} primaryText={user?.metadata?.name || ''} secondaryText={''} />
-										<ImgWithPicker entity={user || {}} entityType={'user'} />
+				<View style={{ flex: 1, justifyContent: "space-around" }}>
+					<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
+						contentContainerStyle={{ ...gloStyles.scrollView }}>
+						<Layout style={{ ...gloStyles.layout }}>
+							<SeparatorTopScreen />
+							<View style={{ ...gloStyles.view }}>
+								<View style={{ ...gloStyles.section.primary }}>
+									<TitleScreen icon={'person-outline'} exterStyles={{ wrapper: { marginBottom: 15 } }} primaryText={user?.metadata?.name || ''} secondaryText={''} />
+									<ImgWithPicker entity={user || {}} entityType={'user'} />
+									{
 										{
-											{
-												'client': (
-													<>
-														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-													</>
-												),
-												'business': (
-													<>
-														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-													</>
-												),
-												'worker': (
-													<>
-														{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-													</>
-												)
-											}[user?.role]
-										}
-									</View>
-									<View style={{ ...gloStyles.section.secondary }}>
-										<SeparatorTopSection />
-										{
-											{
-												'client': (
-													<>
-														<PersonalDataForm />
-														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
-
-														<GardensDataForm />
-
-														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
-
-														<BankDataForm />
-
-														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
-
-														<SessionActionsBtns />
-													</>
-												),
-												'business': (
-													<>
-														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
-
-														<PersonalDataForm />
-														<BankDataForm />
-														<SessionActionsBtns />
-													</>
-												),
-												'worker': (
-													<>
-														{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
-
-														<PersonalDataForm />
-														<BankDataForm />
-														<SessionActionsBtns />
-													</>
-												)
-											}[user?.role]
-										}
-									</View>
+											'client': (
+												<>
+													{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+												</>
+											),
+											'business': (
+												<>
+													{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+												</>
+											),
+											'worker': (
+												<>
+													{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+												</>
+											)
+										}[user?.role]
+									}
 								</View>
-							</Layout>
-						</ScrollView>
-					</View>
-				</TouchableWithoutFeedback>
+								<View style={{ ...gloStyles.section.secondary }}>
+									<SeparatorTopSection />
+									{
+										{
+											'client': (
+												<>
+													<PersonalDataForm />
+													{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
+
+													<GardensDataForm />
+
+													{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
+
+													<BankDataForm />
+
+													{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
+
+													<SessionActionsBtns />
+												</>
+											),
+											'business': (
+												<>
+													{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
+
+													<PersonalDataForm />
+													<BankDataForm />
+													<SessionActionsBtns />
+												</>
+											),
+											'worker': (
+												<>
+													{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
+
+													<PersonalDataForm />
+													<BankDataForm />
+													<SessionActionsBtns />
+												</>
+											)
+										}[user?.role]
+									}
+								</View>
+							</View>
+						</Layout>
+					</ScrollView>
+				</View>
 			</KeyboardAvoidingView>
 		</SafeAreaView >
 	)

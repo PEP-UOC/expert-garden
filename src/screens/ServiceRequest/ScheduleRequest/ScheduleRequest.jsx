@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import PropTypes from "prop-types";
 
 //Constants
@@ -23,7 +23,7 @@ import { servicesTypes } from '../../../data/servicesTypes'
 import { useFirebaseSaveServiceDetail } from "../../../hooks/useFirebaseSaveServiceDetail"
 
 //Components
-import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView } from 'react-native'
+import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native'
 import { Layout, Button, Text, Input, Icon } from '@ui-kitten/components';
 import { TitleScreen } from '../../../components/Titles/Screen'
 import { TitleSection } from '../../../components/Titles/Section'
@@ -114,67 +114,82 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 				<View style={{ flex: 1, justifyContent: "space-around" }}>
 					<ScrollView alwaysBounceVertical={true} centerContent={true}
 						contentContainerStyle={{ ...gloStyles.scrollView }}>
-						<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-							<Layout style={{ ...gloStyles.layout }}>
-								<SeparatorTopScreen />
-								<View style={{ ...gloStyles.view }}>
+						<Layout style={{ ...gloStyles.layout }}>
+							<SeparatorTopScreen />
+							<View style={{ ...gloStyles.view }}>
 
-									<View style={{ ...gloStyles.section.fullStart }}>
+								<View style={{ ...gloStyles.section.fullStart }}>
 
-										{/*TITULO TOP*/}
-										<TitleScreen icon={'plus-circle-outline'} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 0 : 30 }, primaryText: { lineHeight: Device?.isPhone ? 35 : 'initial', marginTop: Device?.isPhone ? 14 : 0 }, secondaryText: { marginTop: 10 } }} primaryText={'Resumen del nuevo servicio'} secondaryText={'Revisa los detalles del servicio a solicitar. A continuación podrás seleccionar los horarios que mejor te vengan y las empresas que más te gusten.'} />
+									{/*TITULO TOP*/}
+									<TitleScreen icon={'plus-circle-outline'} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 0 : 30 }, primaryText: { lineHeight: Device?.isPhone ? 35 : 'initial', marginTop: Device?.isPhone ? 14 : 0 }, secondaryText: { marginTop: 10 } }} primaryText={'Resumen del nuevo servicio'} secondaryText={'Revisa los detalles del servicio a solicitar. A continuación podrás seleccionar los horarios que mejor te vengan y las empresas que más te gusten.'} />
 
-										<SeparatorTopSection />
+									<SeparatorTopSection />
 
-										{/*SECCIÓN SERVICIOS*/}
-										<View style={{ ...ownStyles.servicesWrapper }}>
+									{/*SECCIÓN SERVICIOS*/}
+									<View style={{ ...ownStyles.servicesWrapper }}>
 
-											{values?.details?.length > 0 && values?.details?.map((detail, indexDetail) => {
-												//console.log('detail', detail)
+										{values?.details?.length > 0 && values?.details?.map((detail, indexDetail) => {
+											//console.log('detail', detail)
 
-												return (
-													//SERVICIO
-													<View key={detail.sdid} style={{ ...ownStyles.serviceWrapper }}>
-														<View style={{ ...ownStyles.viewWrapperTop }}>
+											return (
+												//SERVICIO
+												<View key={detail.sdid} style={{ ...ownStyles.serviceWrapper }}>
+													<View style={{ ...ownStyles.viewWrapperTop }}>
 
-															{/*DETALLE*/}
-															<Text style={{ ...ownStyles.textDetalleTop }}>
-																{`#️ Detalle ${indexDetail + 1}`}
-															</Text>
+														{/*DETALLE*/}
+														<Text style={{ ...ownStyles.textDetalleTop }}>
+															{`#️ Detalle ${indexDetail + 1}`}
+														</Text>
 
-															{/*ICONO ELIMINAR*/}
-															<TouchableWithoutFeedback
-																onPress={() => {
-																	setSdidToRemove(detail.sdid)
-																	setShowDeleteConfirm(true)
-																}}>
-																<Icon
-																	name='close'
-																	fill={ownStyles.iconCloseTop.fill}
-																	width={ownStyles.iconCloseTop.width}
-																	height={ownStyles.iconCloseTop.height}
-																/>
-															</TouchableWithoutFeedback>
-														</View>
+														{/*ICONO ELIMINAR*/}
+														<TouchableWithoutFeedback
+															onPress={() => {
+																setSdidToRemove(detail.sdid)
+																setShowDeleteConfirm(true)
+															}}>
+															<Icon
+																name='close'
+																fill={ownStyles.iconCloseTop.fill}
+																width={ownStyles.iconCloseTop.width}
+																height={ownStyles.iconCloseTop.height}
+															/>
+														</TouchableWithoutFeedback>
+													</View>
 
-														{/*TITULO SECCIÓN SERVICIO*/}
-														<TitleSection icon={''}
-															exterStyles={
-																{
-																	wrapper: {
-																		marginBottom: Device?.isPhone ? 15 : 20
-																	},
-																	primaryText: {
-																		fontSize: Device?.isPhone ? 22 : 24,
-																		lineHeight: Device?.isPhone ? 25 : undefined
-																	}
+													{/*TITULO SECCIÓN SERVICIO*/}
+													<TitleSection icon={''}
+														exterStyles={
+															{
+																wrapper: {
+																	marginBottom: Device?.isPhone ? 15 : 20
+																},
+																primaryText: {
+																	fontSize: Device?.isPhone ? 22 : 24,
+																	lineHeight: Device?.isPhone ? 25 : undefined
 																}
 															}
-															primaryText={`${servicesTypes.find((type) => type.identifier === detail.type).label}`}
-															secondaryText={''}
-														/>
+														}
+														primaryText={`${servicesTypes.find((type) => type.identifier === detail.type).label}`}
+														secondaryText={''}
+													/>
 
-														{/*MAIN TYPE*/}
+													{/*MAIN TYPE*/}
+													<View>
+														<Text style={{ ...ownStyles.textQuestion }}>
+															{`${servicesTypes.find((type) => type.id === detail.typeId).question}`}
+														</Text>
+														<Text style={{ ...ownStyles.textResponse }}>
+															{
+																`${servicesTypes.find((type) => type.identifier === detail.type)
+																	?.step1types?.find((type1) => type1.step1typeId === detail.step1id)
+																	?.label
+																}`
+															}
+														</Text>
+													</View>
+
+													{/*STEP 1*/}
+													{detail.step1 !== '' && (
 														<View>
 															<Text style={{ ...ownStyles.textQuestion }}>
 																{`${servicesTypes.find((type) => type.id === detail.typeId).question}`}
@@ -188,165 +203,148 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 																}
 															</Text>
 														</View>
+													)}
 
-														{/*STEP 1*/}
-														{detail.step1 !== '' && (
-															<View>
-																<Text style={{ ...ownStyles.textQuestion }}>
-																	{`${servicesTypes.find((type) => type.id === detail.typeId).question}`}
-																</Text>
-																<Text style={{ ...ownStyles.textResponse }}>
-																	{
-																		`${servicesTypes.find((type) => type.identifier === detail.type)
-																			?.step1types?.find((type1) => type1.step1typeId === detail.step1id)
-																			?.label
-																		}`
-																	}
-																</Text>
-															</View>
-														)}
+													{/*STEP 2*/}
+													{detail.step2 !== '' && (
+														<View>
+															<Text style={{ ...ownStyles.textQuestion }}>
+																{`${servicesTypes.find((type) => type.id === detail.typeId).step1types.find((type1) => type1.step1typeId === detail.step1id).question}`}
+															</Text>
+															<Text style={{ ...ownStyles.textResponse }}>
+																{
+																	`${servicesTypes.find((type) => type.identifier === detail.type)
+																		?.step1types?.find((type1) => type1.step1typeId === detail.step1id)
+																		?.step2types?.find((type2) => type2.step2typeId === detail.step2id)
+																		?.label
+																	}`
+																}
+															</Text>
+														</View>
+													)}
 
-														{/*STEP 2*/}
-														{detail.step2 !== '' && (
-															<View>
-																<Text style={{ ...ownStyles.textQuestion }}>
-																	{`${servicesTypes.find((type) => type.id === detail.typeId).step1types.find((type1) => type1.step1typeId === detail.step1id).question}`}
-																</Text>
-																<Text style={{ ...ownStyles.textResponse }}>
-																	{
-																		`${servicesTypes.find((type) => type.identifier === detail.type)
-																			?.step1types?.find((type1) => type1.step1typeId === detail.step1id)
-																			?.step2types?.find((type2) => type2.step2typeId === detail.step2id)
-																			?.label
-																		}`
-																	}
-																</Text>
-															</View>
-														)}
+													{/*STEP 3*/}
+													{detail.step3 !== '' && (
+														<View>
+															<Text style={{ ...ownStyles.textQuestion }}>
+																{`${servicesTypes.find((type) => type.id === detail.typeId).step1types.find((type1) => type1.step1typeId === detail.step1id).step2types.find((type2) => type2.step2typeId === detail.step2id).question}`}
+															</Text>
+															<Text style={{ ...ownStyles.textResponse }}>
+																{
+																	`${servicesTypes.find((type) => type.identifier === detail.type)
+																		?.step1types?.find((type1) => type1.step1typeId === detail.step1id)
+																		?.step2types?.find((type2) => type2.step2typeId === detail.step2id)
+																		?.step3types?.find((type3) => type3.step3typeId === detail.step3id)
+																		?.label
+																	}`
+																}
+															</Text>
+														</View>
+													)}
 
-														{/*STEP 3*/}
-														{detail.step3 !== '' && (
-															<View>
-																<Text style={{ ...ownStyles.textQuestion }}>
-																	{`${servicesTypes.find((type) => type.id === detail.typeId).step1types.find((type1) => type1.step1typeId === detail.step1id).step2types.find((type2) => type2.step2typeId === detail.step2id).question}`}
-																</Text>
-																<Text style={{ ...ownStyles.textResponse }}>
-																	{
-																		`${servicesTypes.find((type) => type.identifier === detail.type)
-																			?.step1types?.find((type1) => type1.step1typeId === detail.step1id)
-																			?.step2types?.find((type2) => type2.step2typeId === detail.step2id)
-																			?.step3types?.find((type3) => type3.step3typeId === detail.step3id)
-																			?.label
-																		}`
-																	}
-																</Text>
-															</View>
-														)}
+													{/*INPUTS LEVEL 1*/}
+													{
+														servicesTypes?.find((type) => type.id === detail.typeId)
+															?.step1types?.find((type1) => type1.step1typeId === detail.step1id)?.inputs
+															?.length > 0
+														&&
+														servicesTypes?.find((type) => type.id === detail.typeId)
+															?.step1types?.find((type1) => type1.step1typeId === detail.step1id)?.inputs
+															?.map((input) => {
+																//console.log('input1', input)
+																return (
+																	<Input
+																		key={input.inputId}
+																		style={{ ...gloStyles?.inputs?.input }}
+																		label={input.label}
+																		caption={renderCaption(input.caption)}
+																		placeholder={input.placeholder}
+																		value={detail.inputs[input?.identifier] || ''}
+																		onChangeText={text => handleInputChange(text, input.identifier, indexDetail)}
+																		multiline={input.type === 'textarea'}
+																		textStyle={input.type === 'textarea' && { minHeight: 144 }}
+																	/>
+																)
+															})
+													}
 
-														{/*INPUTS LEVEL 1*/}
-														{
-															servicesTypes?.find((type) => type.id === detail.typeId)
-																?.step1types?.find((type1) => type1.step1typeId === detail.step1id)?.inputs
-																?.length > 0
-															&&
-															servicesTypes?.find((type) => type.id === detail.typeId)
-																?.step1types?.find((type1) => type1.step1typeId === detail.step1id)?.inputs
-																?.map((input) => {
-																	//console.log('input1', input)
-																	return (
-																		<Input
-																			key={input.inputId}
-																			style={{ ...gloStyles?.inputs?.input }}
-																			label={input.label}
-																			caption={renderCaption(input.caption)}
-																			placeholder={input.placeholder}
-																			value={detail.inputs[input?.identifier] || ''}
-																			onChangeText={text => handleInputChange(text, input.identifier, indexDetail)}
-																			multiline={input.type === 'textarea'}
-																			textStyle={input.type === 'textarea' && { minHeight: 144 }}
-																		/>
-																	)
-																})
-														}
+													{/*INPUTS LEVEL 2*/}
+													{
+														servicesTypes?.find((type) => type.id === detail.typeId)
+															?.step1types?.find((type1) => type1.step1typeId === detail.step1id)
+															?.step2types?.find((type2) => type2.step2typeId === detail.step2id)?.inputs
+															?.length > 0
+														&&
+														servicesTypes?.find((type) => type.id === detail.typeId)
+															?.step1types?.find((type1) => type1.step1typeId === detail.step1id)
+															?.step2types?.find((type2) => type2.step2typeId === detail.step2id)?.inputs
+															?.map(input => {
+																//console.log('input2', input)
+																return (
+																	<Input
+																		key={input.inputId}
+																		style={{ ...gloStyles?.inputs?.input }}
+																		label={input.label}
+																		caption={renderCaption(input.caption)}
+																		placeholder={input.placeholder}
+																		value={detail.inputs[input?.identifier] || ''}
+																		onChangeText={text => handleInputChange(text, input.identifier)}
+																		multiline={input.type === 'textarea'}
+																		textStyle={input.type === 'textarea' && { minHeight: 144 }}
+																	/>
+																)
+															})
+													}
 
-														{/*INPUTS LEVEL 2*/}
-														{
-															servicesTypes?.find((type) => type.id === detail.typeId)
-																?.step1types?.find((type1) => type1.step1typeId === detail.step1id)
-																?.step2types?.find((type2) => type2.step2typeId === detail.step2id)?.inputs
-																?.length > 0
-															&&
-															servicesTypes?.find((type) => type.id === detail.typeId)
-																?.step1types?.find((type1) => type1.step1typeId === detail.step1id)
-																?.step2types?.find((type2) => type2.step2typeId === detail.step2id)?.inputs
-																?.map(input => {
-																	//console.log('input2', input)
-																	return (
-																		<Input
-																			key={input.inputId}
-																			style={{ ...gloStyles?.inputs?.input }}
-																			label={input.label}
-																			caption={renderCaption(input.caption)}
-																			placeholder={input.placeholder}
-																			value={detail.inputs[input?.identifier] || ''}
-																			onChangeText={text => handleInputChange(text, input.identifier)}
-																			multiline={input.type === 'textarea'}
-																			textStyle={input.type === 'textarea' && { minHeight: 144 }}
-																		/>
-																	)
-																})
-														}
-
-														{/*INPUTS LEVEL 3*/}
-														{
-															servicesTypes?.find((type) => type.id === detail.typeId)
-																?.step1types?.find((type1) => type1.step1typeId === detail.step1id)
-																?.step2types?.find((type2) => type2.step2typeId === detail.step2id)
-																?.step3types?.find((type3) => type3.step3typeId === detail.step3id)?.inputs
-																?.length > 0
-															&&
-															servicesTypes?.find((type) => type.id === detail.typeId)
-																?.step1types?.find((type1) => type1.step1typeId === detail.step1id)
-																?.step2types?.find((type2) => type2.step2typeId === detail.step2id)
-																?.step3types?.find((type3) => type3.step3typeId === detail.step3id)?.inputs
-																?.map(input => {
-																	//console.log('input3', input)
-																	return (
-																		<Input
-																			key={input.inputId}
-																			style={{ ...gloStyles?.inputs?.input }}
-																			label={input.label}
-																			caption={renderCaption(input.caption)}
-																			placeholder={input.placeholder}
-																			value={detail.inputs[input?.identifier] || ''}
-																			onChangeText={text => handleInputChange(text, input.identifier)}
-																			multiline={input.type === 'textarea'}
-																			textStyle={input.type === 'textarea' && { minHeight: 144 }}
-																		/>
-																	)
-																})
-														}
-													</View>
-												)
-											})}
-
-										</View>
-
-										{/*BOTÓN AÑADIR OTRO DETALLE AL SERVICIO*/}
-										<Button
-											accessoryLeft={AddIcon} style={{ ...gloStyles?.button }} onPress={() => navigation.navigate("MainServiceRequestScreen", { reset: true })}>Añadir otro detalle al servicio</Button>
-
-										{/*BOTÓN SOLICITAR SERVICIO*/}
-										<Button
-											accessoryLeft={TruckIcon} style={{ ...gloStyles?.button }} onPress={() => handleSaveService(values, isEdit)}>Solicitar servicio</Button>
-
-										{/*MODAL ELIMINAR DETALLE*/}
-										<ModalOptions mainText={'¿Seguro que quieres eliminar este detalle?'} show={showDeleteConfirm} setShow={setShowDeleteConfirm} option1text={'Sí, eliminar'} option1onPress={removeDetail} option2text={'No, mantener'} option2onPress={hideModal} />
+													{/*INPUTS LEVEL 3*/}
+													{
+														servicesTypes?.find((type) => type.id === detail.typeId)
+															?.step1types?.find((type1) => type1.step1typeId === detail.step1id)
+															?.step2types?.find((type2) => type2.step2typeId === detail.step2id)
+															?.step3types?.find((type3) => type3.step3typeId === detail.step3id)?.inputs
+															?.length > 0
+														&&
+														servicesTypes?.find((type) => type.id === detail.typeId)
+															?.step1types?.find((type1) => type1.step1typeId === detail.step1id)
+															?.step2types?.find((type2) => type2.step2typeId === detail.step2id)
+															?.step3types?.find((type3) => type3.step3typeId === detail.step3id)?.inputs
+															?.map(input => {
+																//console.log('input3', input)
+																return (
+																	<Input
+																		key={input.inputId}
+																		style={{ ...gloStyles?.inputs?.input }}
+																		label={input.label}
+																		caption={renderCaption(input.caption)}
+																		placeholder={input.placeholder}
+																		value={detail.inputs[input?.identifier] || ''}
+																		onChangeText={text => handleInputChange(text, input.identifier)}
+																		multiline={input.type === 'textarea'}
+																		textStyle={input.type === 'textarea' && { minHeight: 144 }}
+																	/>
+																)
+															})
+													}
+												</View>
+											)
+										})}
 
 									</View>
+
+									{/*BOTÓN AÑADIR OTRO DETALLE AL SERVICIO*/}
+									<Button
+										accessoryLeft={AddIcon} style={{ ...gloStyles?.button }} onPress={() => navigation.navigate("MainServiceRequestScreen", { reset: true })}>Añadir otro detalle al servicio</Button>
+
+									{/*BOTÓN SOLICITAR SERVICIO*/}
+									<Button
+										accessoryLeft={TruckIcon} style={{ ...gloStyles?.button }} onPress={() => handleSaveService(values, isEdit)}>Solicitar servicio</Button>
+
+									{/*MODAL ELIMINAR DETALLE*/}
+									<ModalOptions mainText={'¿Seguro que quieres eliminar este detalle?'} show={showDeleteConfirm} setShow={setShowDeleteConfirm} option1text={'Sí, eliminar'} option1onPress={removeDetail} option2text={'No, mantener'} option2onPress={hideModal} />
+
 								</View>
-							</Layout>
-						</TouchableWithoutFeedback>
+							</View>
+						</Layout>
 					</ScrollView>
 				</View>
 			</KeyboardAvoidingView>

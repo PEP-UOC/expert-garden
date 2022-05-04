@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 //Constants
 import Constants from 'expo-constants';
 
-import { View, SafeAreaView, ScrollView, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from "react-native"
+import { View, SafeAreaView, ScrollView, KeyboardAvoidingView, Platform } from "react-native"
 import { Text, Button, Layout, Input, TopNavigation, TopNavigationAction, Select, SelectItem, IndexPath } from '@ui-kitten/components';
 import { SeparatorTopScreen } from '../../../../components/Separators/TopScreen'
 
@@ -202,83 +202,81 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-					<View style={{ flex: 1, justifyContent: "space-around" }}>
-						<TopNavigation title={''} alignment='center' accessoryLeft={BackAction} />
-						<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-							contentContainerStyle={{ ...gloStyles?.scrollView }}>
-							<Layout style={{ ...gloStyles?.layout }}>
-								<SeparatorTopScreen hasTopNavigation={true} />
-								<View style={{ ...gloStyles?.view, alignItems: 'flex-start' }}>
-									<View style={{ ...gloStyles.section.fullStart }}>
-										<Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>{isEdit ? 'EDITAR DETALLE DE' : 'AÑADIR DETALLE A'}</Text>
-										<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>{gardenName}</Text>
+				<View style={{ flex: 1, justifyContent: "space-around" }}>
+					<TopNavigation title={''} alignment='center' accessoryLeft={BackAction} />
+					<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
+						contentContainerStyle={{ ...gloStyles?.scrollView }}>
+						<Layout style={{ ...gloStyles?.layout }}>
+							<SeparatorTopScreen hasTopNavigation={true} />
+							<View style={{ ...gloStyles?.view, alignItems: 'flex-start' }}>
+								<View style={{ ...gloStyles.section.fullStart }}>
+									<Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>{isEdit ? 'EDITAR DETALLE DE' : 'AÑADIR DETALLE A'}</Text>
+									<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>{gardenName}</Text>
 
-										<View style={{ ...gloStyles?.inputs?.row, width: Device?.isPhone ? '100%' : 700, justifyContent: showSubType ? 'space-between' : 'center' }}>
-											<Select
-												style={{ ...gloStyles.inputs.select }}
-												label='Tipo'
-												placeholder='Selecciona un tipo'
-												value={displayValueMainType}
-												selectedIndex={selectedIndexMainType}
-												onSelect={index => {
-													setSelectedIndexMainType(index)
-													handleChange(gardenDetailTypes[index - 1]?.identifier, "mainType")
-												}}>
-												{gardenDetailTypes.map(gdT => gdT.value).map(renderOption)}
-											</Select>
+									<View style={{ ...gloStyles?.inputs?.row, width: Device?.isPhone ? '100%' : 700, justifyContent: showSubType ? 'space-between' : 'center' }}>
+										<Select
+											style={{ ...gloStyles.inputs.select }}
+											label='Tipo'
+											placeholder='Selecciona un tipo'
+											value={displayValueMainType}
+											selectedIndex={selectedIndexMainType}
+											onSelect={index => {
+												setSelectedIndexMainType(index)
+												handleChange(gardenDetailTypes[index - 1]?.identifier, "mainType")
+											}}>
+											{gardenDetailTypes.map(gdT => gdT.value).map(renderOption)}
+										</Select>
 
-											{showSubType &&
-												(
-													<Select
-														style={{ ...gloStyles.inputs.select }}
-														label='SubTipo'
-														placeholder='Selecciona un subtipo'
-														value={displayValueSubType}
-														selectedIndex={selectedIndexSubType}
-														onSelect={index => {
-															setSelectedIndexSubType(index)
-															handleChange(listSubType[index - 1]?.identifier, "subType")
-														}}>
-														{listSubType.map(sT => sT.value).map(renderOption)}
-													</Select>
-												)}
+										{showSubType &&
+											(
+												<Select
+													style={{ ...gloStyles.inputs.select }}
+													label='SubTipo'
+													placeholder='Selecciona un subtipo'
+													value={displayValueSubType}
+													selectedIndex={selectedIndexSubType}
+													onSelect={index => {
+														setSelectedIndexSubType(index)
+														handleChange(listSubType[index - 1]?.identifier, "subType")
+													}}>
+													{listSubType.map(sT => sT.value).map(renderOption)}
+												</Select>
+											)}
 
-
-										</View>
-										{showInputs && listInputs?.map(input => {
-											return (
-												<Input
-													key={input.inputId}
-													style={{ ...gloStyles?.inputs?.input }}
-													label={input.label}
-													caption={renderCaption(input.caption)}
-													placeholder={input.placeholder}
-													value={values.inputs[input?.identifier] || ''}
-													onChangeText={text => handleInputChange(text, input.identifier)}
-													multiline={input.type === 'textarea'}
-													textStyle={input.type === 'textarea' && { minHeight: 96 }}
-												/>
-											)
-										})
-										}
-
-										<Button style={{ ...gloStyles?.button }} onPress={() => handleSaveGardenDetail(values, isEdit)} disabled={isDisabled()}>Guardar detalle</Button>
-
-										<Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={navigateBack}>Volver</Button>
-
-										<ModalOptions mainText={'Guardado!'} show={saved} setShow={setSaved} option1text={'Añadir otro detalle'} option1onPress={resetForm} option2text={'Volver al jardín'} option2onPress={navigateBack} />
-
-										<View style={{ alignItems: 'center' }}>
-											<LeafIcon width={180} height={60} style={{ ...gloStyles?.leaf }} />
-										</View>
 
 									</View>
+									{showInputs && listInputs?.map(input => {
+										return (
+											<Input
+												key={input.inputId}
+												style={{ ...gloStyles?.inputs?.input }}
+												label={input.label}
+												caption={renderCaption(input.caption)}
+												placeholder={input.placeholder}
+												value={values.inputs[input?.identifier] || ''}
+												onChangeText={text => handleInputChange(text, input.identifier)}
+												multiline={input.type === 'textarea'}
+												textStyle={input.type === 'textarea' && { minHeight: 96 }}
+											/>
+										)
+									})
+									}
+
+									<Button style={{ ...gloStyles?.button }} onPress={() => handleSaveGardenDetail(values, isEdit)} disabled={isDisabled()}>Guardar detalle</Button>
+
+									<Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={navigateBack}>Volver</Button>
+
+									<ModalOptions mainText={'Guardado!'} show={saved} setShow={setSaved} option1text={'Añadir otro detalle'} option1onPress={resetForm} option2text={'Volver al jardín'} option2onPress={navigateBack} />
+
+									<View style={{ alignItems: 'center' }}>
+										<LeafIcon width={180} height={60} style={{ ...gloStyles?.leaf }} />
+									</View>
+
 								</View>
-							</Layout>
-						</ScrollView>
-					</View>
-				</TouchableWithoutFeedback>
+							</View>
+						</Layout>
+					</ScrollView>
+				</View>
 			</KeyboardAvoidingView>
 		</SafeAreaView>
 	)
