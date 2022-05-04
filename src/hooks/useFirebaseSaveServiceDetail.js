@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 //Store
 import { useDispatch } from 'react-redux';
 import { setErrorMessage, setLoadingMessage } from '../store/root/rootAction';
-import { addDetail, deleteDetail } from '../store/service/serviceAction';
+import { addDetail, deleteDetail, resetServiceTemporal } from '../store/service/serviceAction';
 
 //Firebase
 import firebase from 'firebase/compat/app';
@@ -187,8 +187,9 @@ export function useFirebaseSaveServiceDetail(debug) {
 							console.log(`🚧 FSSD - Service ${ref.id} guardado`);
 							setItemToEdit(false);
 							setItemToUpdate(false);
-							setSaved(true);
+							setSaved(ref.id);
 							dispatch(setErrorMessage(false));
+							dispatch(resetServiceTemporal());
 						})
 						.catch((error) => {
 							console.error(error.message);

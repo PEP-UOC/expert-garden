@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { MainServiceRequestScreen } from '../../screens/ServiceRequest/MainServiceRequest/MainServiceRequest';
 import { ResumeServiceRequestScreen } from '../../screens/ServiceRequest/ResumeServiceRequest/ResumeServiceRequest';
+import { ScheduleRequestScreen } from '../../screens/ServiceRequest/ScheduleRequest/ScheduleRequest';
 
 
 const ServiceRequest = createNativeStackNavigator()
@@ -11,5 +12,6 @@ export const ServiceRequestNavigation = () => (
 		screenOptions={{ headerShown: false }}>
 		<ServiceRequest.Screen name='MainServiceRequestScreen' component={MainServiceRequestScreen} />
 		<ServiceRequest.Screen name='ResumeServiceRequestScreen' component={ResumeServiceRequestScreen} />
+		<ServiceRequest.Screen name='ScheduleRequestScreen' component={ScheduleRequestScreen} />
 	</ServiceRequest.Navigator>
 )

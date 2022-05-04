@@ -1,4 +1,4 @@
-import { ADD_DETAIL, DELETE_DETAIL } from './serviceTypes';
+import { ADD_DETAIL, DELETE_DETAIL, RESET_SERVICE_TEMPORAL } from './serviceTypes';
 const initialState = {
 	serviceTemporal: {
 		details: [],
@@ -24,6 +24,13 @@ const serviceReducer = (state = initialState, action) => {
 				serviceTemporal: {
 					...state.serviceTemporal,
 					details: state.serviceTemporal.details.filter((item) => item.sdid != action.payload),
+				},
+			};
+		case RESET_SERVICE_TEMPORAL:
+			return {
+				...state,
+				serviceTemporal: {
+					details: [],
 				},
 			};
 		default:

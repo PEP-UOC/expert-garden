@@ -38,7 +38,10 @@ import { TruckIcon } from '../../../assets/icons/Truck'
 import { ModalOptions } from '../../../components/Modals/Options';
 
 // eslint-disable-next-line no-unused-vars
-export const ResumeServiceRequestScreen = ({ debug, navigation }) => {
+export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
+
+	const sid = route.params.sid;
+	console.log('sid', sid)
 
 	//Store
 	const serviceTemporal = useSelector(state => state.serviceReducer.serviceTemporal);
@@ -98,11 +101,11 @@ export const ResumeServiceRequestScreen = ({ debug, navigation }) => {
 		setShowDeleteConfirm(false)
 	}
 
-	useEffect(() => {
-		if (saved) {
-			navigation.push("ScheduleRequestScreen", { sid: saved })
-		}
-	}, [saved]);
+	//useEffect(() => {
+	//	if (saved) {
+	//		navigation.push("ScheduleRequestScreen", { sid: saved })
+	//	}
+	//}, [saved]);
 
 
 	return (
@@ -351,11 +354,12 @@ export const ResumeServiceRequestScreen = ({ debug, navigation }) => {
 	)
 };
 
-ResumeServiceRequestScreen.propTypes = {
+ScheduleRequestScreen.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	navigation: PropTypes.object.isRequired,
+	route: PropTypes.object.isRequired,
 };
 
-ResumeServiceRequestScreen.defaultProps = {
+ScheduleRequestScreen.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 };
