@@ -1,3 +1,7 @@
 export const ADD_DETAIL = 'ADD_DETAIL';
+export const UPDATE_DETAIL = 'UPDATE_DETAIL';
 export const DELETE_DETAIL = 'DELETE_DETAIL';
 export const RESET_SERVICE_TEMPORAL = 'RESET_SERVICE_TEMPORAL';
+export const ADD_DATE = 'ADD_DATE';
+export const UPDATE_DATE = 'UPDATE_DATE';
+export const DELETE_DATE = 'DELETE_DATE';

@@ -320,8 +320,8 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 									<SeparatorTopSection />
 
 									{/*TITULO SECCIÓN SERVICIO*/}
-									<FadeView fadeRef={fadeRef}>
-										<TitleSection icon={''} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 20 : 45 }, primaryText: { fontSize: Device?.isPhone ? 18 : 24, lineHeight: Device?.isPhone ? 25 : undefined } }}
+									<FadeView fadeRef={fadeRef} >
+										<TitleSection icon={''} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 20 : 45 }, primaryText: { fontSize: Device?.isPhone ? 18 : 24, lineHeight: Device?.isPhone ? 25 : undefined, marginLeft: !Device?.isPhone && listInputs?.length > 0 ? 60 : 0 } }}
 											primaryText={
 												step === 1
 													? servicesTypes?.find((type) => type.id === values.typeId)?.question || ''
@@ -336,104 +336,12 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 									</FadeView>
 
 									{/*LISTADO DE OPCIONES*/}
-									<View>
-										<FadeView style={{ ...ownStyles.servicesList }} fadeRef={fadeRef}>
-											{servicesToList?.map(service => {
-												return (<Button
-													appearance='outline'
-													style={{ ...ownStyles.btnServiceRequest }}
-													key={service[keyName]}
-													onPress={() => {
-														Animated.timing(
-															fadeRef,
-															{
-																toValue: 0,
-																duration: 500,
-																useNativeDriver: Platform.OS !== 'web' ? true : false
-															}
-														).start(() => {
-															handleChange(service.identifier, identifierName)
-															handleChange(service[keyName], idName)
-															setStep(step + 1)
-														}
-														);
-													}}
-												>
-													{evaProps =>
-														<View style={{ ...ownStyles.btnOptionsWrapper }}>
-															<Text {...evaProps} category='h6' style={{ ...ownStyles.btnServiceText }}>
-																{service.label}
-															</Text>
-															{service?.subLabel !== '' && (
-																<Text {...evaProps} category='p1' style={{ ...ownStyles.btnServiceSubText }}>
-																	{service.subLabel}
-																</Text>
-															)}
-														</View>
-													}
-												</Button>)
-											})}
-										</FadeView>
-									</View>
-
-									{/*LISTADO DE INPUTS*/}
-									{listInputs?.length > 0 && (
-										<>
-											{listInputs?.map(input => {
-												return (
-													<Input
-														key={input.inputId}
-														style={{ ...gloStyles?.inputs?.input }}
-														label={input.label}
-														caption={renderCaption(input.caption)}
-														placeholder={input.placeholder}
-														value={values.inputs[input?.identifier] || ''}
-														onChangeText={text => handleInputChange(text, input.identifier)}
-														multiline={input.type === 'textarea'}
-														textStyle={input.type === 'textarea' && { minHeight: 144 }}
-													/>
-												)
-											})}
-
-											<Button style={{ ...gloStyles?.button }} onPress={() => handleSaveServiceDetail(values, isEdit)} disabled={isDisabled()}>Añadir servicio</Button>
-										</>
-									)}
-
-									{/*BOTÓN VER RESUMEN DEL PEDIDO*/}
-									{serviceTemporal?.details?.length > 0 && (
-										<FadeView fadeRef={fadeRef} style={{ ...ownStyles.btnServiceResume }}>
-											<Button style={{ ...gloStyles?.btnWrapper }} onPress={navigateToResumeSavePrev}>
-												{evaProps =>
-													<View style={{ ...ownStyles.btnIconWrapper }}>
-														<Icon
-															name='layers'
-															fill={ownStyles.layers.fill}
-															width={ownStyles.layers.width}
-															height={ownStyles.layers.height}
-														/>
-														<View style={{ ...ownStyles.btnWrapperWithIcon }}>
-															<Text {...evaProps} category='h6' style={{ ...ownStyles.btnServiceTextLight }}>
-																Ver resumen del servicio
-															</Text>
-															{serviceTemporal?.details?.length > 0 && (
-																<Text {...evaProps} category='p1' style={{ ...ownStyles.btnServiceSubTextLight }}>
-																	{serviceTemporal?.details?.length} detalles añadidos hasta ahora
-																</Text>
-															)}
-														</View>
-													</View>
-												}
-											</Button>
-										</FadeView>
-									)}
-
-									{/*BOTÓN ATRÁS*/}
-									{step > 0 && (
-										<FadeView fadeRef={fadeRef} style={{ ...globalStyles.buttonGhost, ...ownStyles.btnServiceAtras }}>
-											<Button
-												appearance='ghost'
-
-												key={'back'}
+									<FadeView style={{ ...ownStyles.servicesList }} fadeRef={fadeRef}>
+										{servicesToList?.map(service => {
+											return (<Button
+												appearance='outline'
+												style={{ ...ownStyles.btnServiceRequest }}
+												key={service[keyName]}
 												onPress={() => {
 													Animated.timing(
 														fadeRef,
@@ -443,66 +351,183 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 															useNativeDriver: Platform.OS !== 'web' ? true : false
 														}
 													).start(() => {
-														switch (step) {
-															case 1:
-																handleChange("", "type")
-																handleChange("", "typeId")
-																setListStep1([])
-																handleChange({}, "inputs")
-																setListInputs([])
-																setStep(0)
-																break;
-															case 2:
-																handleChange("", "step1")
-																handleChange("", "step1id")
-																setListStep2([])
-																handleChange({}, "inputs")
-																setListInputs([])
-																setStep(1)
-																break;
-															case 3:
-																handleChange("", "step2")
-																handleChange("", "step2id")
-																setListStep3([])
-																handleChange({}, "inputs")
-																setListInputs([])
-																setStep(2)
-																break;
-															case 4:
-																handleChange("", "step3")
-																handleChange("", "step3id")
-																handleChange({}, "inputs")
-																setListInputs([])
-																setStep(3)
-																break;
-
-															default:
-																handleChange("", "type")
-																handleChange("", "typeId")
-																setListStep1([])
-																handleChange("", "step1")
-																handleChange("", "step1id")
-																setListStep2([])
-																handleChange("", "step2")
-																handleChange("", "step2id")
-																setListStep3([])
-																handleChange("", "step3")
-																handleChange("", "step3id")
-																handleChange({}, "inputs")
-																setListInputs([])
-																setStep(0)
-																break;
-														}
+														handleChange(service.identifier, identifierName)
+														handleChange(service[keyName], idName)
+														setStep(step + 1)
 													}
 													);
 												}}
 											>
-												{evaProps => <Text {...evaProps} category='h6' style={{ ...ownStyles.btnServiceText }}>
-													Volver atrás
-												</Text>}
-											</Button>
-										</FadeView>
-									)}
+												{evaProps =>
+													<View style={{ ...ownStyles.btnOptionsWrapper }}>
+														<Text {...evaProps} category='h6' style={{ ...ownStyles.btnServiceText }}>
+															{service.label}
+														</Text>
+														{service?.subLabel !== '' && (
+															<Text {...evaProps} category='p1' style={{ ...ownStyles.btnServiceSubText }}>
+																{service.subLabel}
+															</Text>
+														)}
+													</View>
+												}
+											</Button>)
+										})}
+									</FadeView>
+
+									{/*LISTADO DE INPUTS*/}
+									<View style={{ width: '100%' }}>
+										{listInputs?.length > 0 && (
+											<View style={{ width: '100%' }}>
+												<View style={{ ...ownStyles.inputsRow }}>
+													{listInputs?.map(input => {
+														return (
+															<Input
+																key={input.inputId}
+																style={{ ...gloStyles?.inputs?.input, ...ownStyles.input }}
+																label={input.label}
+																caption={renderCaption(input.caption)}
+																placeholder={input.placeholder}
+																value={values.inputs[input?.identifier] || ''}
+																onChangeText={text => handleInputChange(text, input.identifier)}
+																multiline={input.type === 'textarea'}
+																textStyle={input.type === 'textarea' && { minHeight: Device?.isPhone ? 144 : 72 }}
+															/>
+														)
+													})}
+												</View>
+
+												<View style={{ ...ownStyles.inputsRow }}>
+													<Button style={{ ...gloStyles?.button, ...ownStyles.btnAddService }} onPress={() => handleSaveServiceDetail(values, isEdit)} disabled={isDisabled()}>Añadir servicio</Button>
+												</View>
+											</View>
+										)}
+									</View>
+
+									{/*BOTTOM BUTTONS*/}
+									<FadeView fadeRef={fadeRef} style={
+										listInputs?.length === 0
+											? { ...ownStyles.btnRow }
+											: { ...ownStyles.btnRow, ...ownStyles.btnRowFull }
+									}>
+										{/*BOTÓN VER RESUMEN DEL PEDIDO*/}
+										{serviceTemporal?.details?.length > 0 && (
+											<View fadeRef={fadeRef} style={
+												listInputs?.length === 0
+													? { ...ownStyles.btnServiceResume }
+													: { ...ownStyles.btnServiceResume, ...ownStyles.btnServiceResumeFull }
+											}>
+												<Button style={{ ...gloStyles?.btnWrapper }} onPress={navigateToResumeSavePrev}>
+													{evaProps =>
+														<View style={{ ...ownStyles.btnIconWrapper }}>
+															<Icon
+																name='layers'
+																fill={ownStyles.layers.fill}
+																width={ownStyles.layers.width}
+																height={ownStyles.layers.height}
+															/>
+															<View style={{ ...ownStyles.btnWrapperWithIcon }}>
+																<Text {...evaProps} category='h6' style={{ ...ownStyles.btnServiceTextLight }}>
+																	{Device?.isPhone ? 'Ver resumen del servicio' : 'Ver resumen'}
+
+																</Text>
+																{serviceTemporal?.details?.length > 0 && (
+																	<Text {...evaProps} category='p1' style={{ ...ownStyles.btnServiceSubTextLight }}>
+																		{serviceTemporal?.details?.length} {serviceTemporal?.details?.length === 1 ? 'detalle añadido' : 'detalles añadidos'} hasta ahora
+																	</Text>
+																)}
+															</View>
+														</View>
+													}
+												</Button>
+											</View>
+										)}
+
+										{/*BOTÓN ATRÁS*/}
+										{step > 0
+											? (
+												<View fadeRef={fadeRef} style={
+													listInputs?.length === 0
+														? { ...ownStyles.btnServiceAtras }
+														: { ...ownStyles.btnServiceAtras, ...ownStyles.btnServiceAtrasFull }
+												}>
+													<Button
+														appearance='ghost'
+
+														key={'back'}
+														onPress={() => {
+															Animated.timing(
+																fadeRef,
+																{
+																	toValue: 0,
+																	duration: 500,
+																	useNativeDriver: Platform.OS !== 'web' ? true : false
+																}
+															).start(() => {
+																switch (step) {
+																	case 1:
+																		handleChange("", "type")
+																		handleChange("", "typeId")
+																		setListStep1([])
+																		handleChange({}, "inputs")
+																		setListInputs([])
+																		setStep(0)
+																		break;
+																	case 2:
+																		handleChange("", "step1")
+																		handleChange("", "step1id")
+																		setListStep2([])
+																		handleChange({}, "inputs")
+																		setListInputs([])
+																		setStep(1)
+																		break;
+																	case 3:
+																		handleChange("", "step2")
+																		handleChange("", "step2id")
+																		setListStep3([])
+																		handleChange({}, "inputs")
+																		setListInputs([])
+																		setStep(2)
+																		break;
+																	case 4:
+																		handleChange("", "step3")
+																		handleChange("", "step3id")
+																		handleChange({}, "inputs")
+																		setListInputs([])
+																		setStep(3)
+																		break;
+
+																	default:
+																		handleChange("", "type")
+																		handleChange("", "typeId")
+																		setListStep1([])
+																		handleChange("", "step1")
+																		handleChange("", "step1id")
+																		setListStep2([])
+																		handleChange("", "step2")
+																		handleChange("", "step2id")
+																		setListStep3([])
+																		handleChange("", "step3")
+																		handleChange("", "step3id")
+																		handleChange({}, "inputs")
+																		setListInputs([])
+																		setStep(0)
+																		break;
+																}
+															}
+															);
+														}}
+													>
+														{evaProps => <Text {...evaProps} category='h6' style={{ ...ownStyles.btnServiceText }}>
+															Volver atrás
+														</Text>}
+													</Button>
+												</View>
+											)
+											: (
+												<View style={{ ...ownStyles.btnServiceAtras }}>
+												</View>
+											)}
+									</FadeView>
 
 									{/*MODAL GUARDAR DETALLE SIN GUARDAR*/}
 									<ModalOptions mainText={'¿Quieres guardar el detalle del servicio que estás configurado?'} show={askToSave} setShow={setAskToSave} option1text={'Guardar y ver resumen del servicio'} option1onPress={saveFromModal} option2text={'No guardar, ver resumen del servicio'} option2onPress={navigateToResumeDirect} />

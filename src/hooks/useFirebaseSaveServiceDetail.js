@@ -189,7 +189,7 @@ export function useFirebaseSaveServiceDetail(debug) {
 							setItemToUpdate(false);
 							setSaved(ref.id);
 							dispatch(setErrorMessage(false));
-							dispatch(resetServiceTemporal());
+							//dispatch(resetServiceTemporal());
 						})
 						.catch((error) => {
 							console.error(error.message);

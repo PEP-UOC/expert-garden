@@ -1186,7 +1186,7 @@ export const servicesTypes = [
 		identifier: 'MANTAIN_GARDEN',
 		label: 'Mantenimiento del jardín',
 		subLabel: '',
-		question: '¿Qué necesitas mantener?',
+		question: '¿Qué necesitas hacer?',
 		step1types: [
 			{
 				step1typeId: '03-01',

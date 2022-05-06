@@ -47,7 +47,7 @@ import moment from 'moment';
 import uuid from 'react-native-uuid';
 
 // eslint-disable-next-line no-unused-vars
-export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
+export const CompanyRequestScreen = ({ debug, navigation, route }) => {
 	const dispatch = useDispatch();
 
 	const sid = route.params.sid;
@@ -118,7 +118,7 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 
 	//useEffect(() => {
 	//	if (saved) {
-	//		navigation.push("ScheduleRequestScreen", { sid: saved })
+	//		navigation.push("CompanyRequestScreen", { sid: saved })
 	//	}
 	//}, [saved]);
 
@@ -133,7 +133,7 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 							<SeparatorTopScreen />
 							<View style={{ ...gloStyles.view }}>
 								<View style={{ ...gloStyles.section.primary }}>
-									<TitleScreen icon={'clock-outline'} exterStyles={{ wrapper: { marginBottom: 15 } }} primaryText={'Fecha y hora'} secondaryText={'Puedes añadir tantas fechas como quieras. Cuantas más fechas tengas disponibles más fácil será para las empresas ofrecerte el servicio. Estas fechas serán utilizadas para realizar el servicio o para relizar la visita previa si es necesaria.'} />
+									<TitleScreen icon={'clock-outline'} exterStyles={{ wrapper: { marginBottom: 15 } }} primaryText={'Empresas'} secondaryText={'Puedes añadir tantas fechas como quieras. Cuantas más fechas tengas disponibles más fácil será para las empresas ofrecerte el servicio. Estas fechas serán utilizadas para realizar el servicio o para relizar la visita previa si es necesaria.'} />
 									{
 										{
 											'client': (
@@ -147,7 +147,7 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 												<>
 													{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={AddIcon} text={"Añadir fecha"} onPress={addNewDate} />}
 
-													{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={() => navigation.navigate("CompanyRequestScreen")} />}
+													{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={confirmDates} />}
 												</>
 											)
 										}[user?.role]
@@ -163,7 +163,7 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 
 													{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={AddIcon} text={"Añadir fecha"} onPress={addNewDate} />}
 
-													{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={() => navigation.navigate("CompanyRequestScreen", { sid })} />}
+													{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={confirmDates} />}
 												</>
 											),
 											'business': (
@@ -188,12 +188,12 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 	)
 };
 
-ScheduleRequestScreen.propTypes = {
+CompanyRequestScreen.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	navigation: PropTypes.object.isRequired,
 	route: PropTypes.object.isRequired,
 };
 
-ScheduleRequestScreen.defaultProps = {
+CompanyRequestScreen.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 };

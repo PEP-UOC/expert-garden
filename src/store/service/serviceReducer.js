@@ -1,7 +1,16 @@
-import { ADD_DETAIL, DELETE_DETAIL, RESET_SERVICE_TEMPORAL } from './serviceTypes';
+import {
+	ADD_DETAIL,
+	UPDATE_DETAIL,
+	DELETE_DETAIL,
+	RESET_SERVICE_TEMPORAL,
+	ADD_DATE,
+	UPDATE_DATE,
+	DELETE_DATE,
+} from './serviceTypes';
 const initialState = {
 	serviceTemporal: {
 		details: [],
+		dates: [],
 	},
 };
 const serviceReducer = (state = initialState, action) => {
@@ -9,6 +18,18 @@ const serviceReducer = (state = initialState, action) => {
 		case ADD_DETAIL: {
 			let details = state.serviceTemporal.details;
 			details.push(action.payload);
+
+			return {
+				...state,
+				serviceTemporal: {
+					...state.serviceTemporal,
+					details,
+				},
+			};
+		}
+		case UPDATE_DETAIL: {
+			let details = state.serviceTemporal.details;
+			details[action.payload.index] = action.payload.detail;
 
 			return {
 				...state,
@@ -31,6 +52,38 @@ const serviceReducer = (state = initialState, action) => {
 				...state,
 				serviceTemporal: {
 					details: [],
+				},
+			};
+		case ADD_DATE: {
+			let dates = state.serviceTemporal.dates;
+			dates.push(action.payload);
+
+			return {
+				...state,
+				serviceTemporal: {
+					...state.serviceTemporal,
+					dates,
+				},
+			};
+		}
+		case UPDATE_DATE: {
+			let dates = state.serviceTemporal.dates;
+			dates[action.payload.index] = action.payload.date;
+
+			return {
+				...state,
+				serviceTemporal: {
+					...state.serviceTemporal,
+					dates,
+				},
+			};
+		}
+		case DELETE_DATE:
+			return {
+				...state,
+				serviceTemporal: {
+					...state.serviceTemporal,
+					details: state.serviceTemporal.details.filter((item) => item.sdid != action.payload),
 				},
 			};
 		default:
