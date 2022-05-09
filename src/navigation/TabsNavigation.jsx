@@ -8,6 +8,12 @@ import Constants from 'expo-constants';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomNavigation, BottomNavigationTab } from '@ui-kitten/components';
 
+//Store
+import { useDispatch, useSelector } from 'react-redux'
+import { updateUser } from '../store/user/userAction';
+import { setLoadingMessage, setLoggedIn } from '../store/root/rootAction';
+import { removeUser } from '../store/user/userAction';
+
 //Screens
 import { HomeScreen } from '../screens/Home/Home';
 import { ProfileNavigation } from './ScreensNavigation/ProfileNavigation';
@@ -46,10 +52,6 @@ BottomTabBar.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 };
 
-//Store
-import { useDispatch } from 'react-redux'
-import { updateUser } from '../store/user/userAction';
-
 //Firebase
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
@@ -63,8 +65,35 @@ export const TabsNavigation = () => {
 	const auth = firebase.auth;
 	const firestore = firebase.firestore;
 
+	//Store
+	const isLoggedIn = useSelector(state => state.rootReducer.isLoggedIn);
+
 	//State
 	const [dispatched, setDispatched] = useState(false);
+
+	const AutoSignOut = async () => {
+		try {
+			await auth().signOut()
+				.then(() => {
+					console.info('🔐 BTLG - Logged Out!');
+					dispatch(setLoggedIn(false))
+					console.log(`🕳  BTLG - Dispatch Loading STOP`)
+					dispatch(setLoadingMessage(false))
+					dispatch(removeUser())
+				})
+				.catch((error) => {
+					console.error(error.message);
+					dispatch(setLoggedIn(false))
+					console.log(`🕳  BTLG - Dispatch Loading STOP`)
+					dispatch(setLoadingMessage(false))
+				});
+		} catch (error) {
+			console.error(error.message);
+			dispatch(setLoggedIn(false))
+			console.log(`🕳  BTLG - Dispatch Loading STOP`)
+			dispatch(setLoadingMessage(false))
+		}
+	}
 
 	useEffect(() => {
 		firestore().collection("users").doc(auth()?.currentUser?.uid)
@@ -73,30 +102,65 @@ export const TabsNavigation = () => {
 				includeMetadataChanges: true
 			}, (item) => {
 				const userData = item.data();
-				console.log('👩‍🌾 TNAV - Firestore userData', userData)
-				if (!userData.verified) {
-					const emailVerified = auth()?.currentUser?.emailVerified;
-					console.log('👩‍🌾 TNAV - Authentication emailVerified', emailVerified)
-					if (emailVerified) {
-						firestore().collection("users").doc(auth()?.currentUser?.uid).update({
-							verified: true
-						}).then(() => { }).catch((error) => {
-							console.log('🩸 TNAV - error', error)
-						})
-					}
+				if (userData === undefined && isLoggedIn) {
+					console.log('🩸 TNAV - NO USER');
+					AutoSignOut();
+				} else {
+					console.log('👩‍🌾 TNAV - Firestore userData', userData)
+					dispatch(updateUser(
+						{
+							uid: userData?.uid,
+							role: userData?.role,
+							verified: userData?.verified,
+							metadata: userData?.metadata,
+							bankDetails: userData?.bankDetails
+						}
+					))
+					setDispatched(true)
 				}
-				dispatch(updateUser(
-					{
-						uid: userData?.uid,
-						role: userData?.role,
-						verified: userData?.verified,
-						metadata: userData?.metadata,
-						bankDetails: userData?.bankDetails
-					}
-				))
-				setDispatched(true)
 			});
+
+		auth()?.onAuthStateChanged((updatedUser) => {
+			if (updatedUser?.emailVerified) {
+				if (intervalId) {
+					clearInterval(intervalId)
+				}
+				firestore().collection("users").doc(auth()?.currentUser?.uid).update({
+					verified: true
+				}).then(() => { }).catch((error) => {
+					console.log('🩸 TNAV - error', error)
+				})
+			} else {
+				startHandler();
+			}
+		});
 	}, []);
+
+	const [intervalId, setIntervalId] = useState(false);
+
+	const startHandler = () => {
+		const intervalId = setInterval(() => {
+			console.log('🎌 TNAV - RELOAD')
+			auth()?.currentUser?.reload();
+			auth()?.onAuthStateChanged((updatedUser) => {
+				if (updatedUser?.emailVerified) {
+					console.log('🟢 TNAV - updatedUser?.emailVerified', updatedUser?.emailVerified)
+					if (intervalId) {
+						clearInterval(intervalId)
+					}
+					firestore().collection("users").doc(auth()?.currentUser?.uid).update({
+						verified: true
+					}).then(() => { }).catch((error) => {
+						console.log('🩸 TNAV - error', error)
+					})
+				}
+			});
+		}, 5000)
+
+		if (intervalId) {
+			setIntervalId(intervalId)
+		}
+	}
 
 	if (!dispatched) {
 		return (null)
