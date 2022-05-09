@@ -38,6 +38,7 @@ const styles = StyleService.create({
 			fontSize: 36,
 		},
 		text: {
+			width: '100%',
 			marginBottom: 10,
 			fontSize: 18,
 			textAlign: 'center',

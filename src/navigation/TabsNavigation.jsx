@@ -74,6 +74,17 @@ export const TabsNavigation = () => {
 			}, (item) => {
 				const userData = item.data();
 				console.log('👩‍🌾 TNAV - Firestore userData', userData)
+				if (!userData.verified) {
+					const emailVerified = auth()?.currentUser?.emailVerified;
+					console.log('👩‍🌾 TNAV - Authentication emailVerified', emailVerified)
+					if (emailVerified) {
+						firestore().collection("users").doc(auth()?.currentUser?.uid).update({
+							verified: true
+						}).then(() => { }).catch((error) => {
+							console.log('🩸 TNAV - error', error)
+						})
+					}
+				}
 				dispatch(updateUser(
 					{
 						uid: userData?.uid,

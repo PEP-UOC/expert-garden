@@ -117,7 +117,8 @@ export const SignUpScreen = ({ debug, navigation }) => {
 										name,
 										surnames,
 										fullname: `${name} ${surnames}`,
-										email
+										email,
+										photoCounter: 0
 									}
 								})
 									.then(() => {
