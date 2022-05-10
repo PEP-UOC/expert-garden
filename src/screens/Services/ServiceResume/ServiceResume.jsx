@@ -34,17 +34,24 @@ import { TruckIcon } from '../../../assets/icons/Truck'
 //Modales
 import { ModalOptions } from '../../../components/Modals/Options';
 
-// eslint-disable-next-line no-unused-vars
-export const ResumeServiceRequestScreen = ({ debug, navigation }) => {
+//Hooks
+import useFirebaseGetOne from '../../../hooks/useFirebaseGetOne'
 
-	//Store
-	const serviceTemporal = useSelector(state => state.serviceReducer.serviceTemporal);
+// eslint-disable-next-line no-unused-vars
+export const ServiceResumeScreen = ({ debug, navigation, route }) => {
+
+	const sid = route.params.sid;
+	console.log('sid', sid)
+
+	//Hooks
+	const { loading: serviceLoading, result: service, error: serviceError } = useFirebaseGetOne(debug, 'services', 'sid', sid);
+	console.log('service', service)
 
 	//State
 	// eslint-disable-next-line no-unused-vars
 	const [isEdit, setIsEdit] = useState(false);
 
-	const [values, setValues] = useState(serviceTemporal)
+	const [values, setValues] = useState(service)
 
 	//Styles
 	const gloStyles = useStyleSheet(globalStyles);
@@ -96,18 +103,15 @@ export const ResumeServiceRequestScreen = ({ debug, navigation }) => {
 								<View style={{ ...gloStyles.section.fullStart }}>
 
 									{/*TITULO TOP*/}
-									<TitleScreen icon={'plus-circle-outline'} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 0 : 30 }, primaryText: { lineHeight: Device?.isPhone ? 35 : 'initial', marginTop: Device?.isPhone ? 14 : 0 }, secondaryText: { marginTop: 10 } }} primaryText={'Resumen del nuevo servicio'} secondaryText={'Revisa los detalles del servicio a solicitar. En el siguiente paso podrás seleccionar los horarios que mejor te vengan y las empresas que más te gusten.'} />
+									<TitleScreen icon={'plus-circle-outline'} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 0 : 30 }, primaryText: { lineHeight: Device?.isPhone ? 35 : 'initial', marginTop: Device?.isPhone ? 14 : 0 }, secondaryText: { marginTop: 10 } }} primaryText={'Resumen del servicio'} secondaryText={''} />
 
 									<SeparatorTopSection />
 									<View style={{ ...gloStyles.view }}>
 										<View style={{ ...gloStyles.section.primary }}>
 
 											<View style={{ paddingLeft: 60 }}>
-												{/*BOTÓN AÑADIR OTRO DETALLE AL SERVICIO*/}
-												{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={AddIcon} text={"Añadir otro detalle al servicio"} onPress={() => navigation.navigate("MainServiceRequestScreen", { reset: true })} />}
-
-												{/*BOTÓN SOLICITAR SERVICIO*/}
-												{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar detalles"} onPress={() => handleSaveService(values, isEdit)} />}
+												{/*BOTÓN CANCELAR SERVICIO*/}
+												{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Seleccionar horario"} onPress={() => handleSaveService(values, isEdit)} />}
 											</View>
 
 										</View>
@@ -116,14 +120,11 @@ export const ResumeServiceRequestScreen = ({ debug, navigation }) => {
 
 											{/*SECCIÓN SERVICIOS*/}
 											<View>
-												<DetailsList setSdidToRemove={setSdidToRemove} setShowDeleteConfirm={setShowDeleteConfirm} />
+												<DetailsList details={service?.details || []} />
 											</View>
 
-											{/*BOTÓN AÑADIR OTRO DETALLE AL SERVICIO*/}
-											{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={AddIcon} text={"Añadir otro detalle al servicio"} onPress={() => navigation.navigate("MainServiceRequestScreen", { reset: true })} btnStyle={{ marginBottom: 10 }} />}
-
-											{/*BOTÓN SOLICITAR SERVICIO*/}
-											{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar detalles"} onPress={() => handleSaveService(values, isEdit)} />}
+											{/*BOTÓN CANCELAR SERVICIO*/}
+											{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Seleccionar horario"} onPress={() => handleSaveService(values, isEdit)} />}
 
 										</View>
 									</View>
@@ -141,11 +142,12 @@ export const ResumeServiceRequestScreen = ({ debug, navigation }) => {
 	)
 };
 
-ResumeServiceRequestScreen.propTypes = {
+ServiceResumeScreen.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	navigation: PropTypes.object.isRequired,
+	route: PropTypes.object.isRequired,
 };
 
-ResumeServiceRequestScreen.defaultProps = {
+ServiceResumeScreen.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 };

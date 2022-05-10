@@ -18,7 +18,7 @@ import { removeUser } from '../store/user/userAction';
 import { HomeScreen } from '../screens/Home/Home';
 import { ProfileNavigation } from './ScreensNavigation/ProfileNavigation';
 import { ServiceRequestNavigation } from './ScreensNavigation/ServiceRequestNavigation';
-import { ServicesScreen } from '../screens/Services/Services';
+import { ServicesNavigation } from './ScreensNavigation/ServicesNavigation';
 import { NotificationsScreen } from '../screens/Notifications/Notifications';
 
 //Icons
@@ -195,7 +195,7 @@ export const TabsNavigation = () => {
 			<Tabs.Screen name='Home' component={HomeScreen} />
 			<Tabs.Screen name='Profile' component={ProfileNavigation} />
 			<Tabs.Screen name='ServiceRequest' component={ServiceRequestNavigation} />
-			<Tabs.Screen name='Services' component={ServicesScreen} />
+			<Tabs.Screen name='Services' component={ServicesNavigation} />
 			<Tabs.Screen name='Notifications' component={NotificationsScreen} />
 		</Tabs.Navigator>
 	)

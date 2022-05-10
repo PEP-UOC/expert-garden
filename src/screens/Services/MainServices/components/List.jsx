@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types";
 
@@ -5,11 +6,11 @@ import PropTypes from "prop-types";
 import Constants from 'expo-constants';
 
 //Device Detect
-import Device from '../../../libs/react-native-device-detection';
+import Device from '../../../../libs/react-native-device-detection';
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
-//import globalStyles from '../../../styles/globalStyles'
+//import globalStyles from '../../../../styles/globalStyles'
 import styles from './styles'
 
 //Navigation
@@ -18,10 +19,10 @@ import { useNavigation } from '@react-navigation/native';
 //Components
 import { View } from 'react-native'
 import { Text, Button, ListItem } from '@ui-kitten/components';
-import { TitleSection } from '../../../components/Titles/Section'
+import { TitleSection } from '../../../../components/Titles/Section'
 
 //Icons
-import { ChevronRightIcon } from '../../../assets/icons/ChevronRight'
+import { ChevronRightIcon } from '../../../../assets/icons/ChevronRight'
 
 //Firebase
 import firebase from 'firebase/compat/app';
@@ -176,8 +177,11 @@ export const ServicesList = ({ debug, type }) => {
 	}, []);
 
 	//Navigation
-	const navigateServiceRequest = () => {
-		navigation.navigate('ServiceRequest');
+	const navigateServiceResume = (sid) => {
+		navigation.navigate('Services', {
+			screen: 'ServiceResumeScreen',
+			params: { sid },
+		});
 	};
 
 	//List
@@ -186,7 +190,7 @@ export const ServicesList = ({ debug, type }) => {
 
 		return (
 			<ListItem
-				onPress={navigateServiceRequest}
+				onPress={() => navigateServiceResume(item.sid)}
 				title={`${title}`}
 				description={`Solicitado el ${item.requestDate} para el día ${item?.dates?.length > 0 ? item.dates[0].date : ''} `}
 				accessoryRight={renderItemAccessory(item)}
@@ -205,7 +209,7 @@ export const ServicesList = ({ debug, type }) => {
 				// eslint-disable-next-line react/prop-types
 				: <Text category='p1' style={{ marginRight: 10 }}>{item?.requestDate}</Text>
 			}
-			<Button onPress={navigateServiceRequest}
+			<Button onPress={() => navigateServiceResume(item?.sid)}
 				accessoryRight={ChevronRightIcon} size='giant' appearance='ghost' />
 		</>
 	);

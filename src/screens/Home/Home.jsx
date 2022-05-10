@@ -24,7 +24,7 @@ import { TitleScreen } from '../../components/Titles/Screen'
 import { BtnWithLogo } from '../../components/Buttons/WithLogo'
 import { EmailVerify } from './components/EmailVerify'
 import { NotificationsList } from '../Notifications/components/List'
-import { ServicesList } from '../Services/components/List'
+import { ServicesList } from '../Services/MainServices/components/List'
 
 //Icons
 import { TruckIcon } from '../../assets/icons/Truck'

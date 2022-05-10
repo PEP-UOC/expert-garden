@@ -51,13 +51,14 @@ export const DetailItem = ({ debug, detail, detailIndex, setSdidToRemove, setSho
 			return {
 				...prevValues,
 				inputs: {
+					...prevValues.inputs,
 					[keyName]: value
 				}
 			}
 		})
 
 		const newDetail = { ...values }
-		newDetail[keyName] = value;
+		newDetail.inputs[keyName] = value;
 		console.log('📜 DEIT - newDetail', newDetail)
 
 		dispatch(updateDetail(newDetail, detailIndex))
