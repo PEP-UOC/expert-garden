@@ -107,7 +107,7 @@ export const ResumeServiceRequestScreen = ({ debug, navigation }) => {
 												{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={AddIcon} text={"Añadir otro detalle al servicio"} onPress={() => navigation.navigate("MainServiceRequestScreen", { reset: true })} />}
 
 												{/*BOTÓN SOLICITAR SERVICIO*/}
-												{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Solicitar servicio"} onPress={() => handleSaveService(values, isEdit)} />}
+												{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Seleccionar horario"} onPress={() => handleSaveService(values, isEdit)} />}
 											</View>
 
 										</View>
@@ -120,10 +120,10 @@ export const ResumeServiceRequestScreen = ({ debug, navigation }) => {
 											</View>
 
 											{/*BOTÓN AÑADIR OTRO DETALLE AL SERVICIO*/}
-											{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={AddIcon} text={"Añadir otro detalle al servicio"} onPress={() => navigation.navigate("MainServiceRequestScreen", { reset: true })} />}
+											{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={AddIcon} text={"Añadir otro detalle al servicio"} onPress={() => navigation.navigate("MainServiceRequestScreen", { reset: true })} btnStyle={{ marginBottom: 10 }} />}
 
 											{/*BOTÓN SOLICITAR SERVICIO*/}
-											{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Solicitar servicio"} onPress={() => handleSaveService(values, isEdit)} />}
+											{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Seleccionar horario"} onPress={() => handleSaveService(values, isEdit)} />}
 
 										</View>
 									</View>

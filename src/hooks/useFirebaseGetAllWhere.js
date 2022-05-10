@@ -8,7 +8,7 @@ import 'firebase/compat/firestore';
 //Lodash
 import { toLower, upperFirst } from 'lodash';
 
-function useFirebaseGetAll(debug, collection, entityIdentifier, extraElement) {
+function useFirebaseGetAllWhere(debug, collection, entityIdentifier, entityValue, extraElement) {
 	//Firebase
 	const auth = firebase.auth;
 	const firestore = firebase.firestore;
@@ -25,6 +25,7 @@ function useFirebaseGetAll(debug, collection, entityIdentifier, extraElement) {
 				if (auth().currentUser) {
 					firestore()
 						.collection(collection)
+						.where(entityIdentifier, '==', entityValue)
 						.onSnapshot((list) => {
 							if (isMounted) {
 								setLoading(true);
@@ -38,7 +39,9 @@ function useFirebaseGetAll(debug, collection, entityIdentifier, extraElement) {
 									ITEMS.push(extraElement);
 								}
 								console.log(
-									`🌳 FIGA - ${upperFirst(toLower(collection))} ${entityIdentifier} ALL`,
+									`🌳 FIGAW - ${upperFirst(
+										toLower(collection),
+									)} ${entityIdentifier} ${entityValue}`,
 									ITEMS.length,
 								);
 								setResult(ITEMS);
@@ -61,7 +64,7 @@ function useFirebaseGetAll(debug, collection, entityIdentifier, extraElement) {
 			// cancel the subscription
 			isMounted = false;
 		};
-	}, [entityIdentifier]);
+	}, [entityValue]);
 
 	return {
 		loading,
@@ -70,4 +73,4 @@ function useFirebaseGetAll(debug, collection, entityIdentifier, extraElement) {
 	};
 }
 
-export default useFirebaseGetAll;
+export default useFirebaseGetAllWhere;

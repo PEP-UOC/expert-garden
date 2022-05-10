@@ -182,7 +182,7 @@ export const PersonalDataForm = ({ debug }) => {
 
 					<Input
 						style={{ ...gloStyles?.inputs?.input }}
-						label='Fecha de nacmiento'
+						label='Fecha de nacimiento'
 						placeholder='xx/xx/xxxx'
 						value={values?.birthday || ''}
 						onFocus={() => { setCalendarVisible(true) }}

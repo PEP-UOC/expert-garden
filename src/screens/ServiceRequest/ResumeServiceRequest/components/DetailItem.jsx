@@ -30,7 +30,6 @@ import Device from '../../../../libs/react-native-device-detection';
 // eslint-disable-next-line no-unused-vars
 export const DetailItem = ({ debug, detail, detailIndex, setSdidToRemove, setShowDeleteConfirm }) => {
 	const dispatch = useDispatch()
-	console.log('detail', detail)
 
 	//Styles
 	const gloStyles = useStyleSheet(globalStyles);
@@ -49,7 +48,6 @@ export const DetailItem = ({ debug, detail, detailIndex, setSdidToRemove, setSho
 
 	function handleInputChange(value, keyName) {
 		setValues(prevValues => {
-			console.log('prevValues', prevValues)
 			return {
 				...prevValues,
 				inputs: {

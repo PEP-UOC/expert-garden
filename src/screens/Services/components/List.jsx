@@ -161,11 +161,13 @@ export const ServicesList = ({ debug, type }) => {
 
 	//List
 	const RenderItem = ({ item }) => {
+		const title = item.details.reduce((acc, item) => { return acc + item.type + ' ' }, '')
+
 		return (
 			<ListItem
 				onPress={navigateServiceRequest}
-				title={`${item.type}`}
-				description={`${item.comment}`}
+				title={`${title}`}
+				description={`Solicitado el ${item.requestDate} para el día ${item?.dates?.length > 0 ? item.dates[0].date : ''} `}
 				accessoryRight={renderItemAccessory(item)}
 			/>
 		)

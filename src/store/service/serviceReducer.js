@@ -23,7 +23,7 @@ const serviceReducer = (state = initialState, action) => {
 				...state,
 				serviceTemporal: {
 					...state.serviceTemporal,
-					details,
+					details: [...details],
 				},
 			};
 		}
@@ -35,7 +35,7 @@ const serviceReducer = (state = initialState, action) => {
 				...state,
 				serviceTemporal: {
 					...state.serviceTemporal,
-					details,
+					details: [...details],
 				},
 			};
 		}
@@ -52,6 +52,7 @@ const serviceReducer = (state = initialState, action) => {
 				...state,
 				serviceTemporal: {
 					details: [],
+					dates: [],
 				},
 			};
 		case ADD_DATE: {
@@ -62,7 +63,7 @@ const serviceReducer = (state = initialState, action) => {
 				...state,
 				serviceTemporal: {
 					...state.serviceTemporal,
-					dates,
+					dates: [...dates],
 				},
 			};
 		}
@@ -74,7 +75,7 @@ const serviceReducer = (state = initialState, action) => {
 				...state,
 				serviceTemporal: {
 					...state.serviceTemporal,
-					dates,
+					dates: [...dates],
 				},
 			};
 		}

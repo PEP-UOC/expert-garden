@@ -60,7 +60,7 @@ const styles = StyleService.create({
 		width: Device?.isPhone ? '100%' : 325,
 	},
 	btnServiceText: {
-		textTransform: Device?.isPhone ? undefined : 'uppercase',
+		//textTransform: Device?.isPhone ? undefined : 'uppercase',
 		fontSize: Device?.isPhone ? 14 : 18,
 		textAlign: 'center',
 	},

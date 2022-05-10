@@ -9,8 +9,7 @@ import { CompanyRequestScreen } from '../../screens/ServiceRequest/CompanyReques
 
 const ServiceRequest = createNativeStackNavigator()
 export const ServiceRequestNavigation = () => (
-	<ServiceRequest.Navigator
-		screenOptions={{ headerShown: false }}>
+	<ServiceRequest.Navigator screenOptions={{ unmountOnBlur: true, headerShown: false }}>
 		<ServiceRequest.Screen name='MainServiceRequestScreen' component={MainServiceRequestScreen} />
 		<ServiceRequest.Screen name='ResumeServiceRequestScreen' component={ResumeServiceRequestScreen} />
 		<ServiceRequest.Screen name='ScheduleRequestScreen' component={ScheduleRequestScreen} />

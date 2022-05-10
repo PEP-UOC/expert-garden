@@ -74,13 +74,13 @@ export const HomeScreen = ({ debug, navigation }) => {
 									{
 										{
 											'client': (
-												<BtnWithLogo icon={TruckIcon} text={"SOLICITA UN SERVICIO"} onPress={navigateServiceRequest} />
+												<BtnWithLogo icon={TruckIcon} text={"Solicita un servicio"} onPress={navigateServiceRequest} />
 											),
 											'business': (
-												<BtnWithLogo icon={TruckIcon} text={"PRÓXIMOS SERVICIOS"} onPress={navigateServiceRequest} />
+												<BtnWithLogo icon={TruckIcon} text={"Próximos servicios"} onPress={navigateServiceRequest} />
 											),
 											'worker': (
-												<BtnWithLogo icon={TruckIcon} text={"EMPEZAR A TRABAJAR"} onPress={navigateServiceRequest} />
+												<BtnWithLogo icon={TruckIcon} text={"Empezar a trabajar"} onPress={navigateServiceRequest} />
 											)
 										}[user?.role]
 									}

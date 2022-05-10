@@ -37,6 +37,10 @@ export function useFirebaseSaveAllChanges(debug) {
 		const email = changesToSave?.metadata?.email || user?.metadata?.email || '';
 		const phoneNumber = changesToSave?.metadata?.phoneNumber || user?.metadata?.phoneNumber || '';
 		const gender = changesToSave?.metadata?.gender || user?.metadata?.gender || '';
+		const postalCode = changesToSave?.metadata?.postalCode || user?.metadata?.postalCode || '';
+		const province = changesToSave?.metadata?.province || user?.metadata?.province || '';
+		const town = changesToSave?.metadata?.town || user?.metadata?.town || '';
+		const cif = changesToSave?.metadata?.cif || user?.metadata?.cif || '';
 		const birthday = changesToSave?.metadata?.birthday || user?.metadata?.birthdayDateTime || '';
 		const birthdayDateTime =
 			changesToSave?.metadata?.birthdayDateTime || user?.metadata?.birthdayDateTime || '';
@@ -48,6 +52,10 @@ export function useFirebaseSaveAllChanges(debug) {
 			email,
 			phoneNumber,
 			gender,
+			postalCode,
+			province,
+			town,
+			cif,
 			birthday,
 			birthdayDateTime,
 		};

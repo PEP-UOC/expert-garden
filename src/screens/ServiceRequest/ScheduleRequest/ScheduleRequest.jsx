@@ -7,27 +7,22 @@ import Constants from 'expo-constants';
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
 import globalStyles from '../../../styles/globalStyles'
-import styles from './styles'
+//import styles from './styles'
 
 //Device Detect
-import Device from '../../../libs/react-native-device-detection';
 import { Platform } from 'react-native';
 
 //Store
 import { useSelector, useDispatch } from 'react-redux'
 import { addDate } from '../../../store/service/serviceAction';
 
-//Data
-import { servicesTypes } from '../../../data/servicesTypes'
-
 //Hooks
 import { useFirebaseSaveServiceDetail } from "../../../hooks/useFirebaseSaveServiceDetail"
 
 //Components
-import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native'
-import { Layout, Button, Text, Input, Icon } from '@ui-kitten/components';
+import { SafeAreaView, ScrollView, View, KeyboardAvoidingView } from 'react-native'
+import { Layout } from '@ui-kitten/components';
 import { TitleScreen } from '../../../components/Titles/Screen'
-import { TitleSection } from '../../../components/Titles/Section'
 import { BtnPrimary } from '../../../components/Buttons/Primary'
 import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
 import { SeparatorTopSection } from '../../../components/Separators/TopSection'
@@ -36,9 +31,6 @@ import { DatesList } from "./components/DatesList"
 //Icons
 import { AddIcon } from '../../../assets/icons/Add'
 import { TruckIcon } from '../../../assets/icons/Truck'
-
-//Modales
-import { ModalOptions } from '../../../components/Modals/Options';
 
 //Moment
 import moment from 'moment';
@@ -51,50 +43,22 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 	const dispatch = useDispatch();
 
 	const sid = route.params.sid;
-	console.log('sid', sid)
 
 	//Store
 	const user = useSelector(state => state.userReducer.user);
-	const serviceTemporal = useSelector(state => state.serviceReducer.serviceTemporal);
+	const dates = useSelector(state => state.serviceReducer.serviceTemporal.dates);
 
 	//State
 	// eslint-disable-next-line no-unused-vars
 	const [isEdit, setIsEdit] = useState(false);
 
-	const [values, setValues] = useState(serviceTemporal)
-
 	//Styles
 	const gloStyles = useStyleSheet(globalStyles);
-	const ownStyles = useStyleSheet(styles);
+	//const ownStyles = useStyleSheet(styles);
 
 	//Save service
 	// eslint-disable-next-line no-unused-vars
 	const [saved, setSaved, handleRemoveServiceDetail, handleSaveServiceDetail, handleSaveService] = useFirebaseSaveServiceDetail(debug)
-
-	const renderCaption = (caption) => {
-		return (
-			<Text style={{ ...gloStyles.inputs.captionText }}>{caption}</Text>
-		)
-	}
-
-	function handleDetailsChange(value) {
-		setValues(prevValues => {
-			return {
-				...prevValues,
-				details: value
-			}
-		})
-	}
-
-	const [sdidToRemove, setSdidToRemove] = useState(undefined);
-	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-
-	function removeDetail() {
-		handleRemoveServiceDetail(sdidToRemove)
-		const newDetails = values?.details.filter((item) => item.sdid != sdidToRemove);
-		handleDetailsChange(newDetails);
-		setShowDeleteConfirm(false)
-	}
 
 	function addNewDate() {
 		const dateBasic = {
@@ -108,19 +72,14 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 	}
 
 	function confirmDates() {
-		console.log('confirmDates', confirmDates)
+		handleSaveService({ sid, dates, what: 'dates' }, true)
 	}
 
-	function hideModal() {
-		setSdidToRemove(undefined)
-		setShowDeleteConfirm(false)
-	}
-
-	//useEffect(() => {
-	//	if (saved) {
-	//		navigation.push("ScheduleRequestScreen", { sid: saved })
-	//	}
-	//}, [saved]);
+	useEffect(() => {
+		if (saved) {
+			navigation.push("CompanyRequestScreen", { sid })
+		}
+	}, [saved]);
 
 
 	return (
@@ -144,11 +103,10 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 												</>
 											),
 											'business': (
-												<>
-													{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={AddIcon} text={"Añadir fecha"} onPress={addNewDate} />}
-
-													{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={() => navigation.navigate("CompanyRequestScreen")} />}
-												</>
+												<></>
+											),
+											'worker': (
+												<></>
 											)
 										}[user?.role]
 									}
@@ -161,20 +119,16 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 												<>
 													<DatesList />
 
-													{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={AddIcon} text={"Añadir fecha"} onPress={addNewDate} />}
+													{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={AddIcon} text={"Añadir fecha"} onPress={addNewDate} btnStyle={{ marginBottom: 10 }} />}
 
-													{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={() => navigation.navigate("CompanyRequestScreen", { sid })} />}
+													{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={confirmDates} />}
 												</>
 											),
 											'business': (
-												<>
-
-												</>
+												<></>
 											),
 											'worker': (
-												<>
-
-												</>
+												<></>
 											)
 										}[user?.role]
 									}

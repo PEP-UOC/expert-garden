@@ -20,7 +20,7 @@ import { TitleSection } from '../../../../components/Titles/Section'
 import { GardenItem } from './Garden'
 
 //Hooks
-import useFirebaseGetAll from '../../../../hooks/useFirebaseGetAll'
+import useFirebaseGetAllWhere from '../../../../hooks/useFirebaseGetAllWhere'
 
 // eslint-disable-next-line no-unused-vars
 export const GardensDataForm = ({ debug }) => {
@@ -35,7 +35,7 @@ export const GardensDataForm = ({ debug }) => {
 
 	//Hooks
 	const extraElement = { name: 'addGarden' };
-	const { loading: gardensLoading, result: gardens, error: gardensError } = useFirebaseGetAll(debug, 'gardens', 'uid', user?.uid, extraElement);
+	const { loading: gardensLoading, result: gardens, error: gardensError } = useFirebaseGetAllWhere(debug, 'gardens', 'uid', user?.uid, extraElement);
 
 	useEffect(() => {
 		//console.log(`🌀 GSDA - Cargando          | ${gardensLoading.toString()}`)

@@ -30,6 +30,9 @@ import firebaseErrorCodeMap from '../../common/firebaseErrorCodeMap';
 //Hooks
 import { useKeyboardSize } from "../../hooks/useKeyboardSize"
 
+//Moment
+import moment from 'moment';
+
 //Select Options
 const userTypes = [
 	{
@@ -125,8 +128,35 @@ export const SignUpScreen = ({ debug, navigation }) => {
 										auth().currentUser.updateProfile({
 											displayName: `${name} ${surnames}`,
 										}).then(() => {
-											dispatch(setLoggedIn(true))
-											dispatch(setErrorMessage(false))
+											if (role === 'business') {
+												const now = moment();
+												const ref = firestore().collection('companies').doc();
+												const creationDateTime = now.format();
+												const entity = {
+													cid: ref.id,
+													uid: auth()?.currentUser?.uid,
+													name: name,
+													creationDateTime
+												};
+												firestore()
+													.collection('companies')
+													.doc(ref.id)
+													.set(entity)
+													.then(() => {
+														dispatch(setLoggedIn(true))
+														dispatch(setErrorMessage(false))
+													})
+													.catch((error) => {
+														console.error(error.message);
+														dispatch(setLoggedIn(false))
+														console.log(`🕳  SNUP - Dispatch Loading STOP`)
+														dispatch(setLoadingMessage(false))
+														dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
+													});
+											} else {
+												dispatch(setLoggedIn(true))
+												dispatch(setErrorMessage(false))
+											}
 										}).catch((error) => {
 											console.error(error.message);
 											dispatch(setLoggedIn(false))

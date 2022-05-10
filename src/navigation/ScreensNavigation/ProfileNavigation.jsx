@@ -8,7 +8,7 @@ import { DetailScreen } from '../../screens/Profile/Garden/components/Detail';
 
 const Profile = createNativeStackNavigator()
 export const ProfileNavigation = () => (
-	<Profile.Navigator screenOptions={{ headerShown: false }}>
+	<Profile.Navigator screenOptions={{ unmountOnBlur: true, headerShown: false }}>
 		<Profile.Screen name='MainProfileScreen' component={MainProfileScreen} />
 		<Profile.Screen name='GardenDetailScreen' component={GardenDetailScreen} />
 		<Profile.Screen name='GardenAddScreen' component={GardenAddScreen} />

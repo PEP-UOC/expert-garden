@@ -59,13 +59,13 @@ export const ServicesScreen = ({ debug, navigation }) => {
 									{
 										{
 											'client': (
-												<BtnWithLogo icon={AddIcon} text={"SOLICITA UN SERVICIO"} onPress={navigateServiceRequest} />
+												<BtnWithLogo icon={AddIcon} text={"Solicita un servicio"} onPress={navigateServiceRequest} />
 											),
 											'business': (
-												<BtnWithLogo icon={AddIcon} text={"PRÓXIMOS SERVICIOS"} onPress={navigateServiceRequest} />
+												<BtnWithLogo icon={AddIcon} text={"Próximos servicios"} onPress={navigateServiceRequest} />
 											),
 											'worker': (
-												<BtnWithLogo icon={AddIcon} text={"EMPEZAR A TRABAJAR"} onPress={navigateServiceRequest} />
+												<BtnWithLogo icon={AddIcon} text={"Empezar a trabajar"} onPress={navigateServiceRequest} />
 											)
 										}[user?.role]
 									}

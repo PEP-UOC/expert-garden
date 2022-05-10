@@ -22,6 +22,7 @@ import { TitleScreen } from '../../../components/Titles/Screen'
 import { BtnPrimary } from '../../../components/Buttons/Primary'
 import { ImgWithPicker } from '../../../components/Images/WithPicker'
 import { PersonalDataForm } from './components/PersonalData'
+import { CompanyDataForm } from './components/CompanyData'
 import { GardensDataForm } from './components/GardensData'
 import { BankDataForm } from './components/BankData'
 import { SessionActionsBtns } from './components/SessionActions'
@@ -109,8 +110,14 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 												<>
 													{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
 
-													<PersonalDataForm />
+													<CompanyDataForm />
+
+													{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
+
 													<BankDataForm />
+
+													{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} />}
+
 													<SessionActionsBtns />
 												</>
 											),

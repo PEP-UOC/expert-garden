@@ -19,7 +19,7 @@ import { BtnPrimary } from '../../components/Buttons/Primary'
 import { BtnSecondary } from '../../components/Buttons/Secondary'
 
 // eslint-disable-next-line no-unused-vars
-export const ModalOptions = ({ debug, mainText, show, setShow, option1text, option1onPress, option2text, option2onPress }) => {
+export const ModalOptions = ({ debug, mainText, show, setShow, option1text, option1onPress, option2text, option2onPress, backdropPress }) => {
 
 	//Styles
 	//const gloStyles = useStyleSheet(globalStyles);
@@ -29,7 +29,7 @@ export const ModalOptions = ({ debug, mainText, show, setShow, option1text, opti
 		<Modal
 			visible={show}
 			backdropStyle={{ ...ownStyles.error.backdrop }}
-			onBackdropPress={() => setShow(false)}>
+			onBackdropPress={backdropPress || (() => setShow(false))}>
 			<Card disabled={true}>
 				<View style={{ ...ownStyles.error.view }}>
 					<Text style={{
@@ -44,7 +44,7 @@ export const ModalOptions = ({ debug, mainText, show, setShow, option1text, opti
 					</View>*/}
 				</View>
 			</Card>
-		</Modal>
+		</Modal >
 	)
 };
 
@@ -56,7 +56,8 @@ ModalOptions.propTypes = {
 	option1text: PropTypes.string.isRequired,
 	option1onPress: PropTypes.func.isRequired,
 	option2text: PropTypes.string.isRequired,
-	option2onPress: PropTypes.func.isRequired
+	option2onPress: PropTypes.func.isRequired,
+	backdropPress: PropTypes.func
 };
 
 ModalOptions.defaultProps = {

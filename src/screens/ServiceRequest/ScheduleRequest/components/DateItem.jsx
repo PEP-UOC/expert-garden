@@ -92,9 +92,9 @@ export const DateItem = ({ debug, date, dateIndex }) => {
 
 	//Select
 	const [selectedIndex, setSelectedIndex] = useState(
-		momentTypes.findIndex(genderType => genderType.name === values?.schedule) !== -1
-			? new IndexPath(momentTypes.findIndex(genderType => genderType.name === values?.schedule))
-			: new IndexPath());
+		momentTypes.findIndex(momentType => momentType.name === values?.schedule) !== -1
+			? new IndexPath(momentTypes.findIndex(momentType => momentType.name === values?.schedule))
+			: new IndexPath(0));
 	const displayValue = momentTypes[selectedIndex?.row]?.value || '';
 	const renderOption = (title) => (
 		<SelectItem key={title} title={title} />
@@ -108,7 +108,7 @@ export const DateItem = ({ debug, date, dateIndex }) => {
 					label='Día'
 					placeholder='xx/xx/xxxx'
 					value={values?.date || ''}
-					onFocus={() => { setCalendarVisible(true); }} />
+					onFocus={() => { setCalendarVisible(true) }} />
 
 				<Select
 					style={{ ...gloStyles.inputs.select, ...ownStyles?.input }}
@@ -148,7 +148,7 @@ export const DateItem = ({ debug, date, dateIndex }) => {
 					value={values?.extra || ''}
 					onChangeText={text => handleChange(text, "extra")}
 					multiline={true}
-					textStyle={{ minHeight: Device?.isPhone ? 144 : 72 }} />
+					textStyle={{ minHeight: Device?.isPhone ? 36 : 72 }} />
 			</View>
 		</View>
 	)

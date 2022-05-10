@@ -85,47 +85,29 @@ export function useFirebaseSaveServiceDetail(debug) {
 		switch (isEdit) {
 			case true:
 				try {
-					let isMounted = true;
 					if (auth().currentUser) {
 						firestore()
-							.collection('gardens')
-							.doc(values.gid)
+							.collection('services')
+							.doc(values.sid)
 							.get()
 							.then((doc) => {
-								if (isMounted) {
-									if (doc.exists) {
-										var item = doc.data();
-										setOriginalItemToUpdate(values);
-										setItemToUpdate(valuesToSave);
-										setItemToEdit(item);
-									} else {
-										console.log('🩸 FSSD - No such document!');
-										setSaved(false);
-										dispatch(setErrorMessage(`Error al actualizar el jardín.`));
-									}
+								if (doc.exists) {
+									var item = doc.data();
+									setOriginalItemToUpdate(values);
+									setItemToUpdate(valuesToSave);
+									setItemToEdit(item);
+								} else {
+									console.log('🩸 FSSD - No such document!');
+									setSaved(false);
+									dispatch(setErrorMessage(`Error al actualizar el servicio.`));
 								}
 							})
 							.catch((error) => {
 								console.error(error.message);
 								console.log('🩸 FSSD - Error getting document.');
 								setSaved(false);
-								dispatch(setErrorMessage(`Error al actualizar el jardín.`));
+								dispatch(setErrorMessage(`Error al actualizar el servicio.`));
 							});
-						//.where('gid', '==', values.gid)
-						//.get()
-						//.then((querySnapshot) => {
-						//	if (isMounted) {
-						//		const ITEMS = [];
-						//		if (!querySnapshot.empty) {
-						//			querySnapshot.forEach((item) => {
-						//				ITEMS.push(item.data());
-						//			});
-						//		}
-						//		setOriginalItemToUpdate(values);
-						//		setItemToUpdate(valuesToSave);
-						//		setItemToEdit(ITEMS[0]);
-						//	}
-						//});
 					} else {
 						dispatch(
 							setErrorMessage(
@@ -143,6 +125,9 @@ export function useFirebaseSaveServiceDetail(debug) {
 								: firebaseErrorCodeMap(error.code),
 						),
 					);
+				} finally {
+					console.log(`🕳  FSSD - Dispatch Loading STOP`);
+					dispatch(setLoadingMessage(false));
 				}
 				break;
 
@@ -189,7 +174,7 @@ export function useFirebaseSaveServiceDetail(debug) {
 							setItemToUpdate(false);
 							setSaved(ref.id);
 							dispatch(setErrorMessage(false));
-							//dispatch(resetServiceTemporal());
+							dispatch(resetServiceTemporal());
 						})
 						.catch((error) => {
 							console.error(error.message);
@@ -222,42 +207,70 @@ export function useFirebaseSaveServiceDetail(debug) {
 	useEffect(() => {
 		let isMounted = true;
 		const fetchData = async () => {
-			const detailToEdit = itemToEdit.details.find((detail) => detail.gdid === itemToUpdate.gdid);
-			const detailToIndex = itemToEdit.details.findIndex(
-				(detail) => detail.gdid === itemToUpdate.gdid,
-			);
-			const newDetail = { ...detailToEdit, ...itemToUpdate };
-			const detailsArray = itemToEdit.details;
-			detailsArray[detailToIndex] = newDetail;
-
 			if (isMounted) {
 				try {
-					firestore()
-						.collection('gardens')
-						.doc(originalItemToUpdate?.gid)
-						.update({
-							details: detailsArray,
-						})
-						.then(() => {
-							console.log(`🚧 FSSD - Garden Detail ${itemToUpdate.gdid} actualizado`);
-							isMounted = false;
-							setItemToEdit(false);
-							setItemToUpdate(false);
-							setSaved(true);
-							dispatch(setErrorMessage(false));
-						})
-						.catch((error) => {
-							console.error(error.message);
-							console.log(`🕳  FSSD - Dispatch Loading STOP`);
-							dispatch(setLoadingMessage(false));
-							dispatch(
-								setErrorMessage(
-									debug
-										? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
-										: firebaseErrorCodeMap(error.code),
-								),
-							);
-						});
+					if (originalItemToUpdate?.what === 'dates') {
+						firestore()
+							.collection('services')
+							.doc(originalItemToUpdate?.sid)
+							.update({
+								dates: originalItemToUpdate.dates,
+							})
+							.then(() => {
+								console.log(`🚧 FSSD - Service Dates ${originalItemToUpdate.sid} actualizadas`);
+								if (isMounted) {
+									setItemToEdit(false);
+									setItemToUpdate(false);
+									setSaved(true);
+									dispatch(setErrorMessage(false));
+									isMounted = false;
+									dispatch(resetServiceTemporal());
+								}
+							})
+							.catch((error) => {
+								console.error(error.message);
+								console.log(`🕳  FSSD - Dispatch Loading STOP`);
+								dispatch(setLoadingMessage(false));
+								dispatch(
+									setErrorMessage(
+										debug
+											? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+											: firebaseErrorCodeMap(error.code),
+									),
+								);
+							});
+					} else if (originalItemToUpdate?.what === 'companies') {
+						console.log('originalItemToUpdate', originalItemToUpdate);
+						firestore()
+							.collection('services')
+							.doc(originalItemToUpdate?.sid)
+							.update({
+								companies: originalItemToUpdate.companies,
+							})
+							.then(() => {
+								console.log(`🚧 FSSD - Service Companies ${originalItemToUpdate.sid} actualizadas`);
+								if (isMounted) {
+									setItemToEdit(false);
+									setItemToUpdate(false);
+									setSaved(true);
+									dispatch(setErrorMessage(false));
+									isMounted = false;
+									dispatch(resetServiceTemporal());
+								}
+							})
+							.catch((error) => {
+								console.error(error.message);
+								console.log(`🕳  FSSD - Dispatch Loading STOP`);
+								dispatch(setLoadingMessage(false));
+								dispatch(
+									setErrorMessage(
+										debug
+											? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+											: firebaseErrorCodeMap(error.code),
+									),
+								);
+							});
+					}
 				} catch (error) {
 					console.error(error.message);
 					setSaved(false);

@@ -266,7 +266,7 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 
 									<Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={navigateBack}>Volver</Button>
 
-									<ModalOptions mainText={'Guardado!'} show={saved} setShow={setSaved} option1text={'Añadir otro detalle'} option1onPress={resetForm} option2text={'Volver al jardín'} option2onPress={navigateBack} />
+									<ModalOptions mainText={'Guardado!'} show={saved} setShow={setSaved} option1text={'Añadir otro detalle'} option1onPress={resetForm} option2text={'Volver al jardín'} option2onPress={navigateBack} backdropPress={() => { return }} />
 
 									<View style={{ alignItems: 'center' }}>
 										<LeafIcon width={180} height={60} style={{ ...gloStyles?.leaf }} />

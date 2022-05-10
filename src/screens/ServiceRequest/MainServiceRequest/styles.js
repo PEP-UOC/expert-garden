@@ -21,7 +21,7 @@ const styles = StyleService.create({
 		width: Device?.isPhone ? '100%' : 225,
 	},
 	btnServiceText: {
-		textTransform: Device?.isPhone ? undefined : 'uppercase',
+		//textTransform: Device?.isPhone ? undefined : 'uppercase',
 		fontSize: Device?.isPhone ? 14 : 18,
 		textAlign: 'center',
 	},
@@ -36,7 +36,7 @@ const styles = StyleService.create({
 		height: 27,
 	},
 	btnServiceTextLight: {
-		textTransform: Device?.isPhone ? undefined : 'uppercase',
+		//textTransform: Device?.isPhone ? undefined : 'uppercase',
 		fontSize: Device?.isPhone ? 14 : 16,
 		textAlign: 'center',
 		color: '#fff',
@@ -82,7 +82,7 @@ const styles = StyleService.create({
 		width: Device?.isPhone ? '100%' : 325,
 	},
 	btnServiceAtras: {
-		marginTop: Device?.isPhone ? 10 : 0,
+		marginTop: Device?.isPhone ? 5 : 0,
 		marginBottom: Device?.isPhone ? 15 : 0,
 		width: Device?.isPhone ? '100%' : 250,
 		order: Device?.isPhone ? 2 : 1,

@@ -31,6 +31,9 @@ import { TitleSection } from '../../../components/Titles/Section'
 import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
 import { SeparatorTopSection } from '../../../components/Separators/TopSection'
 
+//Icons
+import { AddIcon } from '../../../assets/icons/Add'
+
 //Lodash
 import { forIn } from 'lodash';
 
@@ -97,10 +100,6 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 			resetForm();
 		}
 	}, [route.params?.reset]);
-
-	//useEffect(() => {
-	//	console.log('values', values)
-	//}, [values]);
 
 	function handleChange(value, keyName) {
 		setValues(prevValues => {
@@ -397,7 +396,8 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 												</View>
 
 												<View style={{ ...ownStyles.inputsRow }}>
-													<Button style={{ ...gloStyles?.button, ...ownStyles.btnAddService }} onPress={() => handleSaveServiceDetail(values, isEdit)} disabled={isDisabled()}>Añadir servicio</Button>
+													<Button
+														accessoryLeft={AddIcon} style={{ ...gloStyles?.button, ...ownStyles.btnAddService }} onPress={() => handleSaveServiceDetail(values, isEdit)} disabled={isDisabled()}>Añadir servicio</Button>
 												</View>
 											</View>
 										)}
@@ -406,10 +406,10 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 									{/*BOTTOM BUTTONS*/}
 									<FadeView fadeRef={fadeRef} style={
 										listInputs?.length === 0
-											? { ...ownStyles.btnRow }
-											: { ...ownStyles.btnRow, ...ownStyles.btnRowFull }
+											? { ...ownStyles.btnRow, marginTop: 0 }
+											: { ...ownStyles.btnRow, ...ownStyles.btnRowFull, marginTop: 0 }
 									}>
-										{/*BOTÓN VER RESUMEN DEL PEDIDO*/}
+										{/*BOTÓN VER RESUMEN DEL SERVICIO*/}
 										{serviceTemporal?.details?.length > 0 && (
 											<View fadeRef={fadeRef} style={
 												listInputs?.length === 0
@@ -530,13 +530,13 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 									</FadeView>
 
 									{/*MODAL GUARDAR DETALLE SIN GUARDAR*/}
-									<ModalOptions mainText={'¿Quieres guardar el detalle del servicio que estás configurado?'} show={askToSave} setShow={setAskToSave} option1text={'Guardar y ver resumen del servicio'} option1onPress={saveFromModal} option2text={'No guardar, ver resumen del servicio'} option2onPress={navigateToResumeDirect} />
+									<ModalOptions mainText={'¿Quieres guardar el detalle del servicio que estás configurado?'} show={askToSave} setShow={setAskToSave} option1text={'Guardar y ver resumen del servicio'} option1onPress={saveFromModal} option2text={'No guardar, ver resumen del servicio'} option2onPress={navigateToResumeDirect} backdropPress={() => { return }} />
 
 									{/*MODAL GUARDAR DETALLE A MITAD CONFIGURAR*/}
-									<ModalOptions mainText={'¿Quieres terminar de configurar este servicio?'} show={askToFinalizeConfig} setShow={setAskToFinalizeConfig} option1text={'Sí, terminar de configurarlo'} option1onPress={() => setAskToFinalizeConfig(false)} option2text={'No, ver resumen del servicio'} option2onPress={navigateToResumeDirect} />
+									<ModalOptions mainText={'¿Quieres terminar de configurar este servicio?'} show={askToFinalizeConfig} setShow={setAskToFinalizeConfig} option1text={'Sí, terminar de configurarlo'} option1onPress={() => setAskToFinalizeConfig(false)} option2text={'No, ver resumen del servicio'} option2onPress={navigateToResumeDirect} backdropPress={() => { return }} />
 
 									{/*MODAL DETALLE GUARDADO*/}
-									<ModalOptions mainText={'Guardado!'} show={saved} setShow={setSaved} option1text={'Añadir otro detalle al servicio'} option1onPress={resetForm} option2text={'Ver resumen del servicio'} option2onPress={navigateToResumeDirect} />
+									<ModalOptions mainText={'Guardado!'} show={saved} setShow={setSaved} option1text={'Añadir otro detalle al servicio'} option1onPress={resetForm} option2text={'Ver resumen del servicio'} option2onPress={navigateToResumeDirect} backdropPress={() => { return }} />
 
 								</View>
 							</View>
