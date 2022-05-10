@@ -17,7 +17,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { addDate } from '../../../store/service/serviceAction';
 
 //Hooks
-import { useFirebaseSaveServiceDetail } from "../../../hooks/useFirebaseSaveServiceDetail"
+import { useFirebaseSaveService } from "../../../hooks/useFirebaseSaveService"
 
 //Components
 import { SafeAreaView, ScrollView, View, KeyboardAvoidingView } from 'react-native'
@@ -58,7 +58,7 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 
 	//Save service
 	// eslint-disable-next-line no-unused-vars
-	const [saved, setSaved, handleRemoveServiceDetail, handleSaveServiceDetail, handleSaveService] = useFirebaseSaveServiceDetail(debug)
+	const [saved, setSaved, handleRemoveServiceDetail, handleSaveServiceDetail, handleSaveService] = useFirebaseSaveService(debug)
 
 	function addNewDate() {
 		const dateBasic = {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react'
 
 //Store
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,6 +12,17 @@ import { TabsNavigation } from './TabsNavigation';
 import { AuthNavigation } from './AuthNavigation';
 import { SplashScreen } from '../screens/SplashScreen/SplashScreen';
 import { ValidatingScreen } from '../screens/ValidatingScreen/ValidatingScreen';
+
+//Expo Firebase
+import * as Notifications from 'expo-notifications';
+
+Notifications.setNotificationHandler({
+	handleNotification: async () => ({
+		shouldShowAlert: true,
+		shouldPlaySound: true,
+		shouldSetBadge: true,
+	}),
+});
 
 //Linking
 import * as Linking from 'expo-linking';
@@ -52,6 +63,29 @@ const RootScreen = () => {
 			setIsLoading(false)
 		}, 1500)
 	}, [])
+
+	//Push Notifications
+	// eslint-disable-next-line no-unused-vars
+	const [notification, setNotification] = useState(false);
+	const notificationListener = useRef();
+	const responseListener = useRef();
+
+	useEffect(() => {
+		// This listener is fired whenever a notification is received while the app is foregrounded
+		notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+			setNotification(notification);
+		});
+
+		// This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+		responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+			console.log(response);
+		});
+
+		return () => {
+			Notifications.removeNotificationSubscription(notificationListener.current);
+			Notifications.removeNotificationSubscription(responseListener.current);
+		};
+	}, []);
 
 	useEffect(() => {
 		if (!isValidating) {

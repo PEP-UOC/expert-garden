@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import PropTypes from "prop-types";
 
+//Device Detect
+import * as ExpoDevice from 'expo-device';
+
 //Constants
 import Constants from 'expo-constants';
 
@@ -32,6 +35,9 @@ import { useKeyboardSize } from "../../hooks/useKeyboardSize"
 
 //Moment
 import moment from 'moment';
+
+//Expo Firebase
+import * as Notifications from 'expo-notifications';
 
 //Select Options
 const userTypes = [
@@ -94,6 +100,38 @@ export const SignUpScreen = ({ debug, navigation }) => {
 		})
 	}
 
+	//Get push token
+	const registerForPushNotificationsAsync = async () => {
+		let token;
+		if (ExpoDevice.isDevice) {
+			const { status: existingStatus } = await Notifications.getPermissionsAsync();
+			let finalStatus = existingStatus;
+			if (existingStatus !== 'granted') {
+				const { status } = await Notifications.requestPermissionsAsync();
+				finalStatus = status;
+			}
+			if (finalStatus !== 'granted') {
+				//alert('Failed to get push token for push notification!');
+				return;
+			}
+			token = (await Notifications.getExpoPushTokenAsync()).data;
+			console.log(token);
+		} else {
+			//alert('Must use physical device for Push Notifications');
+		}
+
+		if (Platform.OS === 'android') {
+			Notifications.setNotificationChannelAsync('default', {
+				name: 'default',
+				importance: Notifications.AndroidImportance.MAX,
+				vibrationPattern: [0, 250, 250, 250],
+				lightColor: '#FF231F7C',
+			});
+		}
+
+		return token;
+	};
+
 	//SignUp
 	function SignUp() {
 
@@ -104,83 +142,88 @@ export const SignUpScreen = ({ debug, navigation }) => {
 
 		if (!allFilled()) {
 			if (password == password2) {
-				auth().createUserWithEmailAndPassword(email, password)
-					.then((user) => {
-						console.info('🚀 SNUP - Registered!');
-						console.info(user.user.email);
-						auth().currentUser.sendEmailVerification()
-							.then(() => {
-								console.info('🚀 SNUP - Email verification sent!');
-								dispatch(addUser(user))
-								firestore().collection("users").doc(auth()?.currentUser?.uid).set({
-									uid: auth()?.currentUser?.uid,
-									role,
-									verified: false,
-									metadata: {
-										name,
-										surnames,
-										fullname: `${name} ${surnames}`,
-										email,
-										photoCounter: 0
-									}
-								})
-									.then(() => {
-										auth().currentUser.updateProfile({
-											displayName: `${name} ${surnames}`,
-										}).then(() => {
-											if (role === 'business') {
-												const now = moment();
-												const ref = firestore().collection('companies').doc();
-												const creationDateTime = now.format();
-												const entity = {
-													cid: ref.id,
-													uid: auth()?.currentUser?.uid,
-													name: name,
-													creationDateTime
-												};
-												firestore()
-													.collection('companies')
-													.doc(ref.id)
-													.set(entity)
-													.then(() => {
-														dispatch(setLoggedIn(true))
-														dispatch(setErrorMessage(false))
-													})
-													.catch((error) => {
-														console.error(error.message);
-														dispatch(setLoggedIn(false))
-														console.log(`🕳  SNUP - Dispatch Loading STOP`)
-														dispatch(setLoadingMessage(false))
-														dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
-													});
-											} else {
-												dispatch(setLoggedIn(true))
-												dispatch(setErrorMessage(false))
-											}
-										}).catch((error) => {
+				registerForPushNotificationsAsync().then(pushToken => {
+					auth().createUserWithEmailAndPassword(email, password)
+						.then((user) => {
+							console.info('🚀 SNUP - Registered!');
+							console.info(`🚀 SNUP - ${user.user.email}`);
+							console.info(`🚀 SNUP - ${pushToken}`);
+							auth().currentUser.sendEmailVerification()
+								.then(() => {
+									console.info('🚀 SNUP - Email verification sent!');
+									dispatch(addUser(user))
+									firestore().collection("users").doc(auth()?.currentUser?.uid).set({
+										uid: auth()?.currentUser?.uid,
+										role,
+										pushToken,
+										verified: false,
+										metadata: {
+											name,
+											surnames,
+											fullname: `${name} ${surnames}`,
+											email,
+											photoCounter: 0
+										}
+									})
+										.then(() => {
+											auth().currentUser.updateProfile({
+												displayName: `${name} ${surnames}`,
+											}).then(() => {
+												if (role === 'business') {
+													const now = moment();
+													const ref = firestore().collection('companies').doc();
+													const creationDateTime = now.format();
+													const entity = {
+														cid: ref.id,
+														uid: auth()?.currentUser?.uid,
+														name: name,
+														creationDateTime,
+														pushToken
+													};
+													firestore()
+														.collection('companies')
+														.doc(ref.id)
+														.set(entity)
+														.then(() => {
+															dispatch(setLoggedIn(true))
+															dispatch(setErrorMessage(false))
+														})
+														.catch((error) => {
+															console.error(error.message);
+															dispatch(setLoggedIn(false))
+															console.log(`🕳  SNUP - Dispatch Loading STOP`)
+															dispatch(setLoadingMessage(false))
+															dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
+														});
+												} else {
+													dispatch(setLoggedIn(true))
+													dispatch(setErrorMessage(false))
+												}
+											}).catch((error) => {
+												console.error(error.message);
+												dispatch(setLoggedIn(false))
+												console.log(`🕳  SNUP - Dispatch Loading STOP`)
+												dispatch(setLoadingMessage(false))
+												dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
+											});
+										})
+										.catch((error) => {
 											console.error(error.message);
 											dispatch(setLoggedIn(false))
 											console.log(`🕳  SNUP - Dispatch Loading STOP`)
 											dispatch(setLoadingMessage(false))
 											dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 										});
-									})
-									.catch((error) => {
-										console.error(error.message);
-										dispatch(setLoggedIn(false))
-										console.log(`🕳  SNUP - Dispatch Loading STOP`)
-										dispatch(setLoadingMessage(false))
-										dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
-									});
-							});
-					})
-					.catch((error) => {
-						console.error(error.message);
-						dispatch(setLoggedIn(false))
-						console.log(`🕳  SNUP - Dispatch Loading STOP`)
-						dispatch(setLoadingMessage(false))
-						dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
-					});
+								});
+						})
+						.catch((error) => {
+							console.error(error.message);
+							dispatch(setLoggedIn(false))
+							console.log(`🕳  SNUP - Dispatch Loading STOP`)
+							dispatch(setLoadingMessage(false))
+							dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
+						});
+				});
 			} else {
 				dispatch(setLoggedIn(false))
 				console.log(`🕳  SNUP - Dispatch Loading STOP`)

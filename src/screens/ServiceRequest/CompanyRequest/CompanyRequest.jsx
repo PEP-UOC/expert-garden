@@ -13,7 +13,7 @@ import globalStyles from '../../../styles/globalStyles'
 import { Platform } from 'react-native';
 
 //Hooks
-import { useFirebaseSaveServiceDetail } from "../../../hooks/useFirebaseSaveServiceDetail"
+import { useFirebaseSaveService } from "../../../hooks/useFirebaseSaveService"
 
 //Components
 import { SafeAreaView, ScrollView, View, KeyboardAvoidingView } from 'react-native'
@@ -44,7 +44,7 @@ export const CompanyRequestScreen = ({ debug, navigation, route }) => {
 
 	//Save service
 	// eslint-disable-next-line no-unused-vars
-	const [saved, setSaved, handleRemoveServiceDetail, handleSaveServiceDetail, handleSaveService] = useFirebaseSaveServiceDetail(debug)
+	const [saved, setSaved, handleRemoveServiceDetail, handleSaveServiceDetail, handleSaveService] = useFirebaseSaveService(debug)
 
 	//Hooks
 	// eslint-disable-next-line no-unused-vars

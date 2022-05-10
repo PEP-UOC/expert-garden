@@ -13,21 +13,28 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
 import firebaseErrorCodeMap from '../common/firebaseErrorCodeMap';
 
+//Expo Push
+import { useExpoSendPush } from '../hooks/useExpoSendPush';
+
 //Moment
 import moment from 'moment';
 
-export function useFirebaseSaveServiceDetail(debug) {
+export function useFirebaseSaveService(debug) {
 	const dispatch = useDispatch();
 
 	//Firebase
 	const auth = firebase.auth;
 	const firestore = firebase.firestore;
 
+	//Send Push
+	// eslint-disable-next-line no-unused-vars
+	const [sended, sendPushNotification] = useExpoSendPush(debug);
+
+	//State
 	const [saved, setSaved] = useState(false);
 
 	const [isEdit, setIsEdit] = useState(false);
 	const [itemToEdit, setItemToEdit] = useState(false);
-	const [itemToUpdate, setItemToUpdate] = useState(false);
 	const [originalItemToUpdate, setOriginalItemToUpdate] = useState(false);
 
 	const handleRemoveServiceDetail = async (sdidToRemove) => {
@@ -51,7 +58,6 @@ export function useFirebaseSaveServiceDetail(debug) {
 					dispatch(addDetail(valuesToSave));
 					console.log(`🚧 FSSD - Service Detail ${values.sdid} guardado`);
 					setItemToEdit(false);
-					setItemToUpdate(false);
 					setSaved(true);
 					dispatch(setErrorMessage(false));
 				} catch (error) {
@@ -94,7 +100,6 @@ export function useFirebaseSaveServiceDetail(debug) {
 								if (doc.exists) {
 									var item = doc.data();
 									setOriginalItemToUpdate(values);
-									setItemToUpdate(valuesToSave);
 									setItemToEdit(item);
 								} else {
 									console.log('🩸 FSSD - No such document!');
@@ -158,6 +163,7 @@ export function useFirebaseSaveServiceDetail(debug) {
 							serviceDateTime: null,
 							serviceDate: null,
 							serviceTime: null,
+							isConfigured: false,
 							isRecurrent: false,
 							isFinalized: false,
 							price: null,
@@ -171,7 +177,6 @@ export function useFirebaseSaveServiceDetail(debug) {
 						.then(() => {
 							console.log(`🚧 FSSD - Service ${ref.id} guardado`);
 							setItemToEdit(false);
-							setItemToUpdate(false);
 							setSaved(ref.id);
 							dispatch(setErrorMessage(false));
 							dispatch(resetServiceTemporal());
@@ -206,7 +211,7 @@ export function useFirebaseSaveServiceDetail(debug) {
 
 	useEffect(() => {
 		let isMounted = true;
-		const fetchData = async () => {
+		const updateData = async () => {
 			if (isMounted) {
 				try {
 					if (originalItemToUpdate?.what === 'dates') {
@@ -220,7 +225,6 @@ export function useFirebaseSaveServiceDetail(debug) {
 								console.log(`🚧 FSSD - Service Dates ${originalItemToUpdate.sid} actualizadas`);
 								if (isMounted) {
 									setItemToEdit(false);
-									setItemToUpdate(false);
 									setSaved(true);
 									dispatch(setErrorMessage(false));
 									isMounted = false;
@@ -240,18 +244,29 @@ export function useFirebaseSaveServiceDetail(debug) {
 								);
 							});
 					} else if (originalItemToUpdate?.what === 'companies') {
-						console.log('originalItemToUpdate', originalItemToUpdate);
 						firestore()
 							.collection('services')
 							.doc(originalItemToUpdate?.sid)
 							.update({
 								companies: originalItemToUpdate.companies,
+								isConfigured: true,
 							})
 							.then(() => {
 								console.log(`🚧 FSSD - Service Companies ${originalItemToUpdate.sid} actualizadas`);
+								Promise.all(
+									originalItemToUpdate.companies.map(async (company) => {
+										await sendPushNotification(
+											company.pushToken,
+											auth()?.currentUser?.uid,
+											company.uid,
+											'Servicio solicitado!',
+											`Accede para presupuestar el servicio ${company.name}`,
+											{ sid: originalItemToUpdate?.sid },
+										);
+									}),
+								);
 								if (isMounted) {
 									setItemToEdit(false);
-									setItemToUpdate(false);
 									setSaved(true);
 									dispatch(setErrorMessage(false));
 									isMounted = false;
@@ -286,7 +301,7 @@ export function useFirebaseSaveServiceDetail(debug) {
 		};
 
 		if (isEdit && itemToEdit) {
-			fetchData();
+			updateData();
 		}
 
 		return () => {

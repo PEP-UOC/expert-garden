@@ -78,6 +78,9 @@ export const TabsNavigation = () => {
 					console.info('🔐 BTLG - Logged Out!');
 					dispatch(setLoggedIn(false))
 					console.log(`🕳  BTLG - Dispatch Loading STOP`)
+					if (intervalId) {
+						clearInterval(intervalId)
+					}
 					dispatch(setLoadingMessage(false))
 					dispatch(removeUser())
 				})
@@ -85,55 +88,74 @@ export const TabsNavigation = () => {
 					console.error(error.message);
 					dispatch(setLoggedIn(false))
 					console.log(`🕳  BTLG - Dispatch Loading STOP`)
+					if (intervalId) {
+						clearInterval(intervalId)
+					}
 					dispatch(setLoadingMessage(false))
 				});
 		} catch (error) {
 			console.error(error.message);
 			dispatch(setLoggedIn(false))
 			console.log(`🕳  BTLG - Dispatch Loading STOP`)
+			if (intervalId) {
+				clearInterval(intervalId)
+			}
 			dispatch(setLoadingMessage(false))
 		}
 	}
 
 	useEffect(() => {
-		firestore().collection("users").doc(auth()?.currentUser?.uid)
-			.onSnapshot({
-				// Listen for document metadata changes
-				includeMetadataChanges: true
-			}, (item) => {
-				const userData = item.data();
-				if (userData === undefined && isLoggedIn) {
-					console.log('🩸 TNAV - NO USER');
-					AutoSignOut();
-				} else {
-					console.log('👩‍🌾 TNAV - Firestore userData', userData)
-					dispatch(updateUser(
-						{
-							uid: userData?.uid,
-							role: userData?.role,
-							verified: userData?.verified,
-							metadata: userData?.metadata,
-							bankDetails: userData?.bankDetails
+		let isMounted = true;
+		if (isMounted) {
+			firestore().collection("users").doc(auth()?.currentUser?.uid)
+				.onSnapshot({
+					// Listen for document metadata changes
+					includeMetadataChanges: true
+				}, (item) => {
+
+					if (isMounted) {
+						const userData = item.data();
+						if (userData === undefined && isLoggedIn) {
+							console.log('🩸 TNAV - NO USER');
+							AutoSignOut();
+						} else {
+							console.log('👩‍🌾 TNAV - Firestore userData', userData)
+							dispatch(updateUser(
+								{
+									uid: userData?.uid,
+									role: userData?.role,
+									verified: userData?.verified,
+									metadata: userData?.metadata,
+									bankDetails: userData?.bankDetails
+								}
+							))
+							setDispatched(true)
 						}
-					))
-					setDispatched(true)
+					}
+				});
+		}
+
+		if (isMounted) {
+			auth()?.onAuthStateChanged((updatedUser) => {
+				if (updatedUser?.emailVerified) {
+					if (intervalId) {
+						clearInterval(intervalId)
+					}
+					firestore().collection("users").doc(auth()?.currentUser?.uid).update({
+						verified: true
+					}).then(() => { }).catch((error) => {
+						console.log('🩸 TNAV - error', error)
+					})
+				} else {
+					startHandler();
 				}
 			});
+		}
 
-		auth()?.onAuthStateChanged((updatedUser) => {
-			if (updatedUser?.emailVerified) {
-				if (intervalId) {
-					clearInterval(intervalId)
-				}
-				firestore().collection("users").doc(auth()?.currentUser?.uid).update({
-					verified: true
-				}).then(() => { }).catch((error) => {
-					console.log('🩸 TNAV - error', error)
-				})
-			} else {
-				startHandler();
-			}
-		});
+		return () => {
+			// cancel the subscription
+			isMounted = false;
+		};
 	}, []);
 
 	const [intervalId, setIntervalId] = useState(false);
