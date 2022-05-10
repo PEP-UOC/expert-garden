@@ -46,111 +46,132 @@ export const ServicesList = ({ debug, type }) => {
 	const [icon, setIcon] = useState('');
 
 	useEffect(() => {
-		switch (type) {
-			case 'requested':
-				setTitle('Servicios solicitados')
-				setIcon('inbox-outline')
+		let isMounted = true;
 
-				if (auth().currentUser) {
-					firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDate", "==", null).orderBy("requestDateTime", "desc").limit(3)
-						.onSnapshot(services => {
-							if (!services.empty) {
-								const SERVICES = [];
-								services.forEach(service => {
-									SERVICES.push(service.data())
-								})
-								console.log(`🌳 SELI - Servicios solicitados del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
-								setServices(SERVICES)
-							}
-						})
-				} else {
-					setServices([])
-				}
-				break;
-			case 'inProgress':
-				setTitle('Servicios en curso')
-				setIcon('play-circle-outline')
+		if (isMounted) {
+			switch (type) {
+				case 'requested':
+					setTitle('Servicios solicitados')
+					setIcon('inbox-outline')
 
-				if (auth().currentUser) {
-					firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
-						.onSnapshot(services => {
-							if (!services.empty) {
-								const SERVICES = [];
-								services.forEach(service => {
-									SERVICES.push(service.data())
-								})
-								console.log(`🌳 SELI - Servicios en curso del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
-								setServices(SERVICES)
-							}
-						})
-				} else {
-					setServices([])
-				}
-				break;
-			case 'inProgressPunctual':
-				setTitle('Servicios en curso puntuales')
-				setIcon('checkmark-circle-outline')
+					if (auth().currentUser) {
+						firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDate", "==", null).orderBy("requestDateTime", "desc").limit(3)
+							.onSnapshot(services => {
+								if (!services.empty) {
+									const SERVICES = [];
+									services.forEach(service => {
+										SERVICES.push(service.data())
+									})
+									console.log(`🌳 SELI - Servicios solicitados del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 
-				if (auth().currentUser) {
-					firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
-						.onSnapshot(services => {
-							if (!services.empty) {
-								const SERVICES = [];
-								services.forEach(service => {
-									SERVICES.push(service.data())
-								})
-								console.log(`🌳 SELI - Servicios en curso puntuales del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
-								setServices(SERVICES)
-							}
-						})
-				} else {
-					setServices([])
-				}
-				break;
-			case 'inProgressRecurrent':
-				setTitle('Servicios en curso recurrentes')
-				setIcon('clock-outline')
+									if (isMounted) {
+										setServices(SERVICES)
+									}
+								}
+							})
+					} else {
+						setServices([])
+					}
+					break;
+				case 'inProgress':
+					setTitle('Servicios en curso')
+					setIcon('play-circle-outline')
 
-				if (auth().currentUser) {
-					firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
-						.onSnapshot(services => {
-							if (!services.empty) {
-								const SERVICES = [];
-								services.forEach(service => {
-									SERVICES.push(service.data())
-								})
-								console.log(`🌳 SELI - Servicios en curso recurrentes del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
-								setServices(SERVICES)
-							}
-						})
-				} else {
-					setServices([])
-				}
-				break;
-			case 'past':
-				setTitle('Servicios anteriores')
-				setIcon('shopping-bag-outline')
+					if (auth().currentUser) {
+						firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
+							.onSnapshot(services => {
+								if (!services.empty) {
+									const SERVICES = [];
+									services.forEach(service => {
+										SERVICES.push(service.data())
+									})
+									console.log(`🌳 SELI - Servicios en curso del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 
-				if (auth().currentUser) {
-					firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
-						.onSnapshot(services => {
-							if (!services.empty) {
-								const SERVICES = [];
-								services.forEach(service => {
-									SERVICES.push(service.data())
-								})
-								console.log(`🌳 SELI - Servicios anteriores del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
-								setServices(SERVICES)
-							}
-						})
-				} else {
-					setServices([])
-				}
-				break;
-			default:
-				setTitle(undefined)
-				break;
+									if (isMounted) {
+										setServices(SERVICES)
+									}
+								}
+							})
+					} else {
+						setServices([])
+					}
+					break;
+				case 'inProgressPunctual':
+					setTitle('Servicios en curso puntuales')
+					setIcon('checkmark-circle-outline')
+
+					if (auth().currentUser) {
+						firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
+							.onSnapshot(services => {
+								if (!services.empty) {
+									const SERVICES = [];
+									services.forEach(service => {
+										SERVICES.push(service.data())
+									})
+									console.log(`🌳 SELI - Servicios en curso puntuales del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+
+									if (isMounted) {
+										setServices(SERVICES)
+									}
+								}
+							})
+					} else {
+						setServices([])
+					}
+					break;
+				case 'inProgressRecurrent':
+					setTitle('Servicios en curso recurrentes')
+					setIcon('clock-outline')
+
+					if (auth().currentUser) {
+						firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
+							.onSnapshot(services => {
+								if (!services.empty) {
+									const SERVICES = [];
+									services.forEach(service => {
+										SERVICES.push(service.data())
+									})
+									console.log(`🌳 SELI - Servicios en curso recurrentes del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									setServices(SERVICES)
+								}
+							})
+					} else {
+						setServices([])
+					}
+					break;
+				case 'past':
+					setTitle('Servicios anteriores')
+					setIcon('shopping-bag-outline')
+
+					if (auth().currentUser) {
+						firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
+							.onSnapshot(services => {
+								if (!services.empty) {
+									const SERVICES = [];
+									services.forEach(service => {
+										SERVICES.push(service.data())
+									})
+									console.log(`🌳 SELI - Servicios anteriores del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+
+									if (isMounted) {
+										setServices(SERVICES)
+									}
+								}
+							})
+					} else {
+						setServices([])
+					}
+					break;
+				default:
+					setTitle(undefined)
+					break;
+			}
 		}
+
+		return () => {
+			// cancel the subscription
+			isMounted = false;
+		};
 
 	}, []);
 

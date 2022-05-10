@@ -81,6 +81,16 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 		}
 	}, [saved]);
 
+	const isDisabled = () => {
+		return dates.length === 0
+	}
+
+	useEffect(() => {
+		if (dates.length === 0) {
+			addNewDate()
+		}
+	}, []);
+
 
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -92,15 +102,15 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 							<SeparatorTopScreen />
 							<View style={{ ...gloStyles.view }}>
 								<View style={{ ...gloStyles.section.primary }}>
-									<TitleScreen icon={'clock-outline'} exterStyles={{ wrapper: { marginBottom: 15 } }} primaryText={'Fecha y hora'} secondaryText={'Puedes añadir tantas fechas como quieras. Cuantas más fechas tengas disponibles más fácil será para las empresas ofrecerte el servicio. Estas fechas serán utilizadas para realizar el servicio o para relizar la visita previa si es necesaria.'} />
+									<TitleScreen icon={'clock-outline'} exterStyles={{ wrapper: { marginBottom: 35 } }} primaryText={'Fecha y hora'} secondaryText={'Puedes añadir tantas fechas como quieras. Cuantas más fechas tengas disponibles más fácil será para las empresas ofrecerte el servicio. Estas fechas serán utilizadas para realizar el servicio o para relizar la visita previa si es necesaria.'} />
 									{
 										{
 											'client': (
-												<>
+												<View style={{ paddingLeft: 60 }}>
 													{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={AddIcon} text={"Añadir fecha"} onPress={addNewDate} />}
 
-													{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={confirmDates} />}
-												</>
+													{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={confirmDates} disabled={isDisabled()} />}
+												</View>
 											),
 											'business': (
 												<></>
@@ -121,7 +131,7 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 
 													{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={AddIcon} text={"Añadir fecha"} onPress={addNewDate} btnStyle={{ marginBottom: 10 }} />}
 
-													{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={confirmDates} />}
+													{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={confirmDates} disabled={isDisabled()} />}
 												</>
 											),
 											'business': (

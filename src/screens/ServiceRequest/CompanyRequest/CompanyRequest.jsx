@@ -72,9 +72,11 @@ export const CompanyRequestScreen = ({ debug, navigation, route }) => {
 							<View style={{ ...gloStyles.view }}>
 
 								<View style={{ ...gloStyles.section.primary }}>
-									<TitleScreen icon={'clock-outline'} exterStyles={{ wrapper: { marginBottom: 15 } }} primaryText={'Empresas'} secondaryText={'Debido a que en estos momento hay pocas empresas disponibles para realizar el trabajo cerca de tí, la selección de empresas en este punto será automática.'} />
+									<TitleScreen icon={'clock-outline'} exterStyles={{ wrapper: { marginBottom: 35 } }} primaryText={'Empresas'} secondaryText={'🚨 Debido a que en estos momentos hay pocas empresas disponibles para realizar el trabajo cerca de tí, la selección de empresas en este punto será automática.'} />
 
-									{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar servicio"} onPress={confirmService} />}
+									<View style={{ paddingLeft: 60 }}>
+										{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar servicio"} onPress={confirmService} />}
+									</View>
 								</View>
 
 								<View style={{ ...gloStyles.section.secondary }}>

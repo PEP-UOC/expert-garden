@@ -56,6 +56,11 @@ const styles = StyleService.create({
 	},
 	input: {
 		marginBottom: Device?.isPhone ? 20 : 30,
+		width: Device?.isPhone ? '100%' : '45%',
+	},
+	textArea: {
+		marginBottom: Device?.isPhone ? 20 : 30,
+		width: '100%',
 	},
 	btnAddService: {
 		marginTop: Device?.isPhone ? 0 : 35,
@@ -65,7 +70,7 @@ const styles = StyleService.create({
 		alignItems: 'center',
 		width: Device?.isPhone ? '100%' : 960,
 		justifyContent: 'space-between',
-		marginTop: Device?.isPhone ? 15 : 35,
+		marginTop: Device?.isPhone ? 5 : 35,
 		marginBottom: Device?.isPhone ? 0 : 0,
 	},
 	btnRowFull: {
@@ -82,7 +87,7 @@ const styles = StyleService.create({
 		width: Device?.isPhone ? '100%' : 325,
 	},
 	btnServiceAtras: {
-		marginTop: Device?.isPhone ? 5 : 0,
+		marginTop: Device?.isPhone ? 10 : 0,
 		marginBottom: Device?.isPhone ? 15 : 0,
 		width: Device?.isPhone ? '100%' : 250,
 		order: Device?.isPhone ? 2 : 1,

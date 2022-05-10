@@ -300,7 +300,6 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 		}
 	}, [step]);
 
-
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
@@ -382,7 +381,7 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 														return (
 															<Input
 																key={input.inputId}
-																style={{ ...gloStyles?.inputs?.input, ...ownStyles.input }}
+																style={input.type === 'textarea' ? { ...gloStyles?.inputs?.input, ...ownStyles.textArea } : { ...gloStyles?.inputs?.input, ...ownStyles.input }}
 																label={input.label}
 																caption={renderCaption(input.caption)}
 																placeholder={input.placeholder}
@@ -406,8 +405,8 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 									{/*BOTTOM BUTTONS*/}
 									<FadeView fadeRef={fadeRef} style={
 										listInputs?.length === 0
-											? { ...ownStyles.btnRow, marginTop: 0 }
-											: { ...ownStyles.btnRow, ...ownStyles.btnRowFull, marginTop: 0 }
+											? { ...ownStyles.btnRow }
+											: { ...ownStyles.btnRow, ...ownStyles.btnRowFull }
 									}>
 										{/*BOTÓN VER RESUMEN DEL SERVICIO*/}
 										{serviceTemporal?.details?.length > 0 && (
