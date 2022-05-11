@@ -5,12 +5,12 @@ import Device from '../../../../libs/react-native-device-detection';
 //import { Platform } from 'react-native';
 
 const styles = StyleService.create({
-	servicesWrapper: {
+	itemsWrapper: {
 		justifyContent: 'space-between',
 		flexDirection: Device?.isPhone ? 'column' : 'row',
 		flexWrap: 'wrap',
 	},
-	serviceWrapper: {
+	itemWrapper: {
 		border: 'solid',
 		borderWidth: Device?.isPhone ? 1 : 1,
 		borderColor: 'color-primary-900',

@@ -24,6 +24,7 @@ import { Layout } from '@ui-kitten/components';
 import { TitleScreen } from '../../../components/Titles/Screen'
 import { BtnPrimary } from '../../../components/Buttons/Primary'
 import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
+import { BtnSecondary } from '../../../components/Buttons/Secondary'
 import { SeparatorTopSection } from '../../../components/Separators/TopSection'
 import { DetailsList } from './components/DetailsList'
 
@@ -102,12 +103,12 @@ export const ResumeServiceRequestScreen = ({ debug, navigation }) => {
 									<View style={{ ...gloStyles.view }}>
 										<View style={{ ...gloStyles.section.primary }}>
 
-											<View style={{ paddingLeft: 60 }}>
+											<View style={{ paddingLeft: 45 }}>
 												{/*BOTÓN AÑADIR OTRO DETALLE AL SERVICIO*/}
-												{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={AddIcon} text={"Añadir otro detalle al servicio"} onPress={() => navigation.navigate("MainServiceRequestScreen", { reset: true })} />}
+												{Platform.OS === "web" && <BtnSecondary size={'medium'} icon={AddIcon} text={"Añadir otro detalle al servicio"} onPress={() => navigation.navigate("MainServiceRequestScreen", { reset: true })} btnStyle={{ marginBottom: 30 }} />}
 
 												{/*BOTÓN SOLICITAR SERVICIO*/}
-												{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar detalles"} onPress={() => handleSaveService(values, isEdit)} />}
+												{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar detalles"} onPress={() => handleSaveService(values, isEdit)} btnStyle={{ marginBottom: 30 }} />}
 											</View>
 
 										</View>
@@ -120,10 +121,10 @@ export const ResumeServiceRequestScreen = ({ debug, navigation }) => {
 											</View>
 
 											{/*BOTÓN AÑADIR OTRO DETALLE AL SERVICIO*/}
-											{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={AddIcon} text={"Añadir otro detalle al servicio"} onPress={() => navigation.navigate("MainServiceRequestScreen", { reset: true })} btnStyle={{ marginBottom: 10 }} />}
+											{Platform.OS !== "web" && <BtnSecondary size={'medium'} icon={AddIcon} text={"Añadir otro detalle al servicio"} onPress={() => navigation.navigate("MainServiceRequestScreen", { reset: true })} btnStyle={{ marginBottom: 10, marginTop: 0 }} />}
 
 											{/*BOTÓN SOLICITAR SERVICIO*/}
-											{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar detalles"} onPress={() => handleSaveService(values, isEdit)} />}
+											{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar detalles"} onPress={() => handleSaveService(values, isEdit)} btnStyle={{ marginBottom: 10, marginTop: 10 }} />}
 
 										</View>
 									</View>

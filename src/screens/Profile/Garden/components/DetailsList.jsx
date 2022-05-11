@@ -105,7 +105,7 @@ export const DetailsList = ({ debug, gid, gardenIndex }) => {
 
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
-			<TitleSection icon={'pin-outline'} primaryText={'Detalles'} secondaryText={''} />
+			<TitleSection icon={'layers-outline'} primaryText={'Detalles'} secondaryText={''} />
 
 			{details?.length
 				? details?.map((detail) => (

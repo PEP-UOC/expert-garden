@@ -66,23 +66,42 @@ export const PersonalDataForm = ({ debug }) => {
 
 	//Handle
 	function handleChange(value, keyName) {
-		setValues(prevValues => {
-			return {
-				...prevValues,
-				[keyName]: value
-			}
-		})
-		const newMetadata = { ...values }
-		newMetadata[keyName] = value;
-		if (keyName === 'name') {
-			newMetadata['fullname'] = `${value} ${values?.surnames}`;
-		}
-		if (keyName === 'surnames') {
-			newMetadata['fullname'] = `${values?.name} ${value}`;
-		}
-		//console.log('📜 PEDA - newMetadata', newMetadata)
 
-		dispatch(updateChangesToSave({ metadata: newMetadata }, false))
+		if (keyName === 'birthdayDateTime') {
+			setValues(prevValues => {
+				return {
+					...prevValues,
+					[keyName]: value,
+					birthday: moment(value).format("DD/MM/YYYY")
+				}
+			})
+			const newMetadata = {
+				...values,
+				[keyName]: value,
+				birthday: moment(value).format("DD/MM/YYYY")
+			}
+			//console.log('📜 PEDA - newMetadata', newMetadata)
+
+			dispatch(updateChangesToSave({ metadata: newMetadata }, false))
+		} else {
+			setValues(prevValues => {
+				return {
+					...prevValues,
+					[keyName]: value
+				}
+			})
+			const newMetadata = { ...values }
+			newMetadata[keyName] = value;
+			if (keyName === 'name') {
+				newMetadata['fullname'] = `${value} ${values?.surnames}`;
+			}
+			if (keyName === 'surnames') {
+				newMetadata['fullname'] = `${values?.name} ${value}`;
+			}
+			//console.log('📜 PEDA - newMetadata', newMetadata)
+
+			dispatch(updateChangesToSave({ metadata: newMetadata }, false))
+		}
 	}
 
 	//Keyboard
@@ -95,7 +114,6 @@ export const PersonalDataForm = ({ debug }) => {
 
 	function handleCalendar(value) {
 		setBirthdayDate(value)
-		handleChange(moment(value).format("DD/MM/YYYY"), "birthday")
 		handleChange(moment(value).format(), "birthdayDateTime")
 		setCalendarVisible(false)
 	}

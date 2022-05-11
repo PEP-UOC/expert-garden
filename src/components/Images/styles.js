@@ -6,7 +6,7 @@ import Device from '../../libs/react-native-device-detection';
 
 const styles = StyleService.create({
 	wrapper: {
-		marginBottom: 20,
+		marginBottom: Device.isPhone ? 20 : 30,
 	},
 	image: {
 		width: '100%',

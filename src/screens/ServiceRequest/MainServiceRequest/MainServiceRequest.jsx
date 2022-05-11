@@ -95,10 +95,18 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 	};
 
 	useEffect(() => {
+		let isMounted = true;
 		if (route.params?.reset) {
 			route.params = {}
-			resetForm();
+			if (isMounted) {
+				resetForm();
+			}
 		}
+
+		return () => {
+			// cancel the subscription
+			isMounted = false;
+		};
 	}, [route.params?.reset]);
 
 	function handleChange(value, keyName) {
@@ -130,44 +138,84 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 	const [listInputs, setListInputs] = useState([]);
 
 	useEffect(() => {
+		let isMounted = true;
 		if (values?.type) {
-			setListStep1(servicesTypes.find((type) => type.identifier === values.type).step1types)
+			if (isMounted) {
+				setListStep1(servicesTypes.find((type) => type.identifier === values.type).step1types)
+			}
 		}
+
+		return () => {
+			// cancel the subscription
+			isMounted = false;
+		};
 	}, [values.type]);
 
 	useEffect(() => {
+		let isMounted = true;
 		if (values?.step1) {
-			const step1item = listStep1.find((type) => type.identifier === values.step1);
-			if (step1item?.inputs) {
-				setListInputs(step1item.inputs)
-			} else {
-				setListStep2(step1item.step2types)
+			if (isMounted) {
+				const step1item = listStep1.find((type) => type.identifier === values.step1);
+				if (step1item?.inputs) {
+					setListInputs(step1item.inputs)
+				} else {
+					setListStep2(step1item.step2types)
+				}
 			}
 		}
+
+		return () => {
+			// cancel the subscription
+			isMounted = false;
+		};
 	}, [values.step1]);
 
 	useEffect(() => {
+		let isMounted = true;
 		if (values?.step2) {
-			const step2item = listStep2.find((type) => type.identifier === values.step2);
-			if (step2item?.inputs) {
-				setListInputs(step2item.inputs)
-			} else {
-				setListStep3(step2item.step3types)
+			if (isMounted) {
+				const step2item = listStep2.find((type) => type.identifier === values.step2);
+				if (step2item?.inputs) {
+					setListInputs(step2item.inputs)
+				} else {
+					setListStep3(step2item.step3types)
+				}
 			}
 		}
+
+		return () => {
+			// cancel the subscription
+			isMounted = false;
+		};
 	}, [values.step2]);
 
 	useEffect(() => {
+		let isMounted = true;
 		if (values?.step3) {
-			const step3item = listStep3.find((type) => type.identifier === values.step3);
-			setListInputs(step3item.inputs)
+			if (isMounted) {
+				const step3item = listStep3.find((type) => type.identifier === values.step3);
+				setListInputs(step3item.inputs)
+			}
 		}
+
+		return () => {
+			// cancel the subscription
+			isMounted = false;
+		};
 	}, [values.step3]);
 
 	useEffect(() => {
-		console.log(`🕳  MSRQ - Dispatch Loading STOP`)
-		dispatch(setLoadingMessage(false))
-		dispatch(setErrorMessage(false))
+		let isMounted = true;
+		if (isMounted) {
+			console.log(`🕳  MSRQ - Dispatch Loading STOP`)
+			dispatch(setLoadingMessage(false))
+			dispatch(setErrorMessage(false))
+		}
+
+		return () => {
+			// cancel the subscription
+			isMounted = false;
+		};
 	}, []);
 
 
@@ -176,14 +224,22 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 	const FadeView = (props) => {
 
 		useEffect(() => {
-			Animated.timing(
-				props.fadeRef,
-				{
-					toValue: 1,
-					duration: 500,
-					useNativeDriver: Platform.OS !== 'web' ? true : false
-				}
-			).start();
+			let isMounted = true;
+			if (isMounted) {
+				Animated.timing(
+					props.fadeRef,
+					{
+						toValue: 1,
+						duration: 500,
+						useNativeDriver: Platform.OS !== 'web' ? true : false
+					}
+				).start();
+			}
+
+			return () => {
+				// cancel the subscription
+				isMounted = false;
+			};
 		}, [props.fadeRef])
 
 		return (
@@ -241,11 +297,19 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 	};
 
 	useEffect(() => {
+		let isMounted = true;
 		if (savedFromModal) {
-			setSaved(false)
-			setAskToSave(false)
-			navigation.navigate("ResumeServiceRequestScreen");
+			if (isMounted) {
+				setSaved(false)
+				setAskToSave(false)
+				navigation.navigate("ResumeServiceRequestScreen");
+			}
 		}
+
+		return () => {
+			// cancel the subscription
+			isMounted = false;
+		};
 	}, [saved]);
 
 
@@ -264,40 +328,48 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 	const [identifierName, setIdentifierName] = useState('type');
 	const [idName, setIdName] = useState('typeId');
 	useEffect(() => {
-		switch (step) {
-			case 0:
-			default:
-				setServicesToList(servicesTypes)
-				setKeyName('id')
-				setIdentifierName('type')
-				setIdName('typeId')
-				break;
+		let isMounted = true;
+		if (isMounted) {
+			switch (step) {
+				case 0:
+				default:
+					setServicesToList(servicesTypes)
+					setKeyName('id')
+					setIdentifierName('type')
+					setIdName('typeId')
+					break;
 
-			case 1:
-				setServicesToList(listStep1)
-				setKeyName('step1typeId')
-				setIdentifierName('step1')
-				setIdName('step1id')
-				break;
+				case 1:
+					setServicesToList(listStep1)
+					setKeyName('step1typeId')
+					setIdentifierName('step1')
+					setIdName('step1id')
+					break;
 
-			case 2:
-				setServicesToList(listStep2)
-				setKeyName('step2typeId')
-				setIdentifierName('step2')
-				setIdName('step2id')
-				break;
+				case 2:
+					setServicesToList(listStep2)
+					setKeyName('step2typeId')
+					setIdentifierName('step2')
+					setIdName('step2id')
+					break;
 
-			case 3:
-				setServicesToList(listStep3)
-				setKeyName('step3typeId')
-				setIdentifierName('step3')
-				setIdName('step3id')
-				break;
+				case 3:
+					setServicesToList(listStep3)
+					setKeyName('step3typeId')
+					setIdentifierName('step3')
+					setIdName('step3id')
+					break;
 
-			case 4:
-				setServicesToList([])
-				break;
+				case 4:
+					setServicesToList([])
+					break;
+			}
 		}
+
+		return () => {
+			// cancel the subscription
+			isMounted = false;
+		};
 	}, [step]);
 
 	return (
@@ -313,13 +385,13 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 								<View style={{ ...gloStyles.section.fullStart }}>
 
 									{/*TITULO TOP*/}
-									<TitleScreen icon={'plus-circle-outline'} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 0 : 30 }, primaryText: { lineHeight: Device?.isPhone ? 35 : 'initial', marginTop: Device?.isPhone ? 14 : 0 }, secondaryText: { marginTop: 10 } }} primaryText={'Solicita un nuevo servicio'} secondaryText={'Selecciona opciones hasta llegar al servicio que necesitas. Tranquilo, podrás añadir más servicios (plantas, mantenimiento, mobiliario) al terminar de configurar este.'} />
+									<TitleScreen icon={'plus-circle-outline'} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 20 : 30 }, primaryText: { lineHeight: Device?.isPhone ? 35 : 'initial', marginTop: Device?.isPhone ? 14 : 0 }, secondaryText: { marginTop: 10 } }} primaryText={'Solicita un nuevo servicio'} secondaryText={'Selecciona opciones hasta llegar al servicio que necesitas. Tranquilo, podrás añadir más servicios (plantas, mantenimiento, mobiliario) al terminar de configurar este.'} />
 
 									<SeparatorTopSection />
 
 									{/*TITULO SECCIÓN SERVICIO*/}
 									<FadeView fadeRef={fadeRef} >
-										<TitleSection icon={''} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 20 : 45 }, primaryText: { fontSize: Device?.isPhone ? 18 : 24, lineHeight: Device?.isPhone ? 25 : undefined, marginLeft: !Device?.isPhone && listInputs?.length > 0 ? 60 : 0 } }}
+										<TitleSection icon={''} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? listInputs?.length > 0 ? 0 : 20 : 45 }, primaryText: { fontSize: Device?.isPhone ? 18 : 24, lineHeight: Device?.isPhone ? 25 : undefined, marginLeft: !Device?.isPhone && listInputs?.length > 0 ? 60 : 0 } }}
 											primaryText={
 												step === 1
 													? servicesTypes?.find((type) => type.id === values.typeId)?.question || ''
@@ -396,7 +468,7 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 
 												<View style={{ ...ownStyles.inputsRow }}>
 													<Button
-														accessoryLeft={AddIcon} style={{ ...gloStyles?.button, ...ownStyles.btnAddService }} onPress={() => handleSaveServiceDetail(values, isEdit)} disabled={isDisabled()}>Añadir servicio</Button>
+														accessoryLeft={AddIcon} style={{ ...gloStyles?.button, ...ownStyles.btnAddService, marginBottom: 20 }} onPress={() => handleSaveServiceDetail(values, isEdit)} disabled={isDisabled()}>Añadir servicio</Button>
 												</View>
 											</View>
 										)}

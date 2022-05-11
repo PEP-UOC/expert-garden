@@ -30,6 +30,9 @@ import { useKeyboardSize } from "../../../../hooks/useKeyboardSize"
 //Device Detect
 import Device from '../../../../libs/react-native-device-detection';
 
+//Data
+import { momentTypes } from '../../../../data/momentTypes'
+
 // eslint-disable-next-line no-unused-vars
 export const DateItem = ({ debug, date, dateIndex }) => {
 	const dispatch = useDispatch()
@@ -45,50 +48,51 @@ export const DateItem = ({ debug, date, dateIndex }) => {
 
 	//Handle
 	function handleChange(value, keyName) {
-		setValues(prevValues => {
-			return {
-				...prevValues,
-				[keyName]: value
+		if (keyName === 'dateTime') {
+			setValues(prevValues => {
+				return {
+					...prevValues,
+					[keyName]: value,
+					date: moment(value).format("DD/MM/YYYY")
+				}
+			})
+			const newDate = {
+				...values,
+				[keyName]: value,
+				date: moment(value).format("DD/MM/YYYY")
 			}
-		})
-		const newDate = { ...values }
-		newDate[keyName] = value;
-		console.log('📜 DAIT - newDate', newDate)
+			console.log('📜 DAIT - newDate', newDate)
 
-		dispatch(updateDate(newDate, dateIndex))
+			dispatch(updateDate(newDate, dateIndex))
+		} else {
+			setValues(prevValues => {
+				return {
+					...prevValues,
+					[keyName]: value
+				}
+			})
+			const newDate = { ...values }
+			newDate[keyName] = value;
+			console.log('📜 DAIT - newDate', newDate)
+
+			dispatch(updateDate(newDate, dateIndex))
+		}
 	}
 
 	//Keyboard
 	const [keyboardSize] = useKeyboardSize()
 
 	const [calendarVisible, setCalendarVisible] = useState(false);
-	const [dateDate, setDateDate] = useState(values?.birthday
+	const [dateDate, setDateDate] = useState(values?.dateTime
 		? moment(values?.dateTime).toDate()
 		: moment().toDate());
 
 	function handleCalendar(value) {
 		setDateDate(value)
-		handleChange(moment(value).format("DD/MM/YYYY"), "date")
 		handleChange(moment(value).format(), "dateTime")
 		setCalendarVisible(false)
 	}
 	const localeDateService = new NativeDateService('es', { i18n, startDayOfWeek: 1 });
-
-	//Select Options
-	const momentTypes = [
-		{
-			name: 'MORNING',
-			value: 'Mañana'
-		},
-		{
-			name: 'EVENING',
-			value: 'Tarde'
-		},
-		{
-			name: 'ALL_DAY',
-			value: 'Todo el día'
-		},
-	];
 
 	//Select
 	const [selectedIndex, setSelectedIndex] = useState(

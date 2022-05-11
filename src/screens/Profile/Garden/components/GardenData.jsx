@@ -131,8 +131,8 @@ export const GardenDataForm = ({ debug, gid, gardenIndex }) => {
 
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
-			<TitleSection icon={'pin-outline'} primaryText={'General'} secondaryText={''} />
-			<View style={{ ...gloStyles?.inputs?.wrapper }}>
+			<TitleSection icon={'clipboard-outline'} primaryText={'General'} secondaryText={''} />
+			<View style={{ ...gloStyles?.inputs?.wrapper, marginBottom: 20 }}>
 				<View style={{ ...gloStyles?.inputs?.row, flexDirection: 'column' }}>
 					<Input
 						style={{ ...gloStyles?.inputs?.input, width: '100%' }}

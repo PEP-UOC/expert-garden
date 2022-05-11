@@ -18,7 +18,7 @@ import { useNavigation } from '@react-navigation/native';
 //Components
 import { View } from 'react-native'
 import { Text, Button, ListItem } from '@ui-kitten/components';
-import { TitleSection } from '../../../components/Titles/Section'
+import { TitleSectionWithNavigation } from '../../../components/Titles/SectionWithNavigation'
 
 //Icons
 import { RadioOnIcon } from '../../../assets/icons/RadioOn'
@@ -47,12 +47,14 @@ export const NotificationsList = ({ debug, type }) => {
 	//State
 	const [notifications, setNotifications] = useState([]);
 	const [title, setTitle] = useState(undefined);
+	const [noItems, setNoItems] = useState(undefined);
 	const [icon, setIcon] = useState('');
 
 	useEffect(() => {
 		switch (type) {
 			case 'last':
 				setTitle('Notificaciones')
+				setNoItems('Todavía no has recibido ninguna notificación')
 				setIcon('bell-outline')
 
 				if (auth().currentUser) {
@@ -73,6 +75,7 @@ export const NotificationsList = ({ debug, type }) => {
 				break;
 			case 'new':
 				setTitle('Nuevas')
+				setNoItems('No tienes notificaciones sin leer')
 				setIcon('radio-button-on-outline')
 
 				if (auth().currentUser) {
@@ -93,6 +96,7 @@ export const NotificationsList = ({ debug, type }) => {
 				break;
 			case 'read':
 				setTitle('Leídas')
+				setNoItems('No tienes notificaciones leídas')
 				setIcon('radio-button-off-outline')
 
 				if (auth().currentUser) {
@@ -151,6 +155,7 @@ export const NotificationsList = ({ debug, type }) => {
 	const renderItemAccessory = (sendDateTime, readDateTime) => {
 		let momento = moment(sendDateTime).locale('es').calendar();
 		momento = momento.charAt(0).toUpperCase() + momento.slice(1);
+
 		return (
 			<>
 				{Device?.isPhone
@@ -168,18 +173,25 @@ export const NotificationsList = ({ debug, type }) => {
 		readDateTime: PropTypes.string,
 	};
 
+	const navigateNotificationsList = (type) => {
+		navigation.navigate('Services', {
+			screen: 'ServiceListScreen',
+			params: { type },
+		});
+	};
+
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
-			<TitleSection icon={icon || ''} primaryText={title || ''} secondaryText={''} />
+			<TitleSectionWithNavigation icon={icon || ''} primaryText={title || ''} secondaryText={''} navTo={() => navigateNotificationsList(type)} />
 			{notifications?.length
 				? notifications?.map((service) => (
 					<View key={service.nid} style={{ ...ownStyles?.item }}>
 						<RenderItem item={service} />
 					</View>
 				))
-				: <View key={`empty-${type}`}>
+				: <View key={`empty-${type}`} style={{ ...ownStyles?.item, paddingBottom: Device?.isPhone ? 0 : 24 }}>
 					<ListItem
-						title={'Todavía no has recibido ninguna notificación'}
+						title={noItems}
 					/>
 				</View>
 			}

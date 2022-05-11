@@ -10,23 +10,23 @@ import styles from './styles'
 
 //Components
 import { View } from 'react-native'
-import { DetailItem } from './DetailItem'
+import { DateItem } from './DateItem'
 import { TitleSection } from '../../../../components/Titles/Section'
 
 // eslint-disable-next-line no-unused-vars
-export const DetailsList = ({ debug, details }) => {
+export const DatesList = ({ debug, dates }) => {
 
 	//Styles
 	const ownStyles = useStyleSheet(styles);
 
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
-			<TitleSection icon={'layers-outline'} primaryText={'Detalles'} secondaryText={''} />
+			<TitleSection icon={'calendar-outline'} primaryText={'Disponibilidad'} secondaryText={''} />
 			<View style={{ ...ownStyles.itemsWrapper }}>
 
-				{details && details?.map((detail, index) => {
+				{dates && dates?.map((date, index) => {
 					return (
-						<DetailItem detail={detail} detailIndex={index} key={detail.sdid} />
+						<DateItem date={date} dateIndex={index} key={date.did} />
 					)
 				})}
 			</View>
@@ -34,11 +34,11 @@ export const DetailsList = ({ debug, details }) => {
 	)
 };
 
-DetailsList.propTypes = {
+DatesList.propTypes = {
 	debug: PropTypes.bool.isRequired,
-	details: PropTypes.array.isRequired,
+	dates: PropTypes.array.isRequired,
 };
 
-DetailsList.defaultProps = {
+DatesList.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 };

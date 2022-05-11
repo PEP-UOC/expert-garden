@@ -14,7 +14,7 @@ export function useProvinceTown(savedPostalCode, savedProvince, savedTown) {
 	const [townsSelectedIndex, setTownsSelectedIndex] = useState(
 		townsList.findIndex((town) => town.NOMBRE === savedTown) !== -1
 			? new IndexPath(townsList.findIndex((town) => town.NOMBRE === savedTown))
-			: new IndexPath(0),
+			: new IndexPath(),
 	);
 	const townDisplayValue = townsList[townsSelectedIndex.row]?.NOMBRE || '';
 
@@ -33,7 +33,7 @@ export function useProvinceTown(savedPostalCode, savedProvince, savedTown) {
 				return prov.label === province;
 			});
 			const townsList = towns.filter((town) => town.CPRO === provinceFound?.value);
-			setTownsSelectedIndex(new IndexPath(0));
+			setTownsSelectedIndex(new IndexPath());
 			setTownsList(townsList);
 		}
 	}, [province]);

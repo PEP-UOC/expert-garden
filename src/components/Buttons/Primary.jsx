@@ -15,7 +15,7 @@ import styles from './styles'
 
 
 // eslint-disable-next-line no-unused-vars
-export const BtnPrimary = ({ debug, icon, text, onPress, disabled, size, btnStyle }) => {
+export const BtnPrimary = ({ debug, icon, text, onPress, disabled, size, btnStyle, status }) => {
 
 	//Styles
 	const gloStyles = useStyleSheet(globalStyles);
@@ -34,7 +34,9 @@ export const BtnPrimary = ({ debug, icon, text, onPress, disabled, size, btnStyl
 				size={size}
 				onPress={onPress}
 				accessoryLeft={icon}
-				disabled={disabled}>
+				disabled={disabled}
+				status={status}
+			>
 				{text}
 			</Button>
 		</View>
@@ -49,6 +51,7 @@ BtnPrimary.propTypes = {
 	disabled: PropTypes.bool.isRequired,
 	size: PropTypes.string.isRequired,
 	btnStyle: PropTypes.object.isRequired,
+	status: PropTypes.string.isRequired,
 };
 
 BtnPrimary.defaultProps = {
@@ -57,4 +60,5 @@ BtnPrimary.defaultProps = {
 	icon: undefined,
 	disabled: false,
 	btnStyle: {},
+	status: 'primary',
 };

@@ -10,23 +10,23 @@ import styles from './styles'
 
 //Components
 import { View } from 'react-native'
-import { DetailItem } from './DetailItem'
+import { CompanyItem } from './CompanyItem'
 import { TitleSection } from '../../../../components/Titles/Section'
 
 // eslint-disable-next-line no-unused-vars
-export const DetailsList = ({ debug, details }) => {
+export const CompaniesList = ({ debug, companies }) => {
 
 	//Styles
 	const ownStyles = useStyleSheet(styles);
 
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
-			<TitleSection icon={'layers-outline'} primaryText={'Detalles'} secondaryText={''} />
+			<TitleSection icon={'pantone-outline'} primaryText={'Presupuestos'} secondaryText={''} />
 			<View style={{ ...ownStyles.itemsWrapper }}>
 
-				{details && details?.map((detail, index) => {
+				{companies && companies?.map((company, index) => {
 					return (
-						<DetailItem detail={detail} detailIndex={index} key={detail.sdid} />
+						<CompanyItem company={company} companyIndex={index} key={company.cid} />
 					)
 				})}
 			</View>
@@ -34,11 +34,11 @@ export const DetailsList = ({ debug, details }) => {
 	)
 };
 
-DetailsList.propTypes = {
+CompaniesList.propTypes = {
 	debug: PropTypes.bool.isRequired,
-	details: PropTypes.array.isRequired,
+	companies: PropTypes.array.isRequired,
 };
 
-DetailsList.defaultProps = {
+CompaniesList.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 };

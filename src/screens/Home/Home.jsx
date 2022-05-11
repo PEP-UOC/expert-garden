@@ -68,13 +68,14 @@ export const HomeScreen = ({ debug, navigation }) => {
 						<Layout style={{ ...gloStyles.layout }}>
 							<SeparatorTopScreen />
 							<View style={{ ...gloStyles.view }}>
+
 								<View style={{ ...gloStyles.section.primary }}>
-									<TitleScreen icon={''} exterStyles={{ wrapper: { marginBottom: 30 } }} primaryText={user?.additionalUserInfo?.isNewUser ? 'Bienvenido' : 'Bienvenido'} secondaryText={`${user?.metadata?.name} ${gender}` + ` ${device} ${role}` || ''} secondaryTextMain={true} />
+									<TitleScreen icon={''} exterStyles={{ wrapper: { marginBottom: 30 }, primaryText: { fontSize: 36 }, secondaryText: { fontSize: 36 } }} primaryText={user?.additionalUserInfo?.isNewUser ? 'Bienvenido' : 'Bienvenido'} secondaryText={`${user?.metadata?.name} ${gender}` + ` ${device} ${role}` || ''} secondaryTextMain={true} />
 									<EmailVerify user={user || {}} />
 									{
 										{
 											'client': (
-												<BtnWithLogo icon={TruckIcon} text={"Solicita un servicio"} onPress={navigateServiceRequest} />
+												<BtnWithLogo icon={TruckIcon} text={"Solicita un nuevo servicio"} onPress={navigateServiceRequest} />
 											),
 											'business': (
 												<BtnWithLogo icon={TruckIcon} text={"Próximos servicios"} onPress={navigateServiceRequest} />
@@ -85,6 +86,7 @@ export const HomeScreen = ({ debug, navigation }) => {
 										}[user?.role]
 									}
 								</View>
+
 								<View style={{ ...gloStyles.section.secondary }}>
 									<SeparatorTopSection />
 									{
@@ -92,15 +94,15 @@ export const HomeScreen = ({ debug, navigation }) => {
 											'client': (
 												<>
 													<NotificationsList type={'last'} />
-													<ServicesList type={'requested'} />
-													<ServicesList type={'inProgress'} />
+													<ServicesList type={'requested'} limit={3} />
+													<ServicesList type={'inProgress'} limit={3} />
 												</>
 											),
 											'business': (
-												<ServicesList type={'requested'} />
+												<ServicesList type={'requested'} limit={3} />
 											),
 											'worker': (
-												<ServicesList type={'requested'} />
+												<ServicesList type={'requested'} limit={3} />
 											)
 										}[user?.role]
 									}

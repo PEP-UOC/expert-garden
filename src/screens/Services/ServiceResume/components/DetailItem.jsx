@@ -35,7 +35,7 @@ export const DetailItem = ({ debug, detail, detailIndex }) => {
 	const [values, setValues] = useState(detail)
 
 	return (
-		<View key={values?.sdid} style={{ ...ownStyles.serviceWrapper }}>
+		<View key={values?.sdid} style={{ ...ownStyles.itemWrapper }}>
 			<View style={{ ...ownStyles.viewWrapperTop }}>
 
 				{/*DETALLE*/}

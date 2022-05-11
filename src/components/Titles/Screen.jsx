@@ -38,7 +38,7 @@ export const TitleScreen = ({ debug, exterStyles, icon, primaryText, secondaryTe
 					flexDirection: 'row', alignItems: 'center'
 				}
 			}>
-				{!Device.isPhone && icon !== '' && <Icon width={60} height={40} name={icon} fill='#094c3f' />}
+				{!Device.isPhone && icon !== '' && <Icon width={40} height={40} name={icon} fill='#094c3f' />}
 				<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.screenText, ...exterStyles?.primaryText }}>{primaryText}</Text>
 			</View>
 

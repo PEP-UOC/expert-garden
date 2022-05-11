@@ -6,7 +6,6 @@ import Constants from 'expo-constants';
 
 import { View, SafeAreaView, ScrollView, KeyboardAvoidingView, Platform } from "react-native"
 import { Text, Button, Layout, Input, TopNavigation, TopNavigationAction, Select, SelectItem, IndexPath } from '@ui-kitten/components';
-import { SeparatorTopScreen } from '../../../../components/Separators/TopScreen'
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
@@ -207,7 +206,6 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 					<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 						contentContainerStyle={{ ...gloStyles?.scrollView }}>
 						<Layout style={{ ...gloStyles?.layout }}>
-							<SeparatorTopScreen hasTopNavigation={true} />
 							<View style={{ ...gloStyles?.view, alignItems: 'flex-start' }}>
 								<View style={{ ...gloStyles.section.fullStart }}>
 									<Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>{isEdit ? 'EDITAR DETALLE DE' : 'AÑADIR DETALLE A'}</Text>
@@ -262,7 +260,7 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 									})
 									}
 
-									<Button style={{ ...gloStyles?.button }} onPress={() => handleSaveGardenDetail(values, isEdit)} disabled={isDisabled()}>Guardar detalle</Button>
+									<Button style={{ ...gloStyles?.button, marginBottom: 20 }} onPress={() => handleSaveGardenDetail(values, isEdit)} disabled={isDisabled()}>Guardar detalle</Button>
 
 									<Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={navigateBack}>Volver</Button>
 

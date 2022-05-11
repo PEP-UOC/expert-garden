@@ -10,6 +10,7 @@ import globalStyles from '../../../styles/globalStyles'
 //import styles from './styles'
 
 //Device Detect
+import Device from '../../../libs/react-native-device-detection';
 import { Platform } from 'react-native';
 
 //Store
@@ -24,6 +25,7 @@ import { SafeAreaView, ScrollView, View, KeyboardAvoidingView } from 'react-nati
 import { Layout } from '@ui-kitten/components';
 import { TitleScreen } from '../../../components/Titles/Screen'
 import { BtnPrimary } from '../../../components/Buttons/Primary'
+import { BtnSecondary } from '../../../components/Buttons/Secondary'
 import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
 import { SeparatorTopSection } from '../../../components/Separators/TopSection'
 import { DatesList } from "./components/DatesList"
@@ -64,8 +66,8 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 		const dateBasic = {
 			did: uuid.v4(),
 			date: moment().format("DD/MM/YYYY"),
-			dateTime: "",
-			schedule: "",
+			dateTime: moment().format(),
+			schedule: "ALL_DAY",
 			extra: ""
 		}
 		dispatch(addDate(dateBasic));
@@ -102,14 +104,14 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 							<SeparatorTopScreen />
 							<View style={{ ...gloStyles.view }}>
 								<View style={{ ...gloStyles.section.primary }}>
-									<TitleScreen icon={'clock-outline'} exterStyles={{ wrapper: { marginBottom: 35 } }} primaryText={'Fecha y hora'} secondaryText={'Puedes añadir tantas fechas como quieras. Cuantas más fechas tengas disponibles más fácil será para las empresas ofrecerte el servicio. Estas fechas serán utilizadas para realizar el servicio o para relizar la visita previa si es necesaria.'} />
+									<TitleScreen icon={'clock-outline'} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 20 : 30 } }} primaryText={'Fecha y hora'} secondaryText={'Puedes añadir tantas fechas como quieras. Cuantas más fechas tengas disponibles más fácil será para las empresas ofrecerte el servicio. Estas fechas serán utilizadas para realizar el servicio o para relizar la visita previa si es necesaria.'} />
 									{
 										{
 											'client': (
-												<View style={{ paddingLeft: 60 }}>
-													{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={AddIcon} text={"Añadir fecha"} onPress={addNewDate} />}
+												<View style={{ paddingLeft: 45 }}>
+													{Platform.OS === "web" && <BtnSecondary size={'medium'} icon={AddIcon} text={"Añadir fecha"} onPress={addNewDate} btnStyle={{ marginBottom: 30 }} />}
 
-													{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={confirmDates} disabled={isDisabled()} />}
+													{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={confirmDates} disabled={isDisabled()} btnStyle={{ marginBottom: 30 }} />}
 												</View>
 											),
 											'business': (
@@ -129,9 +131,9 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 												<>
 													<DatesList />
 
-													{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={AddIcon} text={"Añadir fecha"} onPress={addNewDate} btnStyle={{ marginBottom: 10 }} />}
+													{Platform.OS !== "web" && <BtnSecondary size={'medium'} icon={AddIcon} text={"Añadir fecha"} onPress={addNewDate} btnStyle={{ marginBottom: 10, marginTop: 0 }} />}
 
-													{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={confirmDates} disabled={isDisabled()} />}
+													{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={confirmDates} disabled={isDisabled()} btnStyle={{ marginBottom: 10, marginTop: 10 }} />}
 												</>
 											),
 											'business': (

@@ -82,7 +82,7 @@ const globalStyles = StyleService.create({
 	},
 	button: {
 		width: Device?.isPhone ? '100%' : 325,
-		marginBottom: 20,
+		marginBottom: 0,
 		marginLeft: Device?.isPhone ? undefined : 'auto',
 		marginRight: Device?.isPhone ? undefined : 'auto',
 	},

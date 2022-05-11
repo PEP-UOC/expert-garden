@@ -81,7 +81,7 @@ export const GardenItem = ({ debug, garden }) => {
 					{garden?.item?.name}
 				</Text>
 				<Text category='c1'>
-					{garden?.item?.description}
+					{garden?.item?.description || ' '}
 				</Text>
 			</View>
 		)

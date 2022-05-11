@@ -25,7 +25,7 @@ export const DetailsList = ({ debug, setSdidToRemove, setShowDeleteConfirm }) =>
 	const details = useSelector(state => state.serviceReducer.serviceTemporal.details);
 
 	return (
-		<View style={{ ...ownStyles.servicesWrapper }}>
+		<View style={{ ...ownStyles.itemsWrapper }}>
 			{details && details?.map((detail, index) => {
 				return (
 					<DetailItem detail={detail} detailIndex={index} key={detail.sdid} setSdidToRemove={setSdidToRemove} setShowDeleteConfirm={setShowDeleteConfirm} />

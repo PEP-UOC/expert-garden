@@ -14,8 +14,7 @@ import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootActi
 
 //Components
 import { SafeAreaView, ScrollView, View, KeyboardAvoidingView, Platform } from 'react-native'
-import { Divider, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
+import { Layout } from '@ui-kitten/components';
 import { SeparatorTopSection } from '../../../components/Separators/TopSection'
 import { TitleScreen } from '../../../components/Titles/Screen'
 import { BtnPrimary } from '../../../components/Buttons/Primary'
@@ -23,11 +22,12 @@ import { BtnSecondary } from '../../../components/Buttons/Secondary'
 import { ImgWithPicker } from '../../../components/Images/WithPicker'
 import { GardenDataForm } from './components/GardenData'
 import { DetailsList } from './components/DetailsList'
+import { NavigationTop } from '../../../components/Navigation/Top'
+import { NavigationBackButton } from '../../../components/Navigation/BackButton'
 
 //Icons
 import { AddIcon } from '../../../assets/icons/Add'
 import { SaveIcon } from '../../../assets/icons/Save'
-import { BackIcon } from '../../../assets/icons/Back'
 
 //Lodash
 import { toLower, upperFirst } from 'lodash';
@@ -55,15 +55,6 @@ export const GardenAddScreen = ({ debug, navigation, route }) => {
 	//const garden = {};
 	const { loading: gardenLoading, result: garden, error: gardenError } = useFirebaseGetOne(debug, 'gardens', 'gid', gid);
 	const [saveChanges] = useFirebaseSaveAllChanges(debug);
-
-	//Navigation
-	const BackAction = () => (
-		<TopNavigationAction icon={BackIcon} onPress={navigateBack} />
-	);
-
-	const navigateBack = () => {
-		navigation.goBack();
-	};
 
 	//State
 	const [loadComponents, setLoadComponents] = useState(false);
@@ -99,12 +90,10 @@ export const GardenAddScreen = ({ debug, navigation, route }) => {
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
 				<View style={{ flex: 1, justifyContent: "space-around" }}>
-					<TopNavigation title={'Añadir nuevo Jardín'} alignment='center' accessoryLeft={BackAction} />
-					<Divider />
+					<NavigationTop title={'Añadir nuevo Jardín'} />
 					<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 						contentContainerStyle={{ ...gloStyles.scrollView }}>
 						<Layout style={{ ...gloStyles.layout }}>
-							<SeparatorTopScreen hasTopNavigation={true} />
 							<View style={{ ...gloStyles.view }}>
 								{loadComponents ?
 									(
@@ -115,23 +104,30 @@ export const GardenAddScreen = ({ debug, navigation, route }) => {
 												{{
 													'client': (
 														<>
-															{Platform.OS === "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.name })} />}
+															{Platform.OS === "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.name })} btnStyle={{ marginBottom: 30 }} />}
 
-															{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+															{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 30 }} />}
+
+															<NavigationBackButton show={Platform.OS === "web"} btnStyle={{ marginBottom: 30 }} />
 														</>
 													),
 													'business': (
 														<>
-															{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+															{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 30 }} />}
+
+															<NavigationBackButton show={Platform.OS === "web"} btnStyle={{ marginBottom: 30 }} />
 														</>
 													),
 													'worker': (
 														<>
-															{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+															{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 30 }} />}
+
+															<NavigationBackButton show={Platform.OS === "web"} btnStyle={{ marginBottom: 30 }} />
 														</>
 													)
 												}[user?.role]}
 											</View>
+
 											<View style={{ ...gloStyles.section.secondary }}>
 												<SeparatorTopSection />
 												{{
@@ -139,33 +135,37 @@ export const GardenAddScreen = ({ debug, navigation, route }) => {
 														<>
 															<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
 
-															{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+															{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 15, marginTop: 15 }} />}
 
-															{Platform.OS !== "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.name })} />}
+															{Platform.OS !== "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.name })} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
 
 															<DetailsList gid={gid || ''} gardenIndex={gardenIndex || 0} />
+
+															<NavigationBackButton show={Platform.OS !== "web"} />
 														</>
 													),
 													'business': (
 														<>
-															{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
-
 															<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
 
-															{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+															{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
+
+															<NavigationBackButton show={Platform.OS !== "web"} />
 														</>
 													),
 													'worker': (
 														<>
-															{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
 
 															<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
 
-															{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} />}
+															{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
+
+															<NavigationBackButton show={Platform.OS !== "web"} />
 														</>
 													)
 												}[user?.role]}
-											</View></>
+											</View>
+										</>
 									)
 									: null}
 							</View>

@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import Constants from 'expo-constants';
 
 //Components
-import { View } from 'react-native'
+import { View, TouchableWithoutFeedback } from 'react-native'
 import { Text, Icon } from '@ui-kitten/components';
 
 //Styles
@@ -19,7 +19,7 @@ import Device from '../../libs/react-native-device-detection';
 
 
 // eslint-disable-next-line no-unused-vars
-export const TitleSection = ({ debug, exterStyles, icon, primaryText, secondaryText, secondaryTextMain }) => {
+export const TitleSectionWithNavigation = ({ debug, exterStyles, icon, primaryText, secondaryText, secondaryTextMain, iconNav, navTo }) => {
 
 	//Styles
 	const gloStyles = useStyleSheet(globalStyles);
@@ -30,16 +30,29 @@ export const TitleSection = ({ debug, exterStyles, icon, primaryText, secondaryT
 			{
 				...ownStyles?.sectionWrapper,
 				...exterStyles?.wrapper,
-				alignItems: 'flex-start', alignSelf: 'flex-start'
+				alignItems: 'flex-start', alignSelf: 'flex-start', width: '100%'
 			}
 		}>
 			<View style={
 				{
-					flexDirection: 'row', alignItems: 'center', width: '100%'
+					flexDirection: 'row', alignItems: 'center', width: '100%', paddingRight: 0, cursor: 'pointer'
 				}
 			}>
 				{!Device.isPhone && icon !== '' && <Icon width={37} height={37} name={icon} fill='#094c3f' />}
-				<Text category='h2' style={{ ...gloStyles?.h2, ...ownStyles?.sectionText, ...exterStyles?.primaryText }}>{primaryText}</Text>
+				<TouchableWithoutFeedback
+					onPress={() => {
+						navTo()
+					}}>
+					<Text category='h2' style={{ ...gloStyles?.h2, ...ownStyles?.sectionText, ...exterStyles?.primaryText, flex: 1 }}>{primaryText}</Text>
+				</TouchableWithoutFeedback>
+
+				{/*ICONO ELIMINAR*/}
+				<TouchableWithoutFeedback
+					onPress={() => {
+						navTo()
+					}}>
+					<Icon width={37} height={37} name={iconNav} fill='#094c3f' />
+				</TouchableWithoutFeedback>
 			</View>
 
 			<Text
@@ -54,17 +67,21 @@ export const TitleSection = ({ debug, exterStyles, icon, primaryText, secondaryT
 	)
 };
 
-TitleSection.propTypes = {
+TitleSectionWithNavigation.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	exterStyles: PropTypes.object.isRequired,
 	icon: PropTypes.string,
 	primaryText: PropTypes.string.isRequired,
 	secondaryText: PropTypes.string.isRequired,
 	secondaryTextMain: PropTypes.bool.isRequired,
+	iconNav: PropTypes.string,
+	navTo: PropTypes.func,
 };
 
-TitleSection.defaultProps = {
+TitleSectionWithNavigation.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 	exterStyles: { primaryText: {}, secondaryText: {} },
 	secondaryTextMain: false,
+	iconNav: 'chevron-right-outline',
+	navTo: () => console.log('🔴 navTo NO INDICADO'),
 };

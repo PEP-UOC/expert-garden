@@ -10,6 +10,7 @@ import globalStyles from '../../../styles/globalStyles'
 //import styles from './styles'
 
 //Device Detect
+import Device from '../../../libs/react-native-device-detection';
 import { Platform } from 'react-native';
 
 //Hooks
@@ -72,9 +73,9 @@ export const CompanyRequestScreen = ({ debug, navigation, route }) => {
 							<View style={{ ...gloStyles.view }}>
 
 								<View style={{ ...gloStyles.section.primary }}>
-									<TitleScreen icon={'clock-outline'} exterStyles={{ wrapper: { marginBottom: 35 } }} primaryText={'Empresas'} secondaryText={'🚨 Debido a que en estos momentos hay pocas empresas disponibles para realizar el trabajo cerca de tí, la selección de empresas en este punto será automática.'} />
+									<TitleScreen icon={'pantone-outline'} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 20 : 30 } }} primaryText={'Empresas'} secondaryText={'🚨 Debido a que en estos momentos hay pocas empresas disponibles para realizar el trabajo cerca de tí, la selección de empresas en este punto será automática.'} />
 
-									<View style={{ paddingLeft: 60 }}>
+									<View style={{ paddingLeft: 45 }}>
 										{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar servicio"} onPress={confirmService} />}
 									</View>
 								</View>

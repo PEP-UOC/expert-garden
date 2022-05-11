@@ -6,7 +6,8 @@ import Device from '../../libs/react-native-device-detection';
 
 const styles = StyleService.create({
 	wrapper: {
-		marginBottom: 15,
+		marginTop: 0,
+		marginBottom: 0,
 		width: '100%',
 	},
 	logo: {

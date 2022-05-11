@@ -19,7 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 //Components
 import { View } from 'react-native'
 import { Text, Button, ListItem } from '@ui-kitten/components';
-import { TitleSection } from '../../../../components/Titles/Section'
+import { TitleSectionWithNavigation } from '../../../../components/Titles/SectionWithNavigation'
 
 //Icons
 import { ChevronRightIcon } from '../../../../assets/icons/ChevronRight'
@@ -28,8 +28,11 @@ import { ChevronRightIcon } from '../../../../assets/icons/ChevronRight'
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
+//Data
+import { servicesTypes } from '../../../../data/servicesTypes'
+
 // eslint-disable-next-line no-unused-vars
-export const ServicesList = ({ debug, type }) => {
+export const ServicesList = ({ debug, type, limit, showTitle }) => {
 
 	const navigation = useNavigation();
 
@@ -44,6 +47,7 @@ export const ServicesList = ({ debug, type }) => {
 	//State
 	const [services, setServices] = useState([]);
 	const [title, setTitle] = useState(undefined);
+	const [noItems, setNoItems] = useState(undefined);
 	const [icon, setIcon] = useState('');
 
 	useEffect(() => {
@@ -53,10 +57,17 @@ export const ServicesList = ({ debug, type }) => {
 			switch (type) {
 				case 'requested':
 					setTitle('Servicios solicitados')
+					setNoItems('Todavía no has solicitado ningún servicio')
 					setIcon('inbox-outline')
 
 					if (auth().currentUser) {
-						firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDate", "==", null).orderBy("requestDateTime", "desc").limit(3)
+						firestore().collection("services")
+							.where("uid", "==", auth()?.currentUser?.uid)
+							.where("confirmationDate", "==", null)
+							.where("cancelationDate", "==", null)
+							.where("isConfigured", "==", true)
+							.orderBy("requestDateTime", "desc")
+							.limit(limit)
 							.onSnapshot(services => {
 								if (!services.empty) {
 									const SERVICES = [];
@@ -76,10 +87,17 @@ export const ServicesList = ({ debug, type }) => {
 					break;
 				case 'inProgress':
 					setTitle('Servicios en curso')
+					setNoItems('Todavía no tienes ningún servicio en curso')
 					setIcon('play-circle-outline')
 
 					if (auth().currentUser) {
-						firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
+						firestore().collection("services")
+							.where("uid", "==", auth()?.currentUser?.uid)
+							.where("confirmationDateTime", "!=", null)
+							.where("cancelationDate", "==", null)
+							.where("isConfigured", "==", true)
+							.orderBy("confirmationDateTime", "desc")
+							.limit(limit)
 							.onSnapshot(services => {
 								if (!services.empty) {
 									const SERVICES = [];
@@ -99,10 +117,17 @@ export const ServicesList = ({ debug, type }) => {
 					break;
 				case 'inProgressPunctual':
 					setTitle('Servicios en curso puntuales')
+					setNoItems('Todavía no tienes ningún servicio puntual en curso')
 					setIcon('checkmark-circle-outline')
 
 					if (auth().currentUser) {
-						firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
+						firestore().collection("services")
+							.where("uid", "==", auth()?.currentUser?.uid)
+							.where("confirmationDateTime", "!=", null)
+							.where("cancelationDate", "==", null)
+							.where("isConfigured", "==", true)
+							.orderBy("confirmationDateTime", "desc")
+							.limit(limit)
 							.onSnapshot(services => {
 								if (!services.empty) {
 									const SERVICES = [];
@@ -122,10 +147,17 @@ export const ServicesList = ({ debug, type }) => {
 					break;
 				case 'inProgressRecurrent':
 					setTitle('Servicios en curso recurrentes')
+					setNoItems('Todavía no tienes ningún servicio recurrente en curso')
 					setIcon('clock-outline')
 
 					if (auth().currentUser) {
-						firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
+						firestore().collection("services")
+							.where("uid", "==", auth()?.currentUser?.uid)
+							.where("confirmationDateTime", "!=", null)
+							.where("cancelationDate", "==", null)
+							.where("isConfigured", "==", true)
+							.orderBy("confirmationDateTime", "desc")
+							.limit(limit)
 							.onSnapshot(services => {
 								if (!services.empty) {
 									const SERVICES = [];
@@ -141,11 +173,47 @@ export const ServicesList = ({ debug, type }) => {
 					}
 					break;
 				case 'past':
-					setTitle('Servicios anteriores')
+					setTitle('Servicios finalizados')
+					setNoItems('Todavía no tienes ningún servicio finalizado')
 					setIcon('shopping-bag-outline')
 
 					if (auth().currentUser) {
-						firestore().collection("services").where("uid", "==", auth()?.currentUser?.uid).where("confirmationDateTime", "!=", null).orderBy("confirmationDateTime", "desc").limit(3)
+						firestore().collection("services")
+							.where("uid", "==", auth()?.currentUser?.uid)
+							.where("confirmationDateTime", "!=", null)
+							.where("cancelationDate", "==", null)
+							.where("isConfigured", "==", true)
+							.orderBy("confirmationDateTime", "desc")
+							.limit(limit)
+							.onSnapshot(services => {
+								if (!services.empty) {
+									const SERVICES = [];
+									services.forEach(service => {
+										SERVICES.push(service.data())
+									})
+									console.log(`🌳 SELI - Servicios anteriores del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+
+									if (isMounted) {
+										setServices(SERVICES)
+									}
+								}
+							})
+					} else {
+						setServices([])
+					}
+					break;
+				case 'cancelated':
+					setTitle('Servicios cancelados')
+					setNoItems('Todavía no tienes ningún servicio cancelado')
+					setIcon('slash-outline')
+
+					if (auth().currentUser) {
+						firestore().collection("services")
+							.where("uid", "==", auth()?.currentUser?.uid)
+							.where("cancelationDateTime", "!=", null)
+							.where("isConfigured", "==", true)
+							.orderBy("cancelationDateTime", "desc")
+							.limit(limit)
 							.onSnapshot(services => {
 								if (!services.empty) {
 									const SERVICES = [];
@@ -184,16 +252,26 @@ export const ServicesList = ({ debug, type }) => {
 		});
 	};
 
+	const navigateServiceList = (type) => {
+		navigation.navigate('Services', {
+			screen: 'ServiceListScreen',
+			params: { type },
+		});
+	};
+
 	//List
 	const RenderItem = ({ item }) => {
-		const title = item.details.reduce((acc, item) => { return acc + item.type + ' ' }, '')
-
+		let title = item.details.reduce((acc, item) => {
+			return `${acc}${servicesTypes.find((type) => type.identifier === item?.type)?.label} ${item?.type !== 'CREATE_GARDEN' ? '→ ' + servicesTypes.find((type) => type.identifier === item?.type)?.step1types.find((type) => type.identifier === item?.step1)?.label : ''} / `
+		}, '')
+		title = title.substring(0, title.length - 3)
 		return (
 			<ListItem
 				onPress={() => navigateServiceResume(item.sid)}
 				title={`${title}`}
-				description={`Solicitado el ${item.requestDate} para el día ${item?.dates?.length > 0 ? item.dates[0].date : ''} `}
+				description={Device?.isPhone ? `Solicitado el día ${item.requestDate}` : ''}
 				accessoryRight={renderItemAccessory(item)}
+				style={{ paddingRight: 0 }}
 			/>
 		)
 	};
@@ -210,22 +288,23 @@ export const ServicesList = ({ debug, type }) => {
 				: <Text category='p1' style={{ marginRight: 10 }}>{item?.requestDate}</Text>
 			}
 			<Button onPress={() => navigateServiceResume(item?.sid)}
-				accessoryRight={ChevronRightIcon} size='giant' appearance='ghost' />
+				accessoryRight={ChevronRightIcon} size='giant' appearance='ghost' style={{ paddingRight: 0 }} />
 		</>
 	);
 
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
-			<TitleSection icon={icon || ''} primaryText={title || ''} secondaryText={''} />
+			{showTitle && <TitleSectionWithNavigation icon={icon || ''} primaryText={title || ''} secondaryText={''} navTo={() => navigateServiceList(type)} />}
+
 			{services?.length
 				? services?.map((service) => (
 					<View key={service.sid} style={{ ...ownStyles?.item }}>
 						<RenderItem item={service} />
 					</View>
 				))
-				: <View key={`empty-${type}`}>
+				: <View key={`empty-${type}`} style={{ ...ownStyles?.item, paddingBottom: Device?.isPhone ? 0 : 24 }}>
 					<ListItem
-						title={'Todavía no has solicitado ningún servicio'}
+						title={noItems}
 					/>
 				</View>
 			}
@@ -236,8 +315,12 @@ export const ServicesList = ({ debug, type }) => {
 ServicesList.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	type: PropTypes.string.isRequired,
+	limit: PropTypes.number.isRequired,
+	showTitle: PropTypes.bool.isRequired,
 };
 
 ServicesList.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
+	limit: 3,
+	showTitle: true,
 };

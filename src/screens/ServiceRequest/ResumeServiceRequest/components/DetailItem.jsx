@@ -65,7 +65,7 @@ export const DetailItem = ({ debug, detail, detailIndex, setSdidToRemove, setSho
 	}
 
 	return (
-		<View key={values?.sdid} style={{ ...ownStyles.serviceWrapper }}>
+		<View key={values?.sdid} style={{ ...ownStyles.itemWrapper }}>
 			<View style={{ ...ownStyles.viewWrapperTop }}>
 
 				{/*DETALLE*/}

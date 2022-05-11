@@ -209,6 +209,71 @@ export function useFirebaseSaveService(debug) {
 		}
 	};
 
+	const handleCancelService = async (sid) => {
+		console.log(`🕳  FSSD - Dispatch Loading START`);
+		dispatch(setLoadingMessage(debug ? '🔧 Cancelando' : 'Cancelando'));
+
+		setIsEdit(isEdit);
+
+		console.log('🚨 FSSD - Service toCancel', sid);
+
+		try {
+			if (auth().currentUser) {
+				const now = moment();
+				const cancelationDateTime = now.format();
+				const cancelationDate = now.format('DD-MM-YYYY');
+				const cancelationTime = now.format('HH:mm');
+
+				firestore()
+					.collection('services')
+					.doc(sid)
+					.update({
+						cancelationDateTime,
+						cancelationDate,
+						cancelationTime,
+					})
+					.then(() => {
+						console.log(`🚧 FSSD - Service Cancelated ${sid}`);
+						setItemToEdit(false);
+						setSaved(true);
+						dispatch(setErrorMessage(false));
+						dispatch(resetServiceTemporal());
+					})
+					.catch((error) => {
+						console.error(error.message);
+						console.log(`🕳  FSSD - Dispatch Loading STOP`);
+						dispatch(setLoadingMessage(false));
+						dispatch(
+							setErrorMessage(
+								debug
+									? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+									: firebaseErrorCodeMap(error.code),
+							),
+						);
+					});
+			} else {
+				dispatch(
+					setErrorMessage(
+						debug ? 'NO HAY SESIÓN. Vuelva a iniciar sessión' : 'Vuelva a iniciar sessión',
+					),
+				);
+			}
+		} catch (error) {
+			console.error(error.message);
+			setSaved(false);
+			dispatch(
+				setErrorMessage(
+					debug
+						? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+						: firebaseErrorCodeMap(error.code),
+				),
+			);
+		} finally {
+			console.log(`🕳  FSSD - Dispatch Loading STOP`);
+			dispatch(setLoadingMessage(false));
+		}
+	};
+
 	useEffect(() => {
 		let isMounted = true;
 		const updateData = async () => {
@@ -319,5 +384,6 @@ export function useFirebaseSaveService(debug) {
 		handleRemoveServiceDetail,
 		handleSaveServiceDetail,
 		handleSaveService,
+		handleCancelService,
 	];
 }

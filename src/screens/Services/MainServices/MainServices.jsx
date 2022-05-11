@@ -23,6 +23,7 @@ import { ServicesList } from './components/List'
 
 //Icons
 import { AddIcon } from '../../../assets/icons/Add'
+import { TruckIcon } from '../../../assets/icons/Truck'
 
 // eslint-disable-next-line no-unused-vars
 export const MainServicesScreen = ({ debug, navigation }) => {
@@ -59,7 +60,7 @@ export const MainServicesScreen = ({ debug, navigation }) => {
 									{
 										{
 											'client': (
-												<BtnWithLogo icon={AddIcon} text={"Solicita un servicio"} onPress={navigateServiceRequest} />
+												<BtnWithLogo icon={TruckIcon} text={"Solicita un nuevo servicio"} onPress={navigateServiceRequest} />
 											),
 											'business': (
 												<BtnWithLogo icon={AddIcon} text={"Próximos servicios"} onPress={navigateServiceRequest} />
@@ -76,17 +77,18 @@ export const MainServicesScreen = ({ debug, navigation }) => {
 										{
 											'client': (
 												<>
-													<ServicesList type={'requested'} />
-													<ServicesList type={'inProgressPunctual'} />
-													<ServicesList type={'inProgressRecurrent'} />
-													<ServicesList type={'past'} />
+													<ServicesList type={'requested'} limit={3} />
+													<ServicesList type={'inProgressPunctual'} limit={3} />
+													<ServicesList type={'inProgressRecurrent'} limit={3} />
+													<ServicesList type={'past'} limit={3} />
+													<ServicesList type={'cancelated'} limit={3} />
 												</>
 											),
 											'business': (
-												<ServicesList type={'requested'} />
+												<ServicesList type={'requested'} limit={3} />
 											),
 											'worker': (
-												<ServicesList type={'requested'} />
+												<ServicesList type={'requested'} limit={3} />
 											)
 										}[user?.role]
 									}

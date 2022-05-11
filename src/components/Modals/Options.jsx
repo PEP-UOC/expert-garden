@@ -19,7 +19,7 @@ import { BtnPrimary } from '../../components/Buttons/Primary'
 import { BtnSecondary } from '../../components/Buttons/Secondary'
 
 // eslint-disable-next-line no-unused-vars
-export const ModalOptions = ({ debug, mainText, show, setShow, option1text, option1onPress, option2text, option2onPress, backdropPress }) => {
+export const ModalOptions = ({ debug, mainText, show, setShow, option1text, option1onPress, option2text, option2onPress, backdropPress, option1status }) => {
 
 	//Styles
 	//const gloStyles = useStyleSheet(globalStyles);
@@ -36,7 +36,7 @@ export const ModalOptions = ({ debug, mainText, show, setShow, option1text, opti
 						...ownStyles.fullScreen.text,
 						marginBottom: 15,
 					}}>{mainText}</Text>
-					<BtnPrimary size={'small'} text={option1text} onPress={option1onPress} btnStyle={{ marginBottom: 5 }} />
+					<BtnPrimary size={'small'} text={option1text} onPress={option1onPress} btnStyle={{ marginBottom: 20 }} status={option1status} />
 					<BtnSecondary size={'small'} text={option2text} onPress={option2onPress} btnStyle={{ marginBottom: 0 }} />
 
 					{/*<View style={{ alignItems: 'center' }}>
@@ -57,9 +57,11 @@ ModalOptions.propTypes = {
 	option1onPress: PropTypes.func.isRequired,
 	option2text: PropTypes.string.isRequired,
 	option2onPress: PropTypes.func.isRequired,
-	backdropPress: PropTypes.func
+	backdropPress: PropTypes.func,
+	option1status: PropTypes.string
 };
 
 ModalOptions.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
+	option1status: 'primary',
 };
