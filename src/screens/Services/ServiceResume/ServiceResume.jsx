@@ -45,7 +45,6 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 	//Hooks
 	// eslint-disable-next-line no-unused-vars
 	const { loading: serviceLoading, result: service, error: serviceError } = useFirebaseGetOne(debug, 'services', 'sid', sid);
-	console.log('service', service)
 
 	//Styles
 	const gloStyles = useStyleSheet(globalStyles);

@@ -23,7 +23,7 @@ import { SeparatorTopSection } from '../../components/Separators/TopSection'
 import { TitleScreen } from '../../components/Titles/Screen'
 import { BtnWithLogo } from '../../components/Buttons/WithLogo'
 import { EmailVerify } from './components/EmailVerify'
-import { NotificationsList } from '../Notifications/components/List'
+import { NotificationsList } from '../Notifications/MainNotifications/components/List'
 import { ServicesList } from '../Services/MainServices/components/List'
 
 //Icons
@@ -42,6 +42,12 @@ export const HomeScreen = ({ debug, navigation }) => {
 	//Navigation
 	const navigateServiceRequest = () => {
 		navigation.navigate('ServiceRequest');
+	};
+	const navigateNextServices = () => {
+		navigation.navigate('Services', {
+			screen: 'ServiceListScreen',
+			params: { type: 'next' },
+		});
 	};
 
 	useEffect(() => {
@@ -78,7 +84,7 @@ export const HomeScreen = ({ debug, navigation }) => {
 												<BtnWithLogo icon={TruckIcon} text={"Solicita un nuevo servicio"} onPress={navigateServiceRequest} />
 											),
 											'business': (
-												<BtnWithLogo icon={TruckIcon} text={"Próximos servicios"} onPress={navigateServiceRequest} />
+												<BtnWithLogo icon={TruckIcon} text={"Próximos servicios"} onPress={navigateNextServices} />
 											),
 											'worker': (
 												<BtnWithLogo icon={TruckIcon} text={"Empezar a trabajar"} onPress={navigateServiceRequest} />
@@ -93,16 +99,23 @@ export const HomeScreen = ({ debug, navigation }) => {
 										{
 											'client': (
 												<>
-													<NotificationsList type={'last'} />
-													<ServicesList type={'requested'} limit={3} />
-													<ServicesList type={'inProgress'} limit={3} />
+													<NotificationsList type={'new'} limit={3} showLong={true} />
+													<ServicesList type={'requested'} limit={3} showLong={true} />
+													<ServicesList type={'inProgress'} limit={3} showLong={true} />
 												</>
 											),
 											'business': (
-												<ServicesList type={'requested'} limit={3} />
+												<>
+													<NotificationsList type={'new'} limit={3} showLong={true} />
+													<ServicesList type={'received'} limit={3} showLong={true} />
+													<ServicesList type={'next'} limit={3} showLong={true} />
+												</>
 											),
 											'worker': (
-												<ServicesList type={'requested'} limit={3} />
+												<>
+													<NotificationsList type={'new'} limit={3} showLong={true} />
+													<ServicesList type={'next'} limit={3} showLong={true} />
+												</>
 											)
 										}[user?.role]
 									}

@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from "prop-types";
-
-//Constants
-import Constants from 'expo-constants';
 
 //Navigation
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BottomNavigation, BottomNavigationTab } from '@ui-kitten/components';
 
 //Store
 import { useDispatch, useSelector } from 'react-redux'
@@ -19,43 +14,16 @@ import { HomeScreen } from '../screens/Home/Home';
 import { ProfileNavigation } from './ScreensNavigation/ProfileNavigation';
 import { ServiceRequestNavigation } from './ScreensNavigation/ServiceRequestNavigation';
 import { ServicesNavigation } from './ScreensNavigation/ServicesNavigation';
-import { NotificationsScreen } from '../screens/Notifications/Notifications';
-
-//Icons
-import { HomeIcon } from '../assets/icons/Home'
-import { PersonIcon } from '../assets/icons/Person'
-import { AddIcon } from '../assets/icons/Add'
-import { TruckIcon } from '../assets/icons/Truck'
-import { BellIcon } from '../assets/icons/Bell'
-
-
-// eslint-disable-next-line no-unused-vars
-const BottomTabBar = ({ debug, navigation, state }) => (
-	<BottomNavigation
-		selectedIndex={state.index}
-		onSelect={index => navigation.navigate(state.routeNames[index])}>
-		<BottomNavigationTab icon={HomeIcon} />
-		<BottomNavigationTab icon={PersonIcon} />
-		<BottomNavigationTab icon={AddIcon} />
-		<BottomNavigationTab icon={TruckIcon} />
-		<BottomNavigationTab icon={BellIcon} />
-	</BottomNavigation>
-);
-
-BottomTabBar.propTypes = {
-	debug: PropTypes.bool.isRequired,
-	navigation: PropTypes.object.isRequired,
-	state: PropTypes.object.isRequired
-};
-
-BottomTabBar.defaultProps = {
-	debug: Constants.manifest.extra.debug || false,
-};
+import { NotificationsNavigation } from './ScreensNavigation/NotificationsNavigation';
 
 //Firebase
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import "firebase/compat/firestore";
+
+//BottomNavs
+import { ClientBottomTabBar } from './BottomNavs/Client'
+import { BusinessBottomTabBar } from './BottomNavs/Business'
 
 const Tabs = createBottomTabNavigator()
 export const TabsNavigation = () => {
@@ -67,6 +35,7 @@ export const TabsNavigation = () => {
 
 	//Store
 	const isLoggedIn = useSelector(state => state.rootReducer.isLoggedIn);
+	const user = useSelector((state) => state.userReducer.user);
 
 	//State
 	const [dispatched, setDispatched] = useState(false);
@@ -147,7 +116,9 @@ export const TabsNavigation = () => {
 						console.log('🩸 TNAV - error', error)
 					})
 				} else {
-					startHandler();
+					if (isMounted) {
+						startHandler();
+					}
 				}
 			});
 		}
@@ -190,13 +161,24 @@ export const TabsNavigation = () => {
 
 	return (
 		<Tabs.Navigator initialRouteName="Home" screenOptions={{ unmountOnBlur: true, headerShown: false }} tabBar={props => {
-			return <BottomTabBar {...props} />
+			switch (user.role) {
+				case 'client':
+					return <ClientBottomTabBar {...props} />
+				case 'business':
+					return <BusinessBottomTabBar {...props} />
+				case 'worker':
+					return <ClientBottomTabBar {...props} />
+				default:
+					return <ClientBottomTabBar {...props} />
+			}
 		}}>
 			<Tabs.Screen name='Home' component={HomeScreen} />
 			<Tabs.Screen name='Profile' component={ProfileNavigation} />
-			<Tabs.Screen name='ServiceRequest' component={ServiceRequestNavigation} />
+			{user.role === 'client' && (
+				<Tabs.Screen name='ServiceRequest' component={ServiceRequestNavigation} />
+			)}
 			<Tabs.Screen name='Services' component={ServicesNavigation} />
-			<Tabs.Screen name='Notifications' component={NotificationsScreen} />
+			<Tabs.Screen name='Notifications' component={NotificationsNavigation} />
 		</Tabs.Navigator>
 	)
 };

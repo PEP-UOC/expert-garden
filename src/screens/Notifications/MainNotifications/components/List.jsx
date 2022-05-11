@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import Constants from 'expo-constants';
 
 //Device Detect
-import Device from '../../../libs/react-native-device-detection';
+import Device from '../../../../libs/react-native-device-detection';
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
@@ -18,11 +18,11 @@ import { useNavigation } from '@react-navigation/native';
 //Components
 import { View } from 'react-native'
 import { Text, Button, ListItem } from '@ui-kitten/components';
-import { TitleSectionWithNavigation } from '../../../components/Titles/SectionWithNavigation'
+import { TitleSectionWithNavigation } from '../../../../components/Titles/SectionWithNavigation'
 
 //Icons
-import { RadioOnIcon } from '../../../assets/icons/RadioOn'
-import { RadioOffIcon } from '../../../assets/icons/RadioOff'
+import { RadioOnIcon } from '../../../../assets/icons/RadioOn'
+import { RadioOffIcon } from '../../../../assets/icons/RadioOff'
 
 //Firebase
 import firebase from 'firebase/compat/app';
@@ -32,7 +32,7 @@ import 'firebase/compat/auth';
 import moment from "moment";
 
 // eslint-disable-next-line no-unused-vars
-export const NotificationsList = ({ debug, type }) => {
+export const NotificationsList = ({ debug, type, limit, showTitle, showLong }) => {
 
 	const navigation = useNavigation();
 
@@ -47,18 +47,24 @@ export const NotificationsList = ({ debug, type }) => {
 	//State
 	const [notifications, setNotifications] = useState([]);
 	const [title, setTitle] = useState(undefined);
+	const [longTitle, setLongTitle] = useState('');
 	const [noItems, setNoItems] = useState(undefined);
 	const [icon, setIcon] = useState('');
 
 	useEffect(() => {
+		let isMounted = true;
 		switch (type) {
 			case 'last':
-				setTitle('Notificaciones')
+				setTitle('Todas')
+				setLongTitle('Todas las notificaciones')
 				setNoItems('Todavía no has recibido ninguna notificación')
 				setIcon('bell-outline')
 
 				if (auth().currentUser) {
-					firestore().collection("notifications").where("uidReceiver", "==", auth()?.currentUser?.uid).orderBy("sendDateTime", "desc").limit(3)
+					firestore().collection("notifications")
+						.where("uidReceiver", "==", auth()?.currentUser?.uid)
+						.orderBy("sendDateTime", "desc")
+						.limit(limit)
 						.onSnapshot(notifications => {
 							if (!notifications.empty) {
 								const NOTIFICATIONS = [];
@@ -66,20 +72,29 @@ export const NotificationsList = ({ debug, type }) => {
 									NOTIFICATIONS.push(notification.data())
 								})
 								console.log(`🐳 NOLI - Notificaciones del usuario ${auth()?.currentUser?.uid}`, NOTIFICATIONS.length)
-								setNotifications(NOTIFICATIONS)
+
+								if (isMounted) {
+									setNotifications(NOTIFICATIONS)
+								}
 							}
 						})
 				} else {
 					setNotifications([])
 				}
 				break;
+
 			case 'new':
 				setTitle('Nuevas')
+				setLongTitle('Nuevas notificaciones')
 				setNoItems('No tienes notificaciones sin leer')
 				setIcon('radio-button-on-outline')
 
 				if (auth().currentUser) {
-					firestore().collection("notifications").where("uidReceiver", "==", auth()?.currentUser?.uid).where("readDateTime", "==", null).orderBy("sendDateTime", "desc").limit(3)
+					firestore().collection("notifications")
+						.where("uidReceiver", "==", auth()?.currentUser?.uid)
+						.where("readDateTime", "==", null)
+						.orderBy("sendDateTime", "desc")
+						.limit(limit)
 						.onSnapshot(notifications => {
 							if (!notifications.empty) {
 								const NOTIFICATIONS = [];
@@ -87,20 +102,29 @@ export const NotificationsList = ({ debug, type }) => {
 									NOTIFICATIONS.push(notification.data())
 								})
 								console.log(`🐳 NOLI - Notificaciones nuevas del usuario ${auth()?.currentUser?.uid}`, NOTIFICATIONS.length)
-								setNotifications(NOTIFICATIONS)
+
+								if (isMounted) {
+									setNotifications(NOTIFICATIONS)
+								}
 							}
 						})
 				} else {
 					setNotifications([])
 				}
 				break;
+
 			case 'read':
 				setTitle('Leídas')
+				setLongTitle('Notificaciones leídas')
 				setNoItems('No tienes notificaciones leídas')
 				setIcon('radio-button-off-outline')
 
 				if (auth().currentUser) {
-					firestore().collection("notifications").where("uidReceiver", "==", auth()?.currentUser?.uid).where("readDateTime", "!=", null).orderBy("readDateTime", "desc").limit(3)
+					firestore().collection("notifications")
+						.where("uidReceiver", "==", auth()?.currentUser?.uid)
+						.where("readDateTime", "!=", null)
+						.orderBy("readDateTime", "desc")
+						.limit(limit)
 						.onSnapshot(notifications => {
 							if (!notifications.empty) {
 								const NOTIFICATIONS = [];
@@ -108,42 +132,59 @@ export const NotificationsList = ({ debug, type }) => {
 									NOTIFICATIONS.push(notification.data())
 								})
 								console.log(`🐳 NOLI - Notificaciones leídas del usuario ${auth()?.currentUser?.uid}`, NOTIFICATIONS.length)
-								setNotifications(NOTIFICATIONS)
+
+								if (isMounted) {
+									setNotifications(NOTIFICATIONS)
+								}
 							}
 						})
 				} else {
 					setNotifications([])
 				}
 				break;
+
 			default:
 				setTitle(undefined)
 				break;
 		}
 
+		return () => {
+			// cancel the subscription
+			isMounted = false;
+		};
+
 	}, []);
 
 	//Navigation
-	const navigateServiceRequest = (nid) => {
-		const now = moment();
-		const readDateTime = now.format();
-		const readDate = now.format("DD-MM-YYYY");
-		const readTime = now.format("HH:mm");
-		firestore().collection("notifications").doc(nid).update({
-			readDateTime,
-			readDate,
-			readTime
+	const navigateNotificationDetail = (nid) => {
+		navigation.navigate('Notifications', {
+			screen: 'NotificationResumeScreen',
+			params: { nid },
 		});
-		navigation.navigate('ServiceRequest');
+	};
+
+	const navigateNotificationsList = (type) => {
+		navigation.navigate('Notifications', {
+			screen: 'NotificationListScreen',
+			params: { type },
+		});
 	};
 
 	//List
 	const RenderItem = ({ item }) => {
+		let time;
+		if (moment().format('DD-MM-YYYY') === item.sendDate) {
+			time = item.sendTime
+		} else {
+			time = item.sendDate
+		}
 		return (
 			<ListItem
-				onPress={() => navigateServiceRequest(item?.nid)}
-				title={`${item.type}`}
-				description={`${item.content}`}
+				onPress={() => navigateNotificationDetail(item?.nid)}
+				title={`${time} - ${item.title}`}
+				description={`${item.body}`}
 				accessoryRight={renderItemAccessory(item?.sendDateTime, item?.readDateTime)}
+				style={{ paddingRight: 0, marginRight: -5 }}
 			/>
 		)
 	};
@@ -162,8 +203,8 @@ export const NotificationsList = ({ debug, type }) => {
 					? null
 					: <Text category='p1' style={{ marginRight: 10 }}>{momento}</Text>
 				}
-				<Button onPress={navigateServiceRequest}
-					accessoryRight={readDateTime ? RadioOffIcon : RadioOnIcon} size='giant' appearance='ghost' />
+				<Button onPress={navigateNotificationDetail}
+					accessoryRight={readDateTime ? RadioOffIcon : RadioOnIcon} size='giant' appearance='ghost' style={{ paddingRight: 0 }} />
 			</>
 		)
 	};
@@ -173,20 +214,14 @@ export const NotificationsList = ({ debug, type }) => {
 		readDateTime: PropTypes.string,
 	};
 
-	const navigateNotificationsList = (type) => {
-		navigation.navigate('Services', {
-			screen: 'ServiceListScreen',
-			params: { type },
-		});
-	};
-
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
-			<TitleSectionWithNavigation icon={icon || ''} primaryText={title || ''} secondaryText={''} navTo={() => navigateNotificationsList(type)} />
+			{showTitle && <TitleSectionWithNavigation icon={icon || ''} primaryText={showLong ? longTitle : title || ''} secondaryText={''} navTo={() => navigateNotificationsList(type)} />}
+
 			{notifications?.length
-				? notifications?.map((service) => (
-					<View key={service.nid} style={{ ...ownStyles?.item }}>
-						<RenderItem item={service} />
+				? notifications?.map((notification) => (
+					<View key={notification.nid} style={{ ...ownStyles?.item }}>
+						<RenderItem item={notification} />
 					</View>
 				))
 				: <View key={`empty-${type}`} style={{ ...ownStyles?.item, paddingBottom: Device?.isPhone ? 0 : 24 }}>
@@ -202,8 +237,14 @@ export const NotificationsList = ({ debug, type }) => {
 NotificationsList.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	type: PropTypes.string.isRequired,
+	limit: PropTypes.number.isRequired,
+	showTitle: PropTypes.bool.isRequired,
+	showLong: PropTypes.bool,
 };
 
 NotificationsList.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
+	limit: 3,
+	showTitle: true,
+	showLong: false,
 };

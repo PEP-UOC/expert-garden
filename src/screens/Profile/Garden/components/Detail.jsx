@@ -54,32 +54,46 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 	//Edit
 	const [autoFindSubType, setAutoFindSubType] = useState(false);
 	useEffect(() => {
+		let isMounted = true;
 		if (gardenDetailId) {
-			setValues(prevValues => {
-				return {
-					...prevValues,
-					gdid: gardenDetail.gdid
-				}
-			})
-			const mainIndex = gardenDetailTypes.findIndex(type => type.identifier === gardenDetail.mainType)
-			setSelectedIndexMainType(new IndexPath(mainIndex))
-			handleChange(gardenDetailTypes[mainIndex]?.identifier, "mainType")
-			setIsEdit(true);
+			if (isMounted) {
+				setValues(prevValues => {
+					return {
+						...prevValues,
+						gdid: gardenDetail.gdid
+					}
+				})
+				const mainIndex = gardenDetailTypes.findIndex(type => type.identifier === gardenDetail.mainType)
+				setSelectedIndexMainType(new IndexPath(mainIndex))
+				handleChange(gardenDetailTypes[mainIndex]?.identifier, "mainType")
+				setIsEdit(true);
+			}
 		}
+		return () => {
+			// cancel the subscription
+			isMounted = false;
+		};
 	}, []);
 
 	useEffect(() => {
+		let isMounted = true;
 		if (gardenDetailId) {
-			const subIndex = listSubType.findIndex(type => type.identifier === gardenDetail.subType)
-			setSelectedIndexSubType(new IndexPath(subIndex))
-			handleChange(listSubType[subIndex]?.identifier, "subType")
-			setValues(prevValues => {
-				return {
-					...prevValues,
-					inputs: gardenDetail.inputs
-				}
-			})
+			if (isMounted) {
+				const subIndex = listSubType.findIndex(type => type.identifier === gardenDetail.subType)
+				setSelectedIndexSubType(new IndexPath(subIndex))
+				handleChange(listSubType[subIndex]?.identifier, "subType")
+				setValues(prevValues => {
+					return {
+						...prevValues,
+						inputs: gardenDetail.inputs
+					}
+				})
+			}
 		}
+		return () => {
+			// cancel the subscription
+			isMounted = false;
+		};
 	}, [autoFindSubType]);
 
 	//Styles
@@ -148,20 +162,34 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 	}
 
 	useEffect(() => {
+		let isMounted = true;
 		if (values?.mainType) {
-			setShowInputs(false)
-			setSelectedIndexSubType()
-			setListSubType(gardenDetailTypes[selectedIndexMainType.row]?.subTypes)
-			setShowSubType(true)
-			setAutoFindSubType(true)
+			if (isMounted) {
+				setShowInputs(false)
+				setSelectedIndexSubType()
+				setListSubType(gardenDetailTypes[selectedIndexMainType.row]?.subTypes)
+				setShowSubType(true)
+				setAutoFindSubType(true)
+			}
 		}
+		return () => {
+			// cancel the subscription
+			isMounted = false;
+		};
 	}, [values.mainType]);
 
 	useEffect(() => {
+		let isMounted = true;
 		if (values?.subType && listSubType?.length) {
-			setListInputs(listSubType[selectedIndexSubType?.row]?.inputs)
-			setShowInputs(true)
+			if (isMounted) {
+				setListInputs(listSubType[selectedIndexSubType?.row]?.inputs)
+				setShowInputs(true)
+			}
 		}
+		return () => {
+			// cancel the subscription
+			isMounted = false;
+		};
 	}, [values.subType]);
 
 	//Input renders

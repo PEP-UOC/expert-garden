@@ -309,11 +309,13 @@ export function useFirebaseSaveService(debug) {
 								);
 							});
 					} else if (originalItemToUpdate?.what === 'companies') {
+						const companiesList = originalItemToUpdate.companies.map((co) => co.uid);
 						firestore()
 							.collection('services')
 							.doc(originalItemToUpdate?.sid)
 							.update({
 								companies: originalItemToUpdate.companies,
+								companiesList,
 								isConfigured: true,
 							})
 							.then(() => {

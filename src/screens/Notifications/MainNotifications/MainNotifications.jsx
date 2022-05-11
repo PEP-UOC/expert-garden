@@ -6,22 +6,22 @@ import Constants from 'expo-constants';
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
-import globalStyles from '../../styles/globalStyles'
+import globalStyles from '../../../styles/globalStyles'
 
 //Store
 import { useSelector, useDispatch } from 'react-redux'
-import { setErrorMessage, setLoadingMessage } from '../../store/root/rootAction';
+import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootAction';
 
 //Components
 import { SafeAreaView, ScrollView, View, KeyboardAvoidingView, Platform } from 'react-native'
 import { Layout } from '@ui-kitten/components';
-import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
-import { SeparatorTopSection } from '../../components/Separators/TopSection'
-import { TitleScreen } from '../../components/Titles/Screen'
+import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
+import { SeparatorTopSection } from '../../../components/Separators/TopSection'
+import { TitleScreen } from '../../../components/Titles/Screen'
 import { NotificationsList } from './components/List'
 
 // eslint-disable-next-line no-unused-vars
-export const NotificationsScreen = ({ debug, navigation }) => {
+export const MainNotificationsScreen = ({ debug, navigation }) => {
 	const dispatch = useDispatch()
 
 	//Styles
@@ -54,15 +54,24 @@ export const NotificationsScreen = ({ debug, navigation }) => {
 										{
 											'client': (
 												<>
-													<NotificationsList type={'new'} />
-													<NotificationsList type={'read'} />
+													<NotificationsList type={'new'} limit={3} />
+													<NotificationsList type={'read'} limit={3} />
+													<NotificationsList type={'last'} limit={3} />
 												</>
 											),
 											'business': (
-												<NotificationsList type={'last'} />
+												<>
+													<NotificationsList type={'new'} limit={3} />
+													<NotificationsList type={'read'} limit={3} />
+													<NotificationsList type={'last'} limit={3} />
+												</>
 											),
 											'worker': (
-												<NotificationsList type={'last'} />
+												<>
+													<NotificationsList type={'new'} limit={3} />
+													<NotificationsList type={'read'} limit={3} />
+													<NotificationsList type={'last'} limit={3} />
+												</>
 											)
 										}[user?.role]
 									}
@@ -77,11 +86,11 @@ export const NotificationsScreen = ({ debug, navigation }) => {
 	)
 };
 
-NotificationsScreen.propTypes = {
+MainNotificationsScreen.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	navigation: PropTypes.object.isRequired,
 };
 
-NotificationsScreen.defaultProps = {
+MainNotificationsScreen.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 };

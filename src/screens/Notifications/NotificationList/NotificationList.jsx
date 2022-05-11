@@ -20,12 +20,12 @@ import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootActi
 import { SafeAreaView, ScrollView, View, KeyboardAvoidingView } from 'react-native'
 import { Layout } from '@ui-kitten/components';
 import { TitleScreen } from '../../../components/Titles/Screen'
-import { ServicesList } from '../MainServices/components/List'
+import { NotificationsList } from '../MainNotifications/components/List'
 import { NavigationTop } from '../../../components/Navigation/Top'
 import { NavigationBackButton } from '../../../components/Navigation/BackButton'
 
 // eslint-disable-next-line no-unused-vars
-export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
+export const NotificationListScreen = ({ debug, navigation, route, showLong }) => {
 	const dispatch = useDispatch()
 
 	const type = route.params.type;
@@ -43,59 +43,24 @@ export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
 
 		if (isMounted) {
 			switch (type) {
-				case 'requested':
-					setTitle('Solicitados')
-					setLongTitle('Servicios solicitados')
-					setIcon('inbox-outline')
+				case 'last':
+					setTitle('Todas')
+					setLongTitle('Todas las notificaciones')
+					setIcon('bell-outline')
 					break;
-				case 'inProgress':
-					setTitle('En curso')
-					setLongTitle('Servicios en curso')
-					setIcon('play-circle-outline')
+				case 'new':
+					setTitle('Nuevas')
+					setLongTitle('Nuevas notificaciones')
+					setIcon('radio-button-on-outline')
 					break;
-				case 'inProgressPunctual':
-					setTitle('En curso puntuales')
-					setLongTitle('Servicios en curso puntuales')
-					setIcon('checkmark-circle-outline')
-					break;
-				case 'inProgressRecurrent':
-					setTitle('En curso recurrentes')
-					setLongTitle('Servicios en curso recurrentes')
-					setIcon('clock-outline')
-					break;
-				case 'past':
-				case 'pastBusiness':
-					setTitle('Finalizados')
-					setLongTitle('Servicios finalizados')
-					setIcon('shopping-bag-outline')
-					break;
-				case 'cancelated':
-				case 'cancelatedBusiness':
-					setTitle('Cancelados')
-					setLongTitle('Servicios cancelados')
-					setIcon('slash-outline')
-					break;
-				case 'received':
-					setTitle('Recibidos')
-					setLongTitle('Servicios recibidos')
-					setIcon('inbox-outline')
-					break;
-				case 'next':
-					setTitle('Futuros')
-					setLongTitle('Servicios futuros')
-					setIcon('rewind-right-outline')
-					break;
-				case 'nextPunctual':
-					setTitle('Futuros puntuales')
-					setLongTitle('Servicios futuros puntuales')
-					setIcon('checkmark-circle-outline')
-					break;
-				case 'nextRecurrent':
-					setTitle('Futuros recurrentes')
-					setLongTitle('Servicios futuros recurrentes')
-					setIcon('clock-outline')
+				case 'read':
+					setTitle('Leídas')
+					setLongTitle('Notificaciones leídas')
+					setIcon('radio-button-off-outline')
 					break;
 				default:
+					setTitle(undefined)
+					setIcon('')
 					break;
 			}
 		}
@@ -108,7 +73,7 @@ export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
 	}, []);
 
 	useEffect(() => {
-		console.log(`🕳  SERL - Dispatch Loading STOP`)
+		console.log(`🕳  NOLI - Dispatch Loading STOP`)
 		dispatch(setLoadingMessage(false))
 		dispatch(setErrorMessage(false))
 	}, []);
@@ -130,7 +95,7 @@ export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
 
 								</View>
 								<View style={{ ...gloStyles.section.secondary }}>
-									<ServicesList type={type} limit={10000} showTitle={false} />
+									<NotificationsList type={type} limit={10000} showTitle={false} />
 									<NavigationBackButton show={Platform.OS !== "web"} btnStyle={{ marginTop: 0 }} />
 								</View>
 
@@ -143,14 +108,14 @@ export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
 	)
 };
 
-ServiceListScreen.propTypes = {
+NotificationListScreen.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	navigation: PropTypes.object.isRequired,
 	route: PropTypes.object.isRequired,
 	showLong: PropTypes.bool,
 };
 
-ServiceListScreen.defaultProps = {
+NotificationListScreen.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 	showLong: true,
 };

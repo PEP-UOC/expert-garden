@@ -22,7 +22,6 @@ import { BtnWithLogo } from '../../../components/Buttons/WithLogo'
 import { ServicesList } from './components/List'
 
 //Icons
-import { AddIcon } from '../../../assets/icons/Add'
 import { TruckIcon } from '../../../assets/icons/Truck'
 
 // eslint-disable-next-line no-unused-vars
@@ -62,12 +61,8 @@ export const MainServicesScreen = ({ debug, navigation }) => {
 											'client': (
 												<BtnWithLogo icon={TruckIcon} text={"Solicita un nuevo servicio"} onPress={navigateServiceRequest} />
 											),
-											'business': (
-												<BtnWithLogo icon={AddIcon} text={"Próximos servicios"} onPress={navigateServiceRequest} />
-											),
-											'worker': (
-												<BtnWithLogo icon={AddIcon} text={"Empezar a trabajar"} onPress={navigateServiceRequest} />
-											)
+											'business': (null),
+											'worker': (null)
 										}[user?.role]
 									}
 								</View>
@@ -85,10 +80,19 @@ export const MainServicesScreen = ({ debug, navigation }) => {
 												</>
 											),
 											'business': (
-												<ServicesList type={'requested'} limit={3} />
+												<>
+													<ServicesList type={'received'} limit={3} />
+													<ServicesList type={'nextPunctual'} limit={3} />
+													<ServicesList type={'nextRecurrent'} limit={3} />
+													<ServicesList type={'pastBusiness'} limit={3} />
+													<ServicesList type={'cancelatedBusiness'} limit={3} />
+												</>
 											),
 											'worker': (
-												<ServicesList type={'requested'} limit={3} />
+												<>
+													<ServicesList type={'next'} limit={3} />
+													<ServicesList type={'past'} limit={3} />
+												</>
 											)
 										}[user?.role]
 									}

@@ -32,7 +32,7 @@ import 'firebase/compat/auth';
 import { servicesTypes } from '../../../../data/servicesTypes'
 
 // eslint-disable-next-line no-unused-vars
-export const ServicesList = ({ debug, type, limit, showTitle }) => {
+export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 
 	const navigation = useNavigation();
 
@@ -47,6 +47,7 @@ export const ServicesList = ({ debug, type, limit, showTitle }) => {
 	//State
 	const [services, setServices] = useState([]);
 	const [title, setTitle] = useState(undefined);
+	const [longTitle, setLongTitle] = useState('');
 	const [noItems, setNoItems] = useState(undefined);
 	const [icon, setIcon] = useState('');
 
@@ -55,8 +56,10 @@ export const ServicesList = ({ debug, type, limit, showTitle }) => {
 
 		if (isMounted) {
 			switch (type) {
+				//CLIENT
 				case 'requested':
-					setTitle('Servicios solicitados')
+					setTitle('Solicitados')
+					setLongTitle('Servicios solicitados')
 					setNoItems('Todavía no has solicitado ningún servicio')
 					setIcon('inbox-outline')
 
@@ -85,8 +88,10 @@ export const ServicesList = ({ debug, type, limit, showTitle }) => {
 						setServices([])
 					}
 					break;
+
 				case 'inProgress':
-					setTitle('Servicios en curso')
+					setTitle('En curso')
+					setLongTitle('Servicios en curso')
 					setNoItems('Todavía no tienes ningún servicio en curso')
 					setIcon('play-circle-outline')
 
@@ -115,8 +120,10 @@ export const ServicesList = ({ debug, type, limit, showTitle }) => {
 						setServices([])
 					}
 					break;
+
 				case 'inProgressPunctual':
-					setTitle('Servicios en curso puntuales')
+					setTitle('En curso puntuales')
+					setLongTitle('Servicios en curso puntuales')
 					setNoItems('Todavía no tienes ningún servicio puntual en curso')
 					setIcon('checkmark-circle-outline')
 
@@ -126,6 +133,7 @@ export const ServicesList = ({ debug, type, limit, showTitle }) => {
 							.where("confirmationDateTime", "!=", null)
 							.where("cancelationDate", "==", null)
 							.where("isConfigured", "==", true)
+							.where("isRecurrent", "==", false)
 							.orderBy("confirmationDateTime", "desc")
 							.limit(limit)
 							.onSnapshot(services => {
@@ -145,8 +153,10 @@ export const ServicesList = ({ debug, type, limit, showTitle }) => {
 						setServices([])
 					}
 					break;
+
 				case 'inProgressRecurrent':
-					setTitle('Servicios en curso recurrentes')
+					setTitle('En curso recurrentes')
+					setLongTitle('Servicios en curso recurrentes')
 					setNoItems('Todavía no tienes ningún servicio recurrente en curso')
 					setIcon('clock-outline')
 
@@ -156,6 +166,7 @@ export const ServicesList = ({ debug, type, limit, showTitle }) => {
 							.where("confirmationDateTime", "!=", null)
 							.where("cancelationDate", "==", null)
 							.where("isConfigured", "==", true)
+							.where("isRecurrent", "==", true)
 							.orderBy("confirmationDateTime", "desc")
 							.limit(limit)
 							.onSnapshot(services => {
@@ -172,8 +183,10 @@ export const ServicesList = ({ debug, type, limit, showTitle }) => {
 						setServices([])
 					}
 					break;
+
 				case 'past':
-					setTitle('Servicios finalizados')
+					setTitle('Finalizados')
+					setLongTitle('Servicios finalizados')
 					setNoItems('Todavía no tienes ningún servicio finalizado')
 					setIcon('shopping-bag-outline')
 
@@ -202,8 +215,10 @@ export const ServicesList = ({ debug, type, limit, showTitle }) => {
 						setServices([])
 					}
 					break;
+
 				case 'cancelated':
-					setTitle('Servicios cancelados')
+					setTitle('Cancelados')
+					setLongTitle('Servicios cancelados')
 					setNoItems('Todavía no tienes ningún servicio cancelado')
 					setIcon('slash-outline')
 
@@ -231,9 +246,204 @@ export const ServicesList = ({ debug, type, limit, showTitle }) => {
 						setServices([])
 					}
 					break;
-				default:
-					setTitle(undefined)
+
+				//BUSINESS
+				case 'received':
+					setTitle('Recibidos')
+					setLongTitle('Servicios recibidos')
+					setNoItems('Todavía no has recibido ningún servicio')
+					setIcon('inbox-outline')
+
+					if (auth().currentUser) {
+						firestore().collection("services")
+							.where("companiesList", "array-contains", auth()?.currentUser?.uid)
+							.where("confirmationDate", "==", null)
+							.where("cancelationDate", "==", null)
+							.where("isConfigured", "==", true)
+							.orderBy("requestDateTime", "desc")
+							.limit(limit)
+							.onSnapshot(services => {
+								if (!services.empty) {
+									const SERVICES = [];
+									services.forEach(service => {
+										SERVICES.push(service.data())
+									})
+									console.log(`🌳 SELI - Servicios recibidos del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+
+									if (isMounted) {
+										setServices(SERVICES)
+									}
+								}
+							})
+					} else {
+						setServices([])
+					}
 					break;
+
+				case 'next':
+					setTitle('Futuros')
+					setLongTitle('Servicios futuros')
+					setNoItems('Todavía no tienes ningún servicio futuro')
+					setIcon('rewind-right-outline')
+
+					if (auth().currentUser) {
+						firestore().collection("services")
+							.where("companiesList", "array-contains", auth()?.currentUser?.uid)
+							.where("confirmationDateTime", "!=", null)
+							.where("cancelationDate", "==", null)
+							.where("isConfigured", "==", true)
+							.orderBy("confirmationDateTime", "asc")
+							.limit(limit)
+							.onSnapshot(services => {
+								if (!services.empty) {
+									const SERVICES = [];
+									services.forEach(service => {
+										SERVICES.push(service.data())
+									})
+									console.log(`🌳 SELI - Servicios futuros del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+
+									if (isMounted) {
+										setServices(SERVICES)
+									}
+								}
+							})
+					} else {
+						setServices([])
+					}
+					break;
+
+				case 'nextPunctual':
+					setTitle('Futuros puntuales')
+					setLongTitle('Servicios futuros puntuales')
+					setNoItems('Todavía no tienes ningún servicio futuro puntual')
+					setIcon('checkmark-circle-outline')
+
+					if (auth().currentUser) {
+						firestore().collection("services")
+							.where("companiesList", "array-contains", auth()?.currentUser?.uid)
+							.where("confirmationDateTime", "!=", null)
+							.where("cancelationDate", "==", null)
+							.where("isConfigured", "==", true)
+							.where("isRecurrent", "==", false)
+							.orderBy("confirmationDateTime", "asc")
+							.limit(limit)
+							.onSnapshot(services => {
+								if (!services.empty) {
+									const SERVICES = [];
+									services.forEach(service => {
+										SERVICES.push(service.data())
+									})
+									console.log(`🌳 SELI - Servicios futuros del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+
+									if (isMounted) {
+										setServices(SERVICES)
+									}
+								}
+							})
+					} else {
+						setServices([])
+					}
+					break;
+
+				case 'nextRecurrent':
+					setTitle('Futuros recurrentes')
+					setLongTitle('Servicios futuros recurrentes')
+					setNoItems('Todavía no tienes ningún servicio futuro recurrente')
+					setIcon('clock-outline')
+
+					if (auth().currentUser) {
+						firestore().collection("services")
+							.where("companiesList", "array-contains", auth()?.currentUser?.uid)
+							.where("confirmationDateTime", "!=", null)
+							.where("cancelationDate", "==", null)
+							.where("isConfigured", "==", true)
+							.where("isRecurrent", "==", true)
+							.orderBy("confirmationDateTime", "asc")
+							.limit(limit)
+							.onSnapshot(services => {
+								if (!services.empty) {
+									const SERVICES = [];
+									services.forEach(service => {
+										SERVICES.push(service.data())
+									})
+									console.log(`🌳 SELI - Servicios futuros del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+
+									if (isMounted) {
+										setServices(SERVICES)
+									}
+								}
+							})
+					} else {
+						setServices([])
+					}
+					break;
+
+				case 'pastBusiness':
+					setTitle('Finalizados')
+					setLongTitle('Servicios finalizados')
+					setNoItems('Todavía no tienes ningún servicio finalizado')
+					setIcon('shopping-bag-outline')
+
+					if (auth().currentUser) {
+						firestore().collection("services")
+							.where("companiesList", "array-contains", auth()?.currentUser?.uid)
+							.where("confirmationDateTime", "!=", null)
+							.where("cancelationDate", "==", null)
+							.where("isConfigured", "==", true)
+							.orderBy("confirmationDateTime", "desc")
+							.limit(limit)
+							.onSnapshot(services => {
+								if (!services.empty) {
+									const SERVICES = [];
+									services.forEach(service => {
+										SERVICES.push(service.data())
+									})
+									console.log(`🌳 SELI - Servicios anteriores del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+
+									if (isMounted) {
+										setServices(SERVICES)
+									}
+								}
+							})
+					} else {
+						setServices([])
+					}
+					break;
+
+				case 'cancelatedBusiness':
+					setTitle('Cancelados')
+					setLongTitle('Servicios cancelados')
+					setNoItems('Todavía no tienes ningún servicio cancelado')
+					setIcon('slash-outline')
+
+					if (auth().currentUser) {
+						firestore().collection("services")
+							.where("companiesList", "array-contains", auth()?.currentUser?.uid)
+							.where("cancelationDateTime", "!=", null)
+							.where("isConfigured", "==", true)
+							.orderBy("cancelationDateTime", "desc")
+							.limit(limit)
+							.onSnapshot(services => {
+								if (!services.empty) {
+									const SERVICES = [];
+									services.forEach(service => {
+										SERVICES.push(service.data())
+									})
+									console.log(`🌳 SELI - Servicios anteriores del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+
+									if (isMounted) {
+										setServices(SERVICES)
+									}
+								}
+							})
+					} else {
+						setServices([])
+					}
+					break;
+
+				default:
+					break;
+
 			}
 		}
 
@@ -271,7 +481,7 @@ export const ServicesList = ({ debug, type, limit, showTitle }) => {
 				title={`${title}`}
 				description={Device?.isPhone ? `Solicitado el día ${item.requestDate}` : ''}
 				accessoryRight={renderItemAccessory(item)}
-				style={{ paddingRight: 0 }}
+				style={{ paddingRight: 0, marginRight: -5 }}
 			/>
 		)
 	};
@@ -294,7 +504,7 @@ export const ServicesList = ({ debug, type, limit, showTitle }) => {
 
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
-			{showTitle && <TitleSectionWithNavigation icon={icon || ''} primaryText={title || ''} secondaryText={''} navTo={() => navigateServiceList(type)} />}
+			{showTitle && <TitleSectionWithNavigation icon={icon || ''} primaryText={showLong ? longTitle : title || ''} secondaryText={''} navTo={() => navigateServiceList(type)} />}
 
 			{services?.length
 				? services?.map((service) => (
@@ -317,10 +527,12 @@ ServicesList.propTypes = {
 	type: PropTypes.string.isRequired,
 	limit: PropTypes.number.isRequired,
 	showTitle: PropTypes.bool.isRequired,
+	showLong: PropTypes.bool,
 };
 
 ServicesList.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 	limit: 3,
 	showTitle: true,
+	showLong: false,
 };

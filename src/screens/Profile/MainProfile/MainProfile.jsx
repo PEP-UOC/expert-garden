@@ -115,10 +115,6 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 
 													{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
 
-													<BankDataForm />
-
-													{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
-
 													<SessionActionsBtns />
 												</>
 											),
