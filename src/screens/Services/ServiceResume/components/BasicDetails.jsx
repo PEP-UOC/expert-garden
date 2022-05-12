@@ -25,25 +25,25 @@ export const BasicDetails = ({ debug, hasBudgets, isFinalized, isCanceled, reque
 			<View style={{ ...ownStyles.itemsWrapper }}>
 
 				{!hasBudgets ? (
-					<View style={{ ...ownStyles.badgeWaiting, width: '100%' }}>
+					<View style={{ ...ownStyles.badgeWaiting, width: '100%', marginBottom: 20 }}>
 						<Text style={{ ...ownStyles.bigBadgeText }} appearance='hint'>
 							Esperando presupuestos
 						</Text>
 					</View>
 				) : null}
 
-				{isFinalized ? (
-					<View style={{ ...ownStyles.badgeAccepted, width: '100%' }}>
+				{isCanceled ? (
+					<View style={{ ...ownStyles.badgeRejected, width: '100%', marginBottom: 20 }}>
 						<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
-							Terminado
+							Cancelado
 						</Text>
 					</View>
 				) : null}
 
-				{isCanceled ? (
-					<View style={{ ...ownStyles.badgeRejected, width: '100%' }}>
+				{isFinalized ? (
+					<View style={{ ...ownStyles.badgeAccepted, width: '100%', marginBottom: 20 }}>
 						<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
-							Cancelado
+							Terminado
 						</Text>
 					</View>
 				) : null}

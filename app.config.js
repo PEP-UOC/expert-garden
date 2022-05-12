@@ -39,13 +39,13 @@ export default {
 			favicon: './src/assets/images/favicon.png',
 			config: {
 				firebase: {
-					apiKey: 'AIzaSyDb2ver9X-LTcTdsa84J-cTHDOe16yh82A',
-					authDomain: 'expert-garden.firebaseapp.com',
-					projectId: 'expert-garden',
-					storageBucket: 'expert-garden.appspot.com',
-					messagingSenderId: '644824745090',
-					appId: '1:644824745090:web:fe962dbbaf41c4a4e4e09b',
-					measurementId: 'G-HV58GWH706',
+					apiKey: process.env.FIREBASE_API_KEY,
+					authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+					projectId: process.env.FIREBASE_PROJECT_ID,
+					storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+					messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+					appId: process.env.FIREBASE_APP_ID,
+					measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 				},
 			},
 			build: {
