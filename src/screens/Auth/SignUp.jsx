@@ -152,38 +152,40 @@ export const SignUpScreen = ({ debug, navigation }) => {
 								.then(() => {
 									console.info('🚀 SNUP - Email verification sent!');
 									dispatch(addUser(user))
-									firestore().collection("users").doc(auth()?.currentUser?.uid).set({
-										uid: auth()?.currentUser?.uid,
-										role,
-										pushToken,
-										verified: false,
-										metadata: {
-											name,
-											surnames,
-											fullname: `${name} ${surnames}`,
-											email,
-											photoCounter: 0
-										}
-									})
-										.then(() => {
-											auth().currentUser.updateProfile({
-												displayName: `${name} ${surnames}`,
-											}).then(() => {
-												if (role === 'business') {
+
+									if (role === 'business') {
+										const refCompany = firestore().collection('companies').doc();
+										firestore().collection("users").doc(auth()?.currentUser?.uid).set({
+											uid: auth()?.currentUser?.uid,
+											role,
+											pushToken,
+											verified: false,
+											metadata: {
+												name,
+												surnames,
+												fullname: `${name} ${surnames}`,
+												email,
+												photoCounter: 0,
+												cid: refCompany.id,
+												hasWorkers: false,
+											}
+										})
+											.then(() => {
+												auth().currentUser.updateProfile({
+													displayName: `${name} ${surnames}`,
+												}).then(() => {
 													const now = moment();
-													const ref = firestore().collection('companies').doc();
 													const creationDateTime = now.format();
-													const entity = {
-														cid: ref.id,
-														uid: auth()?.currentUser?.uid,
-														name: name,
-														creationDateTime,
-														pushToken
-													};
 													firestore()
 														.collection('companies')
-														.doc(ref.id)
-														.set(entity)
+														.doc(refCompany.id)
+														.set({
+															cid: refCompany.id,
+															uid: auth()?.currentUser?.uid,
+															name: name,
+															creationDateTime,
+															pushToken
+														})
 														.then(() => {
 															dispatch(setLoggedIn(true))
 															dispatch(setErrorMessage(false))
@@ -195,25 +197,58 @@ export const SignUpScreen = ({ debug, navigation }) => {
 															dispatch(setLoadingMessage(false))
 															dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 														});
-												} else {
-													dispatch(setLoggedIn(true))
-													dispatch(setErrorMessage(false))
-												}
-											}).catch((error) => {
+												}).catch((error) => {
+													console.error(error.message);
+													dispatch(setLoggedIn(false))
+													console.log(`🕳  SNUP - Dispatch Loading STOP`)
+													dispatch(setLoadingMessage(false))
+													dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
+												});
+											})
+											.catch((error) => {
 												console.error(error.message);
 												dispatch(setLoggedIn(false))
 												console.log(`🕳  SNUP - Dispatch Loading STOP`)
 												dispatch(setLoadingMessage(false))
 												dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 											});
+									} else {
+										firestore().collection("users").doc(auth()?.currentUser?.uid).set({
+											uid: auth()?.currentUser?.uid,
+											role,
+											pushToken,
+											verified: false,
+											metadata: {
+												name,
+												surnames,
+												fullname: `${name} ${surnames}`,
+												email,
+												photoCounter: 0,
+											}
 										})
-										.catch((error) => {
-											console.error(error.message);
-											dispatch(setLoggedIn(false))
-											console.log(`🕳  SNUP - Dispatch Loading STOP`)
-											dispatch(setLoadingMessage(false))
-											dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
-										});
+											.then(() => {
+												auth().currentUser.updateProfile({
+													displayName: `${name} ${surnames}`,
+												}).then(() => {
+													dispatch(setLoggedIn(true))
+													dispatch(setErrorMessage(false))
+												}).catch((error) => {
+													console.error(error.message);
+													dispatch(setLoggedIn(false))
+													console.log(`🕳  SNUP - Dispatch Loading STOP`)
+													dispatch(setLoadingMessage(false))
+													dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
+												});
+											})
+											.catch((error) => {
+												console.error(error.message);
+												dispatch(setLoggedIn(false))
+												console.log(`🕳  SNUP - Dispatch Loading STOP`)
+												dispatch(setLoadingMessage(false))
+												dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
+											});
+									}
+
 								});
 						})
 						.catch((error) => {

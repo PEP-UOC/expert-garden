@@ -14,13 +14,17 @@ import { BtnSecondary } from '../../components/Buttons/Secondary'
 import Device from '../../libs/react-native-device-detection';
 
 // eslint-disable-next-line no-unused-vars
-export const NavigationBackButton = ({ debug, show, btnStyle }) => {
+export const NavigationBackButton = ({ debug, show, btnStyle, routeToBack }) => {
 
 	//Navigation
 	const navigation = useNavigation();
 
 	const navigateBack = () => {
-		navigation.goBack();
+		if (!routeToBack) {
+			navigation.goBack();
+		} else {
+			navigation.navigate(routeToBack);
+		}
 	};
 
 	if (!show) {
@@ -36,10 +40,12 @@ NavigationBackButton.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	show: PropTypes.bool.isRequired,
 	btnStyle: PropTypes.object.isRequired,
+	routeToBack: PropTypes.string,
 };
 
 NavigationBackButton.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 	show: false,
 	btnStyle: {},
+	routeToBack: undefined,
 };

@@ -20,15 +20,16 @@ import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootActi
 import { SafeAreaView, ScrollView, View, KeyboardAvoidingView } from 'react-native'
 import { Layout } from '@ui-kitten/components';
 import { TitleScreen } from '../../../components/Titles/Screen'
-import { ServicesList } from '../MainServices/components/List'
+import { WorkersList } from './components/List'
 import { NavigationTop } from '../../../components/Navigation/Top'
 import { NavigationBackButton } from '../../../components/Navigation/BackButton'
 
 // eslint-disable-next-line no-unused-vars
-export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
+export const WorkersListScreen = ({ debug, navigation, route, showLong }) => {
 	const dispatch = useDispatch()
 
-	const type = route.params.type;
+	const type = 'all';
+	showLong = false;
 
 	//Styles
 	const gloStyles = useStyleSheet(globalStyles);
@@ -43,57 +44,10 @@ export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
 
 		if (isMounted) {
 			switch (type) {
-				case 'requested':
-					setTitle('Solicitados')
-					setLongTitle('Servicios solicitados')
-					setIcon('inbox-outline')
-					break;
-				case 'inProgress':
-					setTitle('En curso')
-					setLongTitle('Servicios en curso')
-					setIcon('play-circle-outline')
-					break;
-				case 'inProgressPunctual':
-					setTitle('En curso puntuales')
-					setLongTitle('Servicios en curso puntuales')
-					setIcon('checkmark-circle-outline')
-					break;
-				case 'inProgressRecurrent':
-					setTitle('En curso recurrentes')
-					setLongTitle('Servicios en curso recurrentes')
-					setIcon('clock-outline')
-					break;
-				case 'past':
-				case 'pastBusiness':
-					setTitle('Finalizados')
-					setLongTitle('Servicios finalizados')
-					setIcon('shopping-bag-outline')
-					break;
-				case 'cancelated':
-				case 'cancelatedBusiness':
-					setTitle('Cancelados')
-					setLongTitle('Servicios cancelados')
-					setIcon('slash-outline')
-					break;
-				case 'received':
-					setTitle('Recibidos')
-					setLongTitle('Servicios recibidos')
-					setIcon('inbox-outline')
-					break;
-				case 'next':
-					setTitle('Futuros')
-					setLongTitle('Servicios futuros')
-					setIcon('rewind-right-outline')
-					break;
-				case 'nextPunctual':
-					setTitle('Futuros puntuales')
-					setLongTitle('Servicios futuros puntuales')
-					setIcon('checkmark-circle-outline')
-					break;
-				case 'nextRecurrent':
-					setTitle('Futuros recurrentes')
-					setLongTitle('Servicios futuros recurrentes')
-					setIcon('clock-outline')
+				case 'all':
+					setTitle('Empleados')
+					setLongTitle('Todos los empleados')
+					setIcon('people-outline')
 					break;
 				default:
 					break;
@@ -117,21 +71,21 @@ export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
 				<View style={{ flex: 1, justifyContent: "space-around" }}>
-					<NavigationTop />
+					<NavigationTop routeToBack={'MainProfileScreen'} />
 					<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 						contentContainerStyle={{ ...gloStyles.scrollView }}>
 						<Layout style={{ ...gloStyles.layout }}>
 							<View style={{ ...gloStyles.view }}>
 								<View style={{ ...gloStyles.section.primary }}>
-									<TitleScreen icon={icon} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 0 : 30 } }} primaryText={showLong ? longTitle : title} secondaryText={''} />
+									<TitleScreen icon={icon} exterStyles={{ wrapper: { marginBottom: !Device?.isPhone ? 0 : 30 } }} primaryText={showLong ? longTitle : title} secondaryText={''} />
 									<View style={{ paddingLeft: 45 }}>
 										<NavigationBackButton show={!Device.isPhone} />
 									</View>
 
 								</View>
 								<View style={{ ...gloStyles.section.secondary }}>
-									<ServicesList type={type} limit={10000} showTitle={false} />
-									<NavigationBackButton show={Device.isPhone} btnStyle={{ marginTop: 0 }} />
+									<WorkersList type={'all'} limit={10000} showTitle={false} />
+									<NavigationBackButton show={Device.isPhone} btnStyle={{ marginTop: 0 }} routeToBack={'MainProfileScreen'} />
 								</View>
 
 							</View>
@@ -143,14 +97,14 @@ export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
 	)
 };
 
-ServiceListScreen.propTypes = {
+WorkersListScreen.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	navigation: PropTypes.object.isRequired,
 	route: PropTypes.object.isRequired,
 	showLong: PropTypes.bool,
 };
 
-ServiceListScreen.defaultProps = {
+WorkersListScreen.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 	showLong: true,
 };

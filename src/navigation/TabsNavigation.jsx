@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 //Store
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUser } from '../store/user/userAction';
-import { setLoadingMessage, setLoggedIn } from '../store/root/rootAction';
+import { setLoadingMessage, setLoggedIn, setIntervalId } from '../store/root/rootAction';
 import { removeUser } from '../store/user/userAction';
 
 //Screens
@@ -24,6 +24,7 @@ import "firebase/compat/firestore";
 //BottomNavs
 import { ClientBottomTabBar } from './BottomNavs/Client'
 import { BusinessBottomTabBar } from './BottomNavs/Business'
+import { WorkerBottomTabBar } from './BottomNavs/Worker'
 
 const Tabs = createBottomTabNavigator()
 export const TabsNavigation = () => {
@@ -35,6 +36,7 @@ export const TabsNavigation = () => {
 
 	//Store
 	const isLoggedIn = useSelector(state => state.rootReducer.isLoggedIn);
+	const intervalReloadId = useSelector(state => state.rootReducer.intervalReloadId);
 	const user = useSelector((state) => state.userReducer.user);
 
 	//State
@@ -47,8 +49,11 @@ export const TabsNavigation = () => {
 					console.info('🔐 BTLG - Logged Out!');
 					dispatch(setLoggedIn(false))
 					console.log(`🕳  BTLG - Dispatch Loading STOP`)
-					if (intervalId) {
-						clearInterval(intervalId)
+					if (intervalReloadId) {
+						clearInterval(intervalReloadId)
+					} else {
+						//Se limpian todos los timeouts
+						clearAllIntervals()
 					}
 					dispatch(setLoadingMessage(false))
 					dispatch(removeUser())
@@ -57,8 +62,11 @@ export const TabsNavigation = () => {
 					console.error(error.message);
 					dispatch(setLoggedIn(false))
 					console.log(`🕳  BTLG - Dispatch Loading STOP`)
-					if (intervalId) {
-						clearInterval(intervalId)
+					if (intervalReloadId) {
+						clearInterval(intervalReloadId)
+					} else {
+						//Se limpian todos los timeouts
+						clearAllIntervals()
 					}
 					dispatch(setLoadingMessage(false))
 				});
@@ -66,10 +74,20 @@ export const TabsNavigation = () => {
 			console.error(error.message);
 			dispatch(setLoggedIn(false))
 			console.log(`🕳  BTLG - Dispatch Loading STOP`)
-			if (intervalId) {
-				clearInterval(intervalId)
+			if (intervalReloadId) {
+				clearInterval(intervalReloadId)
+			} else {
+				//Se limpian todos los timeouts
+				clearAllIntervals()
 			}
 			dispatch(setLoadingMessage(false))
+		}
+	}
+
+	const clearAllIntervals = () => {
+		var highestTimeoutId = setTimeout(";");
+		for (var i = 0; i < highestTimeoutId; i++) {
+			clearTimeout(i);
 		}
 	}
 
@@ -129,7 +147,7 @@ export const TabsNavigation = () => {
 		};
 	}, []);
 
-	const [intervalId, setIntervalId] = useState(false);
+	const [intervalId, setLocalIntervalId] = useState(false);
 
 	const startHandler = () => {
 		const intervalId = setInterval(() => {
@@ -138,8 +156,13 @@ export const TabsNavigation = () => {
 			auth()?.onAuthStateChanged((updatedUser) => {
 				if (updatedUser?.emailVerified) {
 					console.log('🟢 TNAV - updatedUser?.emailVerified', updatedUser?.emailVerified)
-					if (intervalId) {
-						clearInterval(intervalId)
+					if (intervalReloadId) {
+						clearInterval(intervalReloadId)
+					} else {
+						//Se limpian todos los timeouts
+						if (intervalId) {
+							clearInterval(intervalId)
+						}
 					}
 					firestore().collection("users").doc(auth()?.currentUser?.uid).update({
 						verified: true
@@ -151,7 +174,8 @@ export const TabsNavigation = () => {
 		}, 5000)
 
 		if (intervalId) {
-			setIntervalId(intervalId)
+			dispatch(setIntervalId(intervalId))
+			setLocalIntervalId(intervalId)
 		}
 	}
 
@@ -167,7 +191,7 @@ export const TabsNavigation = () => {
 				case 'business':
 					return <BusinessBottomTabBar {...props} />
 				case 'worker':
-					return <ClientBottomTabBar {...props} />
+					return <WorkerBottomTabBar {...props} />
 				default:
 					return <ClientBottomTabBar {...props} />
 			}

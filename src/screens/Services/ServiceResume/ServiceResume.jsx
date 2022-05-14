@@ -94,9 +94,9 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 									<View style={{ paddingLeft: 45 }}>
 
 										{/*BOTÓN CANCELAR SERVICIO*/}
-										{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={CloseIcon} text={"Cancelar servicio"} onPress={() => { setSidToCancel(sid); setShowCancelConfirm(true) }} disabled={isCancelDisabled()} status={'danger'} btnStyle={{ marginBottom: 30 }} />}
+										{!Device.isPhone && <BtnPrimary size={'medium'} icon={CloseIcon} text={"Cancelar servicio"} onPress={() => { setSidToCancel(sid); setShowCancelConfirm(true) }} disabled={isCancelDisabled()} status={'danger'} btnStyle={{ marginBottom: 30 }} />}
 
-										<NavigationBackButton show={Platform.OS === "web"} />
+										<NavigationBackButton show={!Device.isPhone} />
 									</View>
 
 								</View>
@@ -124,9 +124,9 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 									<DetailsList details={service?.details || []} />
 
 									{/*BOTÓN CANCELAR SERVICIO*/}
-									{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Cancelar servicio"} onPress={() => { setSidToCancel(sid); setShowCancelConfirm(true) }} disabled={isCancelDisabled()} status={'danger'} btnStyle={{ marginBottom: 0, marginTop: 0 }} />}
+									{Device.isPhone && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Cancelar servicio"} onPress={() => { setSidToCancel(sid); setShowCancelConfirm(true) }} disabled={isCancelDisabled()} status={'danger'} btnStyle={{ marginBottom: 0, marginTop: 0 }} />}
 
-									<NavigationBackButton show={Platform.OS !== "web"} />
+									<NavigationBackButton show={Device.isPhone} />
 								</View>
 
 								{/*MODAL ELIMINAR DETALLE*/}

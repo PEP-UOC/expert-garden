@@ -23,7 +23,7 @@ import { CameraIcon } from '../../assets/icons/Camera'
 import { ImageIcon } from '../../assets/icons/Image'
 
 //Device Detect
-//import Device from '../../libs/react-native-device-detection';
+import Device from '../../libs/react-native-device-detection';
 import { Platform } from 'react-native';
 
 //Img Picker
@@ -143,7 +143,7 @@ export const BtnImageCombo = ({ debug, showImageChangeCombo, showingCamera, setS
 						</Text>
 					}
 				</>
-				: <Text category='c1' style={{ ...gloStyles?.smallText, ...ownStyles?.btnImageComboTextAlternative }} >{Platform.OS === "web" ? `Haz click en` : `Toca`} la foto para {changeOrAddSecoText}</Text>}
+				: <Text category='c1' style={{ ...gloStyles?.smallText, ...ownStyles?.btnImageComboTextAlternative }} >{!Device.isPhone ? `Haz click en` : `Toca`} la foto para {changeOrAddSecoText}</Text>}
 		</View>
 	)
 };

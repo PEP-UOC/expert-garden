@@ -4,6 +4,7 @@ import {
 	SET_LOADING_MESSAGE,
 	SET_ERROR_MESSAGE,
 	SET_PUSH_TOKEN,
+	SET_INTERVAL_RELOAD_ID,
 } from './rootTypes';
 export const setLoggedIn = (loggedIn) => ({
 	type: SET_LOGGED_IN,
@@ -24,4 +25,8 @@ export const setErrorMessage = (errorMessage) => ({
 export const setPushToken = (pushToken) => ({
 	type: SET_PUSH_TOKEN,
 	payload: pushToken,
+});
+export const setIntervalId = (intervalId) => ({
+	type: SET_INTERVAL_RELOAD_ID,
+	payload: intervalId,
 });

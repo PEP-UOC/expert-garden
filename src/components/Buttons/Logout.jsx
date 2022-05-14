@@ -79,7 +79,7 @@ export const BtnLogout = ({ debug }) => {
 	}
 
 	return (
-		<View style={{ ...ownStyles?.wrapper }}>
+		<View style={{ ...ownStyles?.wrapper, marginBottom: 40 }}>
 			<Button style={{
 				...gloStyles?.button,
 				...ownStyles?.btnPrimary

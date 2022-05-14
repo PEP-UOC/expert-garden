@@ -76,7 +76,7 @@ export const CompanyRequestScreen = ({ debug, navigation, route }) => {
 									<TitleScreen icon={'pantone-outline'} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 20 : 30 } }} primaryText={'Empresas'} secondaryText={'🚨 Debido a que en estos momentos hay pocas empresas disponibles para realizar el trabajo cerca de tí, la selección de empresas en este punto será automática.'} />
 
 									<View style={{ paddingLeft: 45 }}>
-										{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar servicio"} onPress={confirmService} />}
+										{!Device.isPhone && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar servicio"} onPress={confirmService} />}
 									</View>
 								</View>
 
@@ -85,7 +85,7 @@ export const CompanyRequestScreen = ({ debug, navigation, route }) => {
 
 									<CompanyList />
 
-									{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar servicio"} onPress={confirmService} />}
+									{Device.isPhone && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar servicio"} onPress={confirmService} />}
 								</View>
 							</View>
 						</Layout>

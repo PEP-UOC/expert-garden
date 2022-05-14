@@ -4,6 +4,7 @@ import {
 	SET_LOADING_MESSAGE,
 	SET_ERROR_MESSAGE,
 	SET_PUSH_TOKEN,
+	SET_INTERVAL_RELOAD_ID,
 } from './rootTypes';
 import Constants from 'expo-constants';
 
@@ -13,6 +14,7 @@ const initialState = {
 	loadingMessage: Constants.manifest.extra.debug ? false : false,
 	errorMessage: false,
 	pushToken: false,
+	intervalReloadId: undefined,
 };
 const rootReducer = (state = initialState, action) => {
 	switch (action.type) {
@@ -40,6 +42,11 @@ const rootReducer = (state = initialState, action) => {
 			return {
 				...state,
 				pushToken: action.payload,
+			};
+		case SET_INTERVAL_RELOAD_ID:
+			return {
+				...state,
+				intervalReloadId: action.payload,
 			};
 		default:
 			return state;

@@ -376,7 +376,7 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 													{
 														toValue: 0,
 														duration: 500,
-														useNativeDriver: Platform.OS !== 'web' ? true : false
+														useNativeDriver: Device.isPhone ? true : false
 													}
 												).start(() => {
 													handleChange(service.identifier, identifierName)
@@ -484,7 +484,7 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 															{
 																toValue: 0,
 																duration: 500,
-																useNativeDriver: Platform.OS !== 'web' ? true : false
+																useNativeDriver: Device.isPhone ? true : false
 															}
 														).start(() => {
 															switch (step) {

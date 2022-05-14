@@ -24,8 +24,8 @@ import { CameraIcon } from '../../assets/icons/Camera'
 import { SyncIcon } from '../../assets/icons/Sync'
 
 //Device Detect
-//import Device from '../../libs/react-native-device-detection';
-import { Platform } from 'react-native';
+import Device from '../../libs/react-native-device-detection';
+//import { Platform } from 'react-native';
 
 //Img Picker
 import { Camera } from 'expo-camera';
@@ -113,7 +113,7 @@ export const ImgWithPicker = ({ debug, entity, entityType }) => {
 							camera = r
 						}}>
 						<View style={{ ...ownStyles?.cameraZoomView }}>
-							{Platform.OS !== "web"
+							{Device.isPhone
 								? <TouchableOpacity
 									onPress={zoomDown} style={{ ...ownStyles?.cameraTouchable }}
 								>
@@ -121,7 +121,7 @@ export const ImgWithPicker = ({ debug, entity, entityType }) => {
 								</TouchableOpacity>
 								: <View></View>
 							}
-							{Platform.OS !== "web"
+							{Device.isPhone
 								? <TouchableOpacity
 									onPress={zoomUp} style={{ ...ownStyles?.cameraTouchable }}
 								>
@@ -131,7 +131,7 @@ export const ImgWithPicker = ({ debug, entity, entityType }) => {
 							}
 						</View>
 						<View style={{ ...ownStyles?.cameraView }}>
-							{Platform.OS !== "web"
+							{Device.isPhone
 								? <TouchableOpacity
 									onPress={() => {
 										if (cameraType === Camera.Constants.Type.back) {

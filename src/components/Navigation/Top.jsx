@@ -14,13 +14,17 @@ import { Divider, TopNavigation, TopNavigationAction } from '@ui-kitten/componen
 import { BackIcon } from '../../assets/icons/Back'
 
 // eslint-disable-next-line no-unused-vars
-export const NavigationTop = ({ debug, title }) => {
+export const NavigationTop = ({ debug, title, routeToBack }) => {
 
 	//Navigation
 	const navigation = useNavigation();
 
 	const navigateBack = () => {
-		navigation.goBack();
+		if (!routeToBack) {
+			navigation.goBack();
+		} else {
+			navigation.navigate(routeToBack);
+		}
 	};
 
 	const BackAction = () => (
@@ -38,9 +42,11 @@ export const NavigationTop = ({ debug, title }) => {
 NavigationTop.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	title: PropTypes.string.isRequired,
+	routeToBack: PropTypes.string,
 };
 
 NavigationTop.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 	title: '',
+	routeToBack: undefined,
 };

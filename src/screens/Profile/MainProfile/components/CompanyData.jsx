@@ -18,11 +18,24 @@ import { updateChangesToSave } from '../../../../store/change/changeAction';
 
 //Components
 import { View } from 'react-native'
-import { Input, Select, SelectItem } from '@ui-kitten/components';
+import { Input, Select, SelectItem, IndexPath } from '@ui-kitten/components';
 import { TitleSection } from '../../../../components/Titles/Section'
 
 //Hooks
 import { useProvinceTown } from '../../../../hooks/useProvinceTown'
+
+//Select Options
+const workerOptions = [
+	{
+		name: true,
+		value: 'Sí'
+	},
+	{
+		name: false,
+		value: 'No'
+	},
+];
+
 
 // eslint-disable-next-line no-unused-vars
 export const CompanyDataForm = ({ debug }) => {
@@ -46,7 +59,8 @@ export const CompanyDataForm = ({ debug }) => {
 		phoneNumber: user?.metadata?.phoneNumber || "",
 		postalCode: user?.metadata?.postalCode || "",
 		province: user?.metadata?.province || "",
-		town: user?.metadata?.town || ""
+		town: user?.metadata?.town || "",
+		hasWorkers: user?.metadata?.hasWorkers || "",
 	})
 
 	useEffect(() => {
@@ -58,7 +72,8 @@ export const CompanyDataForm = ({ debug }) => {
 			phoneNumber: user?.metadata?.phoneNumber || "",
 			postalCode: user?.metadata?.postalCode || "",
 			province: user?.metadata?.province || "",
-			town: user?.metadata?.town || ""
+			town: user?.metadata?.town || "",
+			hasWorkers: user?.metadata?.hasWorkers || ""
 		})
 	}, [user]);
 
@@ -96,6 +111,16 @@ export const CompanyDataForm = ({ debug }) => {
 	}, [province]);
 
 	const townRenderOption = (title) => (
+		<SelectItem key={title} title={title} />
+	);
+
+	//Select
+	const [selectedIndex, setSelectedIndex] = useState(
+		workerOptions.findIndex(wO => wO.name === user?.metadata?.hasWorkers) !== -1
+			? new IndexPath(workerOptions.findIndex(wO => wO.name === user?.metadata?.hasWorkers))
+			: new IndexPath(0));
+	const displayValue = workerOptions[selectedIndex.row].value;
+	const renderOption = (title) => (
 		<SelectItem key={title} title={title} />
 	);
 
@@ -169,6 +194,20 @@ export const CompanyDataForm = ({ debug }) => {
 							handleChange(townsList[index - 1]?.NOMBRE, "town")
 						}}>
 						{townsList?.map(tL => tL?.NOMBRE)?.map(townRenderOption)}
+					</Select>
+				</View>
+
+				<View style={{ ...gloStyles?.inputs?.row }}>
+					<Select
+						style={{ ...gloStyles.inputs.select }}
+						label='¿Tienes empleados?'
+						value={displayValue}
+						selectedIndex={selectedIndex}
+						onSelect={index => {
+							setSelectedIndex(index)
+							handleChange(workerOptions[index - 1].name, "hasWorkers")
+						}}>
+						{workerOptions.map(uT => uT.value).map(renderOption)}
 					</Select>
 				</View>
 			</View>

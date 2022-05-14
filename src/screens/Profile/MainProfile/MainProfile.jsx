@@ -13,8 +13,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setErrorMessage } from '../../../store/root/rootAction';
 import { removeChangesToSave } from '../../../store/change/changeAction';
 
+//Device Detect
+import Device from '../../../libs/react-native-device-detection';
+import { Platform } from 'react-native';
+
 //Components
-import { SafeAreaView, ScrollView, View, KeyboardAvoidingView, Platform } from 'react-native'
+import { SafeAreaView, ScrollView, View, KeyboardAvoidingView } from 'react-native'
 import { Layout } from '@ui-kitten/components';
 import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
 import { SeparatorTopSection } from '../../../components/Separators/TopSection'
@@ -26,6 +30,8 @@ import { CompanyDataForm } from './components/CompanyData'
 import { GardensDataForm } from './components/GardensData'
 import { BankDataForm } from './components/BankData'
 import { SessionActionsBtns } from './components/SessionActions'
+import { WorkersSection } from './components/WorkersSection'
+
 
 //Icons
 import { SaveIcon } from '../../../assets/icons/Save'
@@ -53,7 +59,6 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 		dispatch(setErrorMessage(false))
 	}, []);
 
-
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
@@ -70,17 +75,17 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 										{
 											'client': (
 												<>
-													{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 30 }} />}
+													{!Device.isPhone && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 30 }} />}
 												</>
 											),
 											'business': (
 												<>
-													{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 30 }} />}
+													{!Device.isPhone && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 30 }} />}
 												</>
 											),
 											'worker': (
 												<>
-													{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 30 }} />}
+													{!Device.isPhone && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 30 }} />}
 												</>
 											)
 										}[user?.role]
@@ -94,36 +99,42 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 												<>
 													<PersonalDataForm />
 
-													{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
+													{Device.isPhone && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
 
 													<GardensDataForm />
 
-													{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 25 }} />}
+													{Device.isPhone && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 25 }} />}
 
 													<BankDataForm />
 
-													{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
+													{Device.isPhone && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
 
 													<SessionActionsBtns />
 												</>
 											),
 											'business': (
 												<>
-													{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
+													{Device.isPhone && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
 
 													<CompanyDataForm />
 
-													{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
+													{Device.isPhone && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
+
+													{user?.metadata?.hasWorkers && <WorkersSection />}
 
 													<SessionActionsBtns />
 												</>
 											),
 											'worker': (
 												<>
-													{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
-
 													<PersonalDataForm />
+
+													{Device.isPhone && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
+
 													<BankDataForm />
+
+													{Device.isPhone && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
+
 													<SessionActionsBtns />
 												</>
 											)

@@ -90,13 +90,13 @@ export const NotificationListScreen = ({ debug, navigation, route, showLong }) =
 								<View style={{ ...gloStyles.section.primary }}>
 									<TitleScreen icon={icon} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 0 : 30 } }} primaryText={showLong ? longTitle : title} secondaryText={''} />
 									<View style={{ paddingLeft: 45 }}>
-										<NavigationBackButton show={Platform.OS === "web"} />
+										<NavigationBackButton show={!Device.isPhone} />
 									</View>
 
 								</View>
 								<View style={{ ...gloStyles.section.secondary }}>
 									<NotificationsList type={type} limit={10000} showTitle={false} />
-									<NavigationBackButton show={Platform.OS !== "web"} btnStyle={{ marginTop: 0 }} />
+									<NavigationBackButton show={Device.isPhone} btnStyle={{ marginTop: 0 }} />
 								</View>
 
 							</View>

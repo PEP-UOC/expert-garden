@@ -12,8 +12,12 @@ import globalStyles from '../../../styles/globalStyles'
 import { useSelector, useDispatch } from 'react-redux'
 import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootAction';
 
+//Device Detect
+import Device from '../../../libs/react-native-device-detection';
+import { Platform } from 'react-native';
+
 //Components
-import { SafeAreaView, ScrollView, View, KeyboardAvoidingView, Platform } from 'react-native'
+import { SafeAreaView, ScrollView, View, KeyboardAvoidingView } from 'react-native'
 import { Layout } from '@ui-kitten/components';
 import { SeparatorTopSection } from '../../../components/Separators/TopSection'
 import { TitleScreen } from '../../../components/Titles/Screen'
@@ -104,25 +108,25 @@ export const GardenAddScreen = ({ debug, navigation, route }) => {
 												{{
 													'client': (
 														<>
-															{Platform.OS === "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.name })} btnStyle={{ marginBottom: 30 }} />}
+															{!Device.isPhone && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.name })} btnStyle={{ marginBottom: 30 }} />}
 
-															{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 30 }} />}
+															{!Device.isPhone && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 30 }} />}
 
-															<NavigationBackButton show={Platform.OS === "web"} btnStyle={{ marginBottom: 30 }} />
+															<NavigationBackButton show={!Device.isPhone} btnStyle={{ marginBottom: 30 }} />
 														</>
 													),
 													'business': (
 														<>
-															{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 30 }} />}
+															{!Device.isPhone && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 30 }} />}
 
-															<NavigationBackButton show={Platform.OS === "web"} btnStyle={{ marginBottom: 30 }} />
+															<NavigationBackButton show={!Device.isPhone} btnStyle={{ marginBottom: 30 }} />
 														</>
 													),
 													'worker': (
 														<>
-															{Platform.OS === "web" && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 30 }} />}
+															{!Device.isPhone && <BtnPrimary size={'medium'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 30 }} />}
 
-															<NavigationBackButton show={Platform.OS === "web"} btnStyle={{ marginBottom: 30 }} />
+															<NavigationBackButton show={!Device.isPhone} btnStyle={{ marginBottom: 30 }} />
 														</>
 													)
 												}[user?.role]}
@@ -135,22 +139,22 @@ export const GardenAddScreen = ({ debug, navigation, route }) => {
 														<>
 															<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
 
-															{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 15, marginTop: 15 }} />}
+															{Device.isPhone && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 15, marginTop: 15 }} />}
 
-															{Platform.OS !== "web" && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.name })} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
+															{Device.isPhone && <BtnSecondary size={'medium'} disabled={false} icon={AddIcon} text={"Añadir detalle"} onPress={() => navigation.navigate("DetailScreen", { gid: garden?.gid, name: garden?.name })} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
 
 															<DetailsList gid={gid || ''} gardenIndex={gardenIndex || 0} />
 
-															<NavigationBackButton show={Platform.OS !== "web"} />
+															<NavigationBackButton show={Device.isPhone} />
 														</>
 													),
 													'business': (
 														<>
 															<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
 
-															{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
+															{Device.isPhone && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
 
-															<NavigationBackButton show={Platform.OS !== "web"} />
+															<NavigationBackButton show={Device.isPhone} />
 														</>
 													),
 													'worker': (
@@ -158,9 +162,9 @@ export const GardenAddScreen = ({ debug, navigation, route }) => {
 
 															<GardenDataForm gid={gid || ''} gardenIndex={gardenIndex || 0} />
 
-															{Platform.OS !== "web" && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
+															{Device.isPhone && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
 
-															<NavigationBackButton show={Platform.OS !== "web"} />
+															<NavigationBackButton show={Device.isPhone} />
 														</>
 													)
 												}[user?.role]}

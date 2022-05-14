@@ -41,6 +41,7 @@ export function useFirebaseSaveAllChanges(debug) {
 		const province = changesToSave?.metadata?.province || user?.metadata?.province || '';
 		const town = changesToSave?.metadata?.town || user?.metadata?.town || '';
 		const cif = changesToSave?.metadata?.cif || user?.metadata?.cif || '';
+		const hasWorkers = changesToSave?.metadata?.hasWorkers || false;
 		const birthday = changesToSave?.metadata?.birthday || user?.metadata?.birthdayDateTime || '';
 		const birthdayDateTime =
 			changesToSave?.metadata?.birthdayDateTime || user?.metadata?.birthdayDateTime || '';
@@ -56,6 +57,7 @@ export function useFirebaseSaveAllChanges(debug) {
 			province,
 			town,
 			cif,
+			hasWorkers,
 			birthday,
 			birthdayDateTime,
 		};

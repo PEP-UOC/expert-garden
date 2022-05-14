@@ -109,9 +109,9 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 										{
 											'client': (
 												<View style={{ paddingLeft: 45 }}>
-													{Platform.OS === "web" && <BtnSecondary size={'medium'} icon={AddIcon} text={"Añadir fecha"} onPress={addNewDate} btnStyle={{ marginBottom: 30 }} />}
+													{!Device.isPhone && <BtnSecondary size={'medium'} icon={AddIcon} text={"Añadir fecha"} onPress={addNewDate} btnStyle={{ marginBottom: 30 }} />}
 
-													{Platform.OS === "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={confirmDates} disabled={isDisabled()} btnStyle={{ marginBottom: 30 }} />}
+													{!Device.isPhone && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={confirmDates} disabled={isDisabled()} btnStyle={{ marginBottom: 30 }} />}
 												</View>
 											),
 											'business': (
@@ -131,9 +131,9 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 												<>
 													<DatesList />
 
-													{Platform.OS !== "web" && <BtnSecondary size={'medium'} icon={AddIcon} text={"Añadir fecha"} onPress={addNewDate} btnStyle={{ marginBottom: 10, marginTop: 0 }} />}
+													{Device.isPhone && <BtnSecondary size={'medium'} icon={AddIcon} text={"Añadir fecha"} onPress={addNewDate} btnStyle={{ marginBottom: 10, marginTop: 0 }} />}
 
-													{Platform.OS !== "web" && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={confirmDates} disabled={isDisabled()} btnStyle={{ marginBottom: 10, marginTop: 10 }} />}
+													{Device.isPhone && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar fechas"} onPress={confirmDates} disabled={isDisabled()} btnStyle={{ marginBottom: 10, marginTop: 10 }} />}
 												</>
 											),
 											'business': (

@@ -76,7 +76,7 @@ export const NotificationResumeScreen = ({ debug, navigation, route }) => {
 									<TitleScreen icon={'plus-circle-outline'} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 20 : 30 }, primaryText: { lineHeight: Device?.isPhone ? 35 : 'initial', marginTop: Device?.isPhone ? 14 : 0 } }} primaryText={'Detalles de la notificación'} secondaryText={''} />
 
 									<View style={{ paddingLeft: 45 }}>
-										<NavigationBackButton show={Platform.OS === "web"} />
+										<NavigationBackButton show={!Device.isPhone} />
 									</View>
 
 								</View>
@@ -92,7 +92,7 @@ export const NotificationResumeScreen = ({ debug, navigation, route }) => {
 										readDateTime={notification?.readDateTime}
 									/>
 
-									<NavigationBackButton show={Platform.OS !== "web"} btnStyle={{ marginTop: 5 }} />
+									<NavigationBackButton show={Device.isPhone} btnStyle={{ marginTop: 5 }} />
 								</View>
 
 							</View>
