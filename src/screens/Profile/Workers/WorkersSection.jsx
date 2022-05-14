@@ -6,21 +6,24 @@ import Constants from 'expo-constants';
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
-import globalStyles from '../../../../styles/globalStyles'
+import globalStyles from '../../../styles/globalStyles'
 import styles from './styles'
 
 //Navigation
 import { useNavigation } from '@react-navigation/native';
 
 //Components
-//Components
 import { View } from 'react-native'
 import { Button } from '@ui-kitten/components'
-import { TitleSection } from '../../../../components/Titles/Section'
+import { TitleSection } from '../../../components/Titles/Section'
+
+//Device Detect
+import Device from '../../../libs/react-native-device-detection';
+//import { Platform } from 'react-native';
 
 //Icons
-import { PeopleIcon } from '../../../../assets/icons/People'
-import { PersonAddIcon } from '../../../../assets/icons/PersonAdd'
+import { PeopleIcon } from '../../../assets/icons/People'
+import { PersonAddIcon } from '../../../assets/icons/PersonAdd'
 
 // eslint-disable-next-line no-unused-vars
 export const WorkersSection = ({ debug }) => {
@@ -40,24 +43,29 @@ export const WorkersSection = ({ debug }) => {
 
 	return (
 		<View style={{ ...ownStyles?.wrapper, marginBottom: 40 }}>
-			<TitleSection icon={'options-outline'} primaryText={'Empleados'} secondaryText={''} />
+			<TitleSection icon={'people-outline'} primaryText={'Empleados'} secondaryText={''} />
 			<View style={{ ...gloStyles?.inputs?.wrapper }}>
-				<Button style={{
-					...gloStyles?.button,
-					marginBottom: 20
-				}} size='medium'
-					accessoryLeft={PeopleIcon}
-					status='primary'
-					onPress={navigateWorkersList}
-				>Ver empleados</Button>
+				<View style={{
+					...gloStyles?.inputs?.row,
+					marginBottom: Device.isPhone ? 0 : 20
+				}}>
+					<Button style={{
+						...gloStyles?.button,
+						marginBottom: Device.isPhone ? 20 : 0
+					}} size='medium'
+						accessoryLeft={PeopleIcon}
+						status='primary'
+						onPress={navigateWorkersList}
+					>Ver empleados</Button>
 
-				<Button style={{
-					...gloStyles?.button,
-				}} size='medium'
-					accessoryLeft={PersonAddIcon}
-					status='primary' appearance='outline'
-					onPress={navigateWorkersAdd}
-				>Añadir nuevo</Button>
+					<Button style={{
+						...gloStyles?.button,
+					}} size='medium'
+						accessoryLeft={PersonAddIcon}
+						status='primary' appearance='outline'
+						onPress={navigateWorkersAdd}
+					>Añadir nuevo</Button>
+				</View>
 			</View>
 		</View>
 	)

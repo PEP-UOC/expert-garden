@@ -83,7 +83,7 @@ export const BtnLogout = ({ debug }) => {
 			<Button style={{
 				...gloStyles?.button,
 				...ownStyles?.btnPrimary
-			}} size='small' accessoryLeft={LogOutIcon} status='danger' appearance='outline' onPress={doClearData}>Cerrar sesión</Button>
+			}} size='medium' accessoryLeft={LogOutIcon} status='danger' appearance='outline' onPress={doClearData}>Cerrar sesión</Button>
 		</View>
 	)
 };

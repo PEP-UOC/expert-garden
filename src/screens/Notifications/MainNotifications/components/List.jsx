@@ -32,7 +32,7 @@ import 'firebase/compat/auth';
 import moment from "moment";
 
 // eslint-disable-next-line no-unused-vars
-export const NotificationsList = ({ debug, type, limit, showTitle, showLong }) => {
+export const NotificationsList = ({ debug, type, limit, showTitle, showLong, externalIcon }) => {
 
 	const navigation = useNavigation();
 
@@ -148,6 +148,10 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong }) =
 				break;
 		}
 
+		if (externalIcon != '') {
+			setIcon('bell-outline')
+		}
+
 		return () => {
 			// cancel the subscription
 			isMounted = false;
@@ -240,6 +244,7 @@ NotificationsList.propTypes = {
 	limit: PropTypes.number.isRequired,
 	showTitle: PropTypes.bool.isRequired,
 	showLong: PropTypes.bool,
+	externalIcon: PropTypes.string,
 };
 
 NotificationsList.defaultProps = {
@@ -247,4 +252,5 @@ NotificationsList.defaultProps = {
 	limit: 3,
 	showTitle: true,
 	showLong: false,
+	externalIcon: '',
 };

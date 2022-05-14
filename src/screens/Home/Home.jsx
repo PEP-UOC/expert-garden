@@ -99,21 +99,21 @@ export const HomeScreen = ({ debug, navigation }) => {
 										{
 											'client': (
 												<>
-													<NotificationsList type={'new'} limit={3} showLong={true} />
+													<NotificationsList type={'new'} limit={3} showLong={true} externalIcon={'bell-outline'} />
 													<ServicesList type={'requested'} limit={3} showLong={true} />
 													<ServicesList type={'inProgress'} limit={3} showLong={true} />
 												</>
 											),
 											'business': (
 												<>
-													<NotificationsList type={'new'} limit={3} showLong={true} />
+													<NotificationsList type={'new'} limit={3} showLong={true} externalIcon={'bell-outline'} />
 													<ServicesList type={'received'} limit={3} showLong={true} />
 													<ServicesList type={'next'} limit={3} showLong={true} />
 												</>
 											),
 											'worker': (
 												<>
-													<NotificationsList type={'new'} limit={3} showLong={true} />
+													<NotificationsList type={'new'} limit={3} showLong={true} externalIcon={'bell-outline'} />
 													<ServicesList type={'next'} limit={3} showLong={true} />
 												</>
 											)

@@ -77,7 +77,7 @@ export const WorkersListScreen = ({ debug, navigation, route, showLong }) => {
 						<Layout style={{ ...gloStyles.layout }}>
 							<View style={{ ...gloStyles.view }}>
 								<View style={{ ...gloStyles.section.primary }}>
-									<TitleScreen icon={icon} exterStyles={{ wrapper: { marginBottom: !Device?.isPhone ? 0 : 30 } }} primaryText={showLong ? longTitle : title} secondaryText={''} />
+									<TitleScreen icon={icon} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 0 : 30 } }} primaryText={showLong ? longTitle : title} secondaryText={''} />
 									<View style={{ paddingLeft: 45 }}>
 										<NavigationBackButton show={!Device.isPhone} />
 									</View>

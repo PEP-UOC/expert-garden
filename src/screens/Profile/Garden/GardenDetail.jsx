@@ -100,7 +100,7 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 									(
 										<>
 											<View style={{ ...gloStyles.section.primary }}>
-												<TitleScreen icon={'sun-outline'} exterStyles={{ wrapper: { marginBottom: 15 } }} primaryText={upperFirst(toLower(garden?.name)) || ''} secondaryText={''} />
+												<TitleScreen icon={'sun-outline'} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 10 : 30 } }} primaryText={upperFirst(toLower(garden?.name)) || ''} secondaryText={''} />
 												<ImgWithPicker entity={garden || {}} entityType={'garden'} />
 												{{
 													'client': (

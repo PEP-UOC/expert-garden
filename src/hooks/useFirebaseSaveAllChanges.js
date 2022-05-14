@@ -68,12 +68,23 @@ export function useFirebaseSaveAllChanges(debug) {
 		const cardExpiration =
 			changesToSave?.bankDetails?.cardExpiration || user?.bankDetails?.cardExpiration || '';
 		const cardHolder =
-			changesToSave?.bankDetails?.cardHolder || user?.bankDetails?.cardHolder || '';
+			changesToSave?.bankDetails?.cardHolder ||
+			user?.bankDetails?.cardHolder ||
+			user.metadata.fullname ||
+			'';
+		const IBAN = changesToSave?.bankDetails?.IBAN || user?.bankDetails?.IBAN || '';
+		const IBANHolder =
+			changesToSave?.bankDetails?.IBANHolder ||
+			user?.bankDetails?.IBANHolder ||
+			user.metadata.fullname ||
+			'';
 		const bankDetails = {
 			...user.bankDetails,
 			cardNumber,
 			cardExpiration,
 			cardHolder,
+			IBAN,
+			IBANHolder,
 		};
 
 		//Gardens

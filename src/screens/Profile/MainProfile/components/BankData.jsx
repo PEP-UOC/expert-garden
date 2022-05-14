@@ -38,14 +38,18 @@ export const BankDataForm = ({ debug }) => {
 	const [values, setValues] = useState({
 		cardNumber: user?.bankDetails?.cardNumber || "",
 		cardExpiration: user?.bankDetails?.cardExpiration || "",
-		cardHolder: user?.bankDetails?.cardHolder || ""
+		cardHolder: user?.bankDetails?.cardHolder || "",
+		IBAN: user?.bankDetails?.IBAN || "",
+		IBANHolder: user?.bankDetails?.IBANHolder || "",
 	})
 
 	useEffect(() => {
 		setValues({
 			cardNumber: user?.bankDetails?.cardNumber || "",
 			cardExpiration: user?.bankDetails?.cardExpiration || "",
-			cardHolder: user?.bankDetails?.cardHolder || ""
+			cardHolder: user?.bankDetails?.cardHolder || "",
+			IBAN: user?.bankDetails?.IBAN || "",
+			IBANHolder: user?.bankDetails?.IBANHolder || "",
 		})
 	}, [user]);
 
@@ -68,34 +72,84 @@ export const BankDataForm = ({ debug }) => {
 		<View style={{ ...ownStyles?.wrapper }}>
 			<TitleSection icon={'credit-card-outline'} primaryText={'Datos bancarios'} secondaryText={''} />
 			<View style={{ ...gloStyles?.inputs?.wrapper }}>
-				<View style={{ ...gloStyles?.inputs?.row }}>
-					<Input
-						style={{ ...gloStyles?.inputs?.input }}
-						label='Número de la tarjeta'
-						placeholder='XXXX XXXX XXXX XXXX'
-						value={values?.cardNumber || ''}
-						onChangeText={text => handleChange(text, "cardNumber")}
-					/>
+				{
+					{
+						'client': (
+							<>
+								<View style={{ ...gloStyles?.inputs?.row }}>
+									<Input
+										style={{ ...gloStyles?.inputs?.input }}
+										label='Número de la tarjeta'
+										placeholder='XXXX XXXX XXXX XXXX'
+										value={values?.cardNumber || ''}
+										onChangeText={text => handleChange(text, "cardNumber")}
+									/>
 
-					<Input
-						style={{ ...gloStyles?.inputs?.input }}
-						label='Fecha de expiración'
-						placeholder='XX/XX'
-						value={values?.cardExpiration || ''}
-						onChangeText={text => handleChange(text, "cardExpiration")}
-					/>
-				</View>
+									<Input
+										style={{ ...gloStyles?.inputs?.input }}
+										label='Fecha de expiración'
+										placeholder='XX/XX'
+										value={values?.cardExpiration || ''}
+										onChangeText={text => handleChange(text, "cardExpiration")}
+									/>
+								</View>
 
 
-				<View style={{ ...gloStyles?.inputs?.row }}>
-					<Input
-						style={{ ...gloStyles?.inputs?.input }}
-						label='Nombre y apellidos del titular'
-						placeholder='XXXX XXXXXX XXXXXX'
-						value={values?.cardHolder || user?.metadata?.fullname.toUpperCase()}
-						onChangeText={text => handleChange(text, "cardHolder")}
-					/>
-				</View>
+								<View style={{ ...gloStyles?.inputs?.row }}>
+									<Input
+										style={{ ...gloStyles?.inputs?.input }}
+										label='Nombre y apellidos del titular'
+										placeholder='Nombre y apellidos del titular'
+										value={values?.cardHolder || user?.metadata?.fullname.toUpperCase()}
+										onChangeText={text => handleChange(text, "cardHolder")}
+									/>
+								</View>
+							</>
+						),
+						'business': (
+							<>
+								<View style={{ ...gloStyles?.inputs?.row }}>
+									<Input
+										style={{ ...gloStyles?.inputs?.input }}
+										label='IBAN'
+										placeholder='XXXX XXXX XXXX XX XXXXXXXXXX'
+										value={values?.IBAN || ''}
+										onChangeText={text => handleChange(text, "IBAN")}
+									/>
+
+									<Input
+										style={{ ...gloStyles?.inputs?.input }}
+										label='Nombre y apellidos del titular'
+										placeholder='Nombre y apellidos del titular'
+										value={values?.IBANHolder || user?.metadata?.fullname.toUpperCase()}
+										onChangeText={text => handleChange(text, "IBANHolder")}
+									/>
+								</View>
+							</>
+						),
+						'worker': (
+							<>
+								<View style={{ ...gloStyles?.inputs?.row }}>
+									<Input
+										style={{ ...gloStyles?.inputs?.input }}
+										label='IBAN'
+										placeholder='XXXX XXXX XXXX XX XXXXXXXXXX'
+										value={values?.IBAN || ''}
+										onChangeText={text => handleChange(text, "IBAN")}
+									/>
+
+									<Input
+										style={{ ...gloStyles?.inputs?.input }}
+										label='Nombre y apellidos del titular'
+										placeholder='Nombre y apellidos del titular'
+										value={values?.IBANHolder || user?.metadata?.fullname.toUpperCase()}
+										onChangeText={text => handleChange(text, "IBANHolder")}
+									/>
+								</View>
+							</>
+						)
+					}[user?.role]
+				}
 			</View>
 		</View>
 	)

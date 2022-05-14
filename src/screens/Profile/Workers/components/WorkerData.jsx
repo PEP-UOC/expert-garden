@@ -25,7 +25,7 @@ export const WorkerDataForm = ({ debug, values, handleChange }) => {
 
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
-			<View style={{ ...gloStyles?.inputs?.wrapper }}>
+			<View style={{ ...ownStyles.inputsRow }}>
 				<Input
 					style={{ ...gloStyles.inputs.input }}
 					label={'Nombre'}
@@ -40,6 +40,8 @@ export const WorkerDataForm = ({ debug, values, handleChange }) => {
 					value={values?.surnames || ''}
 					onChangeText={text => handleChange(text, "surnames")}
 				/>
+			</View>
+			<View style={{ ...ownStyles.inputsRow }}>
 				<Input
 					style={{ ...gloStyles.inputs.input }}
 					label='Correo electrónico'

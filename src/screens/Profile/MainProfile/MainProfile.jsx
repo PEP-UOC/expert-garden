@@ -30,7 +30,7 @@ import { CompanyDataForm } from './components/CompanyData'
 import { GardensDataForm } from './components/GardensData'
 import { BankDataForm } from './components/BankData'
 import { SessionActionsBtns } from './components/SessionActions'
-import { WorkersSection } from './components/WorkersSection'
+import { WorkersSection } from '../Workers/WorkersSection'
 
 
 //Icons
@@ -69,7 +69,7 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 							<SeparatorTopScreen />
 							<View style={{ ...gloStyles.view }}>
 								<View style={{ ...gloStyles.section.primary }}>
-									<TitleScreen icon={'person-outline'} exterStyles={{ wrapper: { marginBottom: 15 } }} primaryText={user?.metadata?.name || ''} secondaryText={''} />
+									<TitleScreen icon={'person-outline'} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 10 : 30 } }} primaryText={user?.metadata?.name || ''} secondaryText={''} />
 									<ImgWithPicker entity={user || {}} entityType={'user'} />
 									{
 										{
@@ -114,9 +114,11 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 											),
 											'business': (
 												<>
+													<CompanyDataForm />
+
 													{Device.isPhone && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
 
-													<CompanyDataForm />
+													<BankDataForm />
 
 													{Device.isPhone && <BtnPrimary size={'small'} disabled={!thereAreNotSavedChanges} icon={SaveIcon} text={"Guardar todos los cambios"} onPress={saveChanges} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
 

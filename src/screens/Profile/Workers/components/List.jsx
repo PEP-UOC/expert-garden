@@ -123,7 +123,7 @@ export const WorkersList = ({ debug, type, limit, showTitle, showLong }) => {
 		return (
 			<ListItem
 				onPress={() => navigateServiceResume(item.uid)}
-				title={`${item.metadata.fullname}`}
+				title={`${item.metadata.fullname}${!item.verified ? ' (Sin verificar)' : ''}`}
 				description={item.metadata.phoneNumber ? `${item.metadata.email} / ${item.metadata.phoneNumber}` : `${item.metadata.email}`}
 				accessoryRight={renderItemAccessory(item)}
 				style={{ paddingRight: 0, marginRight: -5 }}

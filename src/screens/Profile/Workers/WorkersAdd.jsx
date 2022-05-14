@@ -221,11 +221,13 @@ export const WorkersAddScreen = ({ debug, navigation, route }) => {
 						<Layout style={{ ...gloStyles.layout }}>
 							<View style={{ ...gloStyles.view }}>
 								<View style={{ ...gloStyles.section.primary }}>
-									<TitleScreen icon={'sun-outline'} exterStyles={{ wrapper: { marginBottom: 15 } }} primaryText={'Nuevo empleado'} secondaryText={''} />
+									<TitleScreen icon={'sun-outline'} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 0 : 30 } }} primaryText={'Nuevo empleado'} secondaryText={''} />
 
-									{!Device.isPhone && <BtnPrimary size={'medium'} disabled={allFilled()} icon={SaveIcon} text={"Añadir empleado"} onPress={SignUpWorker} btnStyle={{ marginBottom: 30 }} />}
+									<View style={{ paddingLeft: 45 }}>
+										{!Device.isPhone && <BtnPrimary size={'medium'} disabled={allFilled()} icon={SaveIcon} text={"Añadir empleado"} onPress={SignUpWorker} btnStyle={{ marginBottom: 30 }} />}
 
-									<NavigationBackButton show={!Device.isPhone} btnStyle={{ marginBottom: 30 }} />
+										<NavigationBackButton show={!Device.isPhone} />
+									</View>
 								</View>
 
 								<View style={{ ...gloStyles.section.secondary }}>
