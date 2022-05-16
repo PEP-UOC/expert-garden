@@ -107,7 +107,7 @@ export const HomeScreen = ({ debug, navigation }) => {
 											'business': (
 												<>
 													<NotificationsList type={'new'} limit={3} showLong={true} externalIcon={'bell-outline'} />
-													<ServicesList type={'received'} limit={3} showLong={true} />
+													<ServicesList type={'notEstimated'} limit={3} showLong={true} />
 													<ServicesList type={'next'} limit={3} showLong={true} />
 												</>
 											),

@@ -81,7 +81,8 @@ export const MainServicesScreen = ({ debug, navigation }) => {
 											),
 											'business': (
 												<>
-													<ServicesList type={'received'} limit={3} />
+													<ServicesList type={'notEstimated'} limit={3} />
+													<ServicesList type={'estimated'} limit={3} />
 													<ServicesList type={'nextPunctual'} limit={3} />
 													<ServicesList type={'nextRecurrent'} limit={3} />
 													<ServicesList type={'pastBusiness'} limit={3} />

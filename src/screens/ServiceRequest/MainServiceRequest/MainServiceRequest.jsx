@@ -21,7 +21,7 @@ import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootActi
 import { servicesTypes } from '../../../data/servicesTypes'
 
 //Hooks
-import { useFirebaseSaveService } from "../../../hooks/useFirebaseSaveService"
+import { useFirebaseServiceUtils } from "../../../hooks/useFirebaseServiceUtils"
 
 //Components
 import { SafeAreaView, ScrollView, View, KeyboardAvoidingView, Animated } from 'react-native'
@@ -128,7 +128,7 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 
 	//Save service
 	// eslint-disable-next-line no-unused-vars
-	const [saved, setSaved, handleRemoveServiceDetail, handleSaveServiceDetail, handleSaveService] = useFirebaseSaveService(debug)
+	const { saved, setSaved, handleSaveServiceDetail } = useFirebaseServiceUtils(debug)
 
 	//Steps
 	const [step, setStep] = useState(0);

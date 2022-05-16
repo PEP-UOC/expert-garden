@@ -35,7 +35,8 @@ export const TitleSection = ({ debug, exterStyles, icon, primaryText, secondaryT
 		}>
 			<View style={
 				{
-					flexDirection: 'row', alignItems: 'center', width: '100%'
+					flexDirection: 'row', alignItems: 'center', width: '100%',
+					...exterStyles?.wrapperInt,
 				}
 			}>
 				{!Device.isPhone && icon !== '' && <Icon width={37} height={37} name={icon} fill='#094c3f' />}

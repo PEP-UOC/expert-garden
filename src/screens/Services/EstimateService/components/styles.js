@@ -8,7 +8,7 @@ const styles = StyleService.create({
 	itemsWrapper: {
 		justifyContent: 'space-between',
 		flexDirection: Device?.isPhone ? 'column' : 'row',
-		flexWrap: Device?.isPhone ? 'no-wrap' : 'wrap',
+		flexWrap: 'wrap',
 		marginTop: 10,
 		marginBottom: Device?.isPhone ? 15 : 30,
 	},
@@ -61,6 +61,12 @@ const styles = StyleService.create({
 		backgroundColor: 'color-primary-500',
 		justifyContent: 'center',
 	},
+	badgeAccept: {
+		borderRadius: 5,
+		backgroundColor: 'color-primary-100',
+		justifyContent: 'center',
+		cursor: 'pointer',
+	},
 	badgeRejected: {
 		borderRadius: 5,
 		backgroundColor: 'color-danger-500',
@@ -85,17 +91,17 @@ const styles = StyleService.create({
 		paddingLeft: 15,
 		fontSize: 14,
 	},
-	iconButton: {
-		height: 14,
-		marginRight: 10,
-		paddingTop: 7,
-		paddingRight: 10,
-		paddingBottom: 7,
-		paddingLeft: 10,
-		backgroundColor: '#fff',
+	inputsRow: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		justifyContent: 'space-between',
+		width: '100%',
 	},
-	iconColor: {
-		fill: 'color-primary-500',
+	iconColorActive: {
+		fill: '#fff',
+	},
+	iconColorDisabled: {
+		fill: 'color-primary-400',
 	},
 });
 

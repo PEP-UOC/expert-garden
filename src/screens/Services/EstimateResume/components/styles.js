@@ -8,7 +8,7 @@ const styles = StyleService.create({
 	itemsWrapper: {
 		justifyContent: 'space-between',
 		flexDirection: Device?.isPhone ? 'column' : 'row',
-		flexWrap: Device?.isPhone ? 'no-wrap' : 'wrap',
+		flexWrap: 'wrap',
 		marginTop: 10,
 		marginBottom: Device?.isPhone ? 15 : 30,
 	},
@@ -20,13 +20,26 @@ const styles = StyleService.create({
 		backgroundColor: '#31a06008',
 		//backgroundColor: 'color-primary-transparent-100',
 		paddingTop: 15,
-		paddingLeft: 15,
 		paddingRight: 15,
 		paddingBottom: 15,
+		paddingLeft: 15,
 		marginBottom: 20,
 		//marginRight: Device?.isPhone ? 0 : 25,
 		//marginLeft: Device?.isPhone ? 0 : 25,
 		width: Device?.isPhone ? '100%' : 350,
+	},
+	itemWrapperTotal: {
+		border: 'solid',
+		borderWidth: Device?.isPhone ? 1 : 1,
+		borderColor: 'color-primary-500',
+		borderRadius: 5,
+		backgroundColor: 'color-primary-500',
+		paddingTop: 7,
+		paddingRight: 10,
+		paddingBottom: 7,
+		paddingLeft: 10,
+		marginBottom: 0,
+		width: '100%',
 	},
 	viewWrapperTop: {
 		flexDirection: 'row',
@@ -61,6 +74,11 @@ const styles = StyleService.create({
 		backgroundColor: 'color-primary-500',
 		justifyContent: 'center',
 	},
+	badgeAccept: {
+		borderRadius: 5,
+		backgroundColor: 'color-primary-100',
+		justifyContent: 'center',
+	},
 	badgeRejected: {
 		borderRadius: 5,
 		backgroundColor: 'color-danger-500',
@@ -85,17 +103,29 @@ const styles = StyleService.create({
 		paddingLeft: 15,
 		fontSize: 14,
 	},
-	iconButton: {
-		height: 14,
-		marginRight: 10,
-		paddingTop: 7,
-		paddingRight: 10,
-		paddingBottom: 7,
-		paddingLeft: 10,
-		backgroundColor: '#fff',
+	inputsRow: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		justifyContent: 'space-between',
+		width: '100%',
 	},
-	iconColor: {
-		fill: 'color-primary-500',
+	iconColorActive: {
+		fill: '#fff',
+	},
+	iconColorDisabled: {
+		fill: 'color-primary-400',
+	},
+	viewWrapperBottom: {
+		marginTop: 'auto',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		paddingLeft: 0,
+		paddingRight: 10,
+		alignItems: 'center',
+	},
+	bottomItem: {
+		flexDirection: 'row',
+		marginTop: 20,
 	},
 });
 

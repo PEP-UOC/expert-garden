@@ -235,7 +235,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios anteriores del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									console.log(`🌳 SELI - Servicios cancelados del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -267,6 +267,76 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 									const SERVICES = [];
 									services.forEach(service => {
 										SERVICES.push(service.data())
+									})
+									console.log(`🌳 SELI - Servicios recibidos del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+
+									if (isMounted) {
+										setServices(SERVICES)
+									}
+								}
+							})
+					} else {
+						setServices([])
+					}
+					break;
+
+				case 'notEstimated':
+					setTitle('Por presupuestar')
+					setLongTitle('Servicios esperando un presupuesto')
+					setNoItems('Todavía no tienes ningún servicio por presupuestar')
+					setIcon('inbox-outline')
+
+					if (auth().currentUser) {
+						firestore().collection("services")
+							.where("companiesList", "array-contains", auth()?.currentUser?.uid)
+							.where("confirmationDate", "==", null)
+							.where("cancelationDate", "==", null)
+							.where("isConfigured", "==", true)
+							.orderBy("requestDateTime", "desc")
+							.limit(limit)
+							.onSnapshot(services => {
+								if (!services.empty) {
+									const SERVICES = [];
+									services.forEach(service => {
+										const serviceData = service.data()
+										if (!serviceData?.companiesEstimationsList?.includes(auth()?.currentUser?.uid)) {
+											SERVICES.push(serviceData)
+										}
+									})
+									console.log(`🌳 SELI - Servicios recibidos del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+
+									if (isMounted) {
+										setServices(SERVICES)
+									}
+								}
+							})
+					} else {
+						setServices([])
+					}
+					break;
+
+				case 'estimated':
+					setTitle('Presupuestados')
+					setLongTitle('Servicios presupuestados')
+					setNoItems('Todavía no has presupuestado ningún servicio')
+					setIcon('inbox-outline')
+
+					if (auth().currentUser) {
+						firestore().collection("services")
+							.where("companiesList", "array-contains", auth()?.currentUser?.uid)
+							.where("confirmationDate", "==", null)
+							.where("cancelationDate", "==", null)
+							.where("isConfigured", "==", true)
+							.orderBy("requestDateTime", "desc")
+							.limit(limit)
+							.onSnapshot(services => {
+								if (!services.empty) {
+									const SERVICES = [];
+									services.forEach(service => {
+										const serviceData = service.data()
+										if (serviceData?.companiesEstimationsList?.includes(auth()?.currentUser?.uid)) {
+											SERVICES.push(serviceData)
+										}
 									})
 									console.log(`🌳 SELI - Servicios recibidos del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 
@@ -333,7 +403,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios futuros del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									console.log(`🌳 SELI - Servicios futuros puntuales del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -366,7 +436,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios futuros del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									console.log(`🌳 SELI - Servicios futuros recurrentes del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -429,7 +499,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios anteriores del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									console.log(`🌳 SELI - Servicios cancelados del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 
 									if (isMounted) {
 										setServices(SERVICES)

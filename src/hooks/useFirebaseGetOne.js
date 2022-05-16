@@ -42,7 +42,7 @@ function useFirebaseGetOne(debug, collection, entityIdentifier, entityValue) {
 									`🌳 FIGO - ${upperFirst(
 										toLower(collection.slice(0, -1)),
 									)} ${entityIdentifier} ${entityValue} |`,
-									ITEMS[0]?.name,
+									ITEMS[0]?.name || ITEMS[0]?.requestDate || ITEMS[0]?.type,
 								);
 								setResult(ITEMS[0]);
 								setLoading(false);

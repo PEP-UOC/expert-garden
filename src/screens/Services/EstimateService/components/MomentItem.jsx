@@ -24,7 +24,7 @@ export const MomentItem = ({ debug, title, moment }) => {
 	const ownStyles = useStyleSheet(styles);
 
 	return (
-		<View style={{ ...ownStyles.itemWrapper }}>
+		<View key={title} style={{ ...ownStyles.itemWrapper }}>
 			<View style={{ ...ownStyles.viewWrapperTop, marginBottom: 0 }}>
 
 				{/*DETALLE*/}

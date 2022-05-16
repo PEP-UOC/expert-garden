@@ -80,6 +80,16 @@ export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
 					setLongTitle('Servicios recibidos')
 					setIcon('inbox-outline')
 					break;
+				case 'notEstimated':
+					setTitle('Por presupuestar')
+					setLongTitle('Servicios esperando un presupuesto')
+					setIcon('inbox-outline')
+					break;
+				case 'estimated':
+					setTitle('Presupuestados')
+					setLongTitle('Servicios presupuestados')
+					setIcon('inbox-outline')
+					break;
 				case 'next':
 					setTitle('Futuros')
 					setLongTitle('Servicios futuros')

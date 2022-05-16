@@ -14,7 +14,7 @@ import Device from '../../../libs/react-native-device-detection';
 import { Platform } from 'react-native';
 
 //Hooks
-import { useFirebaseSaveService } from "../../../hooks/useFirebaseSaveService"
+import { useFirebaseServiceUtils } from "../../../hooks/useFirebaseServiceUtils"
 
 //Components
 import { SafeAreaView, ScrollView, View, KeyboardAvoidingView } from 'react-native'
@@ -45,7 +45,7 @@ export const CompanyRequestScreen = ({ debug, navigation, route }) => {
 
 	//Save service
 	// eslint-disable-next-line no-unused-vars
-	const [saved, setSaved, handleRemoveServiceDetail, handleSaveServiceDetail, handleSaveService] = useFirebaseSaveService(debug)
+	const { saved, handleSaveService } = useFirebaseServiceUtils(debug)
 
 	//Hooks
 	// eslint-disable-next-line no-unused-vars

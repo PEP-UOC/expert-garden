@@ -16,7 +16,7 @@ import { Platform } from 'react-native';
 import { useSelector } from 'react-redux'
 
 //Hooks
-import { useFirebaseSaveService } from "../../../hooks/useFirebaseSaveService"
+import { useFirebaseServiceUtils } from "../../../hooks/useFirebaseServiceUtils"
 
 //Components
 import { SafeAreaView, ScrollView, View, KeyboardAvoidingView } from 'react-native'
@@ -52,7 +52,7 @@ export const ResumeServiceRequestScreen = ({ debug, navigation }) => {
 
 	//Save service
 	// eslint-disable-next-line no-unused-vars
-	const [saved, setSaved, handleRemoveServiceDetail, handleSaveServiceDetail, handleSaveService] = useFirebaseSaveService(debug)
+	const { saved, handleRemoveServiceDetail, handleSaveService } = useFirebaseServiceUtils(debug)
 
 	function handleDetailsChange(value) {
 		setValues(prevValues => {
