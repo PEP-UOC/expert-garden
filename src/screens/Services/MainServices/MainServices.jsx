@@ -86,6 +86,7 @@ export const MainServicesScreen = ({ debug, navigation }) => {
 													<ServicesList type={'nextPunctual'} limit={3} />
 													<ServicesList type={'nextRecurrent'} limit={3} />
 													<ServicesList type={'pastBusiness'} limit={3} />
+													<ServicesList type={'refused'} limit={3} />
 													<ServicesList type={'cancelatedBusiness'} limit={3} />
 												</>
 											),

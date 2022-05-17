@@ -31,7 +31,6 @@ import { NavigationTop } from '../../../components/Navigation/Top'
 import { NavigationBackButton } from '../../../components/Navigation/BackButton'
 
 //Icons
-import { TruckIcon } from '../../../assets/icons/Truck'
 import { CloseIcon } from '../../../assets/icons/Close'
 import { CropIcon } from '../../../assets/icons/Crop'
 
@@ -41,17 +40,10 @@ import { ModalOptions } from '../../../components/Modals/Options';
 //Hooks
 import useFirebaseGetOne from '../../../hooks/useFirebaseGetOne'
 
-//Firebase
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-
 // eslint-disable-next-line no-unused-vars
 export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 
 	const sid = route.params.sid;
-
-	//Firebase
-	const auth = firebase.auth;
 
 	//Hooks
 	// eslint-disable-next-line no-unused-vars
@@ -77,10 +69,6 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 	//CANCEL
 	const [sidToCancel, setSidToCancel] = useState(undefined);
 	const [showCancelConfirm, setShowCancelConfirm] = useState(false);
-
-	const isCancelDisabled = () => {
-		return service.cancelationDate !== null
-	}
 
 	function cancelService() {
 		handleCancelService(sidToCancel)
@@ -108,15 +96,36 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 	}
 
 	//Datos de la empresa dentro del servicio
-	const [thisCompany, setThisCompany] = useState(service?.companies?.find(co => co.cid === user?.metadata?.cid) || undefined);
+	const [serviceIsConfirmed, setServiceIsConfirmed] = useState(false);
+	const [serviceIsFinalized, setServiceIsFinalized] = useState(false);
+	const [serviceIsCanceled, setServiceIsCanceled] = useState(false);
+	const [serviceHasSomeEstimations, setServiceHasSomeEstimations] = useState(false);
+	const [serviceHasAllEstimations, setServiceHasAllEstimations] = useState(false);
+
 	const [companyHasEstimationConfirmed, setCompanyHasEstimationConfirmed] = useState(false);
+	const [companyEstimationConfirmedDate, setCompanyEstimationConfirmedDate] = useState(false);
+	const [companyHasEstimationAccepted, setCompanyHasEstimationAccepted] = useState(false);
+	const [companyEstimationAcceptedDate, setCompanyEstimationAcceptedDate] = useState(false);
+	const [companyHasEstimationRefused, setCompanyHasEstimationRefused] = useState(false);
+	const [companyEstimationRefusedDate, setCompanyEstimationRefusedDate] = useState(false);
 
 	useEffect(() => {
-		//console.log('service', service)
-		if (service && !thisCompany) {
+		console.log('service', service)
+		if (service) {
+			setServiceIsConfirmed(service?.isConfirmed || false)
+			setServiceIsFinalized(service?.isFinalized || false)
+			setServiceIsCanceled(service.cancelationDate !== null || false)
+			setServiceHasSomeEstimations(service?.companies?.some((co) => co?.isEstimated) || false)
+			setServiceHasAllEstimations(service?.companies?.every((co) => co?.isEstimated) || false)
+
 			const company = service?.companies?.find(co => co.cid === user?.metadata?.cid)
-			setThisCompany(company)
+			console.log('company', company)
 			setCompanyHasEstimationConfirmed(company?.isEstimated || false)
+			setCompanyEstimationConfirmedDate(company?.estimationDate || '')
+			setCompanyHasEstimationAccepted(company?.isSelected || false)
+			setCompanyEstimationAcceptedDate(company?.isSelectedDate || '')
+			setCompanyHasEstimationRefused(company?.isRefused || false)
+			setCompanyEstimationRefusedDate(company?.isRefusedDate || '')
 		}
 	}, [service]);
 
@@ -137,10 +146,10 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 									<View style={{ paddingLeft: 45 }}>
 
 										{/*BOTÓN PRESUPUESTAR*/}
-										{(user?.role === 'business' && !Device.isPhone && !companyHasEstimationConfirmed) && <BtnPrimary size={'medium'} icon={CropIcon} text={"Presupuestar"} onPress={navigateToEstimate} disabled={isCancelDisabled()} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
+										{(user?.role === 'business' && !Device.isPhone && !companyHasEstimationConfirmed) && <BtnPrimary size={'medium'} icon={CropIcon} text={"Presupuestar"} onPress={navigateToEstimate} disabled={serviceIsCanceled} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
 
 										{/*BOTÓN CANCELAR SERVICIO*/}
-										{!Device.isPhone && <BtnPrimary size={'medium'} icon={CloseIcon} text={"Cancelar servicio"} onPress={() => { setSidToCancel(sid); setShowCancelConfirm(true) }} disabled={isCancelDisabled()} status={'danger'} btnStyle={{ marginBottom: 30 }} />}
+										{(user?.role === 'client' && !Device.isPhone) && <BtnPrimary size={'medium'} icon={CloseIcon} text={"Cancelar servicio"} onPress={() => { setSidToCancel(sid); setShowCancelConfirm(true) }} disabled={serviceIsCanceled} status={'danger'} btnStyle={{ marginBottom: 30 }} />}
 
 										<NavigationBackButton show={!Device.isPhone} />
 									</View>
@@ -149,16 +158,21 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 								<View style={{ ...gloStyles.section.secondary }}>
 
 									{/*BOTÓN PRESUPUESTAR*/}
-									{(user?.role === 'business' && Device.isPhone && !companyHasEstimationConfirmed) && <BtnPrimary size={'medium'} icon={CropIcon} text={"Presupuestar"} onPress={navigateToEstimate} disabled={isCancelDisabled()} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
+									{(user?.role === 'business' && Device.isPhone && !companyHasEstimationConfirmed) && <BtnPrimary size={'medium'} icon={CropIcon} text={"Presupuestar"} onPress={navigateToEstimate} disabled={serviceIsCanceled} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
 
 									{/*SECCIÓN INFORMACIÓN BÁSICA*/}
 									<BasicDetails
-										isConfirmed={service?.isConfirmed}
-										isSomeEstimated={service?.companies?.some((co) => co?.isEstimated)}
-										isAllEstimated={service?.companies?.every((co) => co?.isEstimated)}
-										companyIsEstimated={service?.companiesEstimationsList?.includes(auth()?.currentUser?.uid)}
-										isFinalized={service?.isFinalized}
-										isCanceled={isCancelDisabled()}
+										isConfirmed={serviceIsConfirmed}
+										isFinalized={serviceIsFinalized}
+										isCanceled={serviceIsCanceled}
+										isSomeEstimated={serviceHasSomeEstimations}
+										isAllEstimated={serviceHasAllEstimations}
+										companyHasEstimationConfirmed={companyHasEstimationConfirmed}
+										companyEstimationConfirmedDate={companyEstimationConfirmedDate}
+										companyHasEstimationAccepted={companyHasEstimationAccepted}
+										companyEstimationAcceptedDate={companyEstimationAcceptedDate}
+										companyHasEstimationRefused={companyHasEstimationRefused}
+										companyEstimationRefusedDate={companyEstimationRefusedDate}
 										requestDate={service?.requestDate}
 										cancelationDate={service?.cancelationDate}
 										confirmationDate={service?.confirmationDate}
@@ -177,9 +191,9 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 									<DetailsList details={service?.details || []} />
 
 									{/*BOTÓN CANCELAR SERVICIO*/}
-									{Device.isPhone && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Cancelar servicio"} onPress={() => { setSidToCancel(sid); setShowCancelConfirm(true) }} disabled={isCancelDisabled()} status={'danger'} btnStyle={{ marginBottom: 0, marginTop: 0 }} />}
+									{(user?.role === 'client' && Device.isPhone) && <BtnPrimary size={'medium'} icon={CloseIcon} text={"Cancelar servicio"} onPress={() => { setSidToCancel(sid); setShowCancelConfirm(true) }} disabled={serviceIsCanceled} status={'danger'} btnStyle={{ marginBottom: 30, marginTop: 0 }} />}
 
-									<NavigationBackButton show={Device.isPhone} />
+									<NavigationBackButton show={Device.isPhone} btnStyle={{ marginTop: 0 }} />
 								</View>
 
 								{/*MODAL ELIMINAR DETALLE*/}

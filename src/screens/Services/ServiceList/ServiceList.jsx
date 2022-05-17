@@ -49,18 +49,18 @@ export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
 					setIcon('inbox-outline')
 					break;
 				case 'inProgress':
-					setTitle('En curso')
-					setLongTitle('Servicios en curso')
+					setTitle('Próximos')
+					setLongTitle('Próximos servicios')
 					setIcon('play-circle-outline')
 					break;
 				case 'inProgressPunctual':
-					setTitle('En curso puntuales')
-					setLongTitle('Servicios en curso puntuales')
+					setTitle('Próximos puntuales')
+					setLongTitle('Próximos servicios puntuales')
 					setIcon('checkmark-circle-outline')
 					break;
 				case 'inProgressRecurrent':
-					setTitle('En curso recurrentes')
-					setLongTitle('Servicios en curso recurrentes')
+					setTitle('Próximos recurrentes')
+					setLongTitle('Próximos servicios recurrentes')
 					setIcon('clock-outline')
 					break;
 				case 'past':
@@ -90,19 +90,24 @@ export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
 					setLongTitle('Servicios presupuestados')
 					setIcon('inbox-outline')
 					break;
+				case 'refused':
+					setTitle('Presupuestados rechazados')
+					setLongTitle('Servicios presupuestados rechazados')
+					setIcon('slash-outline')
+					break;
 				case 'next':
-					setTitle('Futuros')
-					setLongTitle('Servicios futuros')
+					setTitle('Próximos')
+					setLongTitle('Próximos servicios')
 					setIcon('rewind-right-outline')
 					break;
 				case 'nextPunctual':
-					setTitle('Futuros puntuales')
-					setLongTitle('Servicios futuros puntuales')
+					setTitle('Próximos puntuales')
+					setLongTitle('Próximos servicios puntuales')
 					setIcon('checkmark-circle-outline')
 					break;
 				case 'nextRecurrent':
-					setTitle('Futuros recurrentes')
-					setLongTitle('Servicios futuros recurrentes')
+					setTitle('Próximos recurrentes')
+					setLongTitle('Próximos servicios recurrentes')
 					setIcon('clock-outline')
 					break;
 				default:

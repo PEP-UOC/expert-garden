@@ -120,7 +120,7 @@ export const CompanyItem = ({ debug, company, companyIndex, sid }) => {
 									navigateToEstimateResume()
 								}}
 							>
-								Ver
+
 							</Button>
 						</View>
 					)
@@ -139,7 +139,7 @@ export const CompanyItem = ({ debug, company, companyIndex, sid }) => {
 											navigateToEstimateResume()
 										}}
 									>
-										Ver
+
 									</Button>
 								)}
 							</View>
@@ -157,7 +157,7 @@ export const CompanyItem = ({ debug, company, companyIndex, sid }) => {
 											navigateToEstimateResume()
 										}}
 									>
-										Ver
+
 									</Button>
 								</View>
 							)

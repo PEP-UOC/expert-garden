@@ -63,7 +63,10 @@ export const EstimateResumeScreen = ({ debug, navigation, route }) => {
 
 	useEffect(() => {
 		if (saved) {
-			navigation.goBack();
+			navigation.navigate("Services", {
+				screen: 'ServiceResumeScreen',
+				params: { sid },
+			});
 		}
 	}, [saved]);
 
@@ -78,6 +81,8 @@ export const EstimateResumeScreen = ({ debug, navigation, route }) => {
 	//Datos de la empresa dentro del servicio
 	const [companyEstimations, setCompanyEstimations] = useState(undefined);
 	const [companyHasEstimationConfirmed, setCompanyHasEstimationConfirmed] = useState(false);
+	const [companyHasEstimationAccepted, setCompanyHasEstimationAccepted] = useState(false);
+	const [companyHasEstimationRefused, setCompanyHasEstimationRefused] = useState(false);
 	const [companyHasAllEstimated, setCompanyHasAllEstimated] = useState(undefined);
 	const [companyHasSelectedDate, setCompanyHasSelectedDate] = useState(undefined);
 	const [companyEstimationTotalPrice, setCompanyEstimationTotalPrice] = useState(0);
@@ -91,6 +96,8 @@ export const EstimateResumeScreen = ({ debug, navigation, route }) => {
 			const totalEstimated = company?.estimation?.reduce((acc, cE) => cE.price + acc, 0)
 			setCompanyEstimations(company?.estimation || false)
 			setCompanyHasEstimationConfirmed(company?.isEstimated || false)
+			setCompanyHasEstimationAccepted(company?.isSelected || false)
+			setCompanyHasEstimationRefused(company?.isRefused || false)
 			setCompanyHasAllEstimated(detailsCount === detailsEstimatedCount)
 			setCompanyHasSelectedDate(company?.selectedDate || false)
 			setCompanyEstimationTotalPrice(totalEstimated || false)
@@ -198,9 +205,9 @@ export const EstimateResumeScreen = ({ debug, navigation, route }) => {
 											'business': (
 												<>
 													{/*BOTÓN GUARDAR PRESUPUESTO*/}
-													{!Device.isPhone && <BtnPrimary size={'medium'} icon={CheckmarkCircleIcon} text={companyHasEstimationConfirmed ? 'Presupesto enviado al cliente' : "Confirmar presupuesto"} onPress={confirmEstimation}
+													{!Device.isPhone && <BtnPrimary size={'medium'} icon={companyHasEstimationRefused ? CloseCircleIcon : CheckmarkCircleIcon} text={companyHasEstimationConfirmed ? companyHasEstimationAccepted ? 'Presupuesto aceptado por el cliente' : companyHasEstimationRefused ? 'Presupuesto rechazado por el cliente' : 'Presupesto enviado al cliente' : "Confirmar presupuesto"} onPress={confirmEstimation}
 														disabled={!companyHasAllEstimated}
-														status={'primary'} btnStyle={{ marginBottom: 30 }} />}
+														status={companyHasEstimationRefused ? 'danger' : 'primary'} btnStyle={{ marginBottom: 30 }} />}
 												</>
 											)
 										}[user?.role]}
@@ -244,9 +251,9 @@ export const EstimateResumeScreen = ({ debug, navigation, route }) => {
 										'business': (
 											<>
 												{/*BOTÓN GUARDAR PRESUPUESTO*/}
-												{Device.isPhone && <BtnPrimary size={'medium'} icon={CheckmarkCircleIcon} text={companyHasEstimationConfirmed ? 'Presupesto enviado al cliente' : "Confirmar presupuesto"} onPress={confirmEstimation}
+												{Device.isPhone && <BtnPrimary size={'medium'} icon={companyHasEstimationRefused ? CloseCircleIcon : CheckmarkCircleIcon} text={companyHasEstimationConfirmed ? companyHasEstimationAccepted ? 'Presupuesto aceptado por el cliente' : companyHasEstimationRefused ? 'Presupuesto rechazado por el cliente' : 'Presupesto enviado al cliente' : "Confirmar presupuesto"} onPress={confirmEstimation}
 													disabled={!companyHasAllEstimated}
-													status={'primary'} btnStyle={{ marginBottom: 30 }} />}
+													status={companyHasEstimationRefused ? 'danger' : 'primary'} btnStyle={{ marginBottom: 30 }} />}
 											</>
 										)
 									}[user?.role]}
@@ -296,9 +303,9 @@ export const EstimateResumeScreen = ({ debug, navigation, route }) => {
 										'business': (
 											<>
 												{/*BOTÓN GUARDAR PRESUPUESTO*/}
-												{Device.isPhone && <BtnPrimary size={'medium'} icon={CheckmarkCircleIcon} text={companyHasEstimationConfirmed ? 'Presupesto enviado al cliente' : "Confirmar presupuesto"} onPress={confirmEstimation}
+												{Device.isPhone && <BtnPrimary size={'medium'} icon={companyHasEstimationRefused ? CloseCircleIcon : CheckmarkCircleIcon} text={companyHasEstimationConfirmed ? companyHasEstimationAccepted ? 'Presupuesto aceptado por el cliente' : companyHasEstimationRefused ? 'Presupuesto rechazado por el cliente' : 'Presupesto enviado al cliente' : "Confirmar presupuesto"} onPress={confirmEstimation}
 													disabled={!companyHasAllEstimated}
-													status={'primary'} btnStyle={{ marginBottom: 0 }} />}
+													status={companyHasEstimationRefused ? 'danger' : 'primary'} btnStyle={{ marginBottom: 0 }} />}
 											</>
 										)
 									}[user?.role]}

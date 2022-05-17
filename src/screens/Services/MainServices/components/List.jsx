@@ -90,8 +90,8 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 					break;
 
 				case 'inProgress':
-					setTitle('En curso')
-					setLongTitle('Servicios en curso')
+					setTitle('Próximos')
+					setLongTitle('Próximos servicios')
 					setNoItems('Todavía no tienes ningún servicio en curso')
 					setIcon('play-circle-outline')
 
@@ -109,7 +109,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios en curso del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									console.log(`🌳 SELI - Próximos servicios del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -122,8 +122,8 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 					break;
 
 				case 'inProgressPunctual':
-					setTitle('En curso puntuales')
-					setLongTitle('Servicios en curso puntuales')
+					setTitle('Próximos puntuales')
+					setLongTitle('Próximos servicios puntuales')
 					setNoItems('Todavía no tienes ningún servicio puntual en curso')
 					setIcon('checkmark-circle-outline')
 
@@ -142,7 +142,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios en curso puntuales del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									console.log(`🌳 SELI - Próximos servicios puntuales del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -155,8 +155,8 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 					break;
 
 				case 'inProgressRecurrent':
-					setTitle('En curso recurrentes')
-					setLongTitle('Servicios en curso recurrentes')
+					setTitle('Próximos recurrentes')
+					setLongTitle('Próximos servicios recurrentes')
 					setNoItems('Todavía no tienes ningún servicio recurrente en curso')
 					setIcon('clock-outline')
 
@@ -175,7 +175,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios en curso recurrentes del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									console.log(`🌳 SELI - Próximos servicios recurrentes del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 									setServices(SERVICES)
 								}
 							})
@@ -324,7 +324,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 
 					if (auth().currentUser) {
 						firestore().collection("services")
-							.where("companiesList", "array-contains", auth()?.currentUser?.uid)
+							.where("companiesEstimationsList", "array-contains", auth()?.currentUser?.uid)
 							.where("confirmationDate", "==", null)
 							.where("cancelationDate", "==", null)
 							.where("isConfigured", "==", true)
@@ -335,9 +335,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 									const SERVICES = [];
 									services.forEach(service => {
 										const serviceData = service.data()
-										if (serviceData?.companiesEstimationsList?.includes(auth()?.currentUser?.uid)) {
-											SERVICES.push(serviceData)
-										}
+										SERVICES.push(serviceData)
 									})
 									console.log(`🌳 SELI - Servicios recibidos del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
 
@@ -351,15 +349,48 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 					}
 					break;
 
+				case 'refused':
+					setTitle('Presupuestados rechazados')
+					setLongTitle('Servicios presupuestados rechazados')
+					setNoItems('Todavía no tienes ningún servicio rechazado')
+					setIcon('slash-outline')
+
+					if (auth().currentUser) {
+						firestore().collection("services")
+							.where("companiesEstimationsList", "array-contains", auth()?.currentUser?.uid)
+							.where("isConfigured", "==", true)
+							.where("selectedCompany", "!=", auth()?.currentUser?.uid)
+							.orderBy("selectedCompany", "desc")
+							.orderBy("requestDateTime", "desc")
+							.limit(limit)
+							.onSnapshot(services => {
+								if (!services.empty) {
+									const SERVICES = [];
+									services.forEach(service => {
+										const serviceData = service.data()
+										SERVICES.push(serviceData)
+									})
+									console.log(`🌳 SELI - Servicios con presupuesos rechazados del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+
+									if (isMounted) {
+										setServices(SERVICES)
+									}
+								}
+							})
+					} else {
+						setServices([])
+					}
+					break;
+
 				case 'next':
-					setTitle('Futuros')
-					setLongTitle('Servicios futuros')
-					setNoItems('Todavía no tienes ningún servicio futuro')
+					setTitle('Próximos')
+					setLongTitle('Próximos servicios')
+					setNoItems('Todavía no tienes ningún servicio próximo')
 					setIcon('rewind-right-outline')
 
 					if (auth().currentUser) {
 						firestore().collection("services")
-							.where("companiesList", "array-contains", auth()?.currentUser?.uid)
+							.where("selectedCompany", "==", auth()?.currentUser?.uid)
 							.where("confirmationDateTime", "!=", null)
 							.where("cancelationDate", "==", null)
 							.where("isConfigured", "==", true)
@@ -384,14 +415,14 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 					break;
 
 				case 'nextPunctual':
-					setTitle('Futuros puntuales')
-					setLongTitle('Servicios futuros puntuales')
-					setNoItems('Todavía no tienes ningún servicio futuro puntual')
+					setTitle('Próximos puntuales')
+					setLongTitle('Próximos servicios puntuales')
+					setNoItems('Todavía no tienes ningún servicio próximo puntual')
 					setIcon('checkmark-circle-outline')
 
 					if (auth().currentUser) {
 						firestore().collection("services")
-							.where("companiesList", "array-contains", auth()?.currentUser?.uid)
+							.where("selectedCompany", "==", auth()?.currentUser?.uid)
 							.where("confirmationDateTime", "!=", null)
 							.where("cancelationDate", "==", null)
 							.where("isConfigured", "==", true)
@@ -417,14 +448,14 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 					break;
 
 				case 'nextRecurrent':
-					setTitle('Futuros recurrentes')
-					setLongTitle('Servicios futuros recurrentes')
-					setNoItems('Todavía no tienes ningún servicio futuro recurrente')
+					setTitle('Próximos recurrentes')
+					setLongTitle('Próximos servicios recurrentes')
+					setNoItems('Todavía no tienes ningún servicio próximo recurrente')
 					setIcon('clock-outline')
 
 					if (auth().currentUser) {
 						firestore().collection("services")
-							.where("companiesList", "array-contains", auth()?.currentUser?.uid)
+							.where("selectedCompany", "==", auth()?.currentUser?.uid)
 							.where("confirmationDateTime", "!=", null)
 							.where("cancelationDate", "==", null)
 							.where("isConfigured", "==", true)
@@ -457,7 +488,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 
 					if (auth().currentUser) {
 						firestore().collection("services")
-							.where("companiesList", "array-contains", auth()?.currentUser?.uid)
+							.where("selectedCompany", "==", auth()?.currentUser?.uid)
 							.where("confirmationDateTime", "!=", null)
 							.where("isFinalized", "==", true)
 							.where("cancelationDate", "==", null)
@@ -490,7 +521,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 
 					if (auth().currentUser) {
 						firestore().collection("services")
-							.where("companiesList", "array-contains", auth()?.currentUser?.uid)
+							.where("selectedCompany", "==", auth()?.currentUser?.uid)
 							.where("cancelationDateTime", "!=", null)
 							.where("isConfigured", "==", true)
 							.orderBy("cancelationDateTime", "desc")

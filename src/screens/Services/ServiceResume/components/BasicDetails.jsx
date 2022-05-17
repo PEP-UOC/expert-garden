@@ -20,7 +20,7 @@ import { TitleSection } from '../../../../components/Titles/Section'
 import { BookOpenIcon } from '../../../../assets/icons/BookOpen'
 
 // eslint-disable-next-line no-unused-vars
-export const BasicDetails = ({ debug, isConfirmed, isSomeEstimated, isAllEstimated, companyIsEstimated, isFinalized, isCanceled, requestDate, cancelationDate, confirmationDate, previousVisitDate, serviceDate, goToResume }) => {
+export const BasicDetails = ({ debug, isConfirmed, isSomeEstimated, isAllEstimated, companyHasEstimationConfirmed, companyEstimationConfirmedDate, companyHasEstimationAccepted, companyEstimationAcceptedDate, companyHasEstimationRefused, companyEstimationRefusedDate, isFinalized, isCanceled, requestDate, cancelationDate, confirmationDate, previousVisitDate, serviceDate, goToResume }) => {
 
 	//Styles
 	const ownStyles = useStyleSheet(styles);
@@ -40,10 +40,10 @@ export const BasicDetails = ({ debug, isConfirmed, isSomeEstimated, isAllEstimat
 					</View>
 				)}
 
-				{isConfirmed && (
+				{isConfirmed && !companyHasEstimationRefused && (
 					<View style={{ ...ownStyles.badgeAccepted, width: '100%', marginBottom: 20 }}>
 						<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
-							Confirmado
+							Confirmado por el cliente
 						</Text>
 					</View>
 				)}
@@ -72,22 +72,57 @@ export const BasicDetails = ({ debug, isConfirmed, isSomeEstimated, isAllEstimat
 					</View>
 				)}
 
-				{companyIsEstimated && user?.role === 'business' && (
-					<View style={{ ...ownStyles.badgeAccepted, width: '100%', marginBottom: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-						<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
-							Presupuestado
-						</Text>
-						<Button
-							style={{ ...ownStyles.iconButton }}
-							appearance={'ghost'}
-							accessoryRight={<BookOpenIcon fill={ownStyles.iconColor.fill} />}
-							onPress={() => {
-								goToResume()
-							}}
-						>
-							Ver
-						</Button>
-					</View>
+				{companyHasEstimationConfirmed && user?.role === 'business' && (
+					<>
+						{companyHasEstimationAccepted
+							? (<View style={{ ...ownStyles.badgeAccepted, width: '100%', marginBottom: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+								<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
+									Presupuesto aceptado
+								</Text>
+								<Button
+									style={{ ...ownStyles.iconButton }}
+									appearance={'ghost'}
+									accessoryRight={<BookOpenIcon fill={ownStyles.iconColor.fill} />}
+									onPress={() => {
+										goToResume()
+									}}
+								>
+
+								</Button>
+							</View>)
+							: companyHasEstimationRefused
+								? (<View style={{ ...ownStyles.badgeRejected, width: '100%', marginBottom: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+									<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
+										Presupuesto rechazado
+									</Text>
+									<Button
+										style={{ ...ownStyles.iconButton }}
+										appearance={'ghost'}
+										accessoryRight={<BookOpenIcon fill={ownStyles.iconColor.fill} />}
+										onPress={() => {
+											goToResume()
+										}}
+									>
+									</Button>
+								</View>)
+								: (<View style={{ ...ownStyles.badgeAccepted, width: '100%', marginBottom: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+									<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
+										Presupuestado
+									</Text>
+									<Button
+										style={{ ...ownStyles.iconButton }}
+										appearance={'ghost'}
+										accessoryRight={<BookOpenIcon fill={ownStyles.iconColor.fill} />}
+										onPress={() => {
+											goToResume()
+										}}
+									>
+
+									</Button>
+								</View>)
+						}
+					</>
+
 				)}
 
 				{isFinalized && (
@@ -99,22 +134,30 @@ export const BasicDetails = ({ debug, isConfirmed, isSomeEstimated, isAllEstimat
 				)}
 
 				{requestDate ? (
-					<MomentItem title={'Solicitado el:'} moment={requestDate} />
+					<MomentItem title={'Solicitado:'} moment={requestDate} />
 				) : null}
 
 				{cancelationDate ? (
-					<MomentItem title={'Cancelado el:'} moment={cancelationDate} />
+					<MomentItem title={'Cancelado:'} moment={cancelationDate} />
 				) : null}
 
-				{confirmationDate ? (
-					<MomentItem title={'Confirmado el:'} moment={confirmationDate} />
+				{companyHasEstimationRefused && companyEstimationRefusedDate ? (
+					<MomentItem title={'Rechazado:'} moment={companyEstimationRefusedDate} />
 				) : null}
 
-				{previousVisitDate ? (
-					<MomentItem title={'Día de la visita previa:'} moment={previousVisitDate} />
+				{companyEstimationConfirmedDate ? (
+					<MomentItem title={'Presupuestado:'} moment={companyEstimationConfirmedDate} />
 				) : null}
 
-				{serviceDate ? (
+				{!companyHasEstimationRefused && confirmationDate ? (
+					<MomentItem title={'Confirmado:'} moment={confirmationDate} />
+				) : null}
+
+				{!companyHasEstimationRefused && previousVisitDate ? (
+					<MomentItem title={'Día visita previa:'} moment={previousVisitDate} />
+				) : null}
+
+				{!companyHasEstimationRefused && serviceDate ? (
 					<MomentItem title={'Día del servicio:'} moment={serviceDate} />
 				) : null}
 			</View>
@@ -125,11 +168,16 @@ export const BasicDetails = ({ debug, isConfirmed, isSomeEstimated, isAllEstimat
 BasicDetails.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	isConfirmed: PropTypes.bool,
-	isSomeEstimated: PropTypes.bool,
-	isAllEstimated: PropTypes.bool,
-	companyIsEstimated: PropTypes.bool,
 	isFinalized: PropTypes.bool,
 	isCanceled: PropTypes.bool,
+	isSomeEstimated: PropTypes.bool,
+	isAllEstimated: PropTypes.bool,
+	companyHasEstimationConfirmed: PropTypes.bool,
+	companyEstimationConfirmedDate: PropTypes.any,
+	companyHasEstimationAccepted: PropTypes.bool,
+	companyEstimationAcceptedDate: PropTypes.any,
+	companyHasEstimationRefused: PropTypes.bool,
+	companyEstimationRefusedDate: PropTypes.any,
 	requestDate: PropTypes.string,
 	cancelationDate: PropTypes.string,
 	confirmationDate: PropTypes.string,
@@ -141,11 +189,16 @@ BasicDetails.propTypes = {
 BasicDetails.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 	isConfirmed: false,
-	isSomeEstimated: false,
-	isAllEstimated: false,
-	companyIsEstimated: false,
 	isFinalized: false,
 	isCanceled: false,
+	isSomeEstimated: false,
+	isAllEstimated: false,
+	companyHasEstimationConfirmed: false,
+	companyEstimationConfirmedDate: '',
+	companyHasEstimationAccepted: false,
+	companyEstimationAcceptedDate: '',
+	companyHasEstimationRefused: false,
+	companyEstimationRefusedDate: '',
 	requestDate: '',
 	cancelationDate: '',
 	confirmationDate: '',

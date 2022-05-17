@@ -69,15 +69,18 @@ export const EstimateServiceScreen = ({ debug, navigation, route }) => {
 
 	//Datos de la empresa dentro del servicio
 	const [companyEstimations, setCompanyEstimations] = useState(undefined);
+	const [companyHasEstimated, setCompanyHasEstimated] = useState(undefined);
 	const [companyHasAllEstimated, setCompanyHasAllEstimated] = useState(undefined);
 	const [companyHasSelectedDate, setCompanyHasSelectedDate] = useState(undefined);
 
 	useEffect(() => {
 		if (service) {
 			const company = service?.companies?.find(co => co.cid === user?.metadata?.cid)
+			console.log('company', company)
 			const detailsCount = service?.details?.length || 0;
 			const detailsEstimatedCount = company?.estimation ? company?.estimation?.length : 0;
 			setCompanyEstimations(company?.estimation || false)
+			setCompanyHasEstimated(company?.isEstimated || false)
 			setCompanyHasAllEstimated(detailsCount === detailsEstimatedCount)
 			setCompanyHasSelectedDate(company?.selectedDate || false)
 		}
@@ -100,7 +103,7 @@ export const EstimateServiceScreen = ({ debug, navigation, route }) => {
 									<View style={{ paddingLeft: 45 }}>
 
 										{/*BOTÓN GUARDAR PRESUPUESTO*/}
-										{!Device.isPhone && <BtnPrimary size={'medium'} icon={CropIcon} text={"Guardar presupuesto"} onPress={navigateToEstimateResume}
+										{!Device.isPhone && !companyHasEstimated && <BtnPrimary size={'medium'} icon={CropIcon} text={"Guardar presupuesto"} onPress={navigateToEstimateResume}
 											disabled={!companyHasAllEstimated}
 											status={'primary'} btnStyle={{ marginBottom: 30 }} />}
 
@@ -112,7 +115,7 @@ export const EstimateServiceScreen = ({ debug, navigation, route }) => {
 								<View style={{ ...gloStyles.section.secondary }}>
 
 									{/*BOTÓN GUARDAR PRESUPUESTO*/}
-									{Device.isPhone && <BtnPrimary size={'medium'} icon={CropIcon} text={"Guardar presupuesto"} onPress={navigateToEstimateResume}
+									{Device.isPhone && !companyHasEstimated && <BtnPrimary size={'medium'} icon={CropIcon} text={"Guardar presupuesto"} onPress={navigateToEstimateResume}
 										disabled={!companyHasAllEstimated}
 										status={'primary'} btnStyle={{ marginBottom: 30 }} />}
 
@@ -123,7 +126,7 @@ export const EstimateServiceScreen = ({ debug, navigation, route }) => {
 									<DetailsEstimate details={service?.details || []} cid={user?.metadata?.cid} sid={sid} companyEstimations={companyEstimations || []} />
 
 									{/*BOTÓN GUARDAR PRESUPUESTO*/}
-									{Device.isPhone && <BtnPrimary size={'medium'} icon={CropIcon} text={"Guardar presupuesto"} onPress={navigateToEstimateResume}
+									{Device.isPhone && !companyHasEstimated && <BtnPrimary size={'medium'} icon={CropIcon} text={"Guardar presupuesto"} onPress={navigateToEstimateResume}
 										disabled={!companyHasAllEstimated}
 										status={'primary'} btnStyle={{ marginBottom: 0 }} />}
 
