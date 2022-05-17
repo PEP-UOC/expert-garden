@@ -48,7 +48,7 @@ export const BasicDetails = ({ debug, isConfirmed, isSomeEstimated, isAllEstimat
 					</View>
 				)}
 
-				{!isConfirmed && isSomeEstimated && user?.role === 'client' && (
+				{!isConfirmed && isSomeEstimated && !isAllEstimated && user?.role === 'client' && (
 					<View style={{ ...ownStyles.badgeAccepted, width: '100%', marginBottom: 20 }}>
 						<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
 							Presupuestado parcialmente

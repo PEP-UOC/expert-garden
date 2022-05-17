@@ -40,6 +40,7 @@ export const PersonalDataForm = ({ debug }) => {
 
 	//Store
 	const user = useSelector(state => state.userReducer.user);
+	const changesToSave = useSelector(state => state.changeReducer.changesToSave);
 
 	//State
 	const [values, setValues] = useState({
@@ -54,13 +55,13 @@ export const PersonalDataForm = ({ debug }) => {
 
 	useEffect(() => {
 		setValues({
-			name: user?.metadata?.name || "",
-			surnames: user?.metadata?.surnames || "",
-			email: user?.metadata?.email || "",
-			phoneNumber: user?.metadata?.phoneNumber || "",
-			gender: user?.metadata?.gender || "",
-			birthday: user?.metadata?.birthdayDateTime ? moment(user?.metadata?.birthdayDateTime).format("DD/MM/YYYY") : "",
-			birthdayDateTime: user?.metadata?.birthdayDateTime || ""
+			name: changesToSave?.metadata?.name || user?.metadata?.name || "",
+			surnames: changesToSave?.metadata?.surnames || user?.metadata?.surnames || "",
+			email: changesToSave?.metadata?.email || user?.metadata?.email || "",
+			phoneNumber: changesToSave?.metadata?.phoneNumber || user?.metadata?.phoneNumber || "",
+			gender: changesToSave?.metadata?.gender || user?.metadata?.gender || "",
+			birthday: changesToSave?.metadata?.birthdayDateTime ? moment(changesToSave?.metadata?.birthdayDateTime).format("DD/MM/YYYY") : user?.metadata?.birthdayDateTime ? moment(user?.metadata?.birthdayDateTime).format("DD/MM/YYYY") : "",
+			birthdayDateTime: changesToSave?.metadata?.birthdayDateTime || user?.metadata?.birthdayDateTime || ""
 		})
 	}, [user]);
 

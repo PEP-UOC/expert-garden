@@ -53,7 +53,7 @@ export const NotificationResumeScreen = ({ debug, navigation, route }) => {
 		if (notification?.readDate === null) {
 			const now = moment();
 			const readDateTime = now.format();
-			const readDate = now.format("DD-MM-YYYY");
+			const readDate = now.format("DD/MM/YYYY");
 			const readTime = now.format("HH:mm");
 			firestore().collection("notifications").doc(nid).update({
 				readDateTime,

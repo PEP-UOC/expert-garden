@@ -65,7 +65,7 @@ function useFirebaseGetOne(debug, collection, entityIdentifier, entityValue) {
 					const now = moment();
 					const ref = firestore().collection(collection).doc();
 					const creationDateTime = now.format();
-					const creationDate = now.format('DD-MM-YYYY');
+					const creationDate = now.format('DD/MM/YYYY');
 					const creationTime = now.format('HH:mm');
 					let entity = {};
 					switch (entityIdentifier) {

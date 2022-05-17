@@ -33,6 +33,7 @@ export const BankDataForm = ({ debug }) => {
 
 	//Store
 	const user = useSelector(state => state.userReducer.user);
+	const changesToSave = useSelector(state => state.changeReducer.changesToSave);
 
 	//State
 	const [values, setValues] = useState({
@@ -45,13 +46,13 @@ export const BankDataForm = ({ debug }) => {
 
 	useEffect(() => {
 		setValues({
-			cardNumber: user?.bankDetails?.cardNumber || "",
-			cardExpiration: user?.bankDetails?.cardExpiration || "",
-			cardHolder: user?.bankDetails?.cardHolder || "",
-			IBAN: user?.bankDetails?.IBAN || "",
-			IBANHolder: user?.bankDetails?.IBANHolder || "",
+			cardNumber: changesToSave?.bankDetails?.cardNumber || user?.bankDetails?.cardNumber || "",
+			cardExpiration: changesToSave?.bankDetails?.cardExpiration || user?.bankDetails?.cardExpiration || "",
+			cardHolder: changesToSave?.bankDetails?.cardHolder || user?.bankDetails?.cardHolder || "",
+			IBAN: changesToSave?.bankDetails?.IBAN || user?.bankDetails?.IBAN || "",
+			IBANHolder: changesToSave?.bankDetails?.IBANHolder || user?.bankDetails?.IBANHolder || "",
 		})
-	}, [user]);
+	}, [changesToSave]);
 
 	//Handle
 	function handleChange(value, keyName) {

@@ -107,7 +107,6 @@ export const TabsNavigation = () => {
 					// Listen for document metadata changes
 					includeMetadataChanges: true
 				}, (item) => {
-
 					if (isMounted) {
 						const userData = item.data();
 						if (userData === undefined && isLoggedIn) {
@@ -115,20 +114,19 @@ export const TabsNavigation = () => {
 							AutoSignOut();
 						} else {
 							console.log('👩‍🌾 TNAV - Firestore userData', userData)
+							const newUser = {
+								bankDetails: userData?.bankDetails,
+								metadata: userData?.metadata,
+								pushToken: pushToken || userData.pushToken,
+								role: userData?.role,
+								uid: userData?.uid,
+								verified: userData?.verified,
+							}
 							if (pushToken && userData.pushToken !== pushToken) {
 								updateUserPushToken(userData.uid, pushToken, userData?.metadata?.cid)
 									.then(() => {
 										if (isMounted) {
-											dispatch(updateUser(
-												{
-													bankDetails: userData?.bankDetails,
-													metadata: userData?.metadata,
-													pushToken,
-													role: userData?.role,
-													uid: userData?.uid,
-													verified: userData?.verified,
-												}
-											))
+											dispatch(updateUser(newUser))
 											setDispatched(true)
 										}
 									})
@@ -137,16 +135,7 @@ export const TabsNavigation = () => {
 									})
 							} else {
 								if (isMounted) {
-									dispatch(updateUser(
-										{
-											bankDetails: userData?.bankDetails,
-											metadata: userData?.metadata,
-											pushToken: userData?.pushToken,
-											role: userData?.role,
-											uid: userData?.uid,
-											verified: userData?.verified,
-										}
-									))
+									dispatch(updateUser(newUser))
 									setDispatched(true)
 								}
 							}
@@ -158,9 +147,13 @@ export const TabsNavigation = () => {
 		if (isMounted) {
 			auth()?.onAuthStateChanged((updatedUser) => {
 				if (updatedUser?.emailVerified) {
-					if (intervalId) {
+
+					if (intervalReloadId) {
+						clearInterval(intervalReloadId)
+					} else if (intervalId) {
 						clearInterval(intervalId)
 					}
+
 					firestore().collection("users").doc(auth()?.currentUser?.uid).update({
 						verified: true
 					}).then(() => { }).catch((error) => {
@@ -189,16 +182,15 @@ export const TabsNavigation = () => {
 			auth()?.onAuthStateChanged((updatedUser) => {
 				if (updatedUser?.emailVerified) {
 					console.log('🟢 TNAV - updatedUser?.emailVerified', updatedUser?.emailVerified)
+
 					if (intervalReloadId) {
 						clearInterval(intervalReloadId)
+					} else if (intervalId) {
+						clearInterval(intervalId)
 					} else {
-						//Se limpian todos los timeouts
-						if (intervalId) {
-							clearInterval(intervalId)
-						} else {
-							clearAllIntervals()
-						}
+						clearAllIntervals()
 					}
+
 					firestore().collection("users").doc(auth()?.currentUser?.uid).update({
 						verified: true
 					}).then(() => { }).catch((error) => {

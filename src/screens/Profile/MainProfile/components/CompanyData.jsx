@@ -49,6 +49,7 @@ export const CompanyDataForm = ({ debug }) => {
 
 	//Store
 	const user = useSelector(state => state.userReducer.user);
+	const changesToSave = useSelector(state => state.changeReducer.changesToSave);
 
 	//State
 	const [values, setValues] = useState({
@@ -65,17 +66,17 @@ export const CompanyDataForm = ({ debug }) => {
 
 	useEffect(() => {
 		setValues({
-			name: user?.metadata?.name || "",
-			fullname: user?.metadata?.fullname || "",
-			cif: user?.metadata?.cif || "",
-			email: user?.metadata?.email || "",
-			phoneNumber: user?.metadata?.phoneNumber || "",
-			postalCode: user?.metadata?.postalCode || "",
-			province: user?.metadata?.province || "",
-			town: user?.metadata?.town || "",
-			hasWorkers: user?.metadata?.hasWorkers || ""
+			name: changesToSave?.metadata?.name || user?.metadata?.name || "",
+			fullname: changesToSave?.metadata?.fullname || user?.metadata?.fullname || "",
+			cif: changesToSave?.metadata?.cif || user?.metadata?.cif || "",
+			email: changesToSave?.metadata?.email || user?.metadata?.email || "",
+			phoneNumber: changesToSave?.metadata?.phoneNumber || user?.metadata?.phoneNumber || "",
+			postalCode: changesToSave?.metadata?.postalCode || user?.metadata?.postalCode || "",
+			province: changesToSave?.metadata?.province || user?.metadata?.province || "",
+			town: changesToSave?.metadata?.town || user?.metadata?.town || "",
+			hasWorkers: changesToSave?.metadata?.hasWorkers || user?.metadata?.hasWorkers || ""
 		})
-	}, [user]);
+	}, [changesToSave]);
 
 	//Handle
 	function handleChange(value, keyName) {

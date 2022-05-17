@@ -23,18 +23,18 @@ export const BasicDetails = ({ debug, sendDateTime, readDateTime }) => {
 
 
 	let sendTime;
-	if (moment().format('DD-MM-YYYY') === moment(sendDateTime).format('DD-MM-YYYY')) {
+	if (moment().format('DD/MM/YYYY') === moment(sendDateTime).format('DD/MM/YYYY')) {
 		sendTime = `Hoy, ${moment(sendDateTime).format("HH:mm")}`;
 	} else {
-		sendTime = moment(sendDateTime).format('DD-MM-YYYY')
+		sendTime = moment(sendDateTime).format('DD/MM/YYYY')
 	}
 
 
 	let readTime;
-	if (moment().format('DD-MM-YYYY') === moment(readDateTime).format("DD-MM-YYYY")) {
+	if (moment().format('DD/MM/YYYY') === moment(readDateTime).format("DD/MM/YYYY")) {
 		readTime = `Hoy, ${moment(readDateTime).format("HH:mm")}`;
 	} else {
-		readTime = moment(readDateTime).format('DD-MM-YYYY')
+		readTime = moment(readDateTime).format('DD/MM/YYYY')
 	}
 
 	return (

@@ -141,9 +141,9 @@ export function useFirebaseServiceUtils(debug) {
 									}),
 								);
 								sendPushNotification(
-									auth()?.currentUser?.pushToken,
-									auth()?.currentUser?.uid,
-									auth()?.currentUser?.uid,
+									user?.pushToken,
+									user?.uid,
+									user?.uid,
 									'¡Servicio solicitado!',
 									`Has solicitado un nuevo servicio a ${originalItemToUpdate.companies.length} empresas`,
 									{ sid: originalItemToUpdate?.sid },
@@ -264,7 +264,7 @@ export function useFirebaseServiceUtils(debug) {
 					const needsDesign = false;
 					const now = moment();
 					const requestDateTime = now.format();
-					const requestDate = now.format('DD-MM-YYYY');
+					const requestDate = now.format('DD/MM/YYYY');
 					const requestTime = now.format('HH:mm');
 					const ref = firestore().collection('services').doc();
 
@@ -346,7 +346,7 @@ export function useFirebaseServiceUtils(debug) {
 			if (auth().currentUser) {
 				const now = moment();
 				const cancelationDateTime = now.format();
-				const cancelationDate = now.format('DD-MM-YYYY');
+				const cancelationDate = now.format('DD/MM/YYYY');
 				const cancelationTime = now.format('HH:mm');
 
 				firestore()
@@ -416,7 +416,7 @@ export function useFirebaseServiceUtils(debug) {
 			if (auth().currentUser) {
 				//const now = moment();
 				//const cancelationDateTime = now.format();
-				//const cancelationDate = now.format('DD-MM-YYYY');
+				//const cancelationDate = now.format('DD/MM/YYYY');
 				//const cancelationTime = now.format('HH:mm');
 
 				firestore()
@@ -513,7 +513,7 @@ export function useFirebaseServiceUtils(debug) {
 			if (auth().currentUser) {
 				const now = moment();
 				const estimationDateTime = now.format();
-				const estimationDate = now.format('DD-MM-YYYY');
+				const estimationDate = now.format('DD/MM/YYYY');
 				const estimationTime = now.format('HH:mm');
 
 				firestore()
@@ -628,7 +628,7 @@ export function useFirebaseServiceUtils(debug) {
 			if (auth().currentUser) {
 				const now = moment();
 				const estimationConfirmDateTime = now.format();
-				const estimationConfirmDate = now.format('DD-MM-YYYY');
+				const estimationConfirmDate = now.format('DD/MM/YYYY');
 				const estimationConfirmTime = now.format('HH:mm');
 
 				firestore()
@@ -755,7 +755,7 @@ export function useFirebaseServiceUtils(debug) {
 			if (auth().currentUser) {
 				const now = moment();
 				const confirmationDateTime = now.format();
-				const confirmationDate = now.format('DD-MM-YYYY');
+				const confirmationDate = now.format('DD/MM/YYYY');
 				const confirmationTime = now.format('HH:mm');
 
 				firestore()
@@ -928,7 +928,7 @@ export function useFirebaseServiceUtils(debug) {
 			if (auth().currentUser) {
 				const now = moment();
 				const refuseDateTime = now.format();
-				const refuseDate = now.format('DD-MM-YYYY');
+				const refuseDate = now.format('DD/MM/YYYY');
 				const refuseTime = now.format('HH:mm');
 
 				firestore()

@@ -195,9 +195,9 @@ export const EstimateResumeScreen = ({ debug, navigation, route }) => {
 														:
 														<>
 															{/*BOTÓN ACEPTAR / RECHAZAR PRESUPUESTO*/}
-															{!Device.isPhone && <BtnPrimary size={'medium'} icon={CheckmarkCircleIcon} text={"Aceptar"} onPress={() => setShowAcceptConfirm(true)} disabled={isAcceptDisabled()} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
+															{!Device.isPhone && service.cancelationDate === null && <BtnPrimary size={'medium'} icon={CheckmarkCircleIcon} text={"Aceptar"} onPress={() => setShowAcceptConfirm(true)} disabled={isAcceptDisabled()} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
 
-															{!Device.isPhone && <BtnPrimary size={'medium'} icon={CloseCircleIcon} text={"Rechazar"} onPress={() => setShowRefuseConfirm(true)} disabled={isRefuseDisabled()} status={'danger'} btnStyle={{ marginBottom: 30 }} />}
+															{!Device.isPhone && service.cancelationDate === null && <BtnPrimary size={'medium'} icon={CloseCircleIcon} text={"Rechazar"} onPress={() => setShowRefuseConfirm(true)} disabled={isRefuseDisabled()} status={'danger'} btnStyle={{ marginBottom: 30 }} />}
 														</>
 													}
 												</>
@@ -293,9 +293,9 @@ export const EstimateResumeScreen = ({ debug, navigation, route }) => {
 													:
 													<>
 														{/*BOTÓN ACEPTAR / RECHAZAR PRESUPUESTO*/}
-														{Device.isPhone && <BtnPrimary size={'medium'} icon={CheckmarkCircleIcon} text={"Aceptar"} onPress={() => setShowAcceptConfirm(true)} disabled={isAcceptDisabled()} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
+														{Device.isPhone && service.cancelationDate === null && <BtnPrimary size={'medium'} icon={CheckmarkCircleIcon} text={"Aceptar"} onPress={() => setShowAcceptConfirm(true)} disabled={isAcceptDisabled()} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
 
-														{Device.isPhone && <BtnPrimary size={'medium'} icon={CloseCircleIcon} text={"Rechazar"} onPress={() => setShowRefuseConfirm(true)} disabled={isRefuseDisabled()} status={'danger'} btnStyle={{ marginBottom: 0 }} />}
+														{Device.isPhone && service.cancelationDate === null && <BtnPrimary size={'medium'} icon={CloseCircleIcon} text={"Rechazar"} onPress={() => setShowRefuseConfirm(true)} disabled={isRefuseDisabled()} status={'danger'} btnStyle={{ marginBottom: 30 }} />}
 													</>
 												}
 											</>
@@ -305,12 +305,12 @@ export const EstimateResumeScreen = ({ debug, navigation, route }) => {
 												{/*BOTÓN GUARDAR PRESUPUESTO*/}
 												{Device.isPhone && <BtnPrimary size={'medium'} icon={companyHasEstimationRefused ? CloseCircleIcon : CheckmarkCircleIcon} text={companyHasEstimationConfirmed ? companyHasEstimationAccepted ? 'Presupuesto aceptado por el cliente' : companyHasEstimationRefused ? 'Presupuesto rechazado por el cliente' : 'Presupesto enviado al cliente' : "Confirmar presupuesto"} onPress={confirmEstimation}
 													disabled={!companyHasAllEstimated}
-													status={companyHasEstimationRefused ? 'danger' : 'primary'} btnStyle={{ marginBottom: 0 }} />}
+													status={companyHasEstimationRefused ? 'danger' : 'primary'} btnStyle={{ marginBottom: 30 }} />}
 											</>
 										)
 									}[user?.role]}
 
-									<NavigationBackButton show={Device.isPhone} />
+									<NavigationBackButton show={Device.isPhone} btnStyle={{ marginTop: 0 }} />
 								</View>
 
 								{/*MODAL ACEPTAR PRESUPUESTO*/}

@@ -177,7 +177,7 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong, ext
 	//List
 	const RenderItem = ({ item }) => {
 		let time;
-		if (moment().format('DD-MM-YYYY') === item.sendDate) {
+		if (moment().format('DD/MM/YYYY') === item.sendDate) {
 			time = item.sendTime
 		} else {
 			time = item.sendDate

@@ -46,7 +46,7 @@ export function useExpoSendPush(debug) {
 		try {
 			const now = moment();
 			const sendDateTime = now.format();
-			const sendDate = now.format('DD-MM-YYYY');
+			const sendDate = now.format('DD/MM/YYYY');
 			const sendTime = now.format('HH:mm');
 			const ref = firestore().collection('notifications').doc();
 
