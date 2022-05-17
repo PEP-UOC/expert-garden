@@ -110,7 +110,7 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 	const [companyEstimationRefusedDate, setCompanyEstimationRefusedDate] = useState(false);
 
 	useEffect(() => {
-		console.log('service', service)
+		//console.log('service', service)
 		if (service) {
 			setServiceIsConfirmed(service?.isConfirmed || false)
 			setServiceIsFinalized(service?.isFinalized || false)
@@ -119,7 +119,7 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 			setServiceHasAllEstimations(service?.companies?.every((co) => co?.isEstimated) || false)
 
 			const company = service?.companies?.find(co => co.cid === user?.metadata?.cid)
-			console.log('company', company)
+			//console.log('company', company)
 			setCompanyHasEstimationConfirmed(company?.isEstimated || false)
 			setCompanyEstimationConfirmedDate(company?.estimationDate || '')
 			setCompanyHasEstimationAccepted(company?.isSelected || false)

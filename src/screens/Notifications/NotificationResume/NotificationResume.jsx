@@ -17,6 +17,7 @@ import { SafeAreaView, ScrollView, View, KeyboardAvoidingView } from 'react-nati
 import { Layout } from '@ui-kitten/components';
 import { TitleScreen } from '../../../components/Titles/Screen'
 import { BasicDetails } from './components/BasicDetails'
+import { Links } from './components/Links'
 import { ContentDetails } from './components/ContentDetails'
 import { NavigationTop } from '../../../components/Navigation/Top'
 import { NavigationBackButton } from '../../../components/Navigation/BackButton'
@@ -48,6 +49,7 @@ export const NotificationResumeScreen = ({ debug, navigation, route }) => {
 	const gloStyles = useStyleSheet(globalStyles);
 
 	useEffect(() => {
+		console.log('notification', notification)
 		if (notification?.readDate === null) {
 			const now = moment();
 			const readDateTime = now.format();
@@ -76,7 +78,13 @@ export const NotificationResumeScreen = ({ debug, navigation, route }) => {
 									<TitleScreen icon={'plus-circle-outline'} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 20 : 30 }, primaryText: { lineHeight: Device?.isPhone ? 35 : 'initial', marginTop: Device?.isPhone ? 14 : 0 } }} primaryText={'Detalles de la notificación'} secondaryText={''} />
 
 									<View style={{ paddingLeft: 45 }}>
-										<NavigationBackButton show={!Device.isPhone} />
+
+										{/*SECCIÓN LINKS*/}
+										{!Device.isPhone && <Links
+											sid={notification?.data?.sid}
+										/>}
+
+										<NavigationBackButton show={!Device.isPhone} btnStyle={{ marginTop: 30 }} />
 									</View>
 
 								</View>
@@ -92,7 +100,12 @@ export const NotificationResumeScreen = ({ debug, navigation, route }) => {
 										readDateTime={notification?.readDateTime}
 									/>
 
-									<NavigationBackButton show={Device.isPhone} btnStyle={{ marginTop: 5 }} />
+									{/*SECCIÓN LINKS*/}
+									{Device.isPhone && <Links
+										sid={notification?.data?.sid}
+									/>}
+
+									<NavigationBackButton show={Device.isPhone} />
 								</View>
 
 							</View>

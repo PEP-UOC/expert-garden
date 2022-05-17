@@ -13,7 +13,7 @@ import Device from '../../../libs/react-native-device-detection';
 import { Platform } from 'react-native';
 
 //Store
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootAction';
 
 //Components
@@ -32,6 +32,9 @@ export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
 
 	//Styles
 	const gloStyles = useStyleSheet(globalStyles);
+
+	//Store
+	const user = useSelector(state => state.userReducer.user);
 
 	//State
 	const [title, setTitle] = useState('');
@@ -88,12 +91,12 @@ export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
 				case 'estimated':
 					setTitle('Presupuestados')
 					setLongTitle('Servicios presupuestados')
-					setIcon('inbox-outline')
+					setIcon('crop-outline')
 					break;
 				case 'refused':
 					setTitle('Presupuestados rechazados')
 					setLongTitle('Servicios presupuestados rechazados')
-					setIcon('slash-outline')
+					setIcon('close-circle-outline')
 					break;
 				case 'next':
 					setTitle('Próximos')
@@ -145,7 +148,7 @@ export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
 
 								</View>
 								<View style={{ ...gloStyles.section.secondary }}>
-									<ServicesList type={type} limit={10000} showTitle={false} />
+									<ServicesList type={type} limit={10000} showTitle={false} cid={user?.metadata?.cid} />
 									<NavigationBackButton show={Device.isPhone} btnStyle={{ marginTop: 0 }} />
 								</View>
 

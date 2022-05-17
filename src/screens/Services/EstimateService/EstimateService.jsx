@@ -74,9 +74,10 @@ export const EstimateServiceScreen = ({ debug, navigation, route }) => {
 	const [companyHasSelectedDate, setCompanyHasSelectedDate] = useState(undefined);
 
 	useEffect(() => {
+		//console.log('service', service)
 		if (service) {
 			const company = service?.companies?.find(co => co.cid === user?.metadata?.cid)
-			console.log('company', company)
+			//console.log('company', company)
 			const detailsCount = service?.details?.length || 0;
 			const detailsEstimatedCount = company?.estimation ? company?.estimation?.length : 0;
 			setCompanyEstimations(company?.estimation || false)

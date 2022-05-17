@@ -205,7 +205,7 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong, ext
 			<>
 				{Device?.isPhone
 					? null
-					: <Text category='p1' style={{ marginRight: 10 }}>{momento}</Text>
+					: <Text category='p1' style={{ ...ownStyles.accessory }}>{momento}</Text>
 				}
 				<Button onPress={navigateNotificationDetail}
 					accessoryRight={readDateTime ? RadioOffIcon : RadioOnIcon} size='giant' appearance='ghost' style={{ paddingRight: 0 }} />

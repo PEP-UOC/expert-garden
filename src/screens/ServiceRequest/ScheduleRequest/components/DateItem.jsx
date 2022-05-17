@@ -135,7 +135,7 @@ export const DateItem = ({ debug, date, dateIndex }) => {
 						<View style={{ ...gloStyles.modal.view }}>
 							<Calendar
 								dateService={localeDateService}
-								min={moment().toDate()}
+								min={moment().add(3, 'days').toDate()}
 								max={moment().add(1, 'years').toDate()}
 								date={dateDate}
 								onSelect={date => handleCalendar(date)} />

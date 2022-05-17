@@ -65,8 +65,8 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 	function addNewDate() {
 		const dateBasic = {
 			did: uuid.v4(),
-			date: moment().format("DD/MM/YYYY"),
-			dateTime: moment().format(),
+			date: moment().add(3, 'days').format("DD/MM/YYYY"),
+			dateTime: moment().add(3, 'days').format(),
 			schedule: "ALL_DAY",
 			extra: ""
 		}

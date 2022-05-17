@@ -46,9 +46,9 @@ export const TabsNavigation = () => {
 		try {
 			await auth().signOut()
 				.then(() => {
-					console.info('🔐 BTLG - Logged Out!');
+					console.info('🔐 TNAV - Logged Out!');
 					dispatch(setLoggedIn(false))
-					console.log(`🕳  BTLG - Dispatch Loading STOP`)
+					console.log(`🕳  TNAV - Dispatch Loading STOP`)
 					if (intervalReloadId) {
 						clearInterval(intervalReloadId)
 					} else {
@@ -61,7 +61,7 @@ export const TabsNavigation = () => {
 				.catch((error) => {
 					console.error(error.message);
 					dispatch(setLoggedIn(false))
-					console.log(`🕳  BTLG - Dispatch Loading STOP`)
+					console.log(`🕳  TNAV - Dispatch Loading STOP`)
 					if (intervalReloadId) {
 						clearInterval(intervalReloadId)
 					} else {
@@ -73,7 +73,7 @@ export const TabsNavigation = () => {
 		} catch (error) {
 			console.error(error.message);
 			dispatch(setLoggedIn(false))
-			console.log(`🕳  BTLG - Dispatch Loading STOP`)
+			console.log(`🕳  TNAV - Dispatch Loading STOP`)
 			if (intervalReloadId) {
 				clearInterval(intervalReloadId)
 			} else {
@@ -109,11 +109,12 @@ export const TabsNavigation = () => {
 							console.log('👩‍🌾 TNAV - Firestore userData', userData)
 							dispatch(updateUser(
 								{
-									uid: userData?.uid,
-									role: userData?.role,
-									verified: userData?.verified,
+									bankDetails: userData?.bankDetails,
 									metadata: userData?.metadata,
-									bankDetails: userData?.bankDetails
+									pushToken: userData?.pushToken,
+									role: userData?.role,
+									uid: userData?.uid,
+									verified: userData?.verified,
 								}
 							))
 							setDispatched(true)

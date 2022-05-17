@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 //Store
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { setErrorMessage, setLoadingMessage } from '../store/root/rootAction';
 import { addDetail, deleteDetail, resetServiceTemporal } from '../store/service/serviceAction';
 
@@ -25,6 +25,9 @@ export function useFirebaseServiceUtils(debug) {
 	//Firebase
 	const auth = firebase.auth;
 	const firestore = firebase.firestore;
+
+	//Store
+	const user = useSelector((state) => state.userReducer.user);
 
 	//Send Push
 	// eslint-disable-next-line no-unused-vars
@@ -131,11 +134,19 @@ export function useFirebaseServiceUtils(debug) {
 											company.pushToken,
 											auth()?.currentUser?.uid,
 											company.uid,
-											'Servicio solicitado!',
-											`Accede para presupuestar el servicio ${company.name}`,
+											'¡Servicio solicitado!',
+											`Accede para presupuestar el nuevo servicio solicitado`,
 											{ sid: originalItemToUpdate?.sid },
 										);
 									}),
+								);
+								sendPushNotification(
+									auth()?.currentUser?.pushToken,
+									auth()?.currentUser?.uid,
+									auth()?.currentUser?.uid,
+									'¡Servicio solicitado!',
+									`Has solicitado un nuevo servicio a ${originalItemToUpdate.companies.length} empresas`,
+									{ sid: originalItemToUpdate?.sid },
 								);
 								if (isMounted) {
 									setItemToEdit(false);
@@ -520,11 +531,13 @@ export function useFirebaseServiceUtils(debug) {
 							const estimationsArray = companyToEdit.estimation || [];
 							const prevEstimationDetail = estimationsArray.find((est) => est.sdid === sdid) || {};
 
-							const prevEstimationDetailIndex = service.companies.findIndex(
+							const prevEstimationDetailIndex = estimationsArray.findIndex(
 								(est) => est.sdid === sdid,
 							);
 							const finalPrevEstimationDetailIndex =
-								prevEstimationDetailIndex === -1 ? 0 : prevEstimationDetailIndex;
+								prevEstimationDetailIndex === -1
+									? estimationsArray.length
+									: prevEstimationDetailIndex;
 
 							prevEstimationDetail.sdid = sdid;
 							prevEstimationDetail.price = parseFloat(price);
@@ -664,7 +677,7 @@ export function useFirebaseServiceUtils(debug) {
 													auth()?.currentUser?.uid,
 													requesterUser.uid,
 													'¡Servicio presupuestado!',
-													`${companyToEdit.name} ha presupuestado el servicio que solicitaste.`,
+													`${companyToEdit.name} ha presupuestado el servicio que solicitaste`,
 													{ sid: service?.sid },
 												).then(() => {
 													console.log(`🚧 FSUT - Estimation service (${sid}) actualizada`);
@@ -790,6 +803,7 @@ export function useFirebaseServiceUtils(debug) {
 									confirmationDate: confirmationDate,
 									confirmationTime: confirmationTime,
 									confirmationDateTime: confirmationDateTime,
+									serviceDid: serviceDateSelected.did,
 									serviceDate: serviceDateSelected.date,
 									serviceTime: serviceDateSelected.schedule,
 									serviceDateTime: serviceDateSelected.dateTime,
@@ -814,6 +828,15 @@ export function useFirebaseServiceUtils(debug) {
 												console.log(
 													`🚧 FSUT - Estimation of company (${cid}) of service (${sid}) accepted`,
 												);
+
+												await sendPushNotification(
+													user?.pushToken,
+													user?.uid,
+													user?.uid,
+													`¡Servicio confirmado!`,
+													`Has aceptado el presupuesto de la empresa ${company.name}`,
+													{ sid: service?.sid },
+												);
 											} else {
 												title = `¡Presupuesto rechazado!`;
 												msg = `El cliente ha rechazado el presupuesto del servicio que le ofreciste.`;
@@ -825,7 +848,7 @@ export function useFirebaseServiceUtils(debug) {
 
 											await sendPushNotification(
 												company.pushToken,
-												auth()?.currentUser?.uid,
+												user?.uid,
 												company.uid,
 												title,
 												msg,

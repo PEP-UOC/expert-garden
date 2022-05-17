@@ -351,7 +351,7 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 									<SeparatorTopSection />
 
 									{/*TITULO SECCIÓN SERVICIO*/}
-									<TitleSection icon={''} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? listInputs?.length > 0 ? 0 : 20 : 45 }, primaryText: { fontSize: Device?.isPhone ? 18 : 24, lineHeight: Device?.isPhone ? 25 : undefined, marginLeft: !Device?.isPhone && listInputs?.length > 0 ? 60 : 0 } }}
+									<TitleSection icon={''} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? listInputs?.length > 0 ? 0 : 20 : 45, marginLeft: Device?.isPhone ? 0 : 60 }, primaryText: { fontSize: Device?.isPhone ? 18 : 24, lineHeight: Device?.isPhone ? 25 : undefined, marginLeft: 0 } }}
 										primaryText={
 											step === 1
 												? servicesTypes?.find((type) => type.id === values.typeId)?.question || ''
@@ -365,41 +365,43 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 										} secondaryText={''} />
 
 									{/*LISTADO DE OPCIONES*/}
-									{servicesToList?.map(service => {
-										return (<Button
-											appearance='outline'
-											style={{ ...ownStyles.btnServiceRequest }}
-											key={service[keyName]}
-											onPress={() => {
-												Animated.timing(
-													fadeRef,
-													{
-														toValue: 0,
-														duration: 500,
-														useNativeDriver: Device.isPhone ? true : false
+									<View style={{ ...ownStyles.servicesList }}>
+										{servicesToList?.map(service => {
+											return (<Button
+												appearance='outline'
+												style={{ ...ownStyles.btnServiceRequest }}
+												key={service[keyName]}
+												onPress={() => {
+													Animated.timing(
+														fadeRef,
+														{
+															toValue: 0,
+															duration: 500,
+															useNativeDriver: Device.isPhone ? true : false
+														}
+													).start(() => {
+														handleChange(service.identifier, identifierName)
+														handleChange(service[keyName], idName)
+														setStep(step + 1)
 													}
-												).start(() => {
-													handleChange(service.identifier, identifierName)
-													handleChange(service[keyName], idName)
-													setStep(step + 1)
-												}
-												);
-											}}
-										>
-											{evaProps =>
-												<View style={{ ...ownStyles.btnOptionsWrapper }}>
-													<Text {...evaProps} category='h6' style={{ ...ownStyles.btnServiceText }}>
-														{service.label}
-													</Text>
-													{service?.subLabel !== '' && (
-														<Text {...evaProps} category='p1' style={{ ...ownStyles.btnServiceSubText }}>
-															{service.subLabel}
+													);
+												}}
+											>
+												{evaProps =>
+													<View style={{ ...ownStyles.btnOptionsWrapper }}>
+														<Text {...evaProps} category='h6' style={{ ...ownStyles.btnServiceText }}>
+															{service.label}
 														</Text>
-													)}
-												</View>
-											}
-										</Button>)
-									})}
+														{service?.subLabel !== '' && (
+															<Text {...evaProps} category='p1' style={{ ...ownStyles.btnServiceSubText }}>
+																{service.subLabel}
+															</Text>
+														)}
+													</View>
+												}
+											</Button>)
+										})}
+									</View>
 
 									{/*LISTADO DE INPUTS*/}
 									<View style={{ width: '100%' }}>
@@ -432,125 +434,130 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 									</View>
 
 									{/*BOTTOM BUTTONS*/}
-
-									{/*BOTÓN VER RESUMEN DEL SERVICIO*/}
-									{serviceTemporal?.details?.length > 0 && (
-										<View fadeRef={fadeRef} style={
-											listInputs?.length === 0
-												? { ...ownStyles.btnServiceResume }
-												: { ...ownStyles.btnServiceResume, ...ownStyles.btnServiceResumeFull }
-										}>
-											<Button style={{ ...gloStyles?.btnWrapper }} onPress={navigateToResumeSavePrev}>
-												{evaProps =>
-													<View style={{ ...ownStyles.btnIconWrapper }}>
-														<Icon
-															name='layers'
-															fill={ownStyles.layers.fill}
-															width={ownStyles.layers.width}
-															height={ownStyles.layers.height}
-														/>
-														<View style={{ ...ownStyles.btnWrapperWithIcon }}>
-															<Text {...evaProps} category='h6' style={{ ...ownStyles.btnServiceTextLight }}>
-																{Device?.isPhone ? 'Ver resumen del servicio' : 'Ver resumen'}
-
-															</Text>
-															{serviceTemporal?.details?.length > 0 && (
-																<Text {...evaProps} category='p1' style={{ ...ownStyles.btnServiceSubTextLight }}>
-																	{serviceTemporal?.details?.length} {serviceTemporal?.details?.length === 1 ? 'detalle añadido' : 'detalles añadidos'} hasta ahora
-																</Text>
-															)}
-														</View>
-													</View>
-												}
-											</Button>
-										</View>
-									)}
-
-									{/*BOTÓN ATRÁS*/}
-									{step > 0
-										? (
+									<View style={
+										listInputs?.length === 0
+											? { ...ownStyles.btnRow }
+											: { ...ownStyles.btnRow, ...ownStyles.btnRowFull }
+									}>
+										{/*BOTÓN VER RESUMEN DEL SERVICIO*/}
+										{serviceTemporal?.details?.length > 0 && (
 											<View fadeRef={fadeRef} style={
 												listInputs?.length === 0
-													? { ...ownStyles.btnServiceAtras }
-													: { ...ownStyles.btnServiceAtras, ...ownStyles.btnServiceAtrasFull }
+													? { ...ownStyles.btnServiceResume }
+													: { ...ownStyles.btnServiceResume, ...ownStyles.btnServiceResumeFull }
 											}>
-												<Button
-													appearance='ghost'
+												<Button style={{ ...gloStyles?.btnWrapper }} onPress={navigateToResumeSavePrev}>
+													{evaProps =>
+														<View style={{ ...ownStyles.btnIconWrapper }}>
+															<Icon
+																name='layers'
+																fill={ownStyles.layers.fill}
+																width={ownStyles.layers.width}
+																height={ownStyles.layers.height}
+															/>
+															<View style={{ ...ownStyles.btnWrapperWithIcon }}>
+																<Text {...evaProps} category='h6' style={{ ...ownStyles.btnServiceTextLight }}>
+																	{Device?.isPhone ? 'Ver resumen del servicio' : 'Ver resumen'}
 
-													key={'back'}
-													onPress={() => {
-														Animated.timing(
-															fadeRef,
-															{
-																toValue: 0,
-																duration: 500,
-																useNativeDriver: Device.isPhone ? true : false
-															}
-														).start(() => {
-															switch (step) {
-																case 1:
-																	handleChange("", "type")
-																	handleChange("", "typeId")
-																	setListStep1([])
-																	handleChange({}, "inputs")
-																	setListInputs([])
-																	setStep(0)
-																	break;
-																case 2:
-																	handleChange("", "step1")
-																	handleChange("", "step1id")
-																	setListStep2([])
-																	handleChange({}, "inputs")
-																	setListInputs([])
-																	setStep(1)
-																	break;
-																case 3:
-																	handleChange("", "step2")
-																	handleChange("", "step2id")
-																	setListStep3([])
-																	handleChange({}, "inputs")
-																	setListInputs([])
-																	setStep(2)
-																	break;
-																case 4:
-																	handleChange("", "step3")
-																	handleChange("", "step3id")
-																	handleChange({}, "inputs")
-																	setListInputs([])
-																	setStep(3)
-																	break;
-
-																default:
-																	handleChange("", "type")
-																	handleChange("", "typeId")
-																	setListStep1([])
-																	handleChange("", "step1")
-																	handleChange("", "step1id")
-																	setListStep2([])
-																	handleChange("", "step2")
-																	handleChange("", "step2id")
-																	setListStep3([])
-																	handleChange("", "step3")
-																	handleChange("", "step3id")
-																	handleChange({}, "inputs")
-																	setListInputs([])
-																	setStep(0)
-																	break;
-															}
-														}
-														);
-													}}
-												>
-													{evaProps => <Text {...evaProps} category='h6' style={{ ...ownStyles.btnServiceText }}>
-														Volver atrás
-													</Text>}
+																</Text>
+																{serviceTemporal?.details?.length > 0 && (
+																	<Text {...evaProps} category='p1' style={{ ...ownStyles.btnServiceSubTextLight }}>
+																		{serviceTemporal?.details?.length} {serviceTemporal?.details?.length === 1 ? 'detalle añadido' : 'detalles añadidos'} hasta ahora
+																	</Text>
+																)}
+															</View>
+														</View>
+													}
 												</Button>
 											</View>
-										)
-										: (
-											<View style={{ ...ownStyles.btnServiceAtras }}>
-											</View>
 										)}
+
+										{/*BOTÓN ATRÁS*/}
+										{step > 0
+											? (
+												<View fadeRef={fadeRef} style={
+													listInputs?.length === 0
+														? { ...ownStyles.btnServiceAtras }
+														: { ...ownStyles.btnServiceAtras, ...ownStyles.btnServiceAtrasFull }
+												}>
+													<Button
+														appearance='ghost'
+
+														key={'back'}
+														onPress={() => {
+															Animated.timing(
+																fadeRef,
+																{
+																	toValue: 0,
+																	duration: 500,
+																	useNativeDriver: Device.isPhone ? true : false
+																}
+															).start(() => {
+																switch (step) {
+																	case 1:
+																		handleChange("", "type")
+																		handleChange("", "typeId")
+																		setListStep1([])
+																		handleChange({}, "inputs")
+																		setListInputs([])
+																		setStep(0)
+																		break;
+																	case 2:
+																		handleChange("", "step1")
+																		handleChange("", "step1id")
+																		setListStep2([])
+																		handleChange({}, "inputs")
+																		setListInputs([])
+																		setStep(1)
+																		break;
+																	case 3:
+																		handleChange("", "step2")
+																		handleChange("", "step2id")
+																		setListStep3([])
+																		handleChange({}, "inputs")
+																		setListInputs([])
+																		setStep(2)
+																		break;
+																	case 4:
+																		handleChange("", "step3")
+																		handleChange("", "step3id")
+																		handleChange({}, "inputs")
+																		setListInputs([])
+																		setStep(3)
+																		break;
+
+																	default:
+																		handleChange("", "type")
+																		handleChange("", "typeId")
+																		setListStep1([])
+																		handleChange("", "step1")
+																		handleChange("", "step1id")
+																		setListStep2([])
+																		handleChange("", "step2")
+																		handleChange("", "step2id")
+																		setListStep3([])
+																		handleChange("", "step3")
+																		handleChange("", "step3id")
+																		handleChange({}, "inputs")
+																		setListInputs([])
+																		setStep(0)
+																		break;
+																}
+															}
+															);
+														}}
+													>
+														{evaProps => <Text {...evaProps} category='h6' style={{ ...ownStyles.btnServiceText }}>
+															Volver atrás
+														</Text>}
+													</Button>
+												</View>
+											)
+											: (
+												<View style={{ ...ownStyles.btnServiceAtras }}>
+												</View>
+											)}
+									</View>
 
 									{/*MODAL GUARDAR DETALLE SIN GUARDAR*/}
 									<ModalOptions mainText={'¿Quieres guardar el detalle del servicio que estás configurado?'} show={askToSave} setShow={setAskToSave} option1text={'Guardar y ver resumen del servicio'} option1onPress={saveFromModal} option2text={'No guardar, ver resumen del servicio'} option2onPress={navigateToResumeDirect} backdropPress={() => { return }} />

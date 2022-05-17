@@ -81,13 +81,13 @@ export const MainServicesScreen = ({ debug, navigation }) => {
 											),
 											'business': (
 												<>
-													<ServicesList type={'notEstimated'} limit={3} />
-													<ServicesList type={'estimated'} limit={3} />
-													<ServicesList type={'nextPunctual'} limit={3} />
-													<ServicesList type={'nextRecurrent'} limit={3} />
-													<ServicesList type={'pastBusiness'} limit={3} />
-													<ServicesList type={'refused'} limit={3} />
-													<ServicesList type={'cancelatedBusiness'} limit={3} />
+													<ServicesList type={'notEstimated'} limit={3} cid={user?.metadata?.cid} />
+													<ServicesList type={'estimated'} limit={3} cid={user?.metadata?.cid} />
+													<ServicesList type={'nextPunctual'} limit={3} cid={user?.metadata?.cid} />
+													<ServicesList type={'nextRecurrent'} limit={3} cid={user?.metadata?.cid} />
+													<ServicesList type={'pastBusiness'} limit={3} cid={user?.metadata?.cid} />
+													<ServicesList type={'refused'} limit={3} cid={user?.metadata?.cid} />
+													<ServicesList type={'cancelatedBusiness'} limit={3} cid={user?.metadata?.cid} />
 												</>
 											),
 											'worker': (

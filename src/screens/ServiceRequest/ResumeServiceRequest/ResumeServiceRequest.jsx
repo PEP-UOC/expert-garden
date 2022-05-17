@@ -108,7 +108,7 @@ export const ResumeServiceRequestScreen = ({ debug, navigation }) => {
 												{!Device.isPhone && <BtnSecondary size={'medium'} icon={AddIcon} text={"Añadir otro detalle al servicio"} onPress={() => navigation.navigate("MainServiceRequestScreen", { reset: true })} btnStyle={{ marginBottom: 30 }} />}
 
 												{/*BOTÓN SOLICITAR SERVICIO*/}
-												{!Device.isPhone && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar detalles"} onPress={() => handleSaveService(values, isEdit)} btnStyle={{ marginBottom: 30 }} />}
+												{!Device.isPhone && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar detalles"} onPress={() => handleSaveService(serviceTemporal, isEdit)} btnStyle={{ marginBottom: 30 }} />}
 											</View>
 
 										</View>
@@ -124,7 +124,7 @@ export const ResumeServiceRequestScreen = ({ debug, navigation }) => {
 											{Device.isPhone && <BtnSecondary size={'medium'} icon={AddIcon} text={"Añadir otro detalle al servicio"} onPress={() => navigation.navigate("MainServiceRequestScreen", { reset: true })} btnStyle={{ marginBottom: 10, marginTop: 0 }} />}
 
 											{/*BOTÓN SOLICITAR SERVICIO*/}
-											{Device.isPhone && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar detalles"} onPress={() => handleSaveService(values, isEdit)} btnStyle={{ marginBottom: 10, marginTop: 10 }} />}
+											{Device.isPhone && <BtnPrimary size={'medium'} icon={TruckIcon} text={"Confirmar detalles"} onPress={() => handleSaveService(serviceTemporal, isEdit)} btnStyle={{ marginBottom: 10, marginTop: 10 }} />}
 
 										</View>
 									</View>

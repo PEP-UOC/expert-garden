@@ -32,7 +32,7 @@ import 'firebase/compat/auth';
 import { servicesTypes } from '../../../../data/servicesTypes'
 
 // eslint-disable-next-line no-unused-vars
-export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
+export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) => {
 
 	const navigation = useNavigation();
 
@@ -98,10 +98,10 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 					if (auth().currentUser) {
 						firestore().collection("services")
 							.where("uid", "==", auth()?.currentUser?.uid)
-							.where("confirmationDateTime", "!=", null)
+							.where("serviceDateTime", "!=", null)
 							.where("cancelationDate", "==", null)
 							.where("isConfigured", "==", true)
-							.orderBy("confirmationDateTime", "desc")
+							.orderBy("serviceDateTime", "asc")
 							.limit(limit)
 							.onSnapshot(services => {
 								if (!services.empty) {
@@ -130,11 +130,11 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 					if (auth().currentUser) {
 						firestore().collection("services")
 							.where("uid", "==", auth()?.currentUser?.uid)
-							.where("confirmationDateTime", "!=", null)
+							.where("serviceDateTime", "!=", null)
 							.where("cancelationDate", "==", null)
 							.where("isConfigured", "==", true)
 							.where("isRecurrent", "==", false)
-							.orderBy("confirmationDateTime", "desc")
+							.orderBy("serviceDateTime", "asc")
 							.limit(limit)
 							.onSnapshot(services => {
 								if (!services.empty) {
@@ -163,11 +163,11 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 					if (auth().currentUser) {
 						firestore().collection("services")
 							.where("uid", "==", auth()?.currentUser?.uid)
-							.where("confirmationDateTime", "!=", null)
+							.where("serviceDateTime", "!=", null)
 							.where("cancelationDate", "==", null)
 							.where("isConfigured", "==", true)
 							.where("isRecurrent", "==", true)
-							.orderBy("confirmationDateTime", "desc")
+							.orderBy("serviceDateTime", "asc")
 							.limit(limit)
 							.onSnapshot(services => {
 								if (!services.empty) {
@@ -320,7 +320,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 					setTitle('Presupuestados')
 					setLongTitle('Servicios presupuestados')
 					setNoItems('Todavía no has presupuestado ningún servicio')
-					setIcon('inbox-outline')
+					setIcon('crop-outline')
 
 					if (auth().currentUser) {
 						firestore().collection("services")
@@ -353,7 +353,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 					setTitle('Presupuestados rechazados')
 					setLongTitle('Servicios presupuestados rechazados')
 					setNoItems('Todavía no tienes ningún servicio rechazado')
-					setIcon('slash-outline')
+					setIcon('close-circle-outline')
 
 					if (auth().currentUser) {
 						firestore().collection("services")
@@ -391,10 +391,10 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 					if (auth().currentUser) {
 						firestore().collection("services")
 							.where("selectedCompany", "==", auth()?.currentUser?.uid)
-							.where("confirmationDateTime", "!=", null)
+							.where("serviceDateTime", "!=", null)
 							.where("cancelationDate", "==", null)
 							.where("isConfigured", "==", true)
-							.orderBy("confirmationDateTime", "asc")
+							.orderBy("serviceDateTime", "asc")
 							.limit(limit)
 							.onSnapshot(services => {
 								if (!services.empty) {
@@ -423,11 +423,11 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 					if (auth().currentUser) {
 						firestore().collection("services")
 							.where("selectedCompany", "==", auth()?.currentUser?.uid)
-							.where("confirmationDateTime", "!=", null)
+							.where("serviceDateTime", "!=", null)
 							.where("cancelationDate", "==", null)
 							.where("isConfigured", "==", true)
 							.where("isRecurrent", "==", false)
-							.orderBy("confirmationDateTime", "asc")
+							.orderBy("serviceDateTime", "asc")
 							.limit(limit)
 							.onSnapshot(services => {
 								if (!services.empty) {
@@ -456,11 +456,11 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 					if (auth().currentUser) {
 						firestore().collection("services")
 							.where("selectedCompany", "==", auth()?.currentUser?.uid)
-							.where("confirmationDateTime", "!=", null)
+							.where("serviceDateTime", "!=", null)
 							.where("cancelationDate", "==", null)
 							.where("isConfigured", "==", true)
 							.where("isRecurrent", "==", true)
-							.orderBy("confirmationDateTime", "asc")
+							.orderBy("serviceDateTime", "asc")
 							.limit(limit)
 							.onSnapshot(services => {
 								if (!services.empty) {
@@ -574,16 +574,84 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 
 	//List
 	const RenderItem = ({ item }) => {
-		let title = item.details.reduce((acc, item) => {
+		let title;
+		let subTitle;
+		//let detail;
+		let company;
+
+		if (cid) {
+			company = item.companies.find(co => co.cid === cid)
+		}
+
+		title = item.details.reduce((acc, item) => {
 			return `${acc}${servicesTypes.find((type) => type.identifier === item?.type)?.label} ${item?.type !== 'CREATE_GARDEN' ? '→ ' + servicesTypes.find((type) => type.identifier === item?.type)?.step1types.find((type) => type.identifier === item?.step1)?.label : ''} / `
 		}, '')
 		title = title.substring(0, title.length - 3)
+
+		switch (type) {
+			case 'requested':
+				subTitle = `Solicitado el día ${item?.requestDate}`
+				//detail = item?.requestDate
+				break;
+			case 'inProgress':
+				subTitle = `Día del servicio ${item?.serviceDate}`
+				//detail = item?.serviceDate
+				break;
+			case 'inProgressPunctual':
+				subTitle = `Día del servicio ${item?.serviceDate}`
+				//detail = item?.serviceDate
+				break;
+			case 'inProgressRecurrent':
+				subTitle = `Día del servicio ${item?.serviceDate}`
+				//detail = item?.serviceDate
+				break;
+			case 'past':
+			case 'pastBusiness':
+				subTitle = `Realizado el día ${item?.serviceDate}`
+				//detail = item?.serviceDate
+				break;
+			case 'cancelated':
+			case 'cancelatedBusiness':
+				subTitle = `Cancelado el día ${item?.cancelationDate}`
+				//detail = item?.cancelationDate
+				break;
+			case 'received':
+				subTitle = `Recibido el día ${item?.requestDate}`
+				//detail = item?.requestDate
+				break;
+			case 'notEstimated':
+				subTitle = `Recibido el día ${item?.requestDate}`
+				//detail = item?.requestDate
+				break;
+			case 'estimated':
+				subTitle = `Presupuestado el día ${company?.estimationDate}`
+				//detail = company?.estimationDate
+				break;
+			case 'refused':
+				subTitle = `Rechazado el día ${company?.isRefusedDate}`
+				//detail = company?.isRefusedDate
+				break;
+			case 'next':
+				subTitle = `Día del servicio ${item?.serviceDate}`
+				//detail = item?.serviceDate
+				break;
+			case 'nextPunctual':
+				subTitle = `Día del servicio ${item?.serviceDate}`
+				//detail = item?.serviceDate
+				break;
+			case 'nextRecurrent':
+				subTitle = `Día del servicio ${item?.serviceDate}`
+				//detail = item?.serviceDate
+				break;
+			default:
+				break;
+		}
 		return (
 			<ListItem
 				onPress={() => navigateServiceResume(item.sid)}
 				title={`${title}`}
-				description={Device?.isPhone ? `Solicitado el día ${item.requestDate}` : ''}
-				accessoryRight={renderItemAccessory(item)}
+				description={Device?.isPhone ? `${subTitle}` : ''}
+				accessoryRight={renderItemAccessory(item, subTitle)}
 				style={{ paddingRight: 0, marginRight: -5 }}
 			/>
 		)
@@ -593,12 +661,12 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong }) => {
 		item: PropTypes.object.isRequired,
 	};
 
-	const renderItemAccessory = (item) => (
+	const renderItemAccessory = (item, detail) => (
 		<>
 			{Device?.isPhone
 				? null
 				// eslint-disable-next-line react/prop-types
-				: <Text category='p1' style={{ marginRight: 10 }}>{item?.requestDate}</Text>
+				: <Text category='p1' style={{ ...ownStyles.accessory }}>{detail}</Text>
 			}
 			<Button onPress={() => navigateServiceResume(item?.sid)}
 				accessoryRight={ChevronRightIcon} size='giant' appearance='ghost' style={{ paddingRight: 0 }} />
@@ -631,6 +699,7 @@ ServicesList.propTypes = {
 	limit: PropTypes.number.isRequired,
 	showTitle: PropTypes.bool.isRequired,
 	showLong: PropTypes.bool,
+	cid: PropTypes.string,
 };
 
 ServicesList.defaultProps = {
@@ -638,4 +707,5 @@ ServicesList.defaultProps = {
 	limit: 3,
 	showTitle: true,
 	showLong: false,
+	cid: '',
 };
