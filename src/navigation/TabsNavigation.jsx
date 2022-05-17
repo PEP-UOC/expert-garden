@@ -26,6 +26,9 @@ import { ClientBottomTabBar } from './BottomNavs/Client'
 import { BusinessBottomTabBar } from './BottomNavs/Business'
 import { WorkerBottomTabBar } from './BottomNavs/Worker'
 
+//Expo Push
+import { useExpoSendPush } from '../hooks/useExpoSendPush';
+
 const Tabs = createBottomTabNavigator()
 export const TabsNavigation = () => {
 	const dispatch = useDispatch()
@@ -38,6 +41,11 @@ export const TabsNavigation = () => {
 	const isLoggedIn = useSelector(state => state.rootReducer.isLoggedIn);
 	const intervalReloadId = useSelector(state => state.rootReducer.intervalReloadId);
 	const user = useSelector((state) => state.userReducer.user);
+	const pushToken = useSelector((state) => state.rootReducer.pushToken);
+
+	//Send Push
+	// eslint-disable-next-line no-unused-vars
+	const { updateUserPushToken } = useExpoSendPush(false);
 
 	//State
 	const [dispatched, setDispatched] = useState(false);
@@ -107,17 +115,41 @@ export const TabsNavigation = () => {
 							AutoSignOut();
 						} else {
 							console.log('👩‍🌾 TNAV - Firestore userData', userData)
-							dispatch(updateUser(
-								{
-									bankDetails: userData?.bankDetails,
-									metadata: userData?.metadata,
-									pushToken: userData?.pushToken,
-									role: userData?.role,
-									uid: userData?.uid,
-									verified: userData?.verified,
+							if (pushToken && userData.pushToken !== pushToken) {
+								updateUserPushToken(userData.uid, pushToken, userData?.metadata?.cid)
+									.then(() => {
+										if (isMounted) {
+											dispatch(updateUser(
+												{
+													bankDetails: userData?.bankDetails,
+													metadata: userData?.metadata,
+													pushToken,
+													role: userData?.role,
+													uid: userData?.uid,
+													verified: userData?.verified,
+												}
+											))
+											setDispatched(true)
+										}
+									})
+									.catch((error) => {
+										console.log('🩸 TNAV - error', error)
+									})
+							} else {
+								if (isMounted) {
+									dispatch(updateUser(
+										{
+											bankDetails: userData?.bankDetails,
+											metadata: userData?.metadata,
+											pushToken: userData?.pushToken,
+											role: userData?.role,
+											uid: userData?.uid,
+											verified: userData?.verified,
+										}
+									))
+									setDispatched(true)
 								}
-							))
-							setDispatched(true)
+							}
 						}
 					}
 				});
@@ -163,6 +195,8 @@ export const TabsNavigation = () => {
 						//Se limpian todos los timeouts
 						if (intervalId) {
 							clearInterval(intervalId)
+						} else {
+							clearAllIntervals()
 						}
 					}
 					firestore().collection("users").doc(auth()?.currentUser?.uid).update({

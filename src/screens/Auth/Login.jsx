@@ -6,7 +6,7 @@ import Constants from 'expo-constants';
 
 //Store
 import { useDispatch } from 'react-redux'
-import { setErrorMessage, setLoadingMessage, setLoggedIn } from '../../store/root/rootAction';
+import { setErrorMessage, setLoadingMessage, setLoggedIn, setPushToken } from '../../store/root/rootAction';
 import { addUser } from '../../store/user/userAction';
 
 //Components
@@ -26,6 +26,8 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import "firebase/compat/firestore";
 import firebaseErrorCodeMap from '../../common/firebaseErrorCodeMap';
+
+import registerForPushNotificationsAsync from '../../libs/registerForPushNotificationsAsync'
 
 // eslint-disable-next-line no-unused-vars
 export const LoginScreen = ({ debug, navigation }) => {
@@ -73,20 +75,23 @@ export const LoginScreen = ({ debug, navigation }) => {
 		console.log(`🕳  LOGI - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Accediendo' : 'Accediendo'))
 
-		auth().signInWithEmailAndPassword(email, password)
-			.then((user) => {
-				console.info('🔑 LOGI - Logged In!', user.user.email);
-				dispatch(addUser(user))
-				dispatch(setErrorMessage(false))
-				dispatch(setLoggedIn(true))
-			})
-			.catch((error) => {
-				console.error(error.message);
-				dispatch(setLoggedIn(false))
-				console.log(`🕳  LOGI - Dispatch Loading STOP`)
-				dispatch(setLoadingMessage(false))
-				dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
-			});
+		registerForPushNotificationsAsync().then(pushToken => {
+			dispatch(setPushToken(pushToken))
+			auth().signInWithEmailAndPassword(email, password)
+				.then((user) => {
+					console.info('🔑 LOGI - Logged In!', user.user.email);
+					dispatch(addUser(user))
+					dispatch(setErrorMessage(false))
+					dispatch(setLoggedIn(true))
+				})
+				.catch((error) => {
+					console.error(error.message);
+					dispatch(setLoggedIn(false))
+					console.log(`🕳  LOGI - Dispatch Loading STOP`)
+					dispatch(setLoadingMessage(false))
+					dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
+				});
+		});
 	}
 
 	return (

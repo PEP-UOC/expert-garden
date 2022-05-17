@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from "prop-types";
 
-//Device Detect
-import * as ExpoDevice from 'expo-device';
-
 //Constants
 import Constants from 'expo-constants';
 
@@ -36,8 +33,7 @@ import { useKeyboardSize } from "../../hooks/useKeyboardSize"
 //Moment
 import moment from 'moment';
 
-//Expo Firebase
-import * as Notifications from 'expo-notifications';
+import registerForPushNotificationsAsync from '../../libs/registerForPushNotificationsAsync'
 
 //Select Options
 const userTypes = [
@@ -99,38 +95,6 @@ export const SignUpScreen = ({ debug, navigation }) => {
 			}
 		})
 	}
-
-	//Get push token
-	const registerForPushNotificationsAsync = async () => {
-		let token;
-		if (ExpoDevice.isDevice) {
-			const { status: existingStatus } = await Notifications.getPermissionsAsync();
-			let finalStatus = existingStatus;
-			if (existingStatus !== 'granted') {
-				const { status } = await Notifications.requestPermissionsAsync();
-				finalStatus = status;
-			}
-			if (finalStatus !== 'granted') {
-				//alert('Failed to get push token for push notification!');
-				return;
-			}
-			token = (await Notifications.getExpoPushTokenAsync()).data;
-			console.log(token);
-		} else {
-			//alert('Must use physical device for Push Notifications');
-		}
-
-		if (Platform.OS === 'android') {
-			Notifications.setNotificationChannelAsync('default', {
-				name: 'default',
-				importance: Notifications.AndroidImportance.MAX,
-				vibrationPattern: [0, 250, 250, 250],
-				lightColor: '#FF231F7C',
-			});
-		}
-
-		return token;
-	};
 
 	//SignUp
 	function SignUp() {

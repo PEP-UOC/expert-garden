@@ -31,7 +31,7 @@ export function useFirebaseServiceUtils(debug) {
 
 	//Send Push
 	// eslint-disable-next-line no-unused-vars
-	const [sended, sendPushNotification] = useExpoSendPush(debug);
+	const { sended, sendPushNotification } = useExpoSendPush(debug);
 
 	//State
 	const [saved, setSaved] = useState(false);

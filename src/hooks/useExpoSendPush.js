@@ -99,5 +99,67 @@ export function useExpoSendPush(debug) {
 		}
 	};
 
-	return [sended, sendPushNotification];
+	const updateUserPushToken = async (uid, pushToken, isBusiness) => {
+		console.log(`🚀 EXSP - Push token (${pushToken}) actualizado para el usuario (${uid})`);
+
+		try {
+			if (pushToken) {
+				firestore()
+					.collection('users')
+					.doc(uid)
+					.update({
+						pushToken,
+					})
+					.then(() => {
+						if (isBusiness) {
+							firestore()
+								.collection('companies')
+								.doc(isBusiness)
+								.update({
+									pushToken,
+								})
+								.then(() => {
+									dispatch(setErrorMessage(false));
+								})
+								.catch((error) => {
+									console.error(error.message);
+									console.log(`🕳  SNUP - Dispatch Loading STOP`);
+									dispatch(setLoadingMessage(false));
+									dispatch(
+										setErrorMessage(
+											debug
+												? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+												: firebaseErrorCodeMap(error.code),
+										),
+									);
+								});
+						}
+					})
+					.catch((error) => {
+						console.error(error.message);
+						console.log(`🕳  SNUP - Dispatch Loading STOP`);
+						dispatch(setLoadingMessage(false));
+						dispatch(
+							setErrorMessage(
+								debug
+									? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+									: firebaseErrorCodeMap(error.code),
+							),
+						);
+					});
+			}
+		} catch (error) {
+			console.error(error.message);
+			setSended(false);
+			dispatch(
+				setErrorMessage(
+					debug
+						? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+						: firebaseErrorCodeMap(error.code),
+				),
+			);
+		}
+	};
+
+	return { sended, sendPushNotification, updateUserPushToken };
 }
