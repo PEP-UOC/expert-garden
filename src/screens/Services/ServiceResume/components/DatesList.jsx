@@ -14,7 +14,7 @@ import { DateItem } from './DateItem'
 import { TitleSection } from '../../../../components/Titles/Section'
 
 // eslint-disable-next-line no-unused-vars
-export const DatesList = ({ debug, dates }) => {
+export const DatesList = ({ debug, dates, dateSelected, isConfirmed }) => {
 
 	//Styles
 	const ownStyles = useStyleSheet(styles);
@@ -24,9 +24,15 @@ export const DatesList = ({ debug, dates }) => {
 			<TitleSection icon={'calendar-outline'} primaryText={'Disponibilidad'} secondaryText={''} />
 			<View style={{ ...ownStyles.itemsWrapper }}>
 
+
 				{dates && dates?.map((date, index) => {
+					const isSelected = (date.did === dateSelected && isConfirmed) ? true :
+						(dates?.length === 1 && isConfirmed) ? true :
+							(!isConfirmed) ? null :
+								false;
+
 					return (
-						<DateItem date={date} dateIndex={index} key={date.did} />
+						<DateItem date={date} dateIndex={index} key={date.did} isSelected={isSelected} />
 					)
 				})}
 			</View>
@@ -37,6 +43,8 @@ export const DatesList = ({ debug, dates }) => {
 DatesList.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	dates: PropTypes.array.isRequired,
+	dateSelected: PropTypes.string.isRequired,
+	isConfirmed: PropTypes.bool.isRequired,
 };
 
 DatesList.defaultProps = {

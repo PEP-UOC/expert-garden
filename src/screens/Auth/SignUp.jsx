@@ -356,7 +356,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 										onChangeText={text => handleChange(text, "password2")}
 									/>
 
-									<Button style={{ ...gloStyles?.button }} onPress={() => SignUp()}>REGISTRARSE</Button>
+									<Button style={{ ...gloStyles?.button, marginBottom: 20 }} onPress={() => SignUp()}>REGISTRARSE</Button>
 
 									<Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("Login")}>¿Ya tienes cuenta?</Button>
 

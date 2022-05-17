@@ -66,6 +66,11 @@ const styles = StyleService.create({
 		backgroundColor: 'color-danger-500',
 		justifyContent: 'center',
 	},
+	badgeRevision: {
+		borderRadius: 5,
+		backgroundColor: 'color-warning-300',
+		justifyContent: 'center',
+	},
 	badgeWaiting: {
 		borderRadius: 5,
 		backgroundColor: 'color-warning-300',

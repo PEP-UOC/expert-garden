@@ -24,7 +24,7 @@ import Device from '../../../../libs/react-native-device-detection';
 import { momentTypes } from '../../../../data/momentTypes'
 
 // eslint-disable-next-line no-unused-vars
-export const DateItem = ({ debug, date, dateIndex }) => {
+export const DateItem = ({ debug, date, dateIndex, isSelected }) => {
 
 	//Styles
 	//const gloStyles = useStyleSheet(globalStyles);
@@ -45,7 +45,7 @@ export const DateItem = ({ debug, date, dateIndex }) => {
 
 				{/*BADGE SELECCIONADA*/}
 				{
-					date?.selected ?
+					isSelected ?
 						(
 							<View style={{ ...ownStyles.badgeAccepted }}>
 								<Text style={{ ...ownStyles.badgeText }} appearance='alternative'>
@@ -53,7 +53,7 @@ export const DateItem = ({ debug, date, dateIndex }) => {
 								</Text>
 							</View>
 						)
-						: date?.selected === false ?
+						: isSelected === false ?
 							(
 								<View style={{ ...ownStyles.badgeRejected }}>
 									<Text style={{ ...ownStyles.badgeText }} appearance='alternative'>
@@ -100,6 +100,7 @@ DateItem.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	date: PropTypes.object.isRequired,
 	dateIndex: PropTypes.number.isRequired,
+	isSelected: PropTypes.bool,
 };
 
 DateItem.defaultProps = {

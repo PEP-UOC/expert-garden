@@ -62,9 +62,17 @@ export const WorkersListScreen = ({ debug, navigation, route, showLong }) => {
 	}, []);
 
 	useEffect(() => {
-		console.log(`🕳  SERL - Dispatch Loading STOP`)
-		dispatch(setLoadingMessage(false))
-		dispatch(setErrorMessage(false))
+		let isMounted = true;
+		if (isMounted) {
+			console.log(`🕳  SERL - Dispatch Loading STOP`)
+			dispatch(setLoadingMessage(false))
+			dispatch(setErrorMessage(false))
+		}
+
+		return () => {
+			// cancel the subscription
+			isMounted = false;
+		};
 	}, []);
 
 	return (

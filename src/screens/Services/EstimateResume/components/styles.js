@@ -31,9 +31,9 @@ const styles = StyleService.create({
 	itemWrapperTotal: {
 		border: 'solid',
 		borderWidth: Device?.isPhone ? 1 : 1,
-		borderColor: 'color-primary-500',
+		borderColor: 'color-primary-900',
 		borderRadius: 5,
-		backgroundColor: 'color-primary-500',
+		backgroundColor: '#31a06008',
 		paddingTop: 7,
 		paddingRight: 10,
 		paddingBottom: 7,

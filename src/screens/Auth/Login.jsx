@@ -118,9 +118,9 @@ export const LoginScreen = ({ debug, navigation }) => {
 										onChangeText={text => handleChange(text, "password")}
 									/>
 
-									<Button style={{ ...gloStyles?.button }} onPress={() => Login()}>ACCEDER</Button>
+									<Button style={{ ...gloStyles?.button, marginBottom: 20 }} onPress={() => Login()}>ACCEDER</Button>
 
-									<Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("SignUp")}>¿Necesitas una cuenta?</Button>
+									<Button style={{ ...gloStyles?.buttonGhost, marginBottom: 10 }} appearance='ghost' onPress={() => navigation.navigate("SignUp")}>¿Necesitas una cuenta?</Button>
 
 									<Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.navigate("RememberPass")}>¿Has olvidado la contraseña?</Button>
 

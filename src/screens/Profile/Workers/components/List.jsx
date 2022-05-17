@@ -73,20 +73,28 @@ export const WorkersList = ({ debug, type, limit, showTitle, showLong }) => {
 							.orderBy("metadata.name", "desc")
 							.limit(limit)
 							.onSnapshot(workers => {
-								if (!workers.empty) {
-									const WORKERS = [];
-									workers.forEach(worker => {
-										WORKERS.push(worker.data())
-									})
-									console.log(`🌳 WOLI - Empleados de la empresa uid: ${auth()?.currentUser?.uid} cid: ${user.metadata.cid}`, WORKERS.length)
+								if (isMounted) {
+									if (!workers.empty) {
+										const WORKERS = [];
+										if (isMounted) {
+											workers.forEach(worker => {
+												if (isMounted) {
+													WORKERS.push(worker.data())
+												}
+											})
+										}
+										console.log(`🌳 WOLI - Empleados de la empresa uid: ${auth()?.currentUser?.uid} cid: ${user.metadata.cid}`, WORKERS.length)
 
-									if (isMounted) {
-										setWorkers(WORKERS)
+										if (isMounted) {
+											setWorkers(WORKERS)
+										}
 									}
 								}
 							})
 					} else {
-						setWorkers([])
+						if (isMounted) {
+							setWorkers([])
+						}
 					}
 					break;
 

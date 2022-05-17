@@ -7,6 +7,7 @@ import Constants from 'expo-constants';
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
 import globalStyles from '../../../styles/globalStyles'
+import styles from './styles'
 
 //Device Detect
 import Device from '../../../libs/react-native-device-detection';
@@ -20,7 +21,7 @@ import { useSelector } from 'react-redux'
 
 //Components
 import { SafeAreaView, ScrollView, View, KeyboardAvoidingView } from 'react-native'
-import { Layout } from '@ui-kitten/components';
+import { Layout, Text } from '@ui-kitten/components';
 import { TitleScreen } from '../../../components/Titles/Screen'
 import { BtnPrimary } from '../../../components/Buttons/Primary'
 import { DateSelected } from './components/DateSelected'
@@ -31,35 +32,38 @@ import { NavigationBackButton } from '../../../components/Navigation/BackButton'
 
 //Icons
 import { CheckmarkCircleIcon } from '../../../assets/icons/CheckmarkCircle'
+import { CloseCircleIcon } from '../../../assets/icons/CloseCircle'
 
 //Hooks
 import useFirebaseGetOne from '../../../hooks/useFirebaseGetOne'
 
+//Modales
+import { ModalOptions } from '../../../components/Modals/Options';
+
 // eslint-disable-next-line no-unused-vars
 export const EstimateResumeScreen = ({ debug, navigation, route }) => {
 
+	//Store
+	const user = useSelector(state => state.userReducer.user);
+
 	const sid = route.params.sid;
+	const cid = route?.params?.cid || user?.metadata?.cid;
 
 	//Hooks
 	// eslint-disable-next-line no-unused-vars
 	const { loading: serviceLoading, result: service, error: serviceError } = useFirebaseGetOne(debug, 'services', 'sid', sid);
 
-	//Store
-	const user = useSelector(state => state.userReducer.user);
-
 	//Styles
+	const ownStyles = useStyleSheet(styles);
 	const gloStyles = useStyleSheet(globalStyles);
 
 	//Save service
 	// eslint-disable-next-line no-unused-vars
-	const { saved, handleConfirmServiceEstimation } = useFirebaseServiceUtils(debug)
+	const { saved, handleConfirmServiceEstimation, handleAcceptServiceEstimation, handleRefuseServiceEstimation } = useFirebaseServiceUtils(debug)
 
 	useEffect(() => {
 		if (saved) {
-			navigation.navigate("Services", {
-				screen: 'ServiceListScreen',
-				params: { type: 'received' },
-			});
+			navigation.goBack();
 		}
 	}, [saved]);
 
@@ -68,7 +72,7 @@ export const EstimateResumeScreen = ({ debug, navigation, route }) => {
 		if (companyHasEstimationConfirmed) {
 			return
 		}
-		handleConfirmServiceEstimation(sid, user?.metadata?.cid, companyEstimationTotalPrice);
+		handleConfirmServiceEstimation(sid, cid, companyEstimationTotalPrice);
 	};
 
 	//Datos de la empresa dentro del servicio
@@ -80,7 +84,8 @@ export const EstimateResumeScreen = ({ debug, navigation, route }) => {
 
 	useEffect(() => {
 		if (service) {
-			const company = service?.companies?.find(co => co.cid === user?.metadata?.cid)
+			//console.log('service', service)
+			const company = service?.companies?.find(co => co.cid === cid)
 			const detailsCount = service?.details?.length || 0;
 			const detailsEstimatedCount = company?.estimation ? company?.estimation?.length : 0;
 			const totalEstimated = company?.estimation?.reduce((acc, cE) => cE.price + acc, 0)
@@ -91,6 +96,52 @@ export const EstimateResumeScreen = ({ debug, navigation, route }) => {
 			setCompanyEstimationTotalPrice(totalEstimated || false)
 		}
 	}, [service]);
+
+
+	//ACCEPT
+	const [showAcceptConfirm, setShowAcceptConfirm] = useState(false);
+
+	const isAcceptDisabled = () => {
+		//return false
+		return (service?.selectedCompany && service?.selectedCompany !== null) || false
+	}
+
+	const acceptEstimation = () => {
+		if (isRefuseDisabled()) {
+			setShowAcceptConfirm(false)
+			return
+		}
+		handleAcceptServiceEstimation(sid, cid);
+		setShowAcceptConfirm(false)
+	};
+
+
+	//REFUSE
+	const [showRefuseConfirm, setShowRefuseConfirm] = useState(false);
+
+	const isRefuseDisabled = () => {
+		//return false
+		return (service?.selectedCompany && service?.selectedCompany !== null) || false
+	}
+
+	const refuseEstimation = () => {
+		if (isRefuseDisabled()) {
+			setShowRefuseConfirm(false)
+			return
+		}
+		handleRefuseServiceEstimation(sid, cid);
+		setShowRefuseConfirm(false)
+	};
+
+	function hideModal() {
+		setShowAcceptConfirm(false)
+		setShowRefuseConfirm(false)
+	}
+
+	const isCompanySelectedOrRejected = () => {
+		//return false
+		return service?.companies?.find(co => co.cid === cid)?.isSelected || service?.companies?.find(co => co.cid === cid)?.isRefused
+	}
 
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -110,10 +161,49 @@ export const EstimateResumeScreen = ({ debug, navigation, route }) => {
 
 										{!Device.isPhone && <EstimatedTotal companyEstimationTotalPrice={companyEstimationTotalPrice || 0} />}
 
-										{/*BOTÓN GUARDAR PRESUPUESTO*/}
-										{!Device.isPhone && <BtnPrimary size={'medium'} icon={CheckmarkCircleIcon} text={companyHasEstimationConfirmed ? 'Presupesto enviado al cliente' : "Confirmar presupuesto"} onPress={confirmEstimation}
-											disabled={!companyHasAllEstimated}
-											status={'primary'} btnStyle={{ marginBottom: 30 }} />}
+										{{
+											'client': (
+												<>
+													{isCompanySelectedOrRejected() ?
+														<>
+															{!Device.isPhone && (
+																<>
+																	{service?.companies?.find(co => co.cid === cid)?.isSelected ? (
+																		<View style={{ ...ownStyles.badgeAccepted, width: '100%', marginBottom: 30 }}>
+																			<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
+																				Presupuesto aceptado
+																			</Text>
+																		</View>
+																	) : (
+																		<View style={{ ...ownStyles.badgeRejected, width: '100%', marginBottom: 30 }}>
+																			<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
+																				Presupuesto rechazado
+																			</Text>
+																		</View>
+																	)}
+																</>
+															)
+															}
+														</>
+														:
+														<>
+															{/*BOTÓN ACEPTAR / RECHAZAR PRESUPUESTO*/}
+															{!Device.isPhone && <BtnPrimary size={'medium'} icon={CheckmarkCircleIcon} text={"Aceptar"} onPress={() => setShowAcceptConfirm(true)} disabled={isAcceptDisabled()} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
+
+															{!Device.isPhone && <BtnPrimary size={'medium'} icon={CloseCircleIcon} text={"Rechazar"} onPress={() => setShowRefuseConfirm(true)} disabled={isRefuseDisabled()} status={'danger'} btnStyle={{ marginBottom: 30 }} />}
+														</>
+													}
+												</>
+											),
+											'business': (
+												<>
+													{/*BOTÓN GUARDAR PRESUPUESTO*/}
+													{!Device.isPhone && <BtnPrimary size={'medium'} icon={CheckmarkCircleIcon} text={companyHasEstimationConfirmed ? 'Presupesto enviado al cliente' : "Confirmar presupuesto"} onPress={confirmEstimation}
+														disabled={!companyHasAllEstimated}
+														status={'primary'} btnStyle={{ marginBottom: 30 }} />}
+												</>
+											)
+										}[user?.role]}
 
 										<NavigationBackButton show={!Device.isPhone} />
 									</View>
@@ -122,26 +212,105 @@ export const EstimateResumeScreen = ({ debug, navigation, route }) => {
 
 								<View style={{ ...gloStyles.section.secondary }}>
 
-									{/*BOTÓN GUARDAR PRESUPUESTO*/}
-									{Device.isPhone && <BtnPrimary size={'medium'} icon={CheckmarkCircleIcon} text={companyHasEstimationConfirmed ? 'Presupesto enviado al cliente' : "Confirmar presupuesto"} onPress={confirmEstimation}
-										disabled={!companyHasAllEstimated}
-										status={'primary'} btnStyle={{ marginBottom: 30 }} />}
+									{{
+										'client': (
+											<>
+												{isCompanySelectedOrRejected() ?
+													<>
+														{Device.isPhone && (
+															<>
+																{service?.companies?.find(co => co.cid === cid)?.isSelected ? (
+																	<View style={{ ...ownStyles.badgeAccepted, width: '100%', marginBottom: 30 }}>
+																		<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
+																			Presupuesto aceptado
+																		</Text>
+																	</View>
+																) : (
+																	<View style={{ ...ownStyles.badgeRejected, width: '100%', marginBottom: 30 }}>
+																		<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
+																			Presupuesto rechazado
+																		</Text>
+																	</View>
+																)}
+															</>
+														)
+														}
+													</>
+													:
+													null
+												}
+											</>
+										),
+										'business': (
+											<>
+												{/*BOTÓN GUARDAR PRESUPUESTO*/}
+												{Device.isPhone && <BtnPrimary size={'medium'} icon={CheckmarkCircleIcon} text={companyHasEstimationConfirmed ? 'Presupesto enviado al cliente' : "Confirmar presupuesto"} onPress={confirmEstimation}
+													disabled={!companyHasAllEstimated}
+													status={'primary'} btnStyle={{ marginBottom: 30 }} />}
+											</>
+										)
+									}[user?.role]}
 
 									{/*SECCIÓN HORARIOS*/}
-									<DateSelected dates={service?.dates || []} companyHasSelectedDate={companyHasSelectedDate || ''} cid={user?.metadata?.cid} sid={sid} />
+									<DateSelected dates={service?.dates || []} companyHasSelectedDate={companyHasSelectedDate || ''} cid={cid} sid={sid} />
 
 									{/*SECCIÓN SERVICIOS*/}
-									<DetailsEstimated details={service?.details || []} cid={user?.metadata?.cid} sid={sid} companyEstimations={companyEstimations || []} />
+									<DetailsEstimated details={service?.details || []} cid={cid} sid={sid} companyEstimations={companyEstimations || []} />
 
 									{Device.isPhone && <EstimatedTotal companyEstimationTotalPrice={companyEstimationTotalPrice || 0} />}
 
-									{/*BOTÓN GUARDAR PRESUPUESTO*/}
-									{Device.isPhone && <BtnPrimary size={'medium'} icon={CheckmarkCircleIcon} text={companyHasEstimationConfirmed ? 'Presupesto enviado al cliente' : "Confirmar presupuesto"} onPress={confirmEstimation}
-										disabled={!companyHasAllEstimated}
-										status={'primary'} btnStyle={{ marginBottom: 0 }} />}
+									{{
+										'client': (
+											<>
+												{isCompanySelectedOrRejected() ?
+													<>
+														{Device.isPhone && (
+															<>
+																{service?.companies?.find(co => co.cid === cid)?.isSelected ? (
+																	<View style={{ ...ownStyles.badgeAccepted, width: '100%', marginBottom: 0 }}>
+																		<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
+																			Presupuesto aceptado
+																		</Text>
+																	</View>
+																) : (
+																	<View style={{ ...ownStyles.badgeRejected, width: '100%', marginBottom: 0 }}>
+																		<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
+																			Presupuesto rechazado
+																		</Text>
+																	</View>
+																)}
+															</>
+														)
+														}
+													</>
+													:
+													<>
+														{/*BOTÓN ACEPTAR / RECHAZAR PRESUPUESTO*/}
+														{Device.isPhone && <BtnPrimary size={'medium'} icon={CheckmarkCircleIcon} text={"Aceptar"} onPress={() => setShowAcceptConfirm(true)} disabled={isAcceptDisabled()} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
+
+														{Device.isPhone && <BtnPrimary size={'medium'} icon={CloseCircleIcon} text={"Rechazar"} onPress={() => setShowRefuseConfirm(true)} disabled={isRefuseDisabled()} status={'danger'} btnStyle={{ marginBottom: 0 }} />}
+													</>
+												}
+											</>
+										),
+										'business': (
+											<>
+												{/*BOTÓN GUARDAR PRESUPUESTO*/}
+												{Device.isPhone && <BtnPrimary size={'medium'} icon={CheckmarkCircleIcon} text={companyHasEstimationConfirmed ? 'Presupesto enviado al cliente' : "Confirmar presupuesto"} onPress={confirmEstimation}
+													disabled={!companyHasAllEstimated}
+													status={'primary'} btnStyle={{ marginBottom: 0 }} />}
+											</>
+										)
+									}[user?.role]}
 
 									<NavigationBackButton show={Device.isPhone} />
 								</View>
+
+								{/*MODAL ACEPTAR PRESUPUESTO*/}
+								<ModalOptions mainText={'¿Quieres aceptar este presupuesto? El resto se rechazarán.'} show={showAcceptConfirm} setShow={setShowAcceptConfirm} option1text={'Sí, aceptar'} option1onPress={acceptEstimation} option1status={'primary'} option2text={'No, quiero revisar el resto'} option2onPress={hideModal} />
+
+								{/*MODAL RECHAZAR PRESUPUESTO*/}
+								<ModalOptions mainText={'¿Seguro que quieres rechazar este presupuesto?'} show={showRefuseConfirm} setShow={setShowRefuseConfirm} option1text={'Sí, rechazar'} option1onPress={refuseEstimation} option1status={'danger'} option2text={'No, quiero volver a revisarlo'} option2onPress={hideModal} />
 							</View>
 						</Layout>
 					</ScrollView>

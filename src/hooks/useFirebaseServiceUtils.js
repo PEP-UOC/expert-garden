@@ -730,6 +730,289 @@ export function useFirebaseServiceUtils(debug) {
 		}
 	};
 
+	const handleAcceptServiceEstimation = async (sid, cid) => {
+		console.log(`🕳  FSUT - Dispatch Loading START`);
+		dispatch(setLoadingMessage(debug ? '🔧 Aceptando' : 'Aceptando'));
+
+		setIsEdit(isEdit);
+
+		console.log(`🚨 FSUT - Accept estimation of company (${cid}) of service (${sid})`);
+
+		try {
+			if (auth().currentUser) {
+				const now = moment();
+				const confirmationDateTime = now.format();
+				const confirmationDate = now.format('DD-MM-YYYY');
+				const confirmationTime = now.format('HH:mm');
+
+				firestore()
+					.collection('services')
+					.doc(sid)
+					.get()
+					.then((doc) => {
+						if (doc.exists) {
+							const service = doc.data();
+
+							let companiesArray = service.companies;
+							companiesArray = companiesArray.map((co) => {
+								if (co.isSelected) {
+									return {
+										...co,
+										isSelected: co.cid === cid,
+										isSelectedDateTime: confirmationDateTime,
+										isSelectedDate: confirmationDate,
+										isSelectedTime: confirmationTime,
+										isRefused: co.cid !== cid,
+									};
+								}
+								return {
+									...co,
+									isSelected: co.cid === cid,
+									isRefused: co.cid !== cid,
+									isRefusedDateTime: confirmationDateTime,
+									isRefusedDate: confirmationDate,
+									isRefusedTime: confirmationTime,
+								};
+							});
+
+							const companySelected = companiesArray.find((co) => co.isSelected);
+
+							const serviceDateSelected =
+								service.dates.find((date) => date.did === companySelected.selectedDate) ||
+								service.dates[0];
+
+							firestore()
+								.collection('services')
+								.doc(sid)
+								.update({
+									companies: companiesArray,
+									selectedCompany: companySelected.uid,
+									confirmationDate: confirmationDate,
+									confirmationTime: confirmationTime,
+									confirmationDateTime: confirmationDateTime,
+									serviceDate: serviceDateSelected.date,
+									serviceTime: serviceDateSelected.schedule,
+									serviceDateTime: serviceDateSelected.dateTime,
+									isConfirmed: true,
+									price: companySelected?.estimation?.reduce((acc, cE) => cE.price + acc, 0),
+								})
+								.then(() => {
+									const serviceDateSelected =
+										service.dates.find((date) => date.did === companySelected.selectedDate) ||
+										service.dates[0];
+
+									Promise.all(
+										companiesArray.map(async (company) => {
+											let title;
+											let msg;
+											if (company.isSelected) {
+												title = `¡Presupuesto aceptado!`;
+												msg = `${auth()?.currentUser.displayName.trim()} ha aceptado el presupuesto del servicio que le ofreciste para el día ${
+													serviceDateSelected.date
+												}.`;
+
+												console.log(
+													`🚧 FSUT - Estimation of company (${cid}) of service (${sid}) accepted`,
+												);
+											} else {
+												title = `¡Presupuesto rechazado!`;
+												msg = `El cliente ha rechazado el presupuesto del servicio que le ofreciste.`;
+
+												console.log(
+													`🚧 FSUT - Estimation of company (${cid}) of service (${sid}) rejected`,
+												);
+											}
+
+											await sendPushNotification(
+												company.pushToken,
+												auth()?.currentUser?.uid,
+												company.uid,
+												title,
+												msg,
+												{ sid: service?.sid },
+											);
+										}),
+									);
+
+									setSaved(true);
+									dispatch(setErrorMessage(false));
+									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									dispatch(setLoadingMessage(false));
+								})
+								.catch((error) => {
+									console.error(error.message);
+									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									dispatch(setLoadingMessage(false));
+									dispatch(
+										setErrorMessage(
+											debug
+												? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+												: firebaseErrorCodeMap(error.code),
+										),
+									);
+									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									dispatch(setLoadingMessage(false));
+								});
+						} else {
+							console.log('🩸 FSUT - No such document!');
+							setSaved(false);
+							dispatch(setErrorMessage(`Error al actualizar la estimación del servicio.`));
+							console.log(`🕳  FSUT - Dispatch Loading STOP`);
+							dispatch(setLoadingMessage(false));
+						}
+					})
+					.catch((error) => {
+						console.error(error.message);
+						console.log('🩸 FSUT - Error getting document.');
+						setSaved(false);
+						dispatch(setErrorMessage(`Error al actualizar la estimación del servicio.`));
+						console.log(`🕳  FSUT - Dispatch Loading STOP`);
+						dispatch(setLoadingMessage(false));
+					});
+			} else {
+				dispatch(
+					setErrorMessage(
+						debug ? 'NO HAY SESIÓN. Vuelva a iniciar sessión' : 'Vuelva a iniciar sessión',
+					),
+				);
+				console.log(`🕳  FSUT - Dispatch Loading STOP`);
+				dispatch(setLoadingMessage(false));
+			}
+		} catch (error) {
+			console.error(error.message);
+			setSaved(false);
+			dispatch(
+				setErrorMessage(
+					debug
+						? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+						: firebaseErrorCodeMap(error.code),
+				),
+			);
+			console.log(`🕳  FSUT - Dispatch Loading STOP`);
+			dispatch(setLoadingMessage(false));
+		}
+	};
+
+	const handleRefuseServiceEstimation = async (sid, cid) => {
+		console.log(`🕳  FSUT - Dispatch Loading START`);
+		dispatch(setLoadingMessage(debug ? '🔧 Rechazando' : 'Rechazando'));
+
+		setIsEdit(isEdit);
+
+		console.log(`🚨 FSUT - Refuse estimation of company (${cid}) of service (${sid})`);
+
+		try {
+			if (auth().currentUser) {
+				const now = moment();
+				const refuseDateTime = now.format();
+				const refuseDate = now.format('DD-MM-YYYY');
+				const refuseTime = now.format('HH:mm');
+
+				firestore()
+					.collection('services')
+					.doc(sid)
+					.get()
+					.then((doc) => {
+						if (doc.exists) {
+							const service = doc.data();
+
+							let companiesArray = service.companies;
+							const companyToEdit = service.companies.find((co) => co.cid === cid);
+							const companyToEditIndex = service.companies.findIndex((co) => co.cid === cid);
+
+							const newCompany = {
+								...companyToEdit,
+								isSelected: companyToEdit.cid !== cid,
+								isRefused: companyToEdit.cid === cid,
+								isRefusedDateTime: refuseDateTime,
+								isRefusedDate: refuseDate,
+								isRefusedTime: refuseTime,
+							};
+
+							companiesArray[companyToEditIndex] = newCompany;
+
+							firestore()
+								.collection('services')
+								.doc(sid)
+								.update({
+									companies: companiesArray,
+								})
+								.then(() => {
+									const title = `¡Presupuesto rechazado!`;
+									const msg = `El cliente ha rechazado el presupuesto del servicio que le ofreciste.`;
+
+									sendPushNotification(
+										companyToEdit.pushToken,
+										auth()?.currentUser?.uid,
+										companyToEdit.uid,
+										title,
+										msg,
+										{ sid: service?.sid },
+									).then(() => {
+										console.log(
+											`🚧 FSUT - Estimation of company (${cid}) of service (${sid}) rejected`,
+										);
+
+										setSaved(true);
+										dispatch(setErrorMessage(false));
+										console.log(`🕳  FSUT - Dispatch Loading STOP`);
+										dispatch(setLoadingMessage(false));
+									});
+								})
+								.catch((error) => {
+									console.error(error.message);
+									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									dispatch(setLoadingMessage(false));
+									dispatch(
+										setErrorMessage(
+											debug
+												? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+												: firebaseErrorCodeMap(error.code),
+										),
+									);
+									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									dispatch(setLoadingMessage(false));
+								});
+						} else {
+							console.log('🩸 FSUT - No such document!');
+							setSaved(false);
+							dispatch(setErrorMessage(`Error al actualizar la estimación del servicio.`));
+							console.log(`🕳  FSUT - Dispatch Loading STOP`);
+							dispatch(setLoadingMessage(false));
+						}
+					})
+					.catch((error) => {
+						console.error(error.message);
+						console.log('🩸 FSUT - Error getting document.');
+						setSaved(false);
+						dispatch(setErrorMessage(`Error al actualizar la estimación del servicio.`));
+						console.log(`🕳  FSUT - Dispatch Loading STOP`);
+						dispatch(setLoadingMessage(false));
+					});
+			} else {
+				dispatch(
+					setErrorMessage(
+						debug ? 'NO HAY SESIÓN. Vuelva a iniciar sessión' : 'Vuelva a iniciar sessión',
+					),
+				);
+				console.log(`🕳  FSUT - Dispatch Loading STOP`);
+				dispatch(setLoadingMessage(false));
+			}
+		} catch (error) {
+			console.error(error.message);
+			setSaved(false);
+			dispatch(
+				setErrorMessage(
+					debug
+						? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+						: firebaseErrorCodeMap(error.code),
+				),
+			);
+			console.log(`🕳  FSUT - Dispatch Loading STOP`);
+			dispatch(setLoadingMessage(false));
+		}
+	};
+
 	return {
 		saved,
 		setSaved: (newSaved) => {
@@ -743,5 +1026,7 @@ export function useFirebaseServiceUtils(debug) {
 		handleBusinessSelectServiceDate,
 		handleBusinessEstimateServiceDetail,
 		handleConfirmServiceEstimation,
+		handleAcceptServiceEstimation,
+		handleRefuseServiceEstimation,
 	};
 }

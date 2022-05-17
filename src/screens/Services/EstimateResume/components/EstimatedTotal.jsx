@@ -25,7 +25,7 @@ export const EstimatedTotal = ({ debug, companyEstimationTotalPrice }) => {
 		<View style={{ ...ownStyles?.wrapper, marginBottom: 30, flexDirection: 'row', justifyContent: 'flex-end' }}>
 			<View style={{ ...ownStyles.itemWrapperTotal }}>
 				<View style={{ alignSelf: Device?.isPhone ? 'flex-end' : 'center', marginRight: Device?.isPhone ? 14 : 0 }}>
-					<TitleSection icon={''} primaryText={`Total: ${companyEstimationTotalPrice} €`} secondaryText={''} exterStyles={{ wrapperInt: { width: undefined }, primaryText: { marginLeft: 0, marginBottom: 0, color: '#fff', alignSelf: 'center' } }} />
+					<TitleSection icon={''} primaryText={`Total: ${companyEstimationTotalPrice} €`} secondaryText={''} exterStyles={{ wrapperInt: { width: undefined }, primaryText: { marginLeft: 0, marginBottom: 0, alignSelf: 'center' } }} />
 				</View>
 			</View >
 		</View>

@@ -112,6 +112,7 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 	const [companyHasEstimationConfirmed, setCompanyHasEstimationConfirmed] = useState(false);
 
 	useEffect(() => {
+		//console.log('service', service)
 		if (service && !thisCompany) {
 			const company = service?.companies?.find(co => co.cid === user?.metadata?.cid)
 			setThisCompany(company)
@@ -136,7 +137,7 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 									<View style={{ paddingLeft: 45 }}>
 
 										{/*BOTÓN PRESUPUESTAR*/}
-										{(!Device.isPhone && !companyHasEstimationConfirmed) && <BtnPrimary size={'medium'} icon={CropIcon} text={"Presupuestar"} onPress={navigateToEstimate} disabled={isCancelDisabled()} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
+										{(user?.role === 'business' && !Device.isPhone && !companyHasEstimationConfirmed) && <BtnPrimary size={'medium'} icon={CropIcon} text={"Presupuestar"} onPress={navigateToEstimate} disabled={isCancelDisabled()} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
 
 										{/*BOTÓN CANCELAR SERVICIO*/}
 										{!Device.isPhone && <BtnPrimary size={'medium'} icon={CloseIcon} text={"Cancelar servicio"} onPress={() => { setSidToCancel(sid); setShowCancelConfirm(true) }} disabled={isCancelDisabled()} status={'danger'} btnStyle={{ marginBottom: 30 }} />}
@@ -148,11 +149,13 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 								<View style={{ ...gloStyles.section.secondary }}>
 
 									{/*BOTÓN PRESUPUESTAR*/}
-									{(Device.isPhone && !companyHasEstimationConfirmed) && <BtnPrimary size={'medium'} icon={CropIcon} text={"Presupuestar"} onPress={navigateToEstimate} disabled={isCancelDisabled()} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
+									{(user?.role === 'business' && Device.isPhone && !companyHasEstimationConfirmed) && <BtnPrimary size={'medium'} icon={CropIcon} text={"Presupuestar"} onPress={navigateToEstimate} disabled={isCancelDisabled()} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
 
 									{/*SECCIÓN INFORMACIÓN BÁSICA*/}
 									<BasicDetails
-										isEstimated={service?.companies?.some((co) => co?.isEstimated)}
+										isConfirmed={service?.isConfirmed}
+										isSomeEstimated={service?.companies?.some((co) => co?.isEstimated)}
+										isAllEstimated={service?.companies?.every((co) => co?.isEstimated)}
 										companyIsEstimated={service?.companiesEstimationsList?.includes(auth()?.currentUser?.uid)}
 										isFinalized={service?.isFinalized}
 										isCanceled={isCancelDisabled()}
@@ -165,10 +168,10 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 									/>
 
 									{/*SECCIÓN EMPRESAS*/}
-									<CompaniesList companies={service?.companies || []} />
+									<CompaniesList companies={service?.companies || []} sid={sid} />
 
 									{/*SECCIÓN HORARIOS*/}
-									<DatesList dates={service?.dates || []} />
+									<DatesList dates={service?.dates || []} dateSelected={service?.serviceDid || ''} isConfirmed={service?.isConfirmed || false} />
 
 									{/*SECCIÓN SERVICIOS*/}
 									<DetailsList details={service?.details || []} />

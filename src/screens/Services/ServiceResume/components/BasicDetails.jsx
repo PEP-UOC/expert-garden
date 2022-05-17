@@ -20,7 +20,7 @@ import { TitleSection } from '../../../../components/Titles/Section'
 import { BookOpenIcon } from '../../../../assets/icons/BookOpen'
 
 // eslint-disable-next-line no-unused-vars
-export const BasicDetails = ({ debug, isEstimated, companyIsEstimated, isFinalized, isCanceled, requestDate, cancelationDate, confirmationDate, previousVisitDate, serviceDate, goToResume }) => {
+export const BasicDetails = ({ debug, isConfirmed, isSomeEstimated, isAllEstimated, companyIsEstimated, isFinalized, isCanceled, requestDate, cancelationDate, confirmationDate, previousVisitDate, serviceDate, goToResume }) => {
 
 	//Styles
 	const ownStyles = useStyleSheet(styles);
@@ -32,10 +32,34 @@ export const BasicDetails = ({ debug, isEstimated, companyIsEstimated, isFinaliz
 		<View style={{ ...ownStyles?.wrapper }}>
 			<TitleSection icon={'clipboard-outline'} primaryText={'Información básica'} secondaryText={''} />
 			<View style={{ ...ownStyles.itemsWrapper }}>
-				{!isEstimated && user?.role !== 'business' && (
+				{!isSomeEstimated && !isCanceled && user?.role !== 'business' && (
 					<View style={{ ...ownStyles.badgeWaiting, width: '100%', marginBottom: 20 }}>
 						<Text style={{ ...ownStyles.bigBadgeText }} appearance='hint'>
 							Esperando presupuestos
+						</Text>
+					</View>
+				)}
+
+				{isConfirmed && (
+					<View style={{ ...ownStyles.badgeAccepted, width: '100%', marginBottom: 20 }}>
+						<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
+							Confirmado
+						</Text>
+					</View>
+				)}
+
+				{!isConfirmed && isSomeEstimated && user?.role === 'client' && (
+					<View style={{ ...ownStyles.badgeAccepted, width: '100%', marginBottom: 20 }}>
+						<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
+							Presupuestado parcialmente
+						</Text>
+					</View>
+				)}
+
+				{!isConfirmed && isAllEstimated && user?.role === 'client' && (
+					<View style={{ ...ownStyles.badgeAccepted, width: '100%', marginBottom: 20 }}>
+						<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
+							Presupuestado por completo
 						</Text>
 					</View>
 				)}
@@ -44,14 +68,6 @@ export const BasicDetails = ({ debug, isEstimated, companyIsEstimated, isFinaliz
 					<View style={{ ...ownStyles.badgeRejected, width: '100%', marginBottom: 20 }}>
 						<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
 							Cancelado
-						</Text>
-					</View>
-				)}
-
-				{isEstimated && user?.role === 'client' && (
-					<View style={{ ...ownStyles.badgeAccepted, width: '100%', marginBottom: 20 }}>
-						<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
-							Presupuestado
 						</Text>
 					</View>
 				)}
@@ -108,7 +124,9 @@ export const BasicDetails = ({ debug, isEstimated, companyIsEstimated, isFinaliz
 
 BasicDetails.propTypes = {
 	debug: PropTypes.bool.isRequired,
-	isEstimated: PropTypes.bool,
+	isConfirmed: PropTypes.bool,
+	isSomeEstimated: PropTypes.bool,
+	isAllEstimated: PropTypes.bool,
 	companyIsEstimated: PropTypes.bool,
 	isFinalized: PropTypes.bool,
 	isCanceled: PropTypes.bool,
@@ -122,7 +140,9 @@ BasicDetails.propTypes = {
 
 BasicDetails.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
-	isEstimated: false,
+	isConfirmed: false,
+	isSomeEstimated: false,
+	isAllEstimated: false,
 	companyIsEstimated: false,
 	isFinalized: false,
 	isCanceled: false,

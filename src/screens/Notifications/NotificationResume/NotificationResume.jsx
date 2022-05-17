@@ -42,7 +42,7 @@ export const NotificationResumeScreen = ({ debug, navigation, route }) => {
 	//Hooks
 	// eslint-disable-next-line no-unused-vars
 	const { loading: notificationLoading, result: notification, error: notificationError } = useFirebaseGetOne(debug, 'notifications', 'nid', nid);
-	console.log('notification', notification)
+	//console.log('notification', notification)
 
 	//Styles
 	const gloStyles = useStyleSheet(globalStyles);

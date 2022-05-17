@@ -10,18 +10,24 @@ import { useStyleSheet } from '@ui-kitten/components';
 import styles from './styles'
 
 //Navigation
-//import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 //Components
 import { View } from 'react-native'
-import { Text } from '@ui-kitten/components';
+import { Text, Button } from '@ui-kitten/components';
 import { TitleSection } from '../../../../components/Titles/Section'
 
 //Device Detect
 import Device from '../../../../libs/react-native-device-detection';
 
+//Icons
+import { BookOpenIcon } from '../../../../assets/icons/BookOpen'
+
 // eslint-disable-next-line no-unused-vars
-export const CompanyItem = ({ debug, company, companyIndex }) => {
+export const CompanyItem = ({ debug, company, companyIndex, sid }) => {
+
+	//Navigation
+	const navigation = useNavigation();
 
 	//Styles
 	//const gloStyles = useStyleSheet(globalStyles);
@@ -30,6 +36,16 @@ export const CompanyItem = ({ debug, company, companyIndex }) => {
 	//State
 	// eslint-disable-next-line no-unused-vars
 	const [values, setValues] = useState(company)
+
+	//Navigation
+	const navigateToEstimateResume = () => {
+		navigation.navigate("Services", {
+			screen: 'EstimateResumeScreen',
+			params: { sid, cid: company?.cid },
+		});
+	};
+
+	//console.log('company', company)
 
 	return (
 		<View key={values?.sdid} style={{ ...ownStyles.itemWrapper }}>
@@ -41,24 +57,34 @@ export const CompanyItem = ({ debug, company, companyIndex }) => {
 				</Text>
 
 				{/*BADGE ACEPTADO*/}
-				{company?.budget ?
-					company?.selected ?
+				{company?.isSelected ?
+					(
+						<View style={{ ...ownStyles.badgeAccepted }}>
+							<Text style={{ ...ownStyles.badgeText }} appearance='alternative'>
+								Aceptado
+							</Text>
+						</View>
+					)
+					: company?.isRefused ?
 						(
-							<View style={{ ...ownStyles.badgeAccepted }}>
+							<View style={{ ...ownStyles.badgeRejected }}>
 								<Text style={{ ...ownStyles.badgeText }} appearance='alternative'>
-									Aceptado
+									Rechazado
+								</Text>
+							</View>
+						) : company?.isEstimated ? (
+							<View style={{ ...ownStyles.badgeRevision }}>
+								<Text style={{ ...ownStyles.badgeText }} >
+									Por revisar
+								</Text>
+							</View>
+						) : (
+							<View style={{ ...ownStyles.badgeWaiting }}>
+								<Text style={{ ...ownStyles.badgeText }} >
+									Esperando
 								</Text>
 							</View>
 						)
-						: company?.selected === false ?
-							(
-								<View style={{ ...ownStyles.badgeRejected }}>
-									<Text style={{ ...ownStyles.badgeText }} appearance='alternative'>
-										Rechazado
-									</Text>
-								</View>
-							) : null
-					: null
 				}
 			</View>
 
@@ -71,7 +97,7 @@ export const CompanyItem = ({ debug, company, companyIndex }) => {
 						},
 						primaryText: {
 							fontSize: Device?.isPhone ? 22 : 22,
-							lineHeight: Device?.isPhone ? 25 : undefined
+							lineHeight: Device?.isPhone ? 25 : undefined,
 						}
 					}
 				}
@@ -79,9 +105,71 @@ export const CompanyItem = ({ debug, company, companyIndex }) => {
 				secondaryText={''}
 			/>
 
-			<Text style={{ ...ownStyles.textQuestion }}>
-				{`${company?.budget ? `Disponible` : 'No disponible todavía'}`}
-			</Text>
+			{
+				company?.isSelected ?
+					(
+						<View style={{ ...ownStyles.badgeAccepted, width: '100%', marginBottom: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+							<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
+								Aceptado
+							</Text>
+							<Button
+								style={{ ...ownStyles.iconButton }}
+								appearance={'ghost'}
+								accessoryRight={<BookOpenIcon fill={ownStyles.iconColor.fill} />}
+								onPress={() => {
+									navigateToEstimateResume()
+								}}
+							>
+								Ver
+							</Button>
+						</View>
+					)
+					: company?.isRefused ?
+						(
+							<View style={{ ...ownStyles.badgeRejected, width: '100%', marginBottom: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+								<Text style={{ ...ownStyles.bigBadgeText }} appearance='alternative'>
+									Rechazado
+								</Text>
+								{company?.isEstimated && (
+									<Button
+										style={{ ...ownStyles.iconButton }}
+										appearance={'ghost'}
+										accessoryRight={<BookOpenIcon fill={ownStyles.iconColor.fill} />}
+										onPress={() => {
+											navigateToEstimateResume()
+										}}
+									>
+										Ver
+									</Button>
+								)}
+							</View>
+						) : company?.isEstimated
+							? (
+								<View style={{ ...ownStyles.badgeWaiting, width: '100%', marginBottom: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+									<Text style={{ ...ownStyles.bigBadgeText }}>
+										Presupuestado
+									</Text>
+									<Button
+										style={{ ...ownStyles.iconButton }}
+										appearance={'ghost'}
+										accessoryRight={<BookOpenIcon fill={ownStyles.iconColor.fill} />}
+										onPress={() => {
+											navigateToEstimateResume()
+										}}
+									>
+										Ver
+									</Button>
+								</View>
+							)
+							: (
+								<View style={{ ...ownStyles.badgeWaiting, width: '100%', marginBottom: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+									<Text style={{ ...ownStyles.bigBadgeText }}>
+										Esperando presupuesto
+									</Text>
+								</View>
+							)}
+
+
 
 		</View>
 	)
@@ -91,6 +179,7 @@ CompanyItem.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	company: PropTypes.object.isRequired,
 	companyIndex: PropTypes.number.isRequired,
+	sid: PropTypes.string.isRequired,
 };
 
 CompanyItem.defaultProps = {

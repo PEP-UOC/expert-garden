@@ -17,7 +17,7 @@ import { CompanyItem } from './CompanyItem'
 import { TitleSection } from '../../../../components/Titles/Section'
 
 // eslint-disable-next-line no-unused-vars
-export const CompaniesList = ({ debug, companies }) => {
+export const CompaniesList = ({ debug, companies, sid }) => {
 
 	//Store
 	const user = useSelector((state) => state.userReducer.user);
@@ -34,7 +34,7 @@ export const CompaniesList = ({ debug, companies }) => {
 
 					{companies && companies?.map((company, index) => {
 						return (
-							<CompanyItem company={company} companyIndex={index} key={company.cid} />
+							<CompanyItem company={company} companyIndex={index} key={company.cid} sid={sid} />
 						)
 					})}
 				</View>
@@ -48,6 +48,7 @@ export const CompaniesList = ({ debug, companies }) => {
 CompaniesList.propTypes = {
 	debug: PropTypes.bool.isRequired,
 	companies: PropTypes.array.isRequired,
+	sid: PropTypes.string.isRequired,
 };
 
 CompaniesList.defaultProps = {

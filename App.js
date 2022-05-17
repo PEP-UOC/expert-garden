@@ -51,7 +51,7 @@ export default function App() {
 	const isLoadingComplete = useCachedResources();
 
 	//Firebase
-	console.log('firebase?.apps', firebase?.apps);
+	//console.log('firebase?.apps', firebase?.apps);
 	if (!firebase?.apps.length) {
 		console.info('🕯  APP  - Initializing app!');
 		const app = firebase?.initializeApp(firebaseConfig);
