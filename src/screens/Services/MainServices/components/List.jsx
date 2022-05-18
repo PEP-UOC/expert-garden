@@ -544,6 +544,72 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 					}
 					break;
 
+				//WORKER
+				case 'nextAsigned':
+					setTitle('Próximos')
+					setLongTitle('Próximos servicios')
+					setNoItems('Todavía no tienes ningún servicio asignado')
+					setIcon('rewind-right-outline')
+
+					if (auth().currentUser) {
+						firestore().collection("services")
+							.where("asignedWorker", "==", auth()?.currentUser?.uid)
+							.where("serviceDateTime", "!=", null)
+							.where("cancelationDate", "==", null)
+							.where("isConfigured", "==", true)
+							.orderBy("serviceDateTime", "asc")
+							.limit(limit)
+							.onSnapshot(services => {
+								if (!services.empty) {
+									const SERVICES = [];
+									services.forEach(service => {
+										SERVICES.push(service.data())
+									})
+									console.log(`🌳 SELI - Servicios futuros asignados del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+
+									if (isMounted) {
+										setServices(SERVICES)
+									}
+								}
+							})
+					} else {
+						setServices([])
+					}
+					break;
+
+				case 'pastAsigned':
+					setTitle('Finalizados')
+					setLongTitle('Servicios finalizados')
+					setNoItems('Todavía no tienes ningún servicio finalizado')
+					setIcon('shopping-bag-outline')
+
+					if (auth().currentUser) {
+						firestore().collection("services")
+							.where("asignedWorker", "==", auth()?.currentUser?.uid)
+							.where("confirmationDateTime", "!=", null)
+							.where("isFinalized", "==", true)
+							.where("cancelationDate", "==", null)
+							.where("isConfigured", "==", true)
+							.orderBy("confirmationDateTime", "desc")
+							.limit(limit)
+							.onSnapshot(services => {
+								if (!services.empty) {
+									const SERVICES = [];
+									services.forEach(service => {
+										SERVICES.push(service.data())
+									})
+									console.log(`🌳 SELI - Servicios finalizados del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+
+									if (isMounted) {
+										setServices(SERVICES)
+									}
+								}
+							})
+					} else {
+						setServices([])
+					}
+					break;
+
 				default:
 					break;
 
@@ -607,6 +673,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 				break;
 			case 'past':
 			case 'pastBusiness':
+			case 'pastAsigned':
 				subTitle = `Realizado el día ${item?.serviceDate}`
 				//detail = item?.serviceDate
 				break;
@@ -632,6 +699,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 				//detail = company?.isRefusedDate
 				break;
 			case 'next':
+			case 'nextAsigned':
 				subTitle = `Día del servicio ${item?.serviceDate}`
 				//detail = item?.serviceDate
 				break;

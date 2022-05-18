@@ -1036,6 +1036,91 @@ export function useFirebaseServiceUtils(debug) {
 		}
 	};
 
+	const handleBusinessSelectServiceWorker = async (sid, uid) => {
+		console.log('uid', uid);
+
+		console.log(`🕳  FSUT - Dispatch Loading START`);
+		dispatch(setLoadingMessage(debug ? '🔧 Guardando' : 'Guardando'));
+
+		setIsEdit(isEdit);
+
+		console.log(`🚨 FSUT - Select service (${sid}) worker (${uid})`);
+
+		try {
+			if (auth().currentUser) {
+				firestore()
+					.collection('services')
+					.doc(sid)
+					.get()
+					.then((doc) => {
+						if (doc.exists) {
+							firestore()
+								.collection('services')
+								.doc(sid)
+								.update({
+									asignedWorker: uid,
+								})
+								.then(() => {
+									console.log(`🚧 FSUT - Company asigned worker ${uid} actualizad0`);
+									setSaved(true);
+									dispatch(setErrorMessage(false));
+									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									dispatch(setLoadingMessage(false));
+								})
+								.catch((error) => {
+									console.error(error.message);
+									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									dispatch(setLoadingMessage(false));
+									dispatch(
+										setErrorMessage(
+											debug
+												? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+												: firebaseErrorCodeMap(error.code),
+										),
+									);
+									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									dispatch(setLoadingMessage(false));
+								});
+						} else {
+							console.log('🩸 FSUT - No such document!');
+							setSaved(false);
+							dispatch(setErrorMessage(`Error al actualizar el trabajador del servicio.`));
+							console.log(`🕳  FSUT - Dispatch Loading STOP`);
+							dispatch(setLoadingMessage(false));
+						}
+					})
+					.catch((error) => {
+						console.error(error.message);
+						console.log('🩸 FSUT - Error getting document.');
+						setSaved(false);
+						dispatch(setErrorMessage(`Error al actualizar el trabajador del servicio.`));
+						console.log(`🕳  FSUT - Dispatch Loading STOP`);
+						dispatch(setLoadingMessage(false));
+					});
+			} else {
+				dispatch(
+					setErrorMessage(
+						debug ? 'NO HAY SESIÓN. Vuelva a iniciar sessión' : 'Vuelva a iniciar sessión',
+					),
+				);
+				console.log(`🕳  FSUT - Dispatch Loading STOP`);
+				dispatch(setLoadingMessage(false));
+			}
+		} catch (error) {
+			console.error(error.message);
+			setSaved(false);
+			dispatch(
+				setErrorMessage(
+					debug
+						? `${firebaseErrorCodeMap(error.code)} || ${error.message}`
+						: firebaseErrorCodeMap(error.code),
+				),
+			);
+			console.log(`🕳  FSUT - Dispatch Loading STOP`);
+			dispatch(setLoadingMessage(false));
+		}
+	};
+
 	return {
 		saved,
 		setSaved: (newSaved) => {
@@ -1051,5 +1136,6 @@ export function useFirebaseServiceUtils(debug) {
 		handleConfirmServiceEstimation,
 		handleAcceptServiceEstimation,
 		handleRefuseServiceEstimation,
+		handleBusinessSelectServiceWorker,
 	};
 }

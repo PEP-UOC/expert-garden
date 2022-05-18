@@ -139,6 +139,7 @@ export const WorkersAddScreen = ({ debug, navigation, route }) => {
 										firestore().collection("users").doc(appNewUser.auth()?.currentUser?.uid).set({
 											uid: appNewUser.auth()?.currentUser?.uid,
 											role,
+											cid,
 											verified: false,
 											metadata: {
 												name,
@@ -234,7 +235,7 @@ export const WorkersAddScreen = ({ debug, navigation, route }) => {
 									<SeparatorTopSection />
 									<WorkerDataForm cid={user?.metadata?.cid || ''} values={values} handleChange={handleChange} />
 
-									{Device.isPhone && <BtnPrimary size={'small'} disabled={allFilled()} icon={SaveIcon} text={"Añadir empleado"} onPress={SignUpWorker} btnStyle={{ marginBottom: 40, marginTop: 15 }} />}
+									{Device.isPhone && <BtnPrimary size={'small'} disabled={allFilled()} icon={SaveIcon} text={"Añadir empleado"} onPress={SignUpWorker} btnStyle={{ marginBottom: 0, marginTop: 0 }} />}
 
 									<NavigationBackButton show={Device.isPhone} />
 								</View>

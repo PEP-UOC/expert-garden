@@ -114,7 +114,7 @@ export const HomeScreen = ({ debug, navigation }) => {
 											'worker': (
 												<>
 													<NotificationsList type={'new'} limit={3} showLong={true} externalIcon={'bell-outline'} />
-													<ServicesList type={'next'} limit={3} showLong={true} />
+													<ServicesList type={'nextAsigned'} limit={3} showLong={true} />
 												</>
 											)
 										}[user?.role]

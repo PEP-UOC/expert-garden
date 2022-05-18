@@ -33,6 +33,7 @@ import { NavigationBackButton } from '../../../components/Navigation/BackButton'
 //Icons
 import { CloseIcon } from '../../../assets/icons/Close'
 import { CropIcon } from '../../../assets/icons/Crop'
+import { PersonIcon } from '../../../assets/icons/Person'
 
 //Modales
 import { ModalOptions } from '../../../components/Modals/Options';
@@ -81,12 +82,17 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 			screen: 'EstimateServiceScreen',
 			params: { sid },
 		});
-
 	};
 	const navigateToResume = () => {
 		navigation.navigate("Services", {
 			screen: 'EstimateResumeScreen',
 			params: { sid },
+		});
+	};
+	const navigateToWorkerAssign = () => {
+		navigation.navigate("Services", {
+			screen: 'WorkerAssignServiceScreen',
+			params: { sid, cid: companyCid },
 		});
 	};
 
@@ -101,6 +107,7 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 	const [serviceIsCanceled, setServiceIsCanceled] = useState(false);
 	const [serviceHasSomeEstimations, setServiceHasSomeEstimations] = useState(false);
 	const [serviceHasAllEstimations, setServiceHasAllEstimations] = useState(false);
+	const [serviceHasWorkerAsigned, setServiceHasWorkerAsigned] = useState(false);
 
 	const [companyHasEstimationConfirmed, setCompanyHasEstimationConfirmed] = useState(false);
 	const [companyEstimationConfirmedDate, setCompanyEstimationConfirmedDate] = useState(false);
@@ -108,6 +115,7 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 	const [companyEstimationAcceptedDate, setCompanyEstimationAcceptedDate] = useState(false);
 	const [companyHasEstimationRefused, setCompanyHasEstimationRefused] = useState(false);
 	const [companyEstimationRefusedDate, setCompanyEstimationRefusedDate] = useState(false);
+	const [companyCid, setCompanyCid] = useState(false);
 
 	useEffect(() => {
 		//console.log('service', service)
@@ -117,6 +125,7 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 			setServiceIsCanceled(service.cancelationDate !== null || false)
 			setServiceHasSomeEstimations(service?.companies?.some((co) => co?.isEstimated) || false)
 			setServiceHasAllEstimations(service?.companies?.every((co) => co?.isEstimated) || false)
+			setServiceHasWorkerAsigned(service?.asignedWorker || false)
 
 			const company = service?.companies?.find(co => co.cid === user?.metadata?.cid)
 			//console.log('company', company)
@@ -126,6 +135,7 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 			setCompanyEstimationAcceptedDate(company?.isSelectedDate || '')
 			setCompanyHasEstimationRefused(company?.isRefused || false)
 			setCompanyEstimationRefusedDate(company?.isRefusedDate || '')
+			setCompanyCid(company?.cid || '')
 		}
 	}, [service]);
 
@@ -148,6 +158,9 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 										{/*BOTÓN PRESUPUESTAR*/}
 										{(user?.role === 'business' && !Device.isPhone && !companyHasEstimationConfirmed) && <BtnPrimary size={'medium'} icon={CropIcon} text={"Presupuestar"} onPress={navigateToEstimate} disabled={serviceIsCanceled} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
 
+										{/*BOTÓN ASIGNAR*/}
+										{(user?.role === 'business' && !Device.isPhone && companyHasEstimationConfirmed) && <BtnPrimary size={'medium'} icon={PersonIcon} text={serviceHasWorkerAsigned ? 'Cambiar empleado asignado' : "Asignar a empleado"} onPress={navigateToWorkerAssign} disabled={serviceIsCanceled} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
+
 										{/*BOTÓN CANCELAR SERVICIO*/}
 										{(user?.role === 'client' && !Device.isPhone) && <BtnPrimary size={'medium'} icon={CloseIcon} text={"Cancelar servicio"} onPress={() => { setSidToCancel(sid); setShowCancelConfirm(true) }} disabled={serviceIsCanceled} status={'danger'} btnStyle={{ marginBottom: 30 }} />}
 
@@ -159,6 +172,9 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 
 									{/*BOTÓN PRESUPUESTAR*/}
 									{(user?.role === 'business' && Device.isPhone && !companyHasEstimationConfirmed) && <BtnPrimary size={'medium'} icon={CropIcon} text={"Presupuestar"} onPress={navigateToEstimate} disabled={serviceIsCanceled} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
+
+									{/*BOTÓN ASIGNAR*/}
+									{(user?.role === 'business' && Device.isPhone && companyHasEstimationConfirmed) && <BtnPrimary size={'medium'} icon={PersonIcon} text={serviceHasWorkerAsigned ? 'Cambiar empleado asignado' : "Asignar a empleado"} onPress={navigateToWorkerAssign} disabled={serviceIsCanceled} status={'primary'} btnStyle={{ marginBottom: 30 }} />}
 
 									{/*SECCIÓN INFORMACIÓN BÁSICA*/}
 									<BasicDetails

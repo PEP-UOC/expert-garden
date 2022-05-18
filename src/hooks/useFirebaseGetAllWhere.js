@@ -9,13 +9,17 @@ import 'firebase/compat/firestore';
 import { toLower, upperFirst } from 'lodash';
 
 function useFirebaseGetAllWhere(debug, collection, entityIdentifier, entityValue, extraElement) {
+	//console.log('collection', collection);
+	//console.log('entityIdentifier', entityIdentifier);
+	//console.log('entityValue', entityValue);
+
 	//Firebase
 	const auth = firebase.auth;
 	const firestore = firebase.firestore;
 
 	//State
 	const [loading, setLoading] = useState(true);
-	const [result, setResult] = useState({});
+	const [result, setResult] = useState([]);
 	const [error, setError] = useState('');
 
 	useEffect(() => {

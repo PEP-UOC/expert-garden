@@ -92,8 +92,8 @@ export const MainServicesScreen = ({ debug, navigation }) => {
 											),
 											'worker': (
 												<>
-													<ServicesList type={'next'} limit={3} />
-													<ServicesList type={'past'} limit={3} />
+													<ServicesList type={'nextAsigned'} limit={3} />
+													<ServicesList type={'pastAsigned'} limit={3} />
 												</>
 											)
 										}[user?.role]

@@ -6,6 +6,7 @@ import { ServiceResumeScreen } from '../../screens/Services/ServiceResume/Servic
 import { ServiceListScreen } from '../../screens/Services/ServiceList/ServiceList';
 import { EstimateServiceScreen } from '../../screens/Services/EstimateService/EstimateService';
 import { EstimateResumeScreen } from '../../screens/Services/EstimateResume/EstimateResume';
+import { WorkerAssignServiceScreen } from '../../screens/Services/WorkerAssignService/WorkerAssignService';
 
 
 const Services = createNativeStackNavigator()
@@ -16,5 +17,6 @@ export const ServicesNavigation = () => (
 		<Services.Screen name='ServiceListScreen' component={ServiceListScreen} />
 		<Services.Screen name='EstimateServiceScreen' component={EstimateServiceScreen} />
 		<Services.Screen name='EstimateResumeScreen' component={EstimateResumeScreen} />
+		<Services.Screen name='WorkerAssignServiceScreen' component={WorkerAssignServiceScreen} />
 	</Services.Navigator>
 )

@@ -68,6 +68,7 @@ export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
 					break;
 				case 'past':
 				case 'pastBusiness':
+				case 'pastAsigned':
 					setTitle('Finalizados')
 					setLongTitle('Servicios finalizados')
 					setIcon('shopping-bag-outline')
@@ -99,6 +100,7 @@ export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
 					setIcon('close-circle-outline')
 					break;
 				case 'next':
+				case 'nextAsigned':
 					setTitle('Próximos')
 					setLongTitle('Próximos servicios')
 					setIcon('rewind-right-outline')
