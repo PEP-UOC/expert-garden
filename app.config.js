@@ -1,8 +1,10 @@
 import 'dotenv/config';
 
+const APP_VARIANT = process.env.APP_VARIANT === 'development';
+
 export default {
 	expo: {
-		name: 'expert-garden',
+		name: 'Expert Garden',
 		slug: 'expert-garden',
 		version: '1.0.0',
 		orientation: 'portrait',
@@ -36,7 +38,7 @@ export default {
 		},
 		assetBundlePatterns: ['**/*'],
 		android: {
-			package: 'com.expertgarden.expertgarden',
+			package: `com.expertgarden.${APP_VARIANT}`,
 			googleServicesFile: './android/google-services.json',
 			adaptiveIcon: {
 				foregroundImage: './src/assets/images/adaptive-icon.png',
@@ -44,7 +46,7 @@ export default {
 			},
 		},
 		ios: {
-			bundleIdentifier: 'com.expertgarden.expertgarden',
+			bundleIdentifier: `com.expertgarden.${APP_VARIANT}`,
 			googleServicesFile: './ios/GoogleService-Info.plist',
 			supportsTablet: true,
 		},
@@ -64,6 +66,18 @@ export default {
 			build: {
 				babel: {
 					include: ['@ui-kitten/components'],
+				},
+				production: {
+					env: {
+						debug: false,
+						firebaseApiKey: process.env.FIREBASE_API_KEY,
+						firebaseAuthDomain: process.env.FIREBASE_AUTH_DOMAIN,
+						firebaseProjectId: process.env.FIREBASE_PROJECT_ID,
+						firebaseStorageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+						firebaseMessagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+						firebaseAppId: process.env.FIREBASE_APP_ID,
+						firebaseMeasurementId: process.env.FIREBASE_MEASUREMENT_ID,
+					},
 				},
 			},
 		},
