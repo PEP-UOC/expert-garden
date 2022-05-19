@@ -1,10 +1,13 @@
 import * as ExpoDevice from 'expo-device';
 import * as Notifications from 'expo-notifications';
+
+//Device Detect
+import Device from '../libs/react-native-device-detection';
 import { Platform } from 'react-native';
 
 const registerForPushNotificationsAsync = async () => {
 	let token;
-	if (ExpoDevice.isDevice) {
+	if (ExpoDevice.isDevice && Device.isPhone) {
 		const { status: existingStatus } = await Notifications.getPermissionsAsync();
 		let finalStatus = existingStatus;
 		if (existingStatus !== 'granted') {
