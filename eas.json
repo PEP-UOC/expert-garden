@@ -5,7 +5,6 @@
 	},
 	"build": {
 		"androidAPK": {
-			"extends": "base",
 			"developmentClient": true,
 			"distribution": "internal",
 			"android": {
@@ -16,7 +15,6 @@
 			}
 		},
 		"iosSimulator": {
-			"extends": "base",
 			"developmentClient": true,
 			"distribution": "internal",
 			"ios": {
@@ -27,7 +25,6 @@
 			}
 		},
 		"development": {
-			"extends": "base",
 			"developmentClient": true,
 			"distribution": "internal",
 			"env": {
@@ -35,22 +32,15 @@
 			}
 		},
 		"preview": {
-			"extends": "base",
 			"distribution": "internal",
 			"env": {
 				"APP_VARIANT": "preview"
 			}
 		},
 		"production": {
-			"extends": "base",
 			"env": {
 				"APP_VARIANT": "expertgarden"
 			}
-		},
-		"base": {
-			"node": "16.13.2",
-			"npm": "8.1.2",
-			"yarn": "1.22.17"
 		}
 	},
 	"submit": {
