@@ -7,6 +7,6 @@
 - Build IOS IPA / Andriod AAB for development
   - eas build --profile development
 - Build IOS IPA / Andriod AAB for preview
-  - eas build --profile development
+  - eas build --profile preview
 - Build IOS IPA / Andriod AAB for production
-  - eas build --profile development
+  - eas build --profile production
