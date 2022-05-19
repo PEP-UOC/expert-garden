@@ -61,7 +61,6 @@ export const TabsNavigation = () => {
 					if (intervalReloadId) {
 						clearInterval(intervalReloadId)
 					} else {
-						//Se limpian todos los timeouts
 						clearAllIntervals()
 					}
 					dispatch(setLoadingMessage(false))
@@ -74,7 +73,6 @@ export const TabsNavigation = () => {
 					if (intervalReloadId) {
 						clearInterval(intervalReloadId)
 					} else {
-						//Se limpian todos los timeouts
 						clearAllIntervals()
 					}
 					dispatch(setLoadingMessage(false))
@@ -86,7 +84,6 @@ export const TabsNavigation = () => {
 			if (intervalReloadId) {
 				clearInterval(intervalReloadId)
 			} else {
-				//Se limpian todos los timeouts
 				clearAllIntervals()
 			}
 			dispatch(setLoadingMessage(false))

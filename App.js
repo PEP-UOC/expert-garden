@@ -55,13 +55,13 @@ export default function App() {
 	//consola('warning', '🕯  APP  - firebase?.apps');
 	//consola('warning', firebase?.apps);
 	if (!firebase?.apps.length) {
-		consola('🕯  APP  - Initializing app!');
+		consola('warning', '🕯  APP  - Initializing app!');
 		const app = firebase?.initializeApp(firebaseConfig);
 		initializeAuth(app, {
 			persistence: getReactNativePersistence(AsyncStorage),
 		});
 	} else {
-		consola('💡 APP  - Already initialized app!');
+		consola('warning', '💡 APP  - Already initialized app!');
 		firebase?.app();
 	}
 

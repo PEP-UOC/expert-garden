@@ -8,9 +8,10 @@ const consola = async (type, content) => {
 
 	const ctx = new chalk.Instance({ level: 3 });
 
-	const normal = Platform.OS !== 'web' ? ctx.whiteBright : ctx.black.bgWhite;
-	const bold = Platform.OS !== 'web' ? ctx.bold.whiteBright : ctx.bold.black.bgWhite;
-	const warning = ctx.bold.blue.bgWhite;
+	const normal = Platform.OS !== 'web' ? ctx.whiteBright : ctx.black.bgWhiteBright;
+	const bold = Platform.OS !== 'web' ? ctx.bold.whiteBright : ctx.bold.black.bgWhiteBright;
+	const warn = ctx.bold.blue.bgYellowBright;
+	const warning = ctx.bold.blue.bgWhiteBright;
 	const error = ctx.bold.whiteBright.bgRed;
 
 	const checkIsObject = (content) => {
@@ -30,6 +31,10 @@ const consola = async (type, content) => {
 			? checkIsObject(content)
 				? console.log(bold(colorize(content, { pretty: true })))
 				: console.log(bold(content))
+			: type === 'warn'
+			? checkIsObject(content)
+				? console.log(warn(colorize(content, { pretty: true })))
+				: console.log(warn(content))
 			: type === 'warning'
 			? checkIsObject(content)
 				? console.log(warning(colorize(content, { pretty: true })))

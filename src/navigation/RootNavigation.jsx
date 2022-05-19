@@ -1,12 +1,16 @@
 import React, { useEffect, useState, useRef } from 'react'
 import consola from '../libs/myLogger';
 
+
 //Store
 import { useDispatch, useSelector } from 'react-redux'
 import { setValidatingMessage } from '../store/root/rootAction';
 
 //Navigation
-import { NavigationContainer } from '@react-navigation/native';
+import {
+	NavigationContainer,
+	useNavigationContainerRef,
+} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { TabsNavigation } from './TabsNavigation';
@@ -14,8 +18,11 @@ import { AuthNavigation } from './AuthNavigation';
 import { SplashScreen } from '../screens/SplashScreen/SplashScreen';
 import { ValidatingScreen } from '../screens/ValidatingScreen/ValidatingScreen';
 
-//Expo Firebase
+//Expo Notifications
 import * as Notifications from 'expo-notifications';
+
+// Import Firebase
+import * as Analytics from 'expo-firebase-analytics';
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -33,6 +40,7 @@ function getParameterByName(name) {
 }
 
 const Root = createNativeStackNavigator()
+
 const RootScreen = () => {
 	const dispatch = useDispatch()
 
@@ -149,8 +157,33 @@ const RootScreen = () => {
 	)
 }
 
-export const RootNavigation = () => (
-	<NavigationContainer>
-		<RootScreen />
-	</NavigationContainer>
-);
+export const RootNavigation = () => {
+	const navigationRef = useNavigationContainerRef();
+	const routeNameRef = useRef();
+
+	return (
+		<NavigationContainer
+			ref={navigationRef}
+			onReady={() => {
+				routeNameRef.current = navigationRef.getCurrentRoute().name;
+			}}
+			onStateChange={async () => {
+				const previousRouteName = routeNameRef.current;
+				const currentRouteName = navigationRef.getCurrentRoute().name;
+
+				if (previousRouteName !== currentRouteName) {
+					consola('warn', `${currentRouteName}`)
+					// The line below uses the expo-firebase-analytics tracker
+					// https://docs.expo.io/versions/latest/sdk/firebase-analytics/
+					// Change this line to use another Mobile analytics SDK
+					await Analytics.logEvent('screen_view', { currentRouteName });
+				}
+
+				// Save the current route name for later comparison
+				routeNameRef.current = currentRouteName;
+			}}
+		>
+			<RootScreen />
+		</NavigationContainer>
+	)
+};

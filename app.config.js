@@ -35,14 +35,18 @@ export default {
 			fallbackToCacheTimeout: 0,
 		},
 		assetBundlePatterns: ['**/*'],
-		ios: {
-			supportsTablet: true,
-		},
 		android: {
+			package: 'com.expertgarden.expertgarden',
+			googleServicesFile: './android/google-services.json',
 			adaptiveIcon: {
 				foregroundImage: './src/assets/images/adaptive-icon.png',
 				backgroundColor: '#FFFFFF',
 			},
+		},
+		ios: {
+			bundleIdentifier: 'com.expertgarden.expertgarden',
+			googleServicesFile: './ios/GoogleService-Info.plist',
+			supportsTablet: true,
 		},
 		web: {
 			favicon: './src/assets/images/favicon.png',

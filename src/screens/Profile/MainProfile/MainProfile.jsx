@@ -55,7 +55,7 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 	const [saveChanges] = useFirebaseSaveAllChanges(debug);
 
 	useEffect(() => {
-		consola('warning', '🧹 MAPR - Limpiando changesToSave')
+		consola('normal', '🧹 MAPR - Limpiando changesToSave')
 		dispatch(removeChangesToSave())
 		dispatch(setErrorMessage(false))
 	}, []);
