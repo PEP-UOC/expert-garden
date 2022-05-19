@@ -12,6 +12,15 @@ export default {
 			resizeMode: 'contain',
 			backgroundColor: '#ffffff',
 		},
+		plugins: [
+			[
+				'expo-notifications',
+				{
+					icon: './src/assets/images/icon.png',
+					color: '#ffffff',
+				},
+			],
+		],
 		extra: {
 			debug: process.env.DEBUG === 'true' || false,
 			firebaseApiKey: process.env.FIREBASE_API_KEY,

@@ -25,6 +25,8 @@ export function useExpoSendPush(debug) {
 		const message = {
 			to,
 			sound: 'default',
+			badge: 1,
+			priority: 'high',
 			title,
 			body,
 			data,
