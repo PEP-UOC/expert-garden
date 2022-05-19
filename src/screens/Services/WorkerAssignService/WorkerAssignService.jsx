@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -43,7 +44,6 @@ export const WorkerAssignServiceScreen = ({ debug, navigation, route }) => {
 	//Hooks
 	// eslint-disable-next-line no-unused-vars
 	const { loading: serviceLoading, result: service, error: serviceError } = useFirebaseGetOne(debug, 'services', 'sid', sid);
-	console.log('service', service)
 
 	// eslint-disable-next-line no-unused-vars
 	const { loading: workersLoading, result: workers, error: workersError } = useFirebaseGetAllWhere(debug, 'users', 'cid', cid, false);

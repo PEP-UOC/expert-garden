@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -75,13 +76,13 @@ export const BtnImageCombo = ({ debug, showImageChangeCombo, showingCamera, setS
 			aspect: [1, 1],
 		});
 
-		console.log('🎞  IMCO - Nueva fotografía desde la galería', `H: ${pickerResult?.height}px`, `W: ${pickerResult?.width}px`);
+		consola('normal', `🎞  IMCO - Nueva fotografía desde la galería → H: ${pickerResult?.height}px`, `W: ${pickerResult?.width}px`);
 
 		await handleImagePicked(pickerResult);
 	}
 	useEffect(() => {
 		if (pickerHasPermission) {
-			console.log('✅ IMCO - Hay permisos para adjuntar fotos desde el dispositivo')
+			consola('normal', '✅ IMCO - Hay permisos para adjuntar fotos desde el dispositivo')
 		}
 	}, [pickerHasPermission]);
 
@@ -111,7 +112,7 @@ export const BtnImageCombo = ({ debug, showImageChangeCombo, showingCamera, setS
 	}
 	useEffect(() => {
 		if (cameraHasPermission) {
-			console.log('✅ IMCO - Hay permisos para hacer fotos')
+			consola('normal', '✅ IMCO - Hay permisos para hacer fotos')
 		}
 	}, [cameraHasPermission]);
 

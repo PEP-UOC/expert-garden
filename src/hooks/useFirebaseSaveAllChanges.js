@@ -2,6 +2,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { setErrorMessage, setLoadingMessage } from '../store/root/rootAction';
 import { removeChangesToSave } from '../store/change/changeAction';
+import consola from '../libs/myLogger';
 
 //Firebase
 import firebase from 'firebase/compat/app';
@@ -21,10 +22,12 @@ export function useFirebaseSaveAllChanges(debug) {
 	const changesToSave = useSelector((state) => state.changeReducer.changesToSave);
 
 	const saveChanges = async () => {
-		//console.log('🙋‍♂️ FISA - user', user)
-		console.log('🚨 FISA - changesToSave', changesToSave);
+		//consola('normal', '🙋‍♂️ FISA - user');
+		//consola('normal', user);
+		consola('normal', '🚨 FISA - changesToSave');
+		consola('normal', changesToSave);
 
-		console.log(`🕳  FISA - Dispatch Loading START`);
+		consola('normal', `🕳  FISA - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Guardando' : 'Guardando'));
 
 		//Metadata
@@ -45,8 +48,6 @@ export function useFirebaseSaveAllChanges(debug) {
 			changesToSave?.metadata?.hasWorkers === false
 				? false
 				: changesToSave?.metadata?.hasWorkers || user?.metadata?.hasWorkers || false;
-		console.log('changesToSave?.metadata?.hasWorkers', changesToSave?.metadata?.hasWorkers);
-		console.log('hasWorkers', hasWorkers);
 		const birthday = changesToSave?.metadata?.birthday || user?.metadata?.birthdayDateTime || '';
 		const birthdayDateTime =
 			changesToSave?.metadata?.birthdayDateTime || user?.metadata?.birthdayDateTime || '';
@@ -103,7 +104,7 @@ export function useFirebaseSaveAllChanges(debug) {
 				bankDetails,
 			})
 			.then(() => {
-				console.log('🟢 FISA - user UPDATED');
+				consola('normal', '🟢 FISA - user UPDATED');
 				auth()
 					.currentUser.updateProfile({
 						displayName: fullname,
@@ -123,16 +124,16 @@ export function useFirebaseSaveAllChanges(debug) {
 								});
 							}),
 						);
-						console.log('🟢 FISA - gardens UPDATED');
-						console.log(`🕳  FISA - Dispatch Loading STOP`);
+						consola('normal', '🟢 FISA - gardens UPDATED');
+						consola('normal', `🕳  FISA - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 						dispatch(setErrorMessage(false));
-						console.log('🧹 FISA - Limpiando changesToSave');
+						consola('normal', '🧹 FISA - Limpiando changesToSave');
 						dispatch(removeChangesToSave());
 					})
 					.catch((error) => {
 						console.error(error.message);
-						console.log(`🕳  FISA - Dispatch Loading STOP`);
+						consola('normal', `🕳  FISA - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 						dispatch(
 							setErrorMessage(
@@ -145,7 +146,7 @@ export function useFirebaseSaveAllChanges(debug) {
 			})
 			.catch((error) => {
 				console.error(error.message);
-				console.log(`🕳  FISA - Dispatch Loading STOP`);
+				consola('normal', `🕳  FISA - Dispatch Loading STOP`);
 				dispatch(setLoadingMessage(false));
 				dispatch(
 					setErrorMessage(

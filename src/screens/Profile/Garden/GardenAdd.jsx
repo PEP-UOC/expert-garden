@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -68,23 +69,24 @@ export const GardenAddScreen = ({ debug, navigation, route }) => {
 	}, []);
 
 	useEffect(() => {
-		//console.log(`🌀 GADD - Cargando   ${gid} | ${gardenLoading.toString()}`)
+		//consola('normal',`🌀 GADD - Cargando   ${gid} | ${gardenLoading.toString()}`)
 	}, [gardenLoading]);
 
 	useEffect(() => {
 		if (garden?.gid) {
 			setGid(garden?.gid)
-			console.log(`🍀 GADD - Jardín     ${garden?.gid} |`, garden?.name)
-			//console.log(`🍀 GADD - Jardín     ${garden?.gid} |`, garden)
+			consola('normal', `🍀 GADD - Jardín     ${garden?.gid} | ${garden?.name}`)
+			//consola('normal',`🍀 GADD - Jardín     ${garden?.gid} |`)
+			//consola('normal',garden)
 			setLoadComponents(true);
-			console.log(`🕳  GADD - Dispatch Loading STOP`)
+			consola('normal', `🕳  GADD - Dispatch Loading STOP`)
 			dispatch(setLoadingMessage(false))
 		}
 	}, [garden]);
 
 	useEffect(() => {
 		if (gardenError) {
-			console.log(`🩸 GADD - Error   ${gid} | ${gardenError}`)
+			consola('error', `🩸 GADD - Error   ${gid} | ${gardenError}`)
 			dispatch(setErrorMessage(gardenError))
 		}
 	}, [gardenError]);

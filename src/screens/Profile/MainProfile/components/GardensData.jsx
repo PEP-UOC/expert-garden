@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -38,18 +39,18 @@ export const GardensDataForm = ({ debug }) => {
 	const { loading: gardensLoading, result: gardens, error: gardensError } = useFirebaseGetAllWhere(debug, 'gardens', 'uid', user?.uid, extraElement);
 
 	useEffect(() => {
-		//console.log(`🌀 GSDA - Cargando          | ${gardensLoading.toString()}`)
+		//consola('normal',`🌀 GSDA - Cargando          | ${gardensLoading.toString()}`)
 	}, [gardensLoading]);
 
 	useEffect(() => {
 		if (gardens) {
-			//console.log(`🍀 GSDA - Nuevos jardines   |`, gardens?.length || 0)
+			//consola('normal',`🍀 GSDA - Nuevos jardines   | ${gardens?.length || 0}`)
 		}
 	}, [gardens]);
 
 	useEffect(() => {
 		if (gardensError) {
-			console.log(`🩸 GSDA - Error          | ${gardensError}`)
+			consola('error', `🩸 GSDA - Error          | ${gardensError}`)
 			dispatch(setErrorMessage(gardensError))
 		}
 	}, [gardensError]);

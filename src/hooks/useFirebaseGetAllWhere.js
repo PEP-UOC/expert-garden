@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import consola from '../libs/myLogger';
 
 //Firebase
 import firebase from 'firebase/compat/app';
@@ -9,10 +10,6 @@ import 'firebase/compat/firestore';
 import { toLower, upperFirst } from 'lodash';
 
 function useFirebaseGetAllWhere(debug, collection, entityIdentifier, entityValue, extraElement) {
-	//console.log('collection', collection);
-	//console.log('entityIdentifier', entityIdentifier);
-	//console.log('entityValue', entityValue);
-
 	//Firebase
 	const auth = firebase.auth;
 	const firestore = firebase.firestore;
@@ -42,11 +39,11 @@ function useFirebaseGetAllWhere(debug, collection, entityIdentifier, entityValue
 								if (extraElement) {
 									ITEMS.push(extraElement);
 								}
-								console.log(
+								consola(
+									'normal',
 									`🌳 FIGAW - ${upperFirst(
 										toLower(collection),
-									)} ${entityIdentifier} ${entityValue}`,
-									ITEMS.length,
+									)} ${entityIdentifier} ${entityValue} ${ITEMS.length}`,
 								);
 								setResult(ITEMS);
 								setLoading(false);

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import consola from '../libs/myLogger';
 
 //Store
 import { useDispatch } from 'react-redux';
@@ -63,13 +64,16 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 				setStorageIdentifier(`${entity.gid}_${entity.imageCounter}`);
 				break;
 			default:
-				console.log('🩸 FISI - entityType no contemplado en src/hooks/useFirebaseSaveImage.js');
+				consola(
+					'normal',
+					'🩸 FISI - entityType no contemplado en src/hooks/useFirebaseSaveImage.js',
+				);
 				break;
 		}
 	}, [entity]);
 
 	const handleImagePicked = async (pickerResult) => {
-		console.log(`🕳  FISI - Dispatch Loading START`);
+		consola('normal', `🕳  FISI - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Guardando' : 'Guardando'));
 		try {
 			if (!pickerResult.cancelled) {
@@ -88,7 +92,7 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 				),
 			);
 		} finally {
-			console.log(`🕳  FISI - Dispatch Loading STOP`);
+			consola('normal', `🕳  FISI - Dispatch Loading STOP`);
 			dispatch(setLoadingMessage(false));
 		}
 	};
@@ -102,7 +106,8 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 				resolve(xhr.response);
 			};
 			xhr.onerror = function (error) {
-				console.log('🩸 FISI -', error);
+				consola('error', '🩸 FISI');
+				consola('error', error);
 				reject(new TypeError('Network request failed'));
 			};
 			xhr.responseType = 'blob';
@@ -112,7 +117,8 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 
 		const fileRef = storageRef.child(`/${storagePath}/${storageIdentifier}`);
 		const result = await uploadBytes(fileRef, blob);
-		console.log(
+		consola(
+			'normal',
 			`📤 FISI - Fotografía de tipo ${entityType} subida a Firebase Storage | Bucket: ${result.metadata.bucket} | Path: ${result.metadata.fullPath}`,
 		);
 
@@ -148,7 +154,7 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 							.then(() => {})
 							.catch((error) => {
 								console.error(error.message);
-								console.log(`🕳  FISI - Dispatch Loading STOP`);
+								consola('normal', `🕳  FISI - Dispatch Loading STOP`);
 								dispatch(setLoadingMessage(false));
 								dispatch(
 									setErrorMessage(
@@ -161,7 +167,7 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 					})
 					.catch((error) => {
 						console.error(error.message);
-						console.log(`🕳  FISI - Dispatch Loading STOP`);
+						consola('normal', `🕳  FISI - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 						dispatch(
 							setErrorMessage(
@@ -184,13 +190,13 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 						imageCounter: increment(1),
 					})
 					.then(() => {
-						console.log(`🕳  FISI - Dispatch Loading STOP`);
+						consola('normal', `🕳  FISI - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 						dispatch(setErrorMessage(false));
 					})
 					.catch((error) => {
 						console.error(error.message);
-						console.log(`🕳  FISI - Dispatch Loading STOP`);
+						consola('normal', `🕳  FISI - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 						dispatch(
 							setErrorMessage(
@@ -203,7 +209,10 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 
 				break;
 			default:
-				console.log('🩸 FISI - entityType no contemplado en src/hooks/useFirebaseSaveImage.js');
+				consola(
+					'normal',
+					'🩸 FISI - entityType no contemplado en src/hooks/useFirebaseSaveImage.js',
+				);
 				break;
 		}
 	};
@@ -212,7 +221,7 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 		selectedImage,
 		handleImagePicked,
 		(newEntity) => {
-			//console.log('⚪️ FISI - SET newEntity', newEntity.row);
+			//consola('normal','⚪️ FISI - SET newEntity', newEntity.row);
 			setNewEntity(newEntity);
 		},
 	];

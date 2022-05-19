@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -110,7 +111,7 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 	})
 
 	const resetForm = () => {
-		console.log(`🕳  DETA - Dispatch Loading STOP`);
+		consola('normal', `🕳  DETA - Dispatch Loading STOP`);
 		dispatch(setLoadingMessage(false));
 		setGardenDetailId(false)
 		setGardenDetail(false)
@@ -211,7 +212,7 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 	);
 
 	const navigateBack = () => {
-		console.log(`🕳  DETA - Dispatch Loading STOP`);
+		consola('normal', `🕳  DETA - Dispatch Loading STOP`);
 		dispatch(setLoadingMessage(false));
 		navigation.goBack();
 	};

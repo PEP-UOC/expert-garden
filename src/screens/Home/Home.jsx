@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../libs/myLogger';
 
 //Device Detect
 import Device from '../../libs/react-native-device-detection'
@@ -51,14 +52,15 @@ export const HomeScreen = ({ debug, navigation }) => {
 	};
 
 	useEffect(() => {
-		console.log(`🕳  HOME - Dispatch Loading STOP`)
+		consola('normal', `🕳  HOME - Dispatch Loading STOP`);
 		dispatch(setLoadingMessage(false))
 		dispatch(setErrorMessage(false))
 	}, []);
 
 	useEffect(() => {
-		console.log('👩‍🌾 HOME - Usuario', user?.metadata?.fullname, user?.metadata?.email);
-		//console.log('🙋‍♂️ HOME - user', user)
+		consola('normal', `👩‍🌾 HOME - Usuario ${user?.metadata?.fullname, user?.metadata?.email}`);
+		//consola('normal','🙋‍♂️ HOME - user')
+		//consola('normal',user)
 	}, [user]);
 
 	const device = Device.isPhone ? '📱' : '💻';

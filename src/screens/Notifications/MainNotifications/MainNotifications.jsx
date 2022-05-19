@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -31,7 +32,7 @@ export const MainNotificationsScreen = ({ debug, navigation }) => {
 	const user = useSelector(state => state.userReducer.user);
 
 	useEffect(() => {
-		console.log(`🕳  NOTI - Dispatch Loading STOP`)
+		consola('normal', `🕳  NOTI - Dispatch Loading STOP`)
 		dispatch(setLoadingMessage(false))
 		dispatch(setErrorMessage(false))
 	}, []);

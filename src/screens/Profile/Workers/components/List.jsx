@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -83,7 +84,7 @@ export const WorkersList = ({ debug, type, limit, showTitle, showLong }) => {
 												}
 											})
 										}
-										console.log(`🌳 WOLI - Empleados de la empresa uid: ${auth()?.currentUser?.uid} cid: ${user.metadata.cid}`, WORKERS.length)
+										consola('normal', `🌳 WOLI - Empleados de la empresa uid: ${auth()?.currentUser?.uid} cid: ${user.metadata.cid} ${WORKERS.length}`)
 
 										if (isMounted) {
 											setWorkers(WORKERS)

@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -77,7 +78,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios solicitados del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									consola('normal', `🌳 SELI - Servicios solicitados del usuario ${auth()?.currentUser?.uid} ${SERVICES.length}`)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -109,7 +110,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Próximos servicios del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									consola('normal', `🌳 SELI - Próximos servicios del usuario ${auth()?.currentUser?.uid} ${SERVICES.length}`)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -142,7 +143,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Próximos servicios puntuales del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									consola('normal', `🌳 SELI - Próximos servicios puntuales del usuario ${auth()?.currentUser?.uid} ${SERVICES.length}`)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -175,7 +176,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Próximos servicios recurrentes del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									consola('normal', `🌳 SELI - Próximos servicios recurrentes del usuario ${auth()?.currentUser?.uid} ${SERVICES.length}`)
 									setServices(SERVICES)
 								}
 							})
@@ -205,7 +206,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios anteriores del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									consola('normal', `🌳 SELI - Servicios anteriores del usuario ${auth()?.currentUser?.uid} ${SERVICES.length}`)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -236,7 +237,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios cancelados del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									consola('normal', `🌳 SELI - Servicios cancelados del usuario ${auth()?.currentUser?.uid} ${SERVICES.length}`)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -269,7 +270,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios recibidos del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									consola('normal', `🌳 SELI - Servicios recibidos del usuario ${auth()?.currentUser?.uid} ${SERVICES.length}`)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -304,7 +305,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 											SERVICES.push(serviceData)
 										}
 									})
-									console.log(`🌳 SELI - Servicios recibidos del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									consola('normal', `🌳 SELI - Servicios recibidos del usuario ${auth()?.currentUser?.uid} ${SERVICES.length}`)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -337,7 +338,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 										const serviceData = service.data()
 										SERVICES.push(serviceData)
 									})
-									console.log(`🌳 SELI - Servicios recibidos del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									consola('normal', `🌳 SELI - Servicios recibidos del usuario ${auth()?.currentUser?.uid} ${SERVICES.length}`)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -370,7 +371,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 										const serviceData = service.data()
 										SERVICES.push(serviceData)
 									})
-									console.log(`🌳 SELI - Servicios con presupuesos rechazados del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									consola('normal', `🌳 SELI - Servicios con presupuesos rechazados del usuario ${auth()?.currentUser?.uid} ${SERVICES.length}`)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -402,7 +403,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios futuros del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									consola('normal', `🌳 SELI - Servicios futuros del usuario ${auth()?.currentUser?.uid} ${SERVICES.length}`)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -435,7 +436,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios futuros puntuales del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									consola('normal', `🌳 SELI - Servicios futuros puntuales del usuario ${auth()?.currentUser?.uid} ${SERVICES.length}`)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -468,7 +469,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios futuros recurrentes del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									consola('normal', `🌳 SELI - Servicios futuros recurrentes del usuario ${auth()?.currentUser?.uid} ${SERVICES.length}`)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -501,7 +502,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios anteriores del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									consola('normal', `🌳 SELI - Servicios anteriores del usuario ${auth()?.currentUser?.uid} ${SERVICES.length}`)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -532,7 +533,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios cancelados del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									consola('normal', `🌳 SELI - Servicios cancelados del usuario ${auth()?.currentUser?.uid} ${SERVICES.length}`)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -565,7 +566,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios futuros asignados del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									consola('normal', `🌳 SELI - Servicios futuros asignados del usuario ${auth()?.currentUser?.uid} ${SERVICES.length}`)
 
 									if (isMounted) {
 										setServices(SERVICES)
@@ -598,7 +599,7 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 									services.forEach(service => {
 										SERVICES.push(service.data())
 									})
-									console.log(`🌳 SELI - Servicios finalizados del usuario ${auth()?.currentUser?.uid}`, SERVICES.length)
+									consola('normal', `🌳 SELI - Servicios finalizados del usuario ${auth()?.currentUser?.uid} ${SERVICES.length}`)
 
 									if (isMounted) {
 										setServices(SERVICES)

@@ -1,5 +1,6 @@
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import consola from './src/libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -51,15 +52,16 @@ export default function App() {
 	const isLoadingComplete = useCachedResources();
 
 	//Firebase
-	//console.log('firebase?.apps', firebase?.apps);
+	//consola('warning', '🕯  APP  - firebase?.apps');
+	//consola('warning', firebase?.apps);
 	if (!firebase?.apps.length) {
-		console.info('🕯  APP  - Initializing app!');
+		consola('🕯  APP  - Initializing app!');
 		const app = firebase?.initializeApp(firebaseConfig);
 		initializeAuth(app, {
 			persistence: getReactNativePersistence(AsyncStorage),
 		});
 	} else {
-		console.info('💡 APP  - Already initialized app!');
+		consola('💡 APP  - Already initialized app!');
 		firebase?.app();
 	}
 

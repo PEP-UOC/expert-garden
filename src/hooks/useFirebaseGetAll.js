@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import consola from '../libs/myLogger';
 
 //Firebase
 import firebase from 'firebase/compat/app';
@@ -37,9 +38,11 @@ function useFirebaseGetAll(debug, collection, entityIdentifier, extraElement) {
 								if (extraElement) {
 									ITEMS.push(extraElement);
 								}
-								console.log(
-									`🌳 FIGA - ${upperFirst(toLower(collection))} ${entityIdentifier} ALL`,
-									ITEMS.length,
+								consola(
+									'normal',
+									`🌳 FIGA - ${upperFirst(toLower(collection))} ${entityIdentifier} ALL ${
+										ITEMS.length
+									}`,
 								);
 								setResult(ITEMS);
 								setLoading(false);

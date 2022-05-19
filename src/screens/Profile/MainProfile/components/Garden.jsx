@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
+import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -64,11 +65,13 @@ export const GardenItem = ({ debug, garden }) => {
 			})
 			const newGarden = { ...values }
 			newGarden[keyName] = value;
-			//console.log('🌳 GDAT - newGarden', newGarden)
+			//consola('normal','🌳 GDAT - newGarden')
+			//consola('normal',newGarden)
 
 			const gardensArray = [...changesToSave?.gardens || []];
 			gardensArray[garden?.index] = newGarden;
-			//console.log('🌳 GDAT - gardensArray', gardensArray)
+			//consola('normal','🌳 GDAT - gardensArray')
+			//consola('normal',gardensArray)
 
 			dispatch(updateChangesToSave({ gardens: gardensArray }, auto))
 		}
@@ -100,7 +103,8 @@ export const GardenItem = ({ debug, garden }) => {
 	}, [province]);
 
 	if (garden?.item?.name === 'CHALET') {
-		//console.log('⛱  DEBU - townDisplayValue', townDisplayValue)
+		//consola('normal','⛱  DEBU - townDisplayValue')
+		//consola('normal',townDisplayValue)
 	}
 
 	const townRenderOption = (title) => (
@@ -117,7 +121,7 @@ export const GardenItem = ({ debug, garden }) => {
 				<TouchableOpacity
 					style={styles.button}
 					onPress={() => {
-						console.log(`🕳  GADN - Dispatch Loading START`);
+						consola('normal', `🕳  GADN - Dispatch Loading START`);
 						dispatch(setLoadingMessage(debug ? '🔧 Cargando' : 'Cargando'));
 						navigation.push("GardenAddScreen", { index: garden?.index })
 					}}
@@ -199,7 +203,7 @@ export const GardenItem = ({ debug, garden }) => {
 					}
 					size='medium'
 					onPress={() => {
-						console.log(`🕳  GADN - Dispatch Loading START`);
+						consola('normal', `🕳  GADN - Dispatch Loading START`);
 						dispatch(setLoadingMessage(debug ? '🔧 Cargando' : 'Cargando'));
 						navigation.push("GardenDetailScreen", { gid: garden?.item?.gid, index: garden?.index })
 					}}

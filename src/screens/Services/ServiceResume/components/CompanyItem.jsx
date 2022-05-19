@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -45,7 +46,6 @@ export const CompanyItem = ({ debug, company, companyIndex, sid }) => {
 		});
 	};
 
-	//console.log('company', company)
 
 	return (
 		<View key={values?.sdid} style={{ ...ownStyles.itemWrapper }}>

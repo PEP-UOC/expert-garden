@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -82,7 +83,7 @@ export const WorkersAddScreen = ({ debug, navigation, route }) => {
 	const resetForm = () => {
 		const newPass = uuid.v4()
 		setPass(newPass)
-		console.log(`🕳  WADD - Dispatch Loading STOP`);
+		consola('normal', `🕳  WADD - Dispatch Loading STOP`);
 		dispatch(setLoadingMessage(false));
 		setValues({
 			name: "",
@@ -121,7 +122,7 @@ export const WorkersAddScreen = ({ debug, navigation, route }) => {
 
 		const { email, phoneNumber, password, password2, name, surnames, role, cid } = values
 
-		console.log(`🕳  WADD - Dispatch Loading START`);
+		consola('normal', `🕳  WADD - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Guardando!' : 'Guardando!'))
 
 		if (!allFilled()) {
@@ -161,7 +162,7 @@ export const WorkersAddScreen = ({ debug, navigation, route }) => {
 													appNewUser.auth().signOut();
 												}).catch((error) => {
 													console.error(error.message);
-													console.log(`🕳  WADD - Dispatch Loading STOP`)
+													consola('normal', `🕳  WADD - Dispatch Loading STOP`)
 													dispatch(setLoadingMessage(false))
 													dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 													appNewUser.auth().signOut();
@@ -169,7 +170,7 @@ export const WorkersAddScreen = ({ debug, navigation, route }) => {
 											})
 											.catch((error) => {
 												console.error(error.message);
-												console.log(`🕳  WADD - Dispatch Loading STOP`)
+												consola('normal', `🕳  WADD - Dispatch Loading STOP`)
 												dispatch(setLoadingMessage(false))
 												dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 												appNewUser.auth().signOut();
@@ -179,18 +180,18 @@ export const WorkersAddScreen = ({ debug, navigation, route }) => {
 					})
 					.catch((error) => {
 						console.error(error.message);
-						console.log(`🕳  WADD - Dispatch Loading STOP`)
+						consola('normal', `🕳  WADD - Dispatch Loading STOP`)
 						dispatch(setLoadingMessage(false))
 						dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code, 'workersAdd')} || ${error.message}` : firebaseErrorCodeMap(error.code, 'workersAdd')))
 						appNewUser.auth().signOut();
 					});
 			} else {
-				console.log(`🕳  WADD - Dispatch Loading STOP`)
+				consola('normal', `🕳  WADD - Dispatch Loading STOP`)
 				dispatch(setLoadingMessage(false))
 				dispatch(setErrorMessage('Las contraseñas no coinciden'))
 			}
 		} else {
-			console.log(`🕳  WADD - Dispatch Loading STOP`)
+			consola('normal', `🕳  WADD - Dispatch Loading STOP`)
 			dispatch(setLoadingMessage(false))
 			dispatch(setErrorMessage('Rellena todos los campos'))
 		}

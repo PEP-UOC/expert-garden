@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -59,7 +60,8 @@ export const DetailItem = ({ debug, detail, detailIndex, setSdidToRemove, setSho
 
 		const newDetail = { ...values }
 		newDetail.inputs[keyName] = value;
-		console.log('📜 DEIT - newDetail', newDetail)
+		consola('normal', '📜 DEIT - newDetail')
+		consola('normal', newDetail)
 
 		dispatch(updateDetail(newDetail, detailIndex))
 	}
@@ -204,7 +206,6 @@ export const DetailItem = ({ debug, detail, detailIndex, setSdidToRemove, setSho
 						servicesTypes?.find((type) => type.id === values?.typeId)
 							?.step1types?.find((type1) => type1.step1typeId === values?.step1id)?.inputs
 							?.map((input) => {
-								//console.log('input1', input)
 								return (
 									<Input
 										key={input.inputId}
@@ -232,7 +233,6 @@ export const DetailItem = ({ debug, detail, detailIndex, setSdidToRemove, setSho
 							?.step1types?.find((type1) => type1.step1typeId === values?.step1id)
 							?.step2types?.find((type2) => type2.step2typeId === values?.step2id)?.inputs
 							?.map(input => {
-								//console.log('input2', input)
 								return (
 									<Input
 										key={input.inputId}
@@ -262,7 +262,6 @@ export const DetailItem = ({ debug, detail, detailIndex, setSdidToRemove, setSho
 							?.step2types?.find((type2) => type2.step2typeId === values?.step2id)
 							?.step3types?.find((type3) => type3.step3typeId === values?.step3id)?.inputs
 							?.map(input => {
-								//console.log('input3', input)
 								return (
 									<Input
 										key={input.inputId}

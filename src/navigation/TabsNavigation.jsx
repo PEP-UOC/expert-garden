@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import consola from '../libs/myLogger';
 
 //Navigation
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -56,7 +57,7 @@ export const TabsNavigation = () => {
 				.then(() => {
 					console.info('🔐 TNAV - Logged Out!');
 					dispatch(setLoggedIn(false))
-					console.log(`🕳  TNAV - Dispatch Loading STOP`)
+					consola('normal', `🕳  TNAV - Dispatch Loading STOP`)
 					if (intervalReloadId) {
 						clearInterval(intervalReloadId)
 					} else {
@@ -69,7 +70,7 @@ export const TabsNavigation = () => {
 				.catch((error) => {
 					console.error(error.message);
 					dispatch(setLoggedIn(false))
-					console.log(`🕳  TNAV - Dispatch Loading STOP`)
+					consola('normal', `🕳  TNAV - Dispatch Loading STOP`)
 					if (intervalReloadId) {
 						clearInterval(intervalReloadId)
 					} else {
@@ -81,7 +82,7 @@ export const TabsNavigation = () => {
 		} catch (error) {
 			console.error(error.message);
 			dispatch(setLoggedIn(false))
-			console.log(`🕳  TNAV - Dispatch Loading STOP`)
+			consola('normal', `🕳  TNAV - Dispatch Loading STOP`)
 			if (intervalReloadId) {
 				clearInterval(intervalReloadId)
 			} else {
@@ -110,10 +111,11 @@ export const TabsNavigation = () => {
 					if (isMounted) {
 						const userData = item.data();
 						if (userData === undefined && isLoggedIn) {
-							console.log('🩸 TNAV - NO USER');
+							consola('error', '🩸 TNAV - NO USER');
 							AutoSignOut();
 						} else {
-							console.log('👩‍🌾 TNAV - Firestore userData', userData)
+							consola('normal', '👩‍🌾 TNAV - Firestore userData')
+							consola('normal', userData)
 							const newUser = {
 								bankDetails: userData?.bankDetails,
 								metadata: userData?.metadata,
@@ -131,7 +133,8 @@ export const TabsNavigation = () => {
 										}
 									})
 									.catch((error) => {
-										console.log('🩸 TNAV - error', error)
+										consola('error', '🩸 TNAV - error')
+										consola('error', error)
 									})
 							} else {
 								if (isMounted) {
@@ -157,7 +160,8 @@ export const TabsNavigation = () => {
 					firestore().collection("users").doc(auth()?.currentUser?.uid).update({
 						verified: true
 					}).then(() => { }).catch((error) => {
-						console.log('🩸 TNAV - error', error)
+						consola('error', '🩸 TNAV - error')
+						consola('error', error)
 					})
 				} else {
 					if (isMounted) {
@@ -177,11 +181,11 @@ export const TabsNavigation = () => {
 
 	const startHandler = () => {
 		const intervalId = setInterval(() => {
-			console.log('🎌 TNAV - RELOAD')
+			consola('normal', '🎌 TNAV - RELOAD')
 			auth()?.currentUser?.reload();
 			auth()?.onAuthStateChanged((updatedUser) => {
 				if (updatedUser?.emailVerified) {
-					console.log('🟢 TNAV - updatedUser?.emailVerified', updatedUser?.emailVerified)
+					consola('normal', '🟢 TNAV - updatedUser?.emailVerified', updatedUser?.emailVerified)
 
 					if (intervalReloadId) {
 						clearInterval(intervalReloadId)
@@ -194,7 +198,8 @@ export const TabsNavigation = () => {
 					firestore().collection("users").doc(auth()?.currentUser?.uid).update({
 						verified: true
 					}).then(() => { }).catch((error) => {
-						console.log('🩸 TNAV - error', error)
+						consola('error', '🩸 TNAV - error')
+						consola('error', error)
 					})
 				}
 			});

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -86,19 +87,19 @@ export const DetailsList = ({ debug, gid, gardenIndex }) => {
 	);
 
 	useEffect(() => {
-		//console.log(`🌀 GDAT - Cargando   ${gid} | ${gardenLoading}`)
+		//consola('normal',`🌀 GDAT - Cargando   ${gid} | ${gardenLoading}`)
 	}, [gardenLoading]);
 
 	useEffect(() => {
 		if (garden?.gid) {
-			//console.log(`🍀 GDAT - Jardín     ${gid} |`, garden?.name)
+			//consola('normal',`🍀 GDAT - Jardín     ${gid} | ${garden?.name}`)
 			setDetails(garden?.details);
 		}
 	}, [garden]);
 
 	useEffect(() => {
 		if (gardenError) {
-			console.log(`🩸 GDAT - Error   ${gid} | ${gardenError}`)
+			consola('error', `🩸 GDAT - Error   ${gid} | ${gardenError}`)
 			dispatch(setErrorMessage(gardenError))
 		}
 	}, [gardenError]);

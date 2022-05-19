@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -91,7 +92,7 @@ export const ImgWithPicker = ({ debug, entity, entityType }) => {
 
 	useEffect(() => {
 		if (selectedImage?.localUri) {
-			console.log(`🖼  WIPI - Nueva imágen ${selectedImage?.localUri}`)
+			consola('normal', `🖼  WIPI - Nueva imágen ${selectedImage?.localUri}`)
 			return
 		}
 		if (selectedImage === null) {
@@ -152,7 +153,7 @@ export const ImgWithPicker = ({ debug, entity, entityType }) => {
 								onPress={async () => {
 									const pickerResult = await camera.takePictureAsync()
 
-									console.log('🎞  WIPI - Nueva fotografía desde la cámara', `H: ${pickerResult?.height}px`, `W: ${pickerResult?.width}px`);
+									consola('normal', `🎞  WIPI - Nueva fotografía desde la cámara → H: ${pickerResult?.height}px`, `W: ${pickerResult?.width}px`);
 
 									setShowCamera(false)
 

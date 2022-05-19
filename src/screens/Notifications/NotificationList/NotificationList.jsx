@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -73,7 +74,7 @@ export const NotificationListScreen = ({ debug, navigation, route, showLong }) =
 	}, []);
 
 	useEffect(() => {
-		console.log(`🕳  NOLI - Dispatch Loading STOP`)
+		consola('normal', `🕳  NOLI - Dispatch Loading STOP`)
 		dispatch(setLoadingMessage(false))
 		dispatch(setErrorMessage(false))
 	}, []);

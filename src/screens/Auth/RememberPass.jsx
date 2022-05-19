@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -40,7 +41,7 @@ export const RememberPass = ({ debug, navigation }) => {
 
 	//Password reset
 	const sendResetEmail = (auth) => {
-		console.log(`🕳  RMPA - Dispatch Loading START`);
+		consola('normal', `🕳  RMPA - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Enviando' : 'Enviando'));
 		auth()?.sendPasswordResetEmail(email)
 			.then(() => {
@@ -48,7 +49,7 @@ export const RememberPass = ({ debug, navigation }) => {
 			})
 			.catch((error) => {
 				console.error(error.message);
-				console.log(`🕳  RMPA - Dispatch Loading STOP`)
+				consola('normal', `🕳  RMPA - Dispatch Loading STOP`)
 				dispatch(setLoadingMessage(false))
 				dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 			});

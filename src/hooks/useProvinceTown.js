@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import consola from '../libs/myLogger';
 
 //Data
 import { provinces } from '../data/provinces';
@@ -45,14 +46,14 @@ export function useProvinceTown(savedPostalCode, savedProvince, savedTown) {
 
 	return [
 		(newPostalCode) => {
-			//console.log('⚪️ PRTO - SET newPostalCode', newPostalCode);
+			//consola('normal','⚪️ PRTO - SET newPostalCode', newPostalCode);
 			setPostalCode(newPostalCode);
 		},
 		province,
 		townsList,
 		townsSelectedIndex,
 		(newTownsSelectedIndex) => {
-			//console.log('⚪️ PRTO - SET newTownsSelectedIndex', newTownsSelectedIndex.row);
+			//consola('normal','⚪️ PRTO - SET newTownsSelectedIndex', newTownsSelectedIndex.row);
 			setTownsSelectedIndex(newTownsSelectedIndex);
 		},
 		townDisplayValue,

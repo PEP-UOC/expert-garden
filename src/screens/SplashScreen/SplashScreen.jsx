@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from "prop-types";
+import consola from '../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -24,7 +25,8 @@ export const SplashScreen = ({ debug, isSplash = false }) => {
 
 	//Loading
 	const loadingMessage = useSelector(state => {
-		//console.log('🔦 SPLA - state', state)
+		//consola('normal','🔦 SPLA - state')
+		//consola('normal',state)
 		return state.rootReducer.loadingMessage
 	});
 

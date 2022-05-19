@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -43,13 +44,11 @@ export const NotificationResumeScreen = ({ debug, navigation, route }) => {
 	//Hooks
 	// eslint-disable-next-line no-unused-vars
 	const { loading: notificationLoading, result: notification, error: notificationError } = useFirebaseGetOne(debug, 'notifications', 'nid', nid);
-	//console.log('notification', notification)
 
 	//Styles
 	const gloStyles = useStyleSheet(globalStyles);
 
 	useEffect(() => {
-		console.log('notification', notification)
 		if (notification?.readDate === null) {
 			const now = moment();
 			const readDateTime = now.format();

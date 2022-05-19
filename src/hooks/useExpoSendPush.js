@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import consola from '../libs/myLogger';
 
 //Store
 import { useDispatch } from 'react-redux';
@@ -43,7 +44,7 @@ export function useExpoSendPush(debug) {
 			body: JSON.stringify(message),
 		});
 
-		console.log(`🚀 EXSP - Notification push enviada a ${to}`);
+		consola('normal', `🚀 EXSP - Notification push enviada a ${to}`);
 
 		try {
 			const now = moment();
@@ -72,13 +73,13 @@ export function useExpoSendPush(debug) {
 					uidReceiver,
 				})
 				.then(() => {
-					console.log(`🚧 EXSP - Notification ${ref.id} guardada`);
+					consola('normal', `🚧 EXSP - Notification ${ref.id} guardada`);
 					setSended(true);
 					dispatch(setErrorMessage(false));
 				})
 				.catch((error) => {
 					console.error(error.message);
-					console.log(`🕳  EXSP - Dispatch Loading STOP`);
+					consola('normal', `🕳  EXSP - Dispatch Loading STOP`);
 					dispatch(setLoadingMessage(false));
 					dispatch(
 						setErrorMessage(
@@ -102,7 +103,7 @@ export function useExpoSendPush(debug) {
 	};
 
 	const updateUserPushToken = async (uid, pushToken, isBusiness) => {
-		console.log(`🚀 EXSP - Push token (${pushToken}) actualizado para el usuario (${uid})`);
+		consola('normal', `🚀 EXSP - Push token (${pushToken}) actualizado para el usuario (${uid})`);
 
 		try {
 			if (pushToken) {
@@ -125,7 +126,7 @@ export function useExpoSendPush(debug) {
 								})
 								.catch((error) => {
 									console.error(error.message);
-									console.log(`🕳  SNUP - Dispatch Loading STOP`);
+									consola('normal', `🕳  SNUP - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 									dispatch(
 										setErrorMessage(
@@ -139,7 +140,7 @@ export function useExpoSendPush(debug) {
 					})
 					.catch((error) => {
 						console.error(error.message);
-						console.log(`🕳  SNUP - Dispatch Loading STOP`);
+						consola('normal', `🕳  SNUP - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 						dispatch(
 							setErrorMessage(

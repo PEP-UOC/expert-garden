@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -54,7 +55,7 @@ export const MainProfileScreen = ({ debug, navigation }) => {
 	const [saveChanges] = useFirebaseSaveAllChanges(debug);
 
 	useEffect(() => {
-		console.log('🧹 MAPR - Limpiando changesToSave')
+		consola('warning', '🧹 MAPR - Limpiando changesToSave')
 		dispatch(removeChangesToSave())
 		dispatch(setErrorMessage(false))
 	}, []);

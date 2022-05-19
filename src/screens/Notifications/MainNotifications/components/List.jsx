@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -71,7 +72,7 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong, ext
 								notifications.forEach(notification => {
 									NOTIFICATIONS.push(notification.data())
 								})
-								console.log(`🐳 NOLI - Notificaciones del usuario ${auth()?.currentUser?.uid}`, NOTIFICATIONS.length)
+								consola('normal', `🐳 NOLI - Notificaciones del usuario ${auth()?.currentUser?.uid} ${NOTIFICATIONS.length}`)
 
 								if (isMounted) {
 									setNotifications(NOTIFICATIONS)
@@ -101,7 +102,7 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong, ext
 								notifications.forEach(notification => {
 									NOTIFICATIONS.push(notification.data())
 								})
-								console.log(`🐳 NOLI - Notificaciones nuevas del usuario ${auth()?.currentUser?.uid}`, NOTIFICATIONS.length)
+								consola('normal', `🐳 NOLI - Notificaciones nuevas del usuario ${auth()?.currentUser?.uid} ${NOTIFICATIONS.length}`)
 
 								if (isMounted) {
 									setNotifications(NOTIFICATIONS)
@@ -131,7 +132,7 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong, ext
 								notifications.forEach(notification => {
 									NOTIFICATIONS.push(notification.data())
 								})
-								console.log(`🐳 NOLI - Notificaciones leídas del usuario ${auth()?.currentUser?.uid}`, NOTIFICATIONS.length)
+								consola('normal', `🐳 NOLI - Notificaciones leídas del usuario ${auth()?.currentUser?.uid} ${NOTIFICATIONS.length}`)
 
 								if (isMounted) {
 									setNotifications(NOTIFICATIONS)

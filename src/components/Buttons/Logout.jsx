@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from "prop-types";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import consola from '../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -40,7 +41,7 @@ export const BtnLogout = ({ debug }) => {
 	//Logout
 
 	const doClearData = async () => {
-		console.log(`🕳  BTLG - Dispatch Loading START`)
+		consola('normal', `🕳  BTLG - Dispatch Loading START`)
 		dispatch(setLoadingMessage(debug ? '🔧 Adiós!' : 'Adiós!'))
 		try {
 			await AsyncStorage.clear()
@@ -53,27 +54,27 @@ export const BtnLogout = ({ debug }) => {
 							})
 							console.info('🔐 BTLG - Logged Out!');
 							dispatch(setLoggedIn(false))
-							console.log(`🕳  BTLG - Dispatch Loading STOP`)
+							consola('normal', `🕳  BTLG - Dispatch Loading STOP`)
 							dispatch(setLoadingMessage(false))
 							dispatch(removeUser())
 						})
 						.catch((error) => {
 							console.error(error.message);
 							dispatch(setLoggedIn(false))
-							console.log(`🕳  BTLG - Dispatch Loading STOP`)
+							consola('normal', `🕳  BTLG - Dispatch Loading STOP`)
 							dispatch(setLoadingMessage(false))
 						});
 				})
 				.catch((error) => {
 					console.error(error.message);
 					dispatch(setLoggedIn(false))
-					console.log(`🕳  BTLG - Dispatch Loading STOP`)
+					consola('normal', `🕳  BTLG - Dispatch Loading STOP`)
 					dispatch(setLoadingMessage(false))
 				});
 		} catch (error) {
 			console.error(error.message);
 			dispatch(setLoggedIn(false))
-			console.log(`🕳  BTLG - Dispatch Loading STOP`)
+			consola('normal', `🕳  BTLG - Dispatch Loading STOP`)
 			dispatch(setLoadingMessage(false))
 		}
 	}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -118,7 +119,6 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 	const [companyCid, setCompanyCid] = useState(false);
 
 	useEffect(() => {
-		//console.log('service', service)
 		if (service) {
 			setServiceIsConfirmed(service?.isConfirmed || false)
 			setServiceIsFinalized(service?.isFinalized || false)
@@ -128,7 +128,6 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 			setServiceHasWorkerAsigned(service?.asignedWorker || false)
 
 			const company = service?.companies?.find(co => co.cid === user?.metadata?.cid)
-			//console.log('company', company)
 			setCompanyHasEstimationConfirmed(company?.isEstimated || false)
 			setCompanyEstimationConfirmedDate(company?.estimationDate || '')
 			setCompanyHasEstimationAccepted(company?.isSelected || false)

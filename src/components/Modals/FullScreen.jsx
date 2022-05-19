@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from "prop-types";
+import consola from '../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -21,7 +22,7 @@ export const ModalFullScreen = ({ debug }) => {
 
 	//Loading
 	const loadingMessage = useSelector(state => state.rootReducer.loadingMessage);
-	console.log('🫧 MOFU - loadingMessage', loadingMessage)
+	consola('normal', `🫧 MOFU - loadingMessage → ${loadingMessage}`)
 
 	//Styles
 	const gloStyles = useStyleSheet(globalStyles);

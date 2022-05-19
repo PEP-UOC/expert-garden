@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
+import consola from '../libs/myLogger';
 
 //Store
 import { useDispatch, useSelector } from 'react-redux'
@@ -48,7 +49,7 @@ const RootScreen = () => {
 	async function getInitialURL() {
 		try {
 			const url = await Linking.getInitialURL();
-			console.log('👨‍🦯 RNAV - Initial URL', url)
+			consola('normal', `👨‍🦯 RNAV - Initial URL ${url}`)
 			setUrlReceived(url);
 			return;
 		} catch (e) {
@@ -78,7 +79,7 @@ const RootScreen = () => {
 
 		// This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
 		responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-			console.log(response);
+			consola('normal', response);
 		});
 
 		return () => {

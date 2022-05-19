@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -89,7 +90,6 @@ export const EstimateResumeScreen = ({ debug, navigation, route }) => {
 
 	useEffect(() => {
 		if (service) {
-			//console.log('service', service)
 			const company = service?.companies?.find(co => co.cid === cid)
 			const detailsCount = service?.details?.length || 0;
 			const detailsEstimatedCount = company?.estimation ? company?.estimation?.length : 0;

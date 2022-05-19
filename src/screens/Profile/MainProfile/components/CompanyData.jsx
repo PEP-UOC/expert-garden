@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -94,7 +95,8 @@ export const CompanyDataForm = ({ debug }) => {
 		if (keyName === 'cif') {
 			newMetadata['fullname'] = `${values?.name} ${value}`;
 		}
-		//console.log('📜 PEDA - newMetadata', newMetadata)
+		//consola('normal','📜 PEDA - newMetadata')
+		//consola('normal',newMetadata)
 
 		dispatch(updateChangesToSave({ metadata: newMetadata }, false))
 	}

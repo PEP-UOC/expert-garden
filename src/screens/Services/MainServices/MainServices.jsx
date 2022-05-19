@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -40,7 +41,7 @@ export const MainServicesScreen = ({ debug, navigation }) => {
 	};
 
 	useEffect(() => {
-		console.log(`🕳  SERV - Dispatch Loading STOP`)
+		consola('normal', `🕳  SERV - Dispatch Loading STOP`)
 		dispatch(setLoadingMessage(false))
 		dispatch(setErrorMessage(false))
 	}, []);

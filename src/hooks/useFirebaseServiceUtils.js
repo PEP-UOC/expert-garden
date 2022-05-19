@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import consola from '../libs/myLogger';
 
 //Store
 import { useSelector, useDispatch } from 'react-redux';
@@ -45,25 +46,26 @@ export function useFirebaseServiceUtils(debug) {
 	};
 
 	const handleSaveServiceDetail = async (values, isEdit) => {
-		console.log(`🕳  FSUT - Dispatch Loading START`);
+		consola('normal', `🕳  FSUT - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Guardando' : 'Guardando'));
 
 		setIsEdit(isEdit);
 
 		const valuesToSave = JSON.parse(JSON.stringify(values));
 
-		console.log('🚨 FSUT - valuesToSave', valuesToSave);
+		consola('normal', '🚨 FSUT - valuesToSave');
+		consola('normal', valuesToSave);
 
 		switch (isEdit) {
 			case false:
 			default:
 				try {
 					dispatch(addDetail(valuesToSave));
-					console.log(`🚧 FSUT - Service Detail ${values.sdid} guardado`);
+					consola('normal', `🚧 FSUT - Service Detail ${values.sdid} guardado`);
 					setItemToEdit(false);
 					setSaved(true);
 					dispatch(setErrorMessage(false));
-					console.log(`🕳  FSUT - Dispatch Loading STOP`);
+					consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 					dispatch(setLoadingMessage(false));
 				} catch (error) {
 					console.error(error.message);
@@ -75,7 +77,7 @@ export function useFirebaseServiceUtils(debug) {
 								: firebaseErrorCodeMap(error.code),
 						),
 					);
-					console.log(`🕳  FSUT - Dispatch Loading STOP`);
+					consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 					dispatch(setLoadingMessage(false));
 				}
 				break;
@@ -95,7 +97,10 @@ export function useFirebaseServiceUtils(debug) {
 								dates: originalItemToUpdate.dates,
 							})
 							.then(() => {
-								console.log(`🚧 FSUT - Service Dates ${originalItemToUpdate.sid} actualizadas`);
+								consola(
+									'normal',
+									`🚧 FSUT - Service Dates ${originalItemToUpdate.sid} actualizadas`,
+								);
 								if (isMounted) {
 									setItemToEdit(false);
 									setSaved(true);
@@ -106,7 +111,7 @@ export function useFirebaseServiceUtils(debug) {
 							})
 							.catch((error) => {
 								console.error(error.message);
-								console.log(`🕳  FSUT - Dispatch Loading STOP`);
+								consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 								dispatch(setLoadingMessage(false));
 								dispatch(
 									setErrorMessage(
@@ -127,7 +132,10 @@ export function useFirebaseServiceUtils(debug) {
 								isConfigured: true,
 							})
 							.then(() => {
-								console.log(`🚧 FSUT - Service Companies ${originalItemToUpdate.sid} actualizadas`);
+								consola(
+									'normal',
+									`🚧 FSUT - Service Companies ${originalItemToUpdate.sid} actualizadas`,
+								);
 								Promise.all(
 									originalItemToUpdate.companies.map(async (company) => {
 										await sendPushNotification(
@@ -158,7 +166,7 @@ export function useFirebaseServiceUtils(debug) {
 							})
 							.catch((error) => {
 								console.error(error.message);
-								console.log(`🕳  FSUT - Dispatch Loading STOP`);
+								consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 								dispatch(setLoadingMessage(false));
 								dispatch(
 									setErrorMessage(
@@ -194,14 +202,15 @@ export function useFirebaseServiceUtils(debug) {
 	}, [itemToEdit]);
 
 	const handleSaveService = async (values, isEdit) => {
-		console.log(`🕳  FSUT - Dispatch Loading START`);
+		consola('normal', `🕳  FSUT - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Guardando' : 'Guardando'));
 
 		setIsEdit(isEdit);
 
 		const valuesToSave = JSON.parse(JSON.stringify(values));
 
-		console.log('🚨 FSUT - valuesToSave', valuesToSave);
+		consola('normal', '🚨 FSUT - valuesToSave');
+		consola('normal', valuesToSave);
 
 		switch (isEdit) {
 			case true:
@@ -216,22 +225,22 @@ export function useFirebaseServiceUtils(debug) {
 									var item = doc.data();
 									setOriginalItemToUpdate(values);
 									setItemToEdit(item);
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 								} else {
-									console.log('🩸 FSUT - No such document!');
+									consola('error', '🩸 FSUT - No such document!');
 									setSaved(false);
 									dispatch(setErrorMessage(`Error al actualizar el servicio.`));
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 								}
 							})
 							.catch((error) => {
 								console.error(error.message);
-								console.log('🩸 FSUT - Error getting document.');
+								consola('error', '🩸 FSUT - Error getting document.');
 								setSaved(false);
 								dispatch(setErrorMessage(`Error al actualizar el servicio.`));
-								console.log(`🕳  FSUT - Dispatch Loading STOP`);
+								consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 								dispatch(setLoadingMessage(false));
 							});
 					} else {
@@ -240,7 +249,7 @@ export function useFirebaseServiceUtils(debug) {
 								debug ? 'NO HAY SESIÓN. Vuelva a iniciar sessión' : 'Vuelva a iniciar sessión',
 							),
 						);
-						console.log(`🕳  FSUT - Dispatch Loading STOP`);
+						consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 					}
 				} catch (error) {
@@ -253,7 +262,7 @@ export function useFirebaseServiceUtils(debug) {
 								: firebaseErrorCodeMap(error.code),
 						),
 					);
-					console.log(`🕳  FSUT - Dispatch Loading STOP`);
+					consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 					dispatch(setLoadingMessage(false));
 				}
 				break;
@@ -297,12 +306,12 @@ export function useFirebaseServiceUtils(debug) {
 							details: valuesToSave.details,
 						})
 						.then(() => {
-							console.log(`🚧 FSUT - Service ${ref.id} guardado`);
+							consola('normal', `🚧 FSUT - Service ${ref.id} guardado`);
 							setItemToEdit(false);
 							setSaved(ref.id);
 							dispatch(setErrorMessage(false));
 							dispatch(resetServiceTemporal());
-							console.log(`🕳  FSUT - Dispatch Loading STOP`);
+							consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 							dispatch(setLoadingMessage(false));
 						})
 						.catch((error) => {
@@ -314,7 +323,7 @@ export function useFirebaseServiceUtils(debug) {
 										: firebaseErrorCodeMap(error.code),
 								),
 							);
-							console.log(`🕳  FSUT - Dispatch Loading STOP`);
+							consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 							dispatch(setLoadingMessage(false));
 						});
 				} catch (error) {
@@ -327,7 +336,7 @@ export function useFirebaseServiceUtils(debug) {
 								: firebaseErrorCodeMap(error.code),
 						),
 					);
-					console.log(`🕳  FSUT - Dispatch Loading STOP`);
+					consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 					dispatch(setLoadingMessage(false));
 				}
 				break;
@@ -335,12 +344,12 @@ export function useFirebaseServiceUtils(debug) {
 	};
 
 	const handleCancelService = async (sid) => {
-		console.log(`🕳  FSUT - Dispatch Loading START`);
+		consola('normal', `🕳  FSUT - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Cancelando' : 'Cancelando'));
 
 		setIsEdit(isEdit);
 
-		console.log('🚨 FSUT - Service toCancel', sid);
+		consola('normal', `🚨 FSUT - Service toCancel ${sid}`);
 
 		try {
 			if (auth().currentUser) {
@@ -358,17 +367,17 @@ export function useFirebaseServiceUtils(debug) {
 						cancelationTime,
 					})
 					.then(() => {
-						console.log(`🚧 FSUT - Service Cancelated ${sid}`);
+						consola('normal', `🚧 FSUT - Service Cancelated ${sid}`);
 						setItemToEdit(false);
 						setSaved(true);
 						dispatch(setErrorMessage(false));
 						dispatch(resetServiceTemporal());
-						console.log(`🕳  FSUT - Dispatch Loading STOP`);
+						consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 					})
 					.catch((error) => {
 						console.error(error.message);
-						console.log(`🕳  FSUT - Dispatch Loading STOP`);
+						consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 						dispatch(
 							setErrorMessage(
@@ -377,7 +386,7 @@ export function useFirebaseServiceUtils(debug) {
 									: firebaseErrorCodeMap(error.code),
 							),
 						);
-						console.log(`🕳  FSUT - Dispatch Loading STOP`);
+						consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 					});
 			} else {
@@ -386,7 +395,7 @@ export function useFirebaseServiceUtils(debug) {
 						debug ? 'NO HAY SESIÓN. Vuelva a iniciar sessión' : 'Vuelva a iniciar sessión',
 					),
 				);
-				console.log(`🕳  FSUT - Dispatch Loading STOP`);
+				consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 				dispatch(setLoadingMessage(false));
 			}
 		} catch (error) {
@@ -399,18 +408,18 @@ export function useFirebaseServiceUtils(debug) {
 						: firebaseErrorCodeMap(error.code),
 				),
 			);
-			console.log(`🕳  FSUT - Dispatch Loading STOP`);
+			consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 			dispatch(setLoadingMessage(false));
 		}
 	};
 
 	const handleBusinessSelectServiceDate = async (sid, cid, did) => {
-		console.log(`🕳  FSUT - Dispatch Loading START`);
+		consola('normal', `🕳  FSUT - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Guardando' : 'Guardando'));
 
 		setIsEdit(isEdit);
 
-		console.log(`🚨 FSUT - Select service (${sid}) date (${did}) for business (${cid})`);
+		consola('normal', `🚨 FSUT - Select service (${sid}) date (${did}) for business (${cid})`);
 
 		try {
 			if (auth().currentUser) {
@@ -439,15 +448,15 @@ export function useFirebaseServiceUtils(debug) {
 									companies: companiesArray,
 								})
 								.then(() => {
-									console.log(`🚧 FSUT - Company selected date ${did} actualizada`);
+									consola('normal', `🚧 FSUT - Company selected date ${did} actualizada`);
 									setSaved(true);
 									dispatch(setErrorMessage(false));
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 								})
 								.catch((error) => {
 									console.error(error.message);
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 									dispatch(
 										setErrorMessage(
@@ -456,23 +465,23 @@ export function useFirebaseServiceUtils(debug) {
 												: firebaseErrorCodeMap(error.code),
 										),
 									);
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 								});
 						} else {
-							console.log('🩸 FSUT - No such document!');
+							consola('error', '🩸 FSUT - No such document!');
 							setSaved(false);
 							dispatch(setErrorMessage(`Error al actualizar la fecha del servicio.`));
-							console.log(`🕳  FSUT - Dispatch Loading STOP`);
+							consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 							dispatch(setLoadingMessage(false));
 						}
 					})
 					.catch((error) => {
 						console.error(error.message);
-						console.log('🩸 FSUT - Error getting document.');
+						consola('error', '🩸 FSUT - Error getting document.');
 						setSaved(false);
 						dispatch(setErrorMessage(`Error al actualizar la fecha del servicio.`));
-						console.log(`🕳  FSUT - Dispatch Loading STOP`);
+						consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 					});
 			} else {
@@ -481,7 +490,7 @@ export function useFirebaseServiceUtils(debug) {
 						debug ? 'NO HAY SESIÓN. Vuelva a iniciar sessión' : 'Vuelva a iniciar sessión',
 					),
 				);
-				console.log(`🕳  FSUT - Dispatch Loading STOP`);
+				consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 				dispatch(setLoadingMessage(false));
 			}
 		} catch (error) {
@@ -494,18 +503,19 @@ export function useFirebaseServiceUtils(debug) {
 						: firebaseErrorCodeMap(error.code),
 				),
 			);
-			console.log(`🕳  FSUT - Dispatch Loading STOP`);
+			consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 			dispatch(setLoadingMessage(false));
 		}
 	};
 
 	const handleBusinessEstimateServiceDetail = async (sid, cid, sdid, price) => {
-		console.log(`🕳  FSUT - Dispatch Loading START`);
+		consola('normal', `🕳  FSUT - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Guardando' : 'Guardando'));
 
 		setIsEdit(isEdit);
 
-		console.log(
+		consola(
+			'normal',
 			`🚨 FSUT - Save service (${sid}) detail (${sdid}) price (${price}) for business (${cid})`,
 		);
 
@@ -556,15 +566,15 @@ export function useFirebaseServiceUtils(debug) {
 									companies: companiesArray,
 								})
 								.then(() => {
-									console.log(`🚧 FSUT - Service detail ${sdid} estimation actualizado`);
+									consola('normal', `🚧 FSUT - Service detail ${sdid} estimation actualizado`);
 									setSaved(true);
 									dispatch(setErrorMessage(false));
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 								})
 								.catch((error) => {
 									console.error(error.message);
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 									dispatch(
 										setErrorMessage(
@@ -573,23 +583,23 @@ export function useFirebaseServiceUtils(debug) {
 												: firebaseErrorCodeMap(error.code),
 										),
 									);
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 								});
 						} else {
-							console.log('🩸 FSUT - No such document!');
+							consola('error', '🩸 FSUT - No such document!');
 							setSaved(false);
 							dispatch(setErrorMessage(`Error al actualizar la estimación del servicio.`));
-							console.log(`🕳  FSUT - Dispatch Loading STOP`);
+							consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 							dispatch(setLoadingMessage(false));
 						}
 					})
 					.catch((error) => {
 						console.error(error.message);
-						console.log('🩸 FSUT - Error getting document.');
+						consola('error', '🩸 FSUT - Error getting document.');
 						setSaved(false);
 						dispatch(setErrorMessage(`Error al actualizar la estimación del servicio.`));
-						console.log(`🕳  FSUT - Dispatch Loading STOP`);
+						consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 					});
 			} else {
@@ -598,7 +608,7 @@ export function useFirebaseServiceUtils(debug) {
 						debug ? 'NO HAY SESIÓN. Vuelva a iniciar sessión' : 'Vuelva a iniciar sessión',
 					),
 				);
-				console.log(`🕳  FSUT - Dispatch Loading STOP`);
+				consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 				dispatch(setLoadingMessage(false));
 			}
 		} catch (error) {
@@ -611,18 +621,18 @@ export function useFirebaseServiceUtils(debug) {
 						: firebaseErrorCodeMap(error.code),
 				),
 			);
-			console.log(`🕳  FSUT - Dispatch Loading STOP`);
+			consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 			dispatch(setLoadingMessage(false));
 		}
 	};
 
 	const handleConfirmServiceEstimation = async (sid, cid, price) => {
-		console.log(`🕳  FSUT - Dispatch Loading START`);
+		consola('normal', `🕳  FSUT - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Confirmando' : 'Confirmando'));
 
 		setIsEdit(isEdit);
 
-		console.log(`🚨 FSUT - Confirm service (${sid}) estimation of company (${cid})`);
+		consola('normal', `🚨 FSUT - Confirm service (${sid}) estimation of company (${cid})`);
 
 		try {
 			if (auth().currentUser) {
@@ -680,10 +690,10 @@ export function useFirebaseServiceUtils(debug) {
 													`${companyToEdit.name} ha presupuestado el servicio que solicitaste`,
 													{ sid: service?.sid },
 												).then(() => {
-													console.log(`🚧 FSUT - Estimation service (${sid}) actualizada`);
+													consola('normal', `🚧 FSUT - Estimation service (${sid}) actualizada`);
 													setSaved(true);
 													dispatch(setErrorMessage(false));
-													console.log(`🕳  FSUT - Dispatch Loading STOP`);
+													consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 													dispatch(setLoadingMessage(false));
 												});
 											}
@@ -691,7 +701,7 @@ export function useFirebaseServiceUtils(debug) {
 								})
 								.catch((error) => {
 									console.error(error.message);
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 									dispatch(
 										setErrorMessage(
@@ -700,23 +710,23 @@ export function useFirebaseServiceUtils(debug) {
 												: firebaseErrorCodeMap(error.code),
 										),
 									);
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 								});
 						} else {
-							console.log('🩸 FSUT - No such document!');
+							consola('error', '🩸 FSUT - No such document!');
 							setSaved(false);
 							dispatch(setErrorMessage(`Error al actualizar la estimación del servicio.`));
-							console.log(`🕳  FSUT - Dispatch Loading STOP`);
+							consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 							dispatch(setLoadingMessage(false));
 						}
 					})
 					.catch((error) => {
 						console.error(error.message);
-						console.log('🩸 FSUT - Error getting document.');
+						consola('error', '🩸 FSUT - Error getting document.');
 						setSaved(false);
 						dispatch(setErrorMessage(`Error al actualizar la estimación del servicio.`));
-						console.log(`🕳  FSUT - Dispatch Loading STOP`);
+						consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 					});
 			} else {
@@ -725,7 +735,7 @@ export function useFirebaseServiceUtils(debug) {
 						debug ? 'NO HAY SESIÓN. Vuelva a iniciar sessión' : 'Vuelva a iniciar sessión',
 					),
 				);
-				console.log(`🕳  FSUT - Dispatch Loading STOP`);
+				consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 				dispatch(setLoadingMessage(false));
 			}
 		} catch (error) {
@@ -738,18 +748,18 @@ export function useFirebaseServiceUtils(debug) {
 						: firebaseErrorCodeMap(error.code),
 				),
 			);
-			console.log(`🕳  FSUT - Dispatch Loading STOP`);
+			consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 			dispatch(setLoadingMessage(false));
 		}
 	};
 
 	const handleAcceptServiceEstimation = async (sid, cid) => {
-		console.log(`🕳  FSUT - Dispatch Loading START`);
+		consola('normal', `🕳  FSUT - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Aceptando' : 'Aceptando'));
 
 		setIsEdit(isEdit);
 
-		console.log(`🚨 FSUT - Accept estimation of company (${cid}) of service (${sid})`);
+		consola('normal', `🚨 FSUT - Accept estimation of company (${cid}) of service (${sid})`);
 
 		try {
 			if (auth().currentUser) {
@@ -825,7 +835,8 @@ export function useFirebaseServiceUtils(debug) {
 													serviceDateSelected.date
 												}.`;
 
-												console.log(
+												consola(
+													'normal',
 													`🚧 FSUT - Estimation of company (${cid}) of service (${sid}) accepted`,
 												);
 
@@ -841,7 +852,8 @@ export function useFirebaseServiceUtils(debug) {
 												title = `¡Presupuesto rechazado!`;
 												msg = `El cliente ha rechazado el presupuesto del servicio que le ofreciste.`;
 
-												console.log(
+												consola(
+													'normal',
 													`🚧 FSUT - Estimation of company (${cid}) of service (${sid}) rejected`,
 												);
 											}
@@ -859,12 +871,12 @@ export function useFirebaseServiceUtils(debug) {
 
 									setSaved(true);
 									dispatch(setErrorMessage(false));
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 								})
 								.catch((error) => {
 									console.error(error.message);
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 									dispatch(
 										setErrorMessage(
@@ -873,23 +885,23 @@ export function useFirebaseServiceUtils(debug) {
 												: firebaseErrorCodeMap(error.code),
 										),
 									);
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 								});
 						} else {
-							console.log('🩸 FSUT - No such document!');
+							consola('error', '🩸 FSUT - No such document!');
 							setSaved(false);
 							dispatch(setErrorMessage(`Error al actualizar la estimación del servicio.`));
-							console.log(`🕳  FSUT - Dispatch Loading STOP`);
+							consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 							dispatch(setLoadingMessage(false));
 						}
 					})
 					.catch((error) => {
 						console.error(error.message);
-						console.log('🩸 FSUT - Error getting document.');
+						consola('error', '🩸 FSUT - Error getting document.');
 						setSaved(false);
 						dispatch(setErrorMessage(`Error al actualizar la estimación del servicio.`));
-						console.log(`🕳  FSUT - Dispatch Loading STOP`);
+						consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 					});
 			} else {
@@ -898,7 +910,7 @@ export function useFirebaseServiceUtils(debug) {
 						debug ? 'NO HAY SESIÓN. Vuelva a iniciar sessión' : 'Vuelva a iniciar sessión',
 					),
 				);
-				console.log(`🕳  FSUT - Dispatch Loading STOP`);
+				consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 				dispatch(setLoadingMessage(false));
 			}
 		} catch (error) {
@@ -911,18 +923,18 @@ export function useFirebaseServiceUtils(debug) {
 						: firebaseErrorCodeMap(error.code),
 				),
 			);
-			console.log(`🕳  FSUT - Dispatch Loading STOP`);
+			consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 			dispatch(setLoadingMessage(false));
 		}
 	};
 
 	const handleRefuseServiceEstimation = async (sid, cid) => {
-		console.log(`🕳  FSUT - Dispatch Loading START`);
+		consola('normal', `🕳  FSUT - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Rechazando' : 'Rechazando'));
 
 		setIsEdit(isEdit);
 
-		console.log(`🚨 FSUT - Refuse estimation of company (${cid}) of service (${sid})`);
+		consola('normal', `🚨 FSUT - Refuse estimation of company (${cid}) of service (${sid})`);
 
 		try {
 			if (auth().currentUser) {
@@ -972,19 +984,20 @@ export function useFirebaseServiceUtils(debug) {
 										msg,
 										{ sid: service?.sid },
 									).then(() => {
-										console.log(
+										consola(
+											'normal',
 											`🚧 FSUT - Estimation of company (${cid}) of service (${sid}) rejected`,
 										);
 
 										setSaved(true);
 										dispatch(setErrorMessage(false));
-										console.log(`🕳  FSUT - Dispatch Loading STOP`);
+										consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 										dispatch(setLoadingMessage(false));
 									});
 								})
 								.catch((error) => {
 									console.error(error.message);
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 									dispatch(
 										setErrorMessage(
@@ -993,23 +1006,23 @@ export function useFirebaseServiceUtils(debug) {
 												: firebaseErrorCodeMap(error.code),
 										),
 									);
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 								});
 						} else {
-							console.log('🩸 FSUT - No such document!');
+							consola('error', '🩸 FSUT - No such document!');
 							setSaved(false);
 							dispatch(setErrorMessage(`Error al actualizar la estimación del servicio.`));
-							console.log(`🕳  FSUT - Dispatch Loading STOP`);
+							consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 							dispatch(setLoadingMessage(false));
 						}
 					})
 					.catch((error) => {
 						console.error(error.message);
-						console.log('🩸 FSUT - Error getting document.');
+						consola('error', '🩸 FSUT - Error getting document.');
 						setSaved(false);
 						dispatch(setErrorMessage(`Error al actualizar la estimación del servicio.`));
-						console.log(`🕳  FSUT - Dispatch Loading STOP`);
+						consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 					});
 			} else {
@@ -1018,7 +1031,7 @@ export function useFirebaseServiceUtils(debug) {
 						debug ? 'NO HAY SESIÓN. Vuelva a iniciar sessión' : 'Vuelva a iniciar sessión',
 					),
 				);
-				console.log(`🕳  FSUT - Dispatch Loading STOP`);
+				consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 				dispatch(setLoadingMessage(false));
 			}
 		} catch (error) {
@@ -1031,20 +1044,18 @@ export function useFirebaseServiceUtils(debug) {
 						: firebaseErrorCodeMap(error.code),
 				),
 			);
-			console.log(`🕳  FSUT - Dispatch Loading STOP`);
+			consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 			dispatch(setLoadingMessage(false));
 		}
 	};
 
 	const handleBusinessSelectServiceWorker = async (sid, uid) => {
-		console.log('uid', uid);
-
-		console.log(`🕳  FSUT - Dispatch Loading START`);
+		consola('normal', `🕳  FSUT - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Guardando' : 'Guardando'));
 
 		setIsEdit(isEdit);
 
-		console.log(`🚨 FSUT - Select service (${sid}) worker (${uid})`);
+		consola('normal', `🚨 FSUT - Select service (${sid}) worker (${uid})`);
 
 		try {
 			if (auth().currentUser) {
@@ -1061,15 +1072,15 @@ export function useFirebaseServiceUtils(debug) {
 									asignedWorker: uid,
 								})
 								.then(() => {
-									console.log(`🚧 FSUT - Company asigned worker ${uid} actualizad0`);
+									consola('normal', `🚧 FSUT - Company asigned worker ${uid} actualizad0`);
 									setSaved(true);
 									dispatch(setErrorMessage(false));
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 								})
 								.catch((error) => {
 									console.error(error.message);
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 									dispatch(
 										setErrorMessage(
@@ -1078,23 +1089,23 @@ export function useFirebaseServiceUtils(debug) {
 												: firebaseErrorCodeMap(error.code),
 										),
 									);
-									console.log(`🕳  FSUT - Dispatch Loading STOP`);
+									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 								});
 						} else {
-							console.log('🩸 FSUT - No such document!');
+							consola('error', '🩸 FSUT - No such document!');
 							setSaved(false);
 							dispatch(setErrorMessage(`Error al actualizar el trabajador del servicio.`));
-							console.log(`🕳  FSUT - Dispatch Loading STOP`);
+							consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 							dispatch(setLoadingMessage(false));
 						}
 					})
 					.catch((error) => {
 						console.error(error.message);
-						console.log('🩸 FSUT - Error getting document.');
+						consola('error', '🩸 FSUT - Error getting document.');
 						setSaved(false);
 						dispatch(setErrorMessage(`Error al actualizar el trabajador del servicio.`));
-						console.log(`🕳  FSUT - Dispatch Loading STOP`);
+						consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 					});
 			} else {
@@ -1103,7 +1114,7 @@ export function useFirebaseServiceUtils(debug) {
 						debug ? 'NO HAY SESIÓN. Vuelva a iniciar sessión' : 'Vuelva a iniciar sessión',
 					),
 				);
-				console.log(`🕳  FSUT - Dispatch Loading STOP`);
+				consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 				dispatch(setLoadingMessage(false));
 			}
 		} catch (error) {
@@ -1116,7 +1127,7 @@ export function useFirebaseServiceUtils(debug) {
 						: firebaseErrorCodeMap(error.code),
 				),
 			);
-			console.log(`🕳  FSUT - Dispatch Loading STOP`);
+			consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 			dispatch(setLoadingMessage(false));
 		}
 	};
@@ -1124,7 +1135,7 @@ export function useFirebaseServiceUtils(debug) {
 	return {
 		saved,
 		setSaved: (newSaved) => {
-			//console.log('⚪️ FSUT - SET newSaved', newSaved.toString());
+			//consola('normal','⚪️ FSUT - SET newSaved', newSaved.toString());
 			setSaved(newSaved);
 		},
 		handleRemoveServiceDetail,

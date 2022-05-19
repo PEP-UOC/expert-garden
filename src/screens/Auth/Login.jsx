@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -72,7 +73,7 @@ export const LoginScreen = ({ debug, navigation }) => {
 
 		const { email, password } = values
 
-		console.log(`🕳  LOGI - Dispatch Loading START`);
+		consola('normal', `🕳  LOGI - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Accediendo' : 'Accediendo'))
 
 		registerForPushNotificationsAsync().then(pushToken => {
@@ -87,7 +88,7 @@ export const LoginScreen = ({ debug, navigation }) => {
 				.catch((error) => {
 					console.error(error.message);
 					dispatch(setLoggedIn(false))
-					console.log(`🕳  LOGI - Dispatch Loading STOP`)
+					consola('normal', `🕳  LOGI - Dispatch Loading STOP`)
 					dispatch(setLoadingMessage(false))
 					dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 				});

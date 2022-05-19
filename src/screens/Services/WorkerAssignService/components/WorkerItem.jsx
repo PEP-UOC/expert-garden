@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -31,7 +32,6 @@ export const WorkerItem = ({ debug, worker, workerIndex, isSelected, sid }) => {
 	// eslint-disable-next-line no-unused-vars
 	const [values, setValues] = useState(worker)
 
-	console.log('values', values)
 
 	const { handleBusinessSelectServiceWorker } = useFirebaseServiceUtils(debug)
 
@@ -39,7 +39,6 @@ export const WorkerItem = ({ debug, worker, workerIndex, isSelected, sid }) => {
 		handleBusinessSelectServiceWorker(sid, values.uid)
 	}
 
-	//console.log('worker', worker)
 
 	return (
 		<View key={values?.uid} style={{ ...ownStyles.itemWrapper }}>

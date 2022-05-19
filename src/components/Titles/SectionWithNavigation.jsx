@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from "prop-types";
+import consola from '../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -83,5 +84,5 @@ TitleSectionWithNavigation.defaultProps = {
 	exterStyles: { primaryText: {}, secondaryText: {} },
 	secondaryTextMain: false,
 	iconNav: 'chevron-right-outline',
-	navTo: () => console.log('🔴 navTo NO INDICADO'),
+	navTo: () => consola('normal', '🔴 navTo NO INDICADO'),
 };

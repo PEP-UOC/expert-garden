@@ -4,6 +4,7 @@ import * as Notifications from 'expo-notifications';
 //Device Detect
 import Device from '../libs/react-native-device-detection';
 import { Platform } from 'react-native';
+import consola from './myLogger';
 
 const registerForPushNotificationsAsync = async () => {
 	let token;
@@ -19,7 +20,7 @@ const registerForPushNotificationsAsync = async () => {
 			return;
 		}
 		token = (await Notifications.getExpoPushTokenAsync()).data;
-		console.log(`🕳  RPNA - TOKEN ${token}`);
+		consola('normal', `🕳  RPNA - TOKEN ${token}`);
 	} else {
 		//alert('Must use physical device for Push Notifications');
 	}

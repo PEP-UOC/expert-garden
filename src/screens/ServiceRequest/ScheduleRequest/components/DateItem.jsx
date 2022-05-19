@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -61,7 +62,8 @@ export const DateItem = ({ debug, date, dateIndex }) => {
 				[keyName]: value,
 				date: moment(value).format("DD/MM/YYYY")
 			}
-			console.log('📜 DAIT - newDate', newDate)
+			//consola('normal', '📜 DAIT - newDate')
+			//consola('normal',  newDate)
 
 			dispatch(updateDate(newDate, dateIndex))
 		} else {
@@ -73,7 +75,8 @@ export const DateItem = ({ debug, date, dateIndex }) => {
 			})
 			const newDate = { ...values }
 			newDate[keyName] = value;
-			console.log('📜 DAIT - newDate', newDate)
+			//consola('normal', '📜 DAIT - newDate')
+			//consola('normal', newDate)
 
 			dispatch(updateDate(newDate, dateIndex))
 		}

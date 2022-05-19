@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -101,7 +102,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 
 		const { email, password, password2, name, surnames, role } = values
 
-		console.log(`🕳  SNUP - Dispatch Loading START`);
+		consola('normal', `🕳  SNUP - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Registrándote!' : 'Registrándote!'))
 
 		if (!allFilled()) {
@@ -157,14 +158,14 @@ export const SignUpScreen = ({ debug, navigation }) => {
 														.catch((error) => {
 															console.error(error.message);
 															dispatch(setLoggedIn(false))
-															console.log(`🕳  SNUP - Dispatch Loading STOP`)
+															consola('normal', `🕳  SNUP - Dispatch Loading STOP`)
 															dispatch(setLoadingMessage(false))
 															dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 														});
 												}).catch((error) => {
 													console.error(error.message);
 													dispatch(setLoggedIn(false))
-													console.log(`🕳  SNUP - Dispatch Loading STOP`)
+													consola('normal', `🕳  SNUP - Dispatch Loading STOP`)
 													dispatch(setLoadingMessage(false))
 													dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 												});
@@ -172,7 +173,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 											.catch((error) => {
 												console.error(error.message);
 												dispatch(setLoggedIn(false))
-												console.log(`🕳  SNUP - Dispatch Loading STOP`)
+												consola('normal', `🕳  SNUP - Dispatch Loading STOP`)
 												dispatch(setLoadingMessage(false))
 												dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 											});
@@ -199,7 +200,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 												}).catch((error) => {
 													console.error(error.message);
 													dispatch(setLoggedIn(false))
-													console.log(`🕳  SNUP - Dispatch Loading STOP`)
+													consola('normal', `🕳  SNUP - Dispatch Loading STOP`)
 													dispatch(setLoadingMessage(false))
 													dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 												});
@@ -207,7 +208,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 											.catch((error) => {
 												console.error(error.message);
 												dispatch(setLoggedIn(false))
-												console.log(`🕳  SNUP - Dispatch Loading STOP`)
+												consola('normal', `🕳  SNUP - Dispatch Loading STOP`)
 												dispatch(setLoadingMessage(false))
 												dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 											});
@@ -218,20 +219,20 @@ export const SignUpScreen = ({ debug, navigation }) => {
 						.catch((error) => {
 							console.error(error.message);
 							dispatch(setLoggedIn(false))
-							console.log(`🕳  SNUP - Dispatch Loading STOP`)
+							consola('normal', `🕳  SNUP - Dispatch Loading STOP`)
 							dispatch(setLoadingMessage(false))
 							dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 						});
 				});
 			} else {
 				dispatch(setLoggedIn(false))
-				console.log(`🕳  SNUP - Dispatch Loading STOP`)
+				consola('normal', `🕳  SNUP - Dispatch Loading STOP`)
 				dispatch(setLoadingMessage(false))
 				dispatch(setErrorMessage('Las contraseñas no coinciden'))
 			}
 		} else {
 			dispatch(setLoggedIn(false))
-			console.log(`🕳  SNUP - Dispatch Loading STOP`)
+			consola('normal', `🕳  SNUP - Dispatch Loading STOP`)
 			dispatch(setLoadingMessage(false))
 			dispatch(setErrorMessage('Rellena todos los campos'))
 		}

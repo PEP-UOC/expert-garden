@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -128,7 +129,7 @@ export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
 	}, []);
 
 	useEffect(() => {
-		console.log(`🕳  SERL - Dispatch Loading STOP`)
+		consola('normal', `🕳  SERL - Dispatch Loading STOP`)
 		dispatch(setLoadingMessage(false))
 		dispatch(setErrorMessage(false))
 	}, []);

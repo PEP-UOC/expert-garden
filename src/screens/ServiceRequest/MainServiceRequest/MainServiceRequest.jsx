@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -71,7 +72,7 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 	})
 
 	const resetForm = () => {
-		console.log(`🕳  DETA - Dispatch Loading STOP`);
+		consola('normal', `🕳  DETA - Dispatch Loading STOP`);
 		dispatch(setLoadingMessage(false));
 		setStep(0)
 		setIsEdit(false)
@@ -207,7 +208,7 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 	useEffect(() => {
 		let isMounted = true;
 		if (isMounted) {
-			console.log(`🕳  MSRQ - Dispatch Loading STOP`)
+			consola('normal', `🕳  MSRQ - Dispatch Loading STOP`)
 			dispatch(setLoadingMessage(false))
 			dispatch(setErrorMessage(false))
 		}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -64,7 +65,8 @@ export const BankDataForm = ({ debug }) => {
 		})
 		const newBankDetails = { ...values }
 		newBankDetails[keyName] = value;
-		//console.log('💶 BKDA - newBankDetails', newBankDetails)
+		//consola('normal','💶 BKDA - newBankDetails')
+		//consola('normal',newBankDetails)
 
 		dispatch(updateChangesToSave({ bankDetails: newBankDetails }, false))
 	}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import consola from '../libs/myLogger';
 
 //Firebase
 import firebase from 'firebase/compat/app';
@@ -38,11 +39,13 @@ function useFirebaseGetOne(debug, collection, entityIdentifier, entityValue) {
 										ITEMS.push(item.data());
 									});
 								}
-								console.log(
+								consola(
+									'normal',
 									`🌳 FIGO - ${upperFirst(
 										toLower(collection.slice(0, -1)),
-									)} ${entityIdentifier} ${entityValue} |`,
-									ITEMS[0]?.name || ITEMS[0]?.requestDate || ITEMS[0]?.type,
+									)} ${entityIdentifier} ${entityValue} | ${
+										ITEMS[0]?.name || ITEMS[0]?.requestDate || ITEMS[0]?.type
+									}`,
 								);
 								setResult(ITEMS[0]);
 								setLoading(false);

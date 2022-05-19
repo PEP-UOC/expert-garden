@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import consola from '../libs/myLogger';
 
 //Store
 import { useDispatch } from 'react-redux';
@@ -27,7 +28,7 @@ export function useFirebaseSaveGardenDetail(debug) {
 	const [originalItemToUpdate, setOriginalItemToUpdate] = useState(false);
 
 	const handleSaveGardenDetail = async (detailValues, isEdit) => {
-		console.log(`🕳  FSGD - Dispatch Loading START`);
+		consola('normal', `🕳  FSGD - Dispatch Loading START`);
 		dispatch(setLoadingMessage(debug ? '🔧 Guardando' : 'Guardando'));
 
 		setIsEdit(isEdit);
@@ -35,7 +36,8 @@ export function useFirebaseSaveGardenDetail(debug) {
 		const valuesToSave = JSON.parse(JSON.stringify(detailValues));
 		delete valuesToSave['gid'];
 
-		console.log('🚨 FSGD - valuesToSave', valuesToSave);
+		consola('normal', '🚨 FSGD - valuesToSave');
+		consola('normal', valuesToSave);
 
 		switch (isEdit) {
 			case true:
@@ -54,7 +56,7 @@ export function useFirebaseSaveGardenDetail(debug) {
 										setItemToUpdate(valuesToSave);
 										setItemToEdit(item);
 									} else {
-										console.log('🩸 FSGD - No such document!');
+										consola('error', '🩸 FSGD - No such document!');
 										setSaved(false);
 										dispatch(setErrorMessage(`Error al actualizar el jardín.`));
 									}
@@ -62,7 +64,7 @@ export function useFirebaseSaveGardenDetail(debug) {
 							})
 							.catch((error) => {
 								console.error(error.message);
-								console.log('🩸 FSGD - Error getting document.');
+								consola('error', '🩸 FSGD - Error getting document.');
 								setSaved(false);
 								dispatch(setErrorMessage(`Error al actualizar el jardín.`));
 							});
@@ -111,7 +113,7 @@ export function useFirebaseSaveGardenDetail(debug) {
 							details: arrayUnion(valuesToSave),
 						})
 						.then(() => {
-							console.log(`🚧 FSGD - Garden Detail ${detailValues.gdid} guardado`);
+							consola('normal', `🚧 FSGD - Garden Detail ${detailValues.gdid} guardado`);
 							setItemToEdit(false);
 							setItemToUpdate(false);
 							setSaved(true);
@@ -162,7 +164,7 @@ export function useFirebaseSaveGardenDetail(debug) {
 							details: detailsArray,
 						})
 						.then(() => {
-							console.log(`🚧 FSGD - Garden Detail ${itemToUpdate.gdid} actualizado`);
+							consola('normal', `🚧 FSGD - Garden Detail ${itemToUpdate.gdid} actualizado`);
 							isMounted = false;
 							setItemToEdit(false);
 							setItemToUpdate(false);
@@ -171,7 +173,7 @@ export function useFirebaseSaveGardenDetail(debug) {
 						})
 						.catch((error) => {
 							console.error(error.message);
-							console.log(`🕳  FSGD - Dispatch Loading STOP`);
+							consola('normal', `🕳  FSGD - Dispatch Loading STOP`);
 							dispatch(setLoadingMessage(false));
 							dispatch(
 								setErrorMessage(
@@ -208,7 +210,7 @@ export function useFirebaseSaveGardenDetail(debug) {
 	return [
 		saved,
 		(newSaved) => {
-			//console.log('⚪️ FSGD - SET newSaved', newSaved.toString());
+			//consola('normal','⚪️ FSGD - SET newSaved', newSaved.toString());
 			setSaved(newSaved);
 		},
 		handleSaveGardenDetail,

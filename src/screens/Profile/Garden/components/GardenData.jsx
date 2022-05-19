@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from "prop-types";
+import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -77,11 +78,13 @@ export const GardenDataForm = ({ debug, gid, gardenIndex }) => {
 		})
 		const newGarden = { ...values }
 		newGarden[keyName] = value;
-		//console.log('🌳 GDAT - newGarden', newGarden)
+		//consola('normal','🌳 GDAT - newGarden')
+		//consola('normal',newGarden)
 
 		const gardensArray = [...changesToSave?.gardens || []];
 		gardensArray[gardenIndex] = newGarden;
-		//console.log('🌳 GDAT - gardensArray', gardensArray)
+		//consola('normal','🌳 GDAT - gardensArray')
+		//consola('normal',gardensArray)
 
 		dispatch(updateChangesToSave({ gardens: gardensArray }, auto))
 	}
@@ -112,19 +115,19 @@ export const GardenDataForm = ({ debug, gid, gardenIndex }) => {
 	}, [loadFormValues]);
 
 	useEffect(() => {
-		//console.log(`🌀 GDAT - Cargando   ${gid} | ${gardenLoading}`)
+		//consola('normal',`🌀 GDAT - Cargando   ${gid} | ${gardenLoading}`)
 	}, [gardenLoading]);
 
 	useEffect(() => {
 		if (garden?.gid) {
-			//console.log(`🍀 GDAT - Jardín     ${gid} |`, garden?.name)
+			//consola('normal',`🍀 GDAT - Jardín     ${gid} | ${garden?.name}`)
 			setLoadFormValues(true);
 		}
 	}, [garden]);
 
 	useEffect(() => {
 		if (gardenError) {
-			console.log(`🩸 GDAT - Error   ${gid} | ${gardenError}`)
+			consola('error', `🩸 GDAT - Error   ${gid} | ${gardenError}`)
 			dispatch(setErrorMessage(gardenError))
 		}
 	}, [gardenError]);
