@@ -1,7 +1,5 @@
 import 'dotenv/config';
 
-const APP_VARIANT = process.env.APP_VARIANT === 'development';
-
 export default {
 	expo: {
 		name: 'Expert Garden',
@@ -38,16 +36,16 @@ export default {
 		},
 		assetBundlePatterns: ['**/*'],
 		android: {
-			package: `com.expertgarden.${APP_VARIANT}`,
-			googleServicesFile: './android/google-services.json',
+			package: `com.expertgarden.${process.env.APP_VARIANT}`,
+			googleServicesFile: './google-services.json',
 			adaptiveIcon: {
 				foregroundImage: './src/assets/images/adaptive-icon.png',
 				backgroundColor: '#FFFFFF',
 			},
 		},
 		ios: {
-			bundleIdentifier: `com.expertgarden.${APP_VARIANT}`,
-			googleServicesFile: './ios/GoogleService-Info.plist',
+			bundleIdentifier: `com.expertgarden.${process.env.APP_VARIANT}`,
+			googleServicesFile: './GoogleService-Info.plist',
 			supportsTablet: true,
 		},
 		web: {
