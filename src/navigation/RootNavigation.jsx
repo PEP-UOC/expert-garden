@@ -16,7 +16,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TabsNavigation } from './TabsNavigation';
 import { AuthNavigation } from './AuthNavigation';
 import { SplashScreen } from '../screens/SplashScreen/SplashScreen';
-import { ValidatingScreen } from '../screens/ValidatingScreen/ValidatingScreen';
+import { ValidatingScreen } from '../screens/Validating/Validating';
+import { TermsAndConditionsScreen } from '../screens/TermsAndConditions/TermsAndConditions';
 
 //Expo Notifications
 import * as Notifications from 'expo-notifications';
@@ -50,6 +51,7 @@ const RootScreen = () => {
 	//State
 	const [isLoading, setIsLoading] = useState(true)
 	const [isValidating, setIsValidating] = useState(false)
+	const [isTermsAndConditions, setIsTermsAndConditions] = useState(false)
 	const [urlReceived, setUrlReceived] = useState(false)
 	const [mode, setMode] = useState(undefined)
 	const [actionCode, setActionCode] = useState(undefined)
@@ -97,15 +99,15 @@ const RootScreen = () => {
 	}, []);
 
 	useEffect(() => {
-		if (!isValidating) {
+		if (!isValidating && !isTermsAndConditions) {
 			// Get the action to complete.
-			var mode = getParameterByName('mode');
+			const mode = getParameterByName('mode');
 			// Get the one-time code from the query parameter.
-			var actionCode = getParameterByName('oobCode');
+			const actionCode = getParameterByName('oobCode');
 			// (Optional) Get the continue URL from the query parameter if available.
-			//var continueUrl = getParameterByName('continueUrl');
+			//const continueUrl = getParameterByName('continueUrl');
 			// (Optional) Get the language code if available.
-			//var lang = getParameterByName('lang') || 'es';
+			//const lang = getParameterByName('lang') || 'es';
 
 			//console.warn('mode', mode)
 			//console.warn('actionCode', actionCode)
@@ -115,13 +117,17 @@ const RootScreen = () => {
 			if (mode !== null) {
 				setMode(mode)
 				setActionCode(actionCode)
-				setIsValidating(true)
 				switch (mode) {
 					case 'verifyEmail':
+						setIsValidating(true)
 						dispatch(setValidatingMessage('Validando email'))
 						break;
 					case 'resetPassword':
+						setIsValidating(true)
 						dispatch(setValidatingMessage('Recuperando contraseña'))
+						break;
+					case 'termsAndConditions':
+						setIsTermsAndConditions(true)
 						break;
 				}
 			}
@@ -140,12 +146,20 @@ const RootScreen = () => {
 		)
 	}
 
+	const TermsAndConditionsScreenRender = () => {
+		return (
+			<TermsAndConditionsScreen />
+		)
+	}
+
 	return (
 		<Root.Navigator
 			screenOptions={{ headerShown: false }}
 		>
 			{isLoading ? (
 				<Root.Screen name="LoadingSplashScreen" component={LoadingSplashScreen} />
+			) : isTermsAndConditions ? (
+				<Root.Screen name="TermsAndConditionsScreenRender" component={TermsAndConditionsScreenRender} />
 			) : isValidating ? (
 				<Root.Screen name="ValidatingScreenRender" component={ValidatingScreenRender} />
 			) : isLoggedIn ? (
@@ -169,6 +183,7 @@ export const RootNavigation = () => {
 			}}
 			onStateChange={async () => {
 				const previousRouteName = routeNameRef.current;
+				consola('warn', `${previousRouteName}`)
 				const currentRouteName = navigationRef.getCurrentRoute().name;
 
 				if (previousRouteName !== currentRouteName) {
@@ -181,6 +196,77 @@ export const RootNavigation = () => {
 
 				// Save the current route name for later comparison
 				routeNameRef.current = currentRouteName;
+			}}
+			linking={{
+				prefixes: ['expert-garden://', 'https://expert-garden.web.app.com'],
+				config: {
+					screens: {
+						LoadingSplashScreen: { path: 'loading' },
+						TermsAndConditionsScreenRender: { path: 'termsAndConditions' },
+						ValidatingScreenRender: { path: 'validating' },
+						TabsNavigation: {
+							screens: {
+								Home: '',
+								Profile: {
+									path: 'user', screens: {
+										MainProfileScreen: '',
+										GardenDetailScreen: 'gardenDetail/:gid/:index',
+										GardenAddScreen: 'gardenAdd/:index',
+										DetailScreen: {
+											path: 'details/:gid/:gdid?/:detail?/:name',
+											parse: {
+												detail: Object,
+											},
+											stringify: {
+												detail: (detail) => {
+													return JSON.stringify(detail);
+												},
+											},
+										},
+										WorkersListScreen: 'workers',
+										WorkersAddScreen: 'workerAdd',
+										WorkersResumeScreen: 'worker/:uid',
+									}
+								},
+								ServiceRequest: {
+									path: 'serviceRequest', screens: {
+										MainServiceRequestScreen: ':reset?',
+										ResumeServiceRequestScreen: 'resume',
+										ScheduleRequestScreen: 'schedule/:sid',
+										CompanyRequestScreen: 'company/:sid',
+									}
+								},
+								Services: {
+									path: 'services', screens: {
+										MainServicesScreen: '',
+										ServiceResumeScreen: 'resume/:sid',
+										ServiceListScreen: 'list/:type',
+										EstimateServiceScreen: 'estimate/:sid',
+										EstimateResumeScreen: 'estimateResume/:sid',
+										WorkerAssignServiceScreen: 'workerAssign',
+									}
+								},
+								Notifications: {
+									path: 'notifications', screens: {
+										MainNotificationsScreen: '',
+										NotificationResumeScreen: 'resume/:nid',
+										NotificationListScreen: 'list/:type'
+									}
+								},
+							},
+						},
+						AuthNavigation: {
+							screens: {
+								Login: {
+									path: 'login'
+								},
+								SignUp: {
+									path: 'signUp'
+								},
+							},
+						},
+					},
+				},
 			}}
 		>
 			<RootScreen />
