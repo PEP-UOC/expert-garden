@@ -8,7 +8,7 @@ import consola from './myLogger';
 
 const registerForPushNotificationsAsync = async () => {
 	let token;
-	if (ExpoDevice.isDevice && Device.isPhone) {
+	if (ExpoDevice.isDevice && Device.isPhone && Platform.OS !== 'web') {
 		const { status: existingStatus } = await Notifications.getPermissionsAsync();
 		let finalStatus = existingStatus;
 		if (existingStatus !== 'granted') {
