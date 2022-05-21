@@ -2,11 +2,14 @@ import 'dotenv/config';
 
 export default {
 	expo: {
-		lang: 'es',
 		name: 'Expert Garden',
 		slug: 'expert-garden',
+		description: 'An app to request gardening services',
 		version: '1.0.0',
+		githubUrl: 'https://github.com/PEP-UOC/expert-garden',
 		orientation: 'portrait',
+		backgroundColor: '#ffffff',
+		primaryColor: '#31A060',
 		icon: './src/assets/images/icon.png',
 		splash: {
 			image: './src/assets/images/splash.png',
@@ -50,6 +53,9 @@ export default {
 			supportsTablet: true,
 		},
 		web: {
+			lang: 'es',
+			name: 'Expert Garden',
+			description: 'An app to request gardening services',
 			favicon: './src/assets/images/favicon.png',
 			config: {
 				firebase: {
