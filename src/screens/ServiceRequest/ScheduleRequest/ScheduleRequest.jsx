@@ -27,7 +27,6 @@ import { TitleScreen } from '../../../components/Titles/Screen'
 import { BtnPrimary } from '../../../components/Buttons/Primary'
 import { BtnSecondary } from '../../../components/Buttons/Secondary'
 import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
-import { SeparatorTopSection } from '../../../components/Separators/TopSection'
 import { DatesList } from "./components/DatesList"
 
 //Icons
@@ -124,7 +123,6 @@ export const ScheduleRequestScreen = ({ debug, navigation, route }) => {
 									}
 								</View>
 								<View style={{ ...gloStyles.section.secondary }}>
-									<SeparatorTopSection />
 									{
 										{
 											'client': (

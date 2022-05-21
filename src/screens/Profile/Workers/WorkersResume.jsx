@@ -22,6 +22,7 @@ import { Layout, Text, Icon } from '@ui-kitten/components';
 import { TitleScreen } from '../../../components/Titles/Screen'
 import { NavigationTop } from '../../../components/Navigation/Top'
 import { NavigationBackButton } from '../../../components/Navigation/BackButton'
+import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
 
 //Hooks
 import useFirebaseGetOne from '../../../hooks/useFirebaseGetOne'
@@ -55,6 +56,7 @@ export const WorkersResumeScreen = ({ debug, navigation, route }) => {
 					<ScrollView alwaysBounceVertical={true} centerContent={true}
 						contentContainerStyle={{ ...gloStyles.scrollView }}>
 						<Layout style={{ ...gloStyles.layout }}>
+							<SeparatorTopScreen hasTopNavigation={true} />
 							<View style={{ ...gloStyles.view }}>
 
 								<View style={{ ...gloStyles.section.primary }}>

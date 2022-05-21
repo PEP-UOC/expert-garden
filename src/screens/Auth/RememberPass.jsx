@@ -19,6 +19,7 @@ import styles from './styles'
 
 //Icons
 import { LeafIcon } from '../../assets/icons/Leaf'
+import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
 
 //Firebase
 import firebase from 'firebase/compat/app';
@@ -72,6 +73,7 @@ export const RememberPass = ({ debug, navigation }) => {
 			<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 				contentContainerStyle={{ ...gloStyles?.scrollView, ...ownStyles?.scrollHeight }}>
 				<Layout style={{ ...gloStyles?.layout }}>
+					<SeparatorTopScreen />
 					<View style={{ ...gloStyles?.view }}>
 						<View style={{ ...gloStyles.section.fullCentered }}>
 							<Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>RESTABLECER</Text>

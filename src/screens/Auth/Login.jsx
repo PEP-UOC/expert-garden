@@ -13,6 +13,7 @@ import { addUser } from '../../store/user/userAction';
 //Components
 import { View, SafeAreaView, ScrollView, TouchableWithoutFeedback, KeyboardAvoidingView, Platform } from 'react-native'
 import { Text, Button, Layout, Input, Icon } from '@ui-kitten/components';
+import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
@@ -102,6 +103,7 @@ export const LoginScreen = ({ debug, navigation }) => {
 					<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 						contentContainerStyle={{ ...gloStyles?.scrollView, ...ownStyles?.scrollHeight }}>
 						<Layout style={{ ...gloStyles?.layout }}>
+							<SeparatorTopScreen />
 							<View style={{ ...gloStyles?.view }}>
 								<View style={{ ...gloStyles.section.fullCentered }}>
 									<Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>ACCEDE A</Text>

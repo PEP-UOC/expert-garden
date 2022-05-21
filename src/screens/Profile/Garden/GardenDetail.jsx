@@ -20,6 +20,7 @@ import { Platform } from 'react-native';
 //Components
 import { SafeAreaView, ScrollView, View, KeyboardAvoidingView } from 'react-native'
 import { Layout } from '@ui-kitten/components';
+import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
 import { SeparatorTopSection } from '../../../components/Separators/TopSection'
 import { TitleScreen } from '../../../components/Titles/Screen'
 import { BtnPrimary } from '../../../components/Buttons/Primary'
@@ -97,6 +98,7 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 					<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 						contentContainerStyle={{ ...gloStyles.scrollView }}>
 						<Layout style={{ ...gloStyles.layout }}>
+							<SeparatorTopScreen hasTopNavigation={true} />
 							<View style={{ ...gloStyles.view }}>
 								{loadComponents ?
 									(

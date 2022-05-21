@@ -15,6 +15,7 @@ import { LeafIcon } from '../../assets/icons/Leaf'
 //Components
 import { SafeAreaView, ScrollView, View } from 'react-native'
 import { Text, Layout } from '@ui-kitten/components';
+import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
 
 // eslint-disable-next-line no-unused-vars
 export const TermsAndConditionsScreen = ({ debug }) => {
@@ -28,6 +29,7 @@ export const TermsAndConditionsScreen = ({ debug }) => {
 			<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 				contentContainerStyle={{ ...gloStyles.scrollView }}>
 				<Layout style={{ ...gloStyles.layout, justifyContent: 'flex-start' }}>
+					<SeparatorTopScreen />
 					<View style={{ ...ownStyles.view, maxWidth: 700 }}>
 						<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.title, marginBottom: 0, marginTop: 30 }}>Términos y condiciones</Text>
 						<Text category='p1'>Última actualización: 20 de mayo de 2022</Text>

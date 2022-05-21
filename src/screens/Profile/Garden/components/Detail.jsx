@@ -6,7 +6,8 @@ import consola from '../../../../libs/myLogger';
 import Constants from 'expo-constants';
 
 import { View, SafeAreaView, ScrollView, KeyboardAvoidingView, Platform } from "react-native"
-import { Text, Button, Layout, Input, TopNavigation, TopNavigationAction, Select, SelectItem, IndexPath } from '@ui-kitten/components';
+import { Text, Button, Layout, Input, Select, SelectItem, IndexPath } from '@ui-kitten/components';
+import { NavigationTop } from '../../../../components/Navigation/Top'
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
@@ -19,7 +20,6 @@ import { setLoadingMessage } from '../../../../store/root/rootAction';
 
 //Icons
 import { LeafIcon } from '../../../../assets/icons/Leaf'
-import { BackIcon } from '../../../../assets/icons/Back'
 
 //Data
 import { gardenDetailTypes } from '../../../../data/gardenDetailTypes'
@@ -206,11 +206,6 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 	//Save detail
 	const [saved, setSaved, handleSaveGardenDetail] = useFirebaseSaveGardenDetail(debug)
 
-	//Navigation
-	const BackAction = () => (
-		<TopNavigationAction icon={BackIcon} onPress={navigateBack} />
-	);
-
 	const navigateBack = () => {
 		consola('normal', `🕳  DETA - Dispatch Loading STOP`);
 		dispatch(setLoadingMessage(false));
@@ -231,7 +226,7 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
 				<View style={{ flex: 1, justifyContent: "space-around" }}>
-					<TopNavigation title={''} alignment='center' accessoryLeft={BackAction} />
+					<NavigationTop title={''} />
 					<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 						contentContainerStyle={{ ...gloStyles?.scrollView }}>
 						<Layout style={{ ...gloStyles?.layout }}>

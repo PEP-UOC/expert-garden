@@ -17,7 +17,6 @@ import { setErrorMessage, setLoadingMessage } from '../../../store/root/rootActi
 import { SafeAreaView, ScrollView, View, KeyboardAvoidingView, Platform } from 'react-native'
 import { Layout } from '@ui-kitten/components';
 import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
-import { SeparatorTopSection } from '../../../components/Separators/TopSection'
 import { TitleScreen } from '../../../components/Titles/Screen'
 import { NotificationsList } from './components/List'
 
@@ -50,7 +49,6 @@ export const MainNotificationsScreen = ({ debug, navigation }) => {
 									<TitleScreen icon={'bell-outline'} exterStyles={{ wrapper: { marginBottom: 15 } }} primaryText={'Notificaciones'} secondaryText={''} />
 								</View>
 								<View style={{ ...gloStyles.section.secondary }}>
-									<SeparatorTopSection />
 									{
 										{
 											'client': (

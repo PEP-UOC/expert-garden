@@ -30,6 +30,7 @@ import { DatesList } from './components/DatesList'
 import { DetailsList } from './components/DetailsList'
 import { NavigationTop } from '../../../components/Navigation/Top'
 import { NavigationBackButton } from '../../../components/Navigation/BackButton'
+import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
 
 //Icons
 import { CloseIcon } from '../../../assets/icons/Close'
@@ -146,6 +147,7 @@ export const ServiceResumeScreen = ({ debug, navigation, route }) => {
 					<ScrollView alwaysBounceVertical={true} centerContent={true}
 						contentContainerStyle={{ ...gloStyles.scrollView }}>
 						<Layout style={{ ...gloStyles.layout }}>
+							<SeparatorTopScreen hasTopNavigation={true} />
 							<View style={{ ...gloStyles.view }}>
 
 								<View style={{ ...gloStyles.section.primary }}>
