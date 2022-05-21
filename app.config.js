@@ -40,6 +40,7 @@ export default {
 		},
 		assetBundlePatterns: ['**/*'],
 		android: {
+			versionCode: 2,
 			package: `com.expertgarden.${process.env.APP_VARIANT || 'expertgarden'}`,
 			googleServicesFile: './google-services.json',
 			adaptiveIcon: {

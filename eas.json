@@ -44,6 +44,17 @@
 		}
 	},
 	"submit": {
-		"production": {}
+		"internal": {
+			"android": {
+				"serviceAccountKeyPath": "./pc-api-6220973880337793278-189-accdef0bd18c.json",
+				"track": "internal"
+			}
+		},
+		"production": {
+			"android": {
+				"serviceAccountKeyPath": "./pc-api-6220973880337793278-189-accdef0bd18c.json",
+				"track": "production"
+			}
+		}
 	}
 }
