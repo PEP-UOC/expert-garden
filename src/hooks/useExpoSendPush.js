@@ -23,35 +23,35 @@ export function useExpoSendPush(debug) {
 	const [sended, setSended] = useState(false);
 
 	const sendPushNotification = async (to, uidSender, uidReceiver, title, body, data = {}) => {
-		const message = {
-			to,
-			sound: 'default',
-			badge: 1,
-			priority: 'high',
-			title,
-			body,
-			data,
-		};
-
-		await fetch('https://exp.host/--/api/v2/push/send', {
-			mode: 'no-cors',
-			method: 'POST',
-			headers: {
-				Accept: 'application/json',
-				'Accept-encoding': 'gzip, deflate',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(message),
-		});
-
-		consola('normal', `🚀 EXSP - Notification push enviada a ${to}`);
-
 		try {
 			const now = moment();
 			const sendDateTime = now.format();
 			const sendDate = now.format('DD/MM/YYYY');
 			const sendTime = now.format('HH:mm');
 			const ref = firestore().collection('notifications').doc();
+
+			const message = {
+				to,
+				sound: 'default',
+				badge: 1,
+				priority: 'high',
+				title,
+				body,
+				data: { ...data, nid: ref.id },
+			};
+
+			await fetch('https://exp.host/--/api/v2/push/send', {
+				mode: 'no-cors',
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Accept-encoding': 'gzip, deflate',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(message),
+			});
+
+			consola('normal', `🚀 EXSP - Notification push enviada a ${to}`);
 
 			firestore()
 				.collection('notifications')
@@ -78,7 +78,7 @@ export function useExpoSendPush(debug) {
 					dispatch(setErrorMessage(false));
 				})
 				.catch((error) => {
-					console.error(error.message);
+					consola('error', `🩸 ERROR - ${error.message}`);
 					consola('normal', `🕳  EXSP - Dispatch Loading STOP`);
 					dispatch(setLoadingMessage(false));
 					dispatch(
@@ -90,7 +90,7 @@ export function useExpoSendPush(debug) {
 					);
 				});
 		} catch (error) {
-			console.error(error.message);
+			consola('error', `🩸 ERROR - ${error.message}`);
 			setSended(false);
 			dispatch(
 				setErrorMessage(
@@ -125,7 +125,7 @@ export function useExpoSendPush(debug) {
 									dispatch(setErrorMessage(false));
 								})
 								.catch((error) => {
-									console.error(error.message);
+									consola('error', `🩸 ERROR - ${error.message}`);
 									consola('normal', `🕳  SNUP - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 									dispatch(
@@ -139,7 +139,7 @@ export function useExpoSendPush(debug) {
 						}
 					})
 					.catch((error) => {
-						console.error(error.message);
+						consola('error', `🩸 ERROR - ${error.message}`);
 						consola('normal', `🕳  SNUP - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 						dispatch(
@@ -152,7 +152,7 @@ export function useExpoSendPush(debug) {
 					});
 			}
 		} catch (error) {
-			console.error(error.message);
+			consola('error', `🩸 ERROR - ${error.message}`);
 			setSended(false);
 			dispatch(
 				setErrorMessage(

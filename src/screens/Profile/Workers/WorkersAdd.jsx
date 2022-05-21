@@ -129,14 +129,14 @@ export const WorkersAddScreen = ({ debug, navigation, route }) => {
 			if (password == password2) {
 				appNewUser.auth().createUserWithEmailAndPassword(email, password)
 					.then((user) => {
-						console.info('🚀 WADD - Worker Registered!');
-						console.info(`🚀 WADD - ${user.user.email}`);
+						consola('normal', '🚀 WADD - Worker Registered!');
+						consola('normal', `🚀 WADD - ${user.user.email}`);
 						appNewUser.auth().currentUser.sendEmailVerification()
 							.then(() => {
-								console.info(`🚀 WADD - Email verification sent to ${user.user.email}!`);
+								consola('normal', `🚀 WADD - Email verification sent to ${user.user.email}!`);
 								appNewUser.auth().sendPasswordResetEmail(user.user.email)
 									.then(() => {
-										console.info(`🚀 WADD - Email reset pass sent to ${user.user.email}!`);
+										consola('normal', `🚀 WADD - Email reset pass sent to ${user.user.email}!`);
 										firestore().collection("users").doc(appNewUser.auth()?.currentUser?.uid).set({
 											uid: appNewUser.auth()?.currentUser?.uid,
 											role,
@@ -161,7 +161,7 @@ export const WorkersAddScreen = ({ debug, navigation, route }) => {
 													dispatch(setErrorMessage(false))
 													appNewUser.auth().signOut();
 												}).catch((error) => {
-													console.error(error.message);
+													consola('error', `🩸 ERROR - ${error.message}`);
 													consola('normal', `🕳  WADD - Dispatch Loading STOP`)
 													dispatch(setLoadingMessage(false))
 													dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
@@ -169,7 +169,7 @@ export const WorkersAddScreen = ({ debug, navigation, route }) => {
 												});
 											})
 											.catch((error) => {
-												console.error(error.message);
+												consola('error', `🩸 ERROR - ${error.message}`);
 												consola('normal', `🕳  WADD - Dispatch Loading STOP`)
 												dispatch(setLoadingMessage(false))
 												dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
@@ -179,7 +179,7 @@ export const WorkersAddScreen = ({ debug, navigation, route }) => {
 							});
 					})
 					.catch((error) => {
-						console.error(error.message);
+						consola('error', `🩸 ERROR - ${error.message}`);
 						consola('normal', `🕳  WADD - Dispatch Loading STOP`)
 						dispatch(setLoadingMessage(false))
 						dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code, 'workersAdd')} || ${error.message}` : firebaseErrorCodeMap(error.code, 'workersAdd')))

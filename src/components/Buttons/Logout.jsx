@@ -52,27 +52,27 @@ export const BtnLogout = ({ debug }) => {
 								type: 'SIGNOUT_REQUEST',
 								payload: undefined,
 							})
-							console.info('🔐 BTLG - Logged Out!');
+							consola('normal', `🔐 BTLG - Logged Out!`)
 							dispatch(setLoggedIn(false))
 							consola('normal', `🕳  BTLG - Dispatch Loading STOP`)
 							dispatch(setLoadingMessage(false))
 							dispatch(removeUser())
 						})
 						.catch((error) => {
-							console.error(error.message);
+							consola('error', `🩸 ERROR - ${error.message}`);
 							dispatch(setLoggedIn(false))
 							consola('normal', `🕳  BTLG - Dispatch Loading STOP`)
 							dispatch(setLoadingMessage(false))
 						});
 				})
 				.catch((error) => {
-					console.error(error.message);
+					consola('error', `🩸 ERROR - ${error.message}`);
 					dispatch(setLoggedIn(false))
 					consola('normal', `🕳  BTLG - Dispatch Loading STOP`)
 					dispatch(setLoadingMessage(false))
 				});
 		} catch (error) {
-			console.error(error.message);
+			consola('error', `🩸 ERROR - ${error.message}`);
 			dispatch(setLoggedIn(false))
 			consola('normal', `🕳  BTLG - Dispatch Loading STOP`)
 			dispatch(setLoadingMessage(false))

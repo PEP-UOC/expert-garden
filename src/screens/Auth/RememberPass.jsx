@@ -48,7 +48,7 @@ export const RememberPass = ({ debug, navigation }) => {
 				setPassCounter(240);
 			})
 			.catch((error) => {
-				console.error(error.message);
+				consola('error', `🩸 ERROR - ${error.message}`);
 				consola('normal', `🕳  RMPA - Dispatch Loading STOP`)
 				dispatch(setLoadingMessage(false))
 				dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))

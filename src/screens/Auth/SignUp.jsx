@@ -110,12 +110,12 @@ export const SignUpScreen = ({ debug, navigation }) => {
 				registerForPushNotificationsAsync().then(pushToken => {
 					auth().createUserWithEmailAndPassword(email, password)
 						.then((user) => {
-							console.info('🚀 SNUP - Registered!');
-							console.info(`🚀 SNUP - ${user.user.email}`);
-							console.info(`🚀 SNUP - ${pushToken}`);
+							consola('normal', '🚀 SNUP - Registered!');
+							consola('normal', `🚀 SNUP - ${user.user.email}`);
+							consola('normal', `🚀 SNUP - ${pushToken}`);
 							auth().currentUser.sendEmailVerification()
 								.then(() => {
-									console.info('🚀 SNUP - Email verification sent!');
+									consola('normal', '🚀 SNUP - Email verification sent!');
 									dispatch(addUser(user))
 
 									if (role === 'business') {
@@ -156,14 +156,14 @@ export const SignUpScreen = ({ debug, navigation }) => {
 															dispatch(setErrorMessage(false))
 														})
 														.catch((error) => {
-															console.error(error.message);
+															consola('error', `🩸 ERROR - ${error.message}`);
 															dispatch(setLoggedIn(false))
 															consola('normal', `🕳  SNUP - Dispatch Loading STOP`)
 															dispatch(setLoadingMessage(false))
 															dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 														});
 												}).catch((error) => {
-													console.error(error.message);
+													consola('error', `🩸 ERROR - ${error.message}`);
 													dispatch(setLoggedIn(false))
 													consola('normal', `🕳  SNUP - Dispatch Loading STOP`)
 													dispatch(setLoadingMessage(false))
@@ -171,7 +171,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 												});
 											})
 											.catch((error) => {
-												console.error(error.message);
+												consola('error', `🩸 ERROR - ${error.message}`);
 												dispatch(setLoggedIn(false))
 												consola('normal', `🕳  SNUP - Dispatch Loading STOP`)
 												dispatch(setLoadingMessage(false))
@@ -198,7 +198,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 													dispatch(setLoggedIn(true))
 													dispatch(setErrorMessage(false))
 												}).catch((error) => {
-													console.error(error.message);
+													consola('error', `🩸 ERROR - ${error.message}`);
 													dispatch(setLoggedIn(false))
 													consola('normal', `🕳  SNUP - Dispatch Loading STOP`)
 													dispatch(setLoadingMessage(false))
@@ -206,7 +206,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 												});
 											})
 											.catch((error) => {
-												console.error(error.message);
+												consola('error', `🩸 ERROR - ${error.message}`);
 												dispatch(setLoggedIn(false))
 												consola('normal', `🕳  SNUP - Dispatch Loading STOP`)
 												dispatch(setLoadingMessage(false))
@@ -217,7 +217,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 								});
 						})
 						.catch((error) => {
-							console.error(error.message);
+							consola('error', `🩸 ERROR - ${error.message}`);
 							dispatch(setLoggedIn(false))
 							consola('normal', `🕳  SNUP - Dispatch Loading STOP`)
 							dispatch(setLoadingMessage(false))

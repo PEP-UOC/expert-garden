@@ -63,7 +63,7 @@ export function useFirebaseSaveGardenDetail(debug) {
 								}
 							})
 							.catch((error) => {
-								console.error(error.message);
+								consola('error', `🩸 ERROR - ${error.message}`);
 								consola('error', '🩸 FSGD - Error getting document.');
 								setSaved(false);
 								dispatch(setErrorMessage(`Error al actualizar el jardín.`));
@@ -91,7 +91,7 @@ export function useFirebaseSaveGardenDetail(debug) {
 						);
 					}
 				} catch (error) {
-					console.error(error.message);
+					consola('error', `🩸 ERROR - ${error.message}`);
 					setSaved(false);
 					dispatch(
 						setErrorMessage(
@@ -120,7 +120,7 @@ export function useFirebaseSaveGardenDetail(debug) {
 							dispatch(setErrorMessage(false));
 						})
 						.catch((error) => {
-							console.error(error.message);
+							consola('error', `🩸 ERROR - ${error.message}`);
 							dispatch(
 								setErrorMessage(
 									debug
@@ -130,7 +130,7 @@ export function useFirebaseSaveGardenDetail(debug) {
 							);
 						});
 				} catch (error) {
-					console.error(error.message);
+					consola('error', `🩸 ERROR - ${error.message}`);
 					setSaved(false);
 					dispatch(
 						setErrorMessage(
@@ -172,7 +172,7 @@ export function useFirebaseSaveGardenDetail(debug) {
 							dispatch(setErrorMessage(false));
 						})
 						.catch((error) => {
-							console.error(error.message);
+							consola('error', `🩸 ERROR - ${error.message}`);
 							consola('normal', `🕳  FSGD - Dispatch Loading STOP`);
 							dispatch(setLoadingMessage(false));
 							dispatch(
@@ -184,7 +184,7 @@ export function useFirebaseSaveGardenDetail(debug) {
 							);
 						});
 				} catch (error) {
-					console.error(error.message);
+					consola('error', `🩸 ERROR - ${error.message}`);
 					setSaved(false);
 					dispatch(
 						setErrorMessage(
