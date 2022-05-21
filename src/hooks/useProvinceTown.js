@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import consola from '../libs/myLogger';
+//import consola from '../libs/myLogger';
 
 //Data
 import { provinces } from '../data/provinces';
@@ -15,9 +15,9 @@ export function useProvinceTown(savedPostalCode, savedProvince, savedTown) {
 	const [townsSelectedIndex, setTownsSelectedIndex] = useState(
 		townsList.findIndex((town) => town.NOMBRE === savedTown) !== -1
 			? new IndexPath(townsList.findIndex((town) => town.NOMBRE === savedTown))
-			: new IndexPath(),
+			: new IndexPath(-2),
 	);
-	const townDisplayValue = townsList[townsSelectedIndex.row]?.NOMBRE || '';
+	const townDisplayValue = townsList[townsSelectedIndex.row]?.NOMBRE || 'Población';
 
 	//Provinces
 	useEffect(() => {

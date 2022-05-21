@@ -142,13 +142,13 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 
 	//Main Type
 	const [selectedIndexMainType, setSelectedIndexMainType] = useState();
-	const displayValueMainType = gardenDetailTypes[selectedIndexMainType?.row]?.value;
+	const displayValueMainType = gardenDetailTypes[selectedIndexMainType?.row]?.value || ' ';
 
 	//Sub Type
 	const [showSubType, setShowSubType] = useState(false);
 	const [listSubType, setListSubType] = useState([]);
 	const [selectedIndexSubType, setSelectedIndexSubType] = useState();
-	const displayValueSubType = listSubType[selectedIndexSubType?.row]?.value;
+	const displayValueSubType = listSubType[selectedIndexSubType?.row]?.value || ' ';
 
 	//Inputs
 	const [showInputs, setShowInputs] = useState(false);

@@ -60,6 +60,8 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 	const { loading: gardenLoading, result: garden, error: gardenError } = useFirebaseGetOne(debug, 'gardens', 'gid', gid);
 	const [saveChanges] = useFirebaseSaveAllChanges(debug);
 
+	console.log('garden', garden)
+
 	//State
 	const [loadComponents, setLoadComponents] = useState(false);
 
