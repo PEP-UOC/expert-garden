@@ -71,7 +71,7 @@ const styles = StyleService.create({
 	},
 	servicesList: {
 		width: Device?.isPhone ? '100%' : 960,
-		flexDirection: Device.isPhone ? 'colum' : 'row',
+		flexDirection: Device.isPhone ? 'column' : 'row',
 		flexWrap: 'wrap',
 	},
 });
