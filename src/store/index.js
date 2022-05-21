@@ -8,6 +8,8 @@ import changeReducer from './change/changeReducer';
 import serviceReducer from './service/serviceReducer';
 //import gardenReducer from './garden/gardenReducer';
 
+import consola from '../libs/myLogger';
+
 import thunk from 'redux-thunk';
 
 import { composeWithDevToolsDevelopmentOnly } from '@redux-devtools/extension';
@@ -42,7 +44,9 @@ const composeEnhancers = composeWithDevToolsDevelopmentOnly({ trace: true, trace
 
 const rootStore = () => {
 	const store = createStore(persistedReducer, composeEnhancers(applyMiddleware(thunk)));
-	const persistor = persistStore(store);
+	const persistor = persistStore(store, {}, () => {
+		consola('warn', '🕯  STORE RESTORED', true);
+	});
 	return { store, persistor };
 };
 

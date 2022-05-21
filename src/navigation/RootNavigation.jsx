@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
 import consola from '../libs/myLogger';
 
-
 //Store
-import { useDispatch, useSelector } from 'react-redux'
-import { setValidatingMessage } from '../store/root/rootAction';
+import { useSelector } from 'react-redux'
 
 //Navigation
 import {
@@ -14,10 +12,7 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { TabsNavigation } from './TabsNavigation';
-import { AuthNavigation } from './AuthNavigation';
-import { SplashScreen } from '../screens/SplashScreen/SplashScreen';
-import { ValidatingScreen } from '../screens/Validating/Validating';
-import { TermsAndConditionsScreen } from '../screens/TermsAndConditions/TermsAndConditions';
+import { NotLoggedInNavigation } from './NotLoggedInNavigation';
 
 //Expo Notifications
 import * as Notifications from 'expo-notifications';
@@ -40,21 +35,22 @@ function getParameterByName(name) {
 	return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
 }
 
+//Navigation
+import { useNavigation } from '@react-navigation/native';
+
 const Root = createNativeStackNavigator()
 
 const RootScreen = () => {
-	const dispatch = useDispatch()
+	//Navigation
+	const navigation = useNavigation();
 
 	//Store
 	const isLoggedIn = useSelector(state => state.rootReducer.isLoggedIn);
 
 	//State
-	const [isLoading, setIsLoading] = useState(true)
+	// eslint-disable-next-line no-unused-vars
 	const [isValidating, setIsValidating] = useState(false)
-	const [isTermsAndConditions, setIsTermsAndConditions] = useState(false)
 	const [urlReceived, setUrlReceived] = useState(false)
-	const [mode, setMode] = useState(undefined)
-	const [actionCode, setActionCode] = useState(undefined)
 
 	async function getInitialURL() {
 		try {
@@ -70,10 +66,27 @@ const RootScreen = () => {
 
 	useEffect(() => {
 		getInitialURL();
-		setTimeout(() => {
-			setIsLoading(false)
-		}, 1500)
 	}, [])
+
+	useEffect(() => {
+		if (!isValidating) {
+			// Get the action to complete.
+			const mode = getParameterByName('mode');
+			// Get the one-time code from the query parameter.
+			const actionCode = getParameterByName('oobCode');
+			// (Optional) Get the continue URL from the query parameter if available.
+			//const continueUrl = getParameterByName('continueUrl');
+			// (Optional) Get the language code if available.
+			//const lang = getParameterByName('lang') || 'es';
+
+			if (mode !== null) {
+				navigation.navigate("NotLoggedInNavigation", {
+					screen: 'ValidatingScreen',
+					params: { mode, actionCode },
+				});
+			}
+		}
+	}, [urlReceived])
 
 	//Push Notifications
 	// eslint-disable-next-line no-unused-vars
@@ -98,74 +111,14 @@ const RootScreen = () => {
 		};
 	}, []);
 
-	useEffect(() => {
-		if (!isValidating && !isTermsAndConditions) {
-			// Get the action to complete.
-			const mode = getParameterByName('mode');
-			// Get the one-time code from the query parameter.
-			const actionCode = getParameterByName('oobCode');
-			// (Optional) Get the continue URL from the query parameter if available.
-			//const continueUrl = getParameterByName('continueUrl');
-			// (Optional) Get the language code if available.
-			//const lang = getParameterByName('lang') || 'es';
-
-			//console.warn('mode', mode)
-			//console.warn('actionCode', actionCode)
-			//console.warn('continueUrl', continueUrl)
-			//console.warn('lang', lang)
-
-			if (mode !== null) {
-				setMode(mode)
-				setActionCode(actionCode)
-				switch (mode) {
-					case 'verifyEmail':
-						setIsValidating(true)
-						dispatch(setValidatingMessage('Validando email'))
-						break;
-					case 'resetPassword':
-						setIsValidating(true)
-						dispatch(setValidatingMessage('Recuperando contraseña'))
-						break;
-					case 'termsAndConditions':
-						setIsTermsAndConditions(true)
-						break;
-				}
-			}
-		}
-	}, [urlReceived])
-
-	const LoadingSplashScreen = () => {
-		return (
-			<SplashScreen isSplash />
-		)
-	}
-
-	const ValidatingScreenRender = () => {
-		return (
-			<ValidatingScreen mode={mode} actionCode={actionCode} />
-		)
-	}
-
-	const TermsAndConditionsScreenRender = () => {
-		return (
-			<TermsAndConditionsScreen />
-		)
-	}
-
 	return (
 		<Root.Navigator
 			screenOptions={{ headerShown: false }}
 		>
-			{isLoading ? (
-				<Root.Screen name="LoadingSplashScreen" component={LoadingSplashScreen} />
-			) : isTermsAndConditions ? (
-				<Root.Screen name="TermsAndConditionsScreenRender" component={TermsAndConditionsScreenRender} />
-			) : isValidating ? (
-				<Root.Screen name="ValidatingScreenRender" component={ValidatingScreenRender} />
-			) : isLoggedIn ? (
+			{isLoggedIn ? (
 				<Root.Screen name="TabsNavigation" component={TabsNavigation} />
 			) : (
-				<Root.Screen name="AuthNavigation" component={AuthNavigation} />
+				<Root.Screen name="NotLoggedInNavigation" component={NotLoggedInNavigation} />
 			)}
 		</Root.Navigator>
 	)
@@ -183,14 +136,10 @@ export const RootNavigation = () => {
 			}}
 			onStateChange={async () => {
 				const previousRouteName = routeNameRef.current;
-				consola('warn', `${previousRouteName}`)
 				const currentRouteName = navigationRef.getCurrentRoute().name;
 
 				if (previousRouteName !== currentRouteName) {
-					consola('warn', `${currentRouteName}`)
-					// The line below uses the expo-firebase-analytics tracker
-					// https://docs.expo.io/versions/latest/sdk/firebase-analytics/
-					// Change this line to use another Mobile analytics SDK
+					consola('warn', `📜 ${currentRouteName}`)
 					await Analytics.logEvent('screen_view', { currentRouteName });
 				}
 
@@ -201,9 +150,6 @@ export const RootNavigation = () => {
 				prefixes: ['expert-garden://', 'https://expert-garden.web.app.com'],
 				config: {
 					screens: {
-						LoadingSplashScreen: { path: 'loading' },
-						TermsAndConditionsScreenRender: { path: 'termsAndConditions' },
-						ValidatingScreenRender: { path: 'validating' },
 						TabsNavigation: {
 							screens: {
 								Home: '',
@@ -242,7 +188,7 @@ export const RootNavigation = () => {
 										ServiceResumeScreen: 'resume/:sid',
 										ServiceListScreen: 'list/:type',
 										EstimateServiceScreen: 'estimate/:sid',
-										EstimateResumeScreen: 'estimateResume/:sid',
+										EstimateResumeScreen: 'estimateResume/:sid/:cid',
 										WorkerAssignServiceScreen: 'workerAssign',
 									}
 								},
@@ -255,7 +201,7 @@ export const RootNavigation = () => {
 								},
 							},
 						},
-						AuthNavigation: {
+						NotLoggedInNavigation: {
 							screens: {
 								Login: {
 									path: 'login'
@@ -263,9 +209,18 @@ export const RootNavigation = () => {
 								SignUp: {
 									path: 'signUp'
 								},
+								RememberPass: {
+									path: 'rememberPass'
+								},
+								TermsAndConditionsScreen: {
+									path: 'termsAndConditions'
+								},
+								ValidatingScreen: {
+									path: 'validating/:mode?/:actionCode?'
+								},
 							},
 						},
-					},
+					}
 				},
 			}}
 		>

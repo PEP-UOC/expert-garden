@@ -35,8 +35,11 @@ import * as Linking from 'expo-linking';
 import Device from '../../libs/react-native-device-detection';
 
 // eslint-disable-next-line no-unused-vars
-export const ValidatingScreen = ({ debug, mode, actionCode }) => {
+export const ValidatingScreen = ({ debug, route }) => {
 	const dispatch = useDispatch()
+
+	const mode = route?.params?.mode || '';
+	const actionCode = route?.params?.actionCode || '';
 
 	//State
 	const [isValidating, setIsValidating] = useState(false)
@@ -232,8 +235,7 @@ export const ValidatingScreen = ({ debug, mode, actionCode }) => {
 
 ValidatingScreen.propTypes = {
 	debug: PropTypes.bool.isRequired,
-	mode: PropTypes.string,
-	actionCode: PropTypes.string
+	route: PropTypes.object.isRequired,
 };
 
 ValidatingScreen.defaultProps = {

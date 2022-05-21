@@ -52,6 +52,10 @@ export const RememberPass = ({ debug, navigation }) => {
 				consola('normal', `🕳  RMPA - Dispatch Loading STOP`)
 				dispatch(setLoadingMessage(false))
 				dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
+			})
+			.finally(() => {
+				consola('normal', `🕳  RMPA - Dispatch Loading STOP`)
+				dispatch(setLoadingMessage(false))
 			});
 	};
 
@@ -87,7 +91,7 @@ export const RememberPass = ({ debug, navigation }) => {
 									<Text category='c1' style={{ ...gloStyles?.smallText }}>Espera {passCounter}s. para enviar un nuevo email de recuperación.</Text>
 								</>}
 
-							<Button style={{ ...gloStyles?.buttonGhost }} appearance='ghost' onPress={() => navigation.pop()}>Volver</Button>
+							<Button style={{ ...gloStyles?.buttonGhost, marginTop: 20 }} appearance='ghost' onPress={() => navigation.pop()}>Volver</Button>
 
 							<View style={{ alignItems: 'center' }}>
 								<LeafIcon width={180} height={60} style={{ ...gloStyles?.leaf }} />
