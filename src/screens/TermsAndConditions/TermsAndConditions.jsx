@@ -26,7 +26,7 @@ export const TermsAndConditionsScreen = ({ debug }) => {
 
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-			<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
+			<ScrollView alwaysBounceVertical={true} centerContent={true}
 				contentContainerStyle={{ ...gloStyles.scrollView }}>
 				<Layout style={{ ...gloStyles.layout, justifyContent: 'flex-start' }}>
 					<SeparatorTopScreen />

@@ -70,8 +70,8 @@ export const RememberPass = ({ debug, navigation }) => {
 
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-			<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-				contentContainerStyle={{ ...gloStyles?.scrollView, ...ownStyles?.scrollHeight }}>
+			<ScrollView alwaysBounceVertical={true} centerContent={true}
+				contentContainerStyle={{ ...gloStyles?.scrollView }}>
 				<Layout style={{ ...gloStyles?.layout }}>
 					<SeparatorTopScreen />
 					<View style={{ ...gloStyles?.view }}>

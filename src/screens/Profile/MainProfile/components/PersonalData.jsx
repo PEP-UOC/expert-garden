@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from "prop-types";
-import consola from '../../../../libs/myLogger';
+//import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';

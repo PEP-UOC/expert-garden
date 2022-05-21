@@ -71,7 +71,7 @@ export const HomeScreen = ({ debug, navigation }) => {
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
 				<View style={{ flex: 1, justifyContent: "space-around" }}>
-					<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
+					<ScrollView alwaysBounceVertical={true} centerContent={true}
 						contentContainerStyle={{ ...gloStyles.scrollView }}>
 						<Layout style={{ ...gloStyles.layout }}>
 							<SeparatorTopScreen />
