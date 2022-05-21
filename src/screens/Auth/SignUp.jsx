@@ -109,7 +109,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 		if (!allFilled()) {
 			if (password == password2) {
 				registerForPushNotificationsAsync().then(pushToken => {
-					auth().createUserWithEmailAndPassword(email, password)
+					auth().createUserWithEmailAndPassword(email.trim(), password.trim())
 						.then((user) => {
 							consola('normal', '🚀 SNUP - Registered!');
 							consola('normal', `🚀 SNUP - ${user.user.email}`);
@@ -127,10 +127,10 @@ export const SignUpScreen = ({ debug, navigation }) => {
 											pushToken: pushToken || '',
 											verified: false,
 											metadata: {
-												name,
-												surnames,
-												fullname: `${name} ${surnames}`,
-												email,
+												name: name.trim(),
+												surnames: surnames.trim(),
+												fullname: `${name.trim()} ${surnames.trim()}`,
+												email: email.trim(),
 												photoCounter: 0,
 												cid: refCompany.id,
 												hasWorkers: false,
@@ -138,7 +138,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 										})
 											.then(() => {
 												auth().currentUser.updateProfile({
-													displayName: `${name} ${surnames}`,
+													displayName: `${name.trim()} ${surnames.trim()}`,
 												}).then(() => {
 													const now = moment();
 													const creationDateTime = now.format();
@@ -148,7 +148,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 														.set({
 															cid: refCompany.id,
 															uid: auth()?.currentUser?.uid,
-															name: name,
+															name: name.trim(),
 															creationDateTime,
 															pushToken: pushToken || '',
 														})
@@ -186,16 +186,16 @@ export const SignUpScreen = ({ debug, navigation }) => {
 											pushToken: pushToken || '',
 											verified: false,
 											metadata: {
-												name,
-												surnames,
-												fullname: `${name} ${surnames}`,
-												email,
+												name: name.trim(),
+												surnames: surnames.trim(),
+												fullname: `${name.trim()} ${surnames.trim()}`,
+												email: email.trim(),
 												photoCounter: 0,
 											}
 										})
 											.then(() => {
 												auth().currentUser.updateProfile({
-													displayName: `${name} ${surnames}`,
+													displayName: `${name.trim()} ${surnames.trim()}`,
 												}).then(() => {
 													dispatch(setLoggedIn(true))
 													dispatch(setErrorMessage(false))

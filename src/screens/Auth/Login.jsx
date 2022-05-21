@@ -79,7 +79,7 @@ export const LoginScreen = ({ debug, navigation }) => {
 
 		registerForPushNotificationsAsync().then(pushToken => {
 			dispatch(setPushToken(pushToken))
-			auth().signInWithEmailAndPassword(email, password)
+			auth().signInWithEmailAndPassword(email.trim(), password.trim())
 				.then((user) => {
 					consola('normal', `🔑 LOGI - Logged In! ${user.user.email}`)
 					dispatch(addUser(user))
