@@ -22,6 +22,7 @@ import { Links } from './components/Links'
 import { ContentDetails } from './components/ContentDetails'
 import { NavigationTop } from '../../../components/Navigation/Top'
 import { NavigationBackButton } from '../../../components/Navigation/BackButton'
+import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
 
 //Hooks
 import useFirebaseGetOne from '../../../hooks/useFirebaseGetOne'
@@ -70,6 +71,7 @@ export const NotificationResumeScreen = ({ debug, navigation, route }) => {
 					<ScrollView alwaysBounceVertical={true} centerContent={true}
 						contentContainerStyle={{ ...gloStyles.scrollView }}>
 						<Layout style={{ ...gloStyles.layout }}>
+							<SeparatorTopScreen hasTopNavigation={true} />
 							<View style={{ ...gloStyles.view }}>
 
 								<View style={{ ...gloStyles.section.primary }}>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types";
-import consola from '../../../libs/myLogger';
+//import consola from '../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -25,6 +25,7 @@ import { Layout } from '@ui-kitten/components';
 import { TitleScreen } from '../../../components/Titles/Screen'
 import { BtnPrimary } from '../../../components/Buttons/Primary'
 import { DatesSelect } from './components/DatesSelect'
+import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
 import { DetailsEstimate } from './components/DetailsEstimate'
 import { NavigationTop } from '../../../components/Navigation/Top'
 import { NavigationBackButton } from '../../../components/Navigation/BackButton'
@@ -94,6 +95,7 @@ export const EstimateServiceScreen = ({ debug, navigation, route }) => {
 					<ScrollView alwaysBounceVertical={true} centerContent={true}
 						contentContainerStyle={{ ...gloStyles.scrollView }}>
 						<Layout style={{ ...gloStyles.layout }}>
+							<SeparatorTopScreen hasTopNavigation={true} />
 							<View style={{ ...gloStyles.view }}>
 
 								<View style={{ ...gloStyles.section.primary }}>

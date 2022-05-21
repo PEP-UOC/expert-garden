@@ -21,6 +21,7 @@ import { LeafIcon } from '../../assets/icons/Leaf'
 import { SafeAreaView, ScrollView, View, TouchableWithoutFeedback } from 'react-native'
 import { Text, Button, Layout, Input, Spinner, Icon } from '@ui-kitten/components';
 import BtnExternalLink from '../../components/Buttons/ExternalLink'
+import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
 
 //Firebase
 import firebase from 'firebase/compat/app';
@@ -179,6 +180,7 @@ export const ValidatingScreen = ({ debug, route }) => {
 			<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 				contentContainerStyle={{ ...gloStyles.scrollView }}>
 				<Layout style={{ ...gloStyles.layout }}>
+					<SeparatorTopScreen />
 					<View style={{ ...ownStyles.view }}>
 						<Text category='h2' style={{ ...gloStyles?.h2, ...ownStyles?.title }}>
 							{validatingMessage}

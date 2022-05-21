@@ -13,6 +13,7 @@ import { addUser } from '../../store/user/userAction';
 //Components
 import { View, SafeAreaView, ScrollView, TouchableWithoutFeedback, KeyboardAvoidingView, Platform } from 'react-native'
 import { Text, Button, Layout, Input, Icon, Select, SelectItem, IndexPath } from '@ui-kitten/components';
+import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
@@ -262,6 +263,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 					<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 						contentContainerStyle={{ ...gloStyles.scrollView, ...ownStyles?.scrollHeight }}>
 						<Layout style={{ ...gloStyles.layout, marginTop: (keyboardSize - 50) * -1 }}>
+							<SeparatorTopScreen />
 							<View style={{ ...gloStyles.view }}>
 								<View style={{ ...gloStyles.section.fullCentered }}>
 

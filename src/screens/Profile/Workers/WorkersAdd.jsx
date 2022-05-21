@@ -20,7 +20,6 @@ import { Platform } from 'react-native';
 //Components
 import { SafeAreaView, ScrollView, View, KeyboardAvoidingView } from 'react-native'
 import { Layout } from '@ui-kitten/components';
-import { SeparatorTopSection } from '../../../components/Separators/TopSection'
 import { TitleScreen } from '../../../components/Titles/Screen'
 import { BtnPrimary } from '../../../components/Buttons/Primary'
 import { WorkerDataForm } from './components/WorkerData'
@@ -233,7 +232,6 @@ export const WorkersAddScreen = ({ debug, navigation, route }) => {
 								</View>
 
 								<View style={{ ...gloStyles.section.secondary }}>
-									<SeparatorTopSection />
 									<WorkerDataForm cid={user?.metadata?.cid || ''} values={values} handleChange={handleChange} />
 
 									{Device.isPhone && <BtnPrimary size={'small'} disabled={allFilled()} icon={SaveIcon} text={"Añadir empleado"} onPress={SignUpWorker} btnStyle={{ marginBottom: 0, marginTop: 0 }} />}

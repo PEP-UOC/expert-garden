@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from "prop-types";
-import consola from '../../../libs/myLogger';
+//import consola from '../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -25,6 +25,7 @@ import { BtnPrimary } from '../../../components/Buttons/Primary'
 import { WorkersList } from './components/WorkersList'
 import { NavigationTop } from '../../../components/Navigation/Top'
 import { NavigationBackButton } from '../../../components/Navigation/BackButton'
+import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
 
 //Hooks
 import useFirebaseGetOne from '../../../hooks/useFirebaseGetOne'
@@ -87,6 +88,7 @@ export const WorkerAssignServiceScreen = ({ debug, navigation, route }) => {
 					<ScrollView alwaysBounceVertical={true} centerContent={true}
 						contentContainerStyle={{ ...gloStyles.scrollView }}>
 						<Layout style={{ ...gloStyles.layout }}>
+							<SeparatorTopScreen hasTopNavigation={true} />
 							<View style={{ ...gloStyles.view }}>
 
 								<View style={{ ...gloStyles.section.primary }}>

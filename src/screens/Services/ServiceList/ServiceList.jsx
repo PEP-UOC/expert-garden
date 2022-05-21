@@ -24,6 +24,7 @@ import { TitleScreen } from '../../../components/Titles/Screen'
 import { ServicesList } from '../MainServices/components/List'
 import { NavigationTop } from '../../../components/Navigation/Top'
 import { NavigationBackButton } from '../../../components/Navigation/BackButton'
+import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
 
 // eslint-disable-next-line no-unused-vars
 export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
@@ -138,10 +139,11 @@ export const ServiceListScreen = ({ debug, navigation, route, showLong }) => {
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
 				<View style={{ flex: 1, justifyContent: "space-around" }}>
-					<NavigationTop />
+					<NavigationTop title="Servicios" />
 					<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
 						contentContainerStyle={{ ...gloStyles.scrollView }}>
 						<Layout style={{ ...gloStyles.layout }}>
+							<SeparatorTopScreen hasTopNavigation={true} />
 							<View style={{ ...gloStyles.view }}>
 								<View style={{ ...gloStyles.section.primary }}>
 									<TitleScreen icon={icon} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 0 : 30 } }} primaryText={showLong ? longTitle : title} secondaryText={''} />
@@ -173,5 +175,5 @@ ServiceListScreen.propTypes = {
 
 ServiceListScreen.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
-	showLong: true,
+	showLong: false,
 };

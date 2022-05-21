@@ -22,7 +22,6 @@ import { Layout } from '@ui-kitten/components';
 import { TitleScreen } from '../../../components/Titles/Screen'
 import { BtnPrimary } from '../../../components/Buttons/Primary'
 import { SeparatorTopScreen } from '../../../components/Separators/TopScreen'
-import { SeparatorTopSection } from '../../../components/Separators/TopSection'
 import { CompanyList } from "./components/CompanyList"
 
 //Icons
@@ -81,7 +80,6 @@ export const CompanyRequestScreen = ({ debug, navigation, route }) => {
 								</View>
 
 								<View style={{ ...gloStyles.section.secondary }}>
-									<SeparatorTopSection />
 
 									<CompanyList />
 
