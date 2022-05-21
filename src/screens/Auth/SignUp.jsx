@@ -123,7 +123,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 										firestore().collection("users").doc(auth()?.currentUser?.uid).set({
 											uid: auth()?.currentUser?.uid,
 											role,
-											pushToken,
+											pushToken: pushToken || '',
 											verified: false,
 											metadata: {
 												name,
@@ -149,11 +149,12 @@ export const SignUpScreen = ({ debug, navigation }) => {
 															uid: auth()?.currentUser?.uid,
 															name: name,
 															creationDateTime,
-															pushToken
+															pushToken: pushToken || '',
 														})
 														.then(() => {
 															dispatch(setLoggedIn(true))
 															dispatch(setErrorMessage(false))
+															dispatch(setLoadingMessage(false))
 														})
 														.catch((error) => {
 															consola('error', `🩸 ERROR - ${error.message}`);
@@ -181,7 +182,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 										firestore().collection("users").doc(auth()?.currentUser?.uid).set({
 											uid: auth()?.currentUser?.uid,
 											role,
-											pushToken,
+											pushToken: pushToken || '',
 											verified: false,
 											metadata: {
 												name,
@@ -197,6 +198,7 @@ export const SignUpScreen = ({ debug, navigation }) => {
 												}).then(() => {
 													dispatch(setLoggedIn(true))
 													dispatch(setErrorMessage(false))
+													dispatch(setLoadingMessage(false))
 												}).catch((error) => {
 													consola('error', `🩸 ERROR - ${error.message}`);
 													dispatch(setLoggedIn(false))
@@ -213,7 +215,6 @@ export const SignUpScreen = ({ debug, navigation }) => {
 												dispatch(setErrorMessage(debug ? `${firebaseErrorCodeMap(error.code)} || ${error.message}` : firebaseErrorCodeMap(error.code)))
 											});
 									}
-
 								});
 						})
 						.catch((error) => {
