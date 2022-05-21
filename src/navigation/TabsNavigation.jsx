@@ -100,6 +100,8 @@ export const TabsNavigation = () => {
 	useEffect(() => {
 		let isMounted = true;
 		if (isMounted) {
+			console.log('auth()?.currentUser?.uid', auth()?.currentUser?.uid)
+			console.log('user', user)
 			firestore().collection("users").doc(auth()?.currentUser?.uid)
 				.onSnapshot({
 					// Listen for document metadata changes

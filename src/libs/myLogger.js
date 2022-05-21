@@ -3,9 +3,7 @@ import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 import colorize from 'json-colorizer';
 
-const consola = async (type, content) => {
-	const debug = Constants.manifest.extra.debug;
-
+const consola = async (type, content, debug = Constants.manifest.extra.debug) => {
 	const ctx = new chalk.Instance({ level: 3 });
 
 	const normal = Platform.OS !== 'web' ? ctx.whiteBright : ctx.black.bgWhiteBright;
