@@ -2,6 +2,7 @@ import 'dotenv/config';
 
 export default {
 	expo: {
+		lang: 'es',
 		name: 'Expert Garden',
 		slug: 'expert-garden',
 		version: '1.0.0',
@@ -36,7 +37,7 @@ export default {
 		},
 		assetBundlePatterns: ['**/*'],
 		android: {
-			package: `com.expertgarden.${process.env.APP_VARIANT}`,
+			package: `com.expertgarden.${process.env.APP_VARIANT || 'expertgarden'}`,
 			googleServicesFile: './google-services.json',
 			adaptiveIcon: {
 				foregroundImage: './src/assets/images/adaptive-icon.png',
@@ -44,7 +45,7 @@ export default {
 			},
 		},
 		ios: {
-			bundleIdentifier: `com.expertgarden.${process.env.APP_VARIANT}`,
+			bundleIdentifier: `com.expertgarden.${process.env.APP_VARIANT || 'expertgarden'}`,
 			googleServicesFile: './GoogleService-Info.plist',
 			supportsTablet: true,
 		},
