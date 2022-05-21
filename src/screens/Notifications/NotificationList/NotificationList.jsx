@@ -85,7 +85,7 @@ export const NotificationListScreen = ({ debug, navigation, route, showLong }) =
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
 				<View style={{ flex: 1, justifyContent: "space-around" }}>
 					<NavigationTop title={'Notificaciones'} />
-					<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
+					<ScrollView alwaysBounceVertical={true} centerContent={true}
 						contentContainerStyle={{ ...gloStyles.scrollView }}>
 						<Layout style={{ ...gloStyles.layout }}>
 							<SeparatorTopScreen hasTopNavigation={true} />

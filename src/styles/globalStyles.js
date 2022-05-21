@@ -38,7 +38,7 @@ const globalStyles = StyleService.create({
 	section: {
 		fullCentered: {
 			flexDirection: 'column',
-			height: Device?.isPhone ? undefined : '100%',
+			height: '100%',
 			width: Device?.isPhone ? '100%' : '100%',
 			marginLeft: 'auto',
 			marginRight: 'auto',

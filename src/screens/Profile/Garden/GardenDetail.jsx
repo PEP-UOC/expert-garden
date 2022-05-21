@@ -95,7 +95,7 @@ export const GardenDetailScreen = ({ debug, navigation, route }) => {
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
 				<View style={{ flex: 1, justifyContent: "space-around" }}>
 					<NavigationTop title={'Detalles del Jardín'} />
-					<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
+					<ScrollView alwaysBounceVertical={true} centerContent={true}
 						contentContainerStyle={{ ...gloStyles.scrollView }}>
 						<Layout style={{ ...gloStyles.layout }}>
 							<SeparatorTopScreen hasTopNavigation={true} />

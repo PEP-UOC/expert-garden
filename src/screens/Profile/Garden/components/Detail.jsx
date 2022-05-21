@@ -227,7 +227,7 @@ export const DetailScreen = ({ debug, navigation, route }) => {
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
 				<View style={{ flex: 1, justifyContent: "space-around" }}>
 					<NavigationTop title={''} />
-					<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
+					<ScrollView alwaysBounceVertical={true} centerContent={true}
 						contentContainerStyle={{ ...gloStyles?.scrollView }}>
 						<Layout style={{ ...gloStyles?.layout }}>
 							<View style={{ ...gloStyles?.view, alignItems: 'flex-start' }}>

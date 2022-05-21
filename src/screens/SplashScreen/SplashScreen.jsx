@@ -36,7 +36,7 @@ export const SplashScreen = ({ debug, isSplash = false }) => {
 
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-			<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
+			<ScrollView alwaysBounceVertical={true} centerContent={true}
 				contentContainerStyle={{ ...gloStyles.scrollView }}>
 				<Layout style={{ ...gloStyles.layout }}>
 					<View style={{ ...ownStyles.view }}>

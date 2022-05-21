@@ -29,9 +29,6 @@ import 'firebase/compat/auth';
 import "firebase/compat/firestore";
 import firebaseErrorCodeMap from '../../common/firebaseErrorCodeMap';
 
-//Hooks
-import { useKeyboardSize } from "../../hooks/useKeyboardSize"
-
 //Moment
 import moment from 'moment';
 
@@ -240,9 +237,6 @@ export const SignUpScreen = ({ debug, navigation }) => {
 		}
 	}
 
-	//Keyboard
-	const [keyboardSize] = useKeyboardSize()
-
 	//Checks
 	function allFilled() {
 		return values?.name === '' || (values?.surnames === '' && values?.role === 'client') || values?.role === '' || values?.email === '' || values?.password === '' || values?.password2 === ''
@@ -260,12 +254,12 @@ export const SignUpScreen = ({ debug, navigation }) => {
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
 				<View style={{ flex: 1, justifyContent: "space-around" }}>
-					<ScrollView alwaysBounceVertical={true} centerContent={true} keyboardDismissMode={'on-drag'}
-						contentContainerStyle={{ ...gloStyles.scrollView, ...ownStyles?.scrollHeight }}>
-						<Layout style={{ ...gloStyles.layout, marginTop: (keyboardSize - 50) * -1 }}>
+					<ScrollView alwaysBounceVertical={true} centerContent={true}
+						contentContainerStyle={{ ...gloStyles.scrollView }}>
+						<Layout style={{ ...gloStyles.layout }}>
 							<SeparatorTopScreen />
 							<View style={{ ...gloStyles.view }}>
-								<View style={{ ...gloStyles.section.fullCentered }}>
+								<View style={{ ...gloStyles.section.fullStart }}>
 
 									<Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>REGISTRATE EN</Text>
 									<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>EXPERT GARDEN</Text>
