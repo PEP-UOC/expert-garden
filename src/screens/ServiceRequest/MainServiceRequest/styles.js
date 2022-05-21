@@ -7,7 +7,7 @@ import Device from '../../../libs/react-native-device-detection';
 const styles = StyleService.create({
 	servicesList: {
 		width: Device?.isPhone ? '100%' : 960,
-		flexDirection: Device.isPhone ? 'colum' : 'row',
+		flexDirection: Device.isPhone ? 'column' : 'row',
 		flexWrap: 'wrap',
 		justifyContent: 'space-between',
 	},
@@ -66,7 +66,7 @@ const styles = StyleService.create({
 		marginTop: Device?.isPhone ? 0 : 35,
 	},
 	btnRow: {
-		flexDirection: Device.isPhone ? 'colum' : 'row',
+		flexDirection: Device.isPhone ? 'column' : 'row',
 		alignItems: 'center',
 		width: Device?.isPhone ? '100%' : 960,
 		justifyContent: 'space-between',

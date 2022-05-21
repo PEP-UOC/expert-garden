@@ -222,6 +222,45 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 
 	const fadeRef = useRef(new Animated.Value(0)).current
 
+	const FadeView = (props) => {
+
+		useEffect(() => {
+			let isMounted = true;
+			if (isMounted) {
+				Animated.timing(
+					props.fadeRef,
+					{
+						toValue: 1,
+						duration: 500,
+						useNativeDriver: Platform.OS !== 'web' ? true : false
+					}
+				).start();
+			}
+
+			return () => {
+				// cancel the subscription
+				isMounted = false;
+			};
+		}, [props.fadeRef])
+
+		return (
+			<Animated.View
+				style={{
+					...props.style,
+					opacity: props.fadeRef,
+				}}
+			>
+				{props.children}
+			</Animated.View>
+		);
+	}
+
+	FadeView.propTypes = {
+		style: PropTypes.object,
+		fadeRef: PropTypes.object.isRequired,
+		children: PropTypes.any.isRequired,
+	};
+
 	const renderCaption = (caption) => {
 		return (
 			<Text style={{ ...gloStyles.inputs.captionText }}>{caption}</Text>
@@ -352,21 +391,23 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 									<SeparatorTopSection />
 
 									{/*TITULO SECCIÓN SERVICIO*/}
-									<TitleSection icon={''} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? listInputs?.length > 0 ? 0 : 20 : 45, marginLeft: Device?.isPhone ? 0 : 60 }, primaryText: { fontSize: Device?.isPhone ? 18 : 24, lineHeight: Device?.isPhone ? 25 : undefined, marginLeft: 0 } }}
-										primaryText={
-											step === 1
-												? servicesTypes?.find((type) => type.id === values.typeId)?.question || ''
-												: step === 2
-													? listStep1?.find((type) => type.step1typeId === values.step1id)?.question || ''
-													: step === 3
-														? listStep2?.find((type) => type.step2typeId === values.step2id)?.question || ''
-														: step === 4
-															? listStep3?.find((type) => type.step3typeId === values.step3id)?.question || ''
-															: '¿Qué necesitas?'
-										} secondaryText={''} />
+									<FadeView fadeRef={fadeRef} >
+										<TitleSection icon={''} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? listInputs?.length > 0 ? 0 : 20 : 45, marginLeft: Device?.isPhone ? 0 : 60 }, primaryText: { fontSize: Device?.isPhone ? 18 : 24, lineHeight: Device?.isPhone ? 25 : undefined, marginLeft: 0 } }}
+											primaryText={
+												step === 1
+													? servicesTypes?.find((type) => type.id === values.typeId)?.question || ''
+													: step === 2
+														? listStep1?.find((type) => type.step1typeId === values.step1id)?.question || ''
+														: step === 3
+															? listStep2?.find((type) => type.step2typeId === values.step2id)?.question || ''
+															: step === 4
+																? listStep3?.find((type) => type.step3typeId === values.step3id)?.question || ''
+																: '¿Qué necesitas?'
+											} secondaryText={''} />
+									</FadeView>
 
 									{/*LISTADO DE OPCIONES*/}
-									<View style={{ ...ownStyles.servicesList }}>
+									<FadeView style={{ ...ownStyles.servicesList }} fadeRef={fadeRef}>
 										{servicesToList?.map(service => {
 											return (<Button
 												appearance='outline'
@@ -402,7 +443,7 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 												}
 											</Button>)
 										})}
-									</View>
+									</FadeView>
 
 									{/*LISTADO DE INPUTS*/}
 									<View style={{ width: '100%' }}>
@@ -435,7 +476,7 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 									</View>
 
 									{/*BOTTOM BUTTONS*/}
-									<View style={
+									<FadeView fadeRef={fadeRef} style={
 										listInputs?.length === 0
 											? { ...ownStyles.btnRow }
 											: { ...ownStyles.btnRow, ...ownStyles.btnRowFull }
@@ -558,7 +599,7 @@ export const MainServiceRequestScreen = ({ debug, navigation, route }) => {
 												<View style={{ ...ownStyles.btnServiceAtras }}>
 												</View>
 											)}
-									</View>
+									</FadeView>
 
 									{/*MODAL GUARDAR DETALLE SIN GUARDAR*/}
 									<ModalOptions mainText={'¿Quieres guardar el detalle del servicio que estás configurado?'} show={askToSave} setShow={setAskToSave} option1text={'Guardar y ver resumen del servicio'} option1onPress={saveFromModal} option2text={'No guardar, ver resumen del servicio'} option2onPress={navigateToResumeDirect} backdropPress={() => { return }} />

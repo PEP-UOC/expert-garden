@@ -8,7 +8,7 @@ const styles = StyleService.create({
 	itemsWrapper: {
 		justifyContent: 'space-between',
 		flexDirection: Device?.isPhone ? 'column' : 'row',
-		flexWrap: Device?.isPhone ? 'no-wrap' : 'wrap',
+		flexWrap: Device?.isPhone ? 'nowrap' : 'wrap',
 		marginTop: 10,
 		marginBottom: Device?.isPhone ? 15 : 30,
 	},
