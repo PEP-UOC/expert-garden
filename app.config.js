@@ -5,7 +5,7 @@ export default {
 		name: 'Expert Garden',
 		slug: 'expert-garden',
 		description: 'An app to request gardening services',
-		version: '1.0.0',
+		version: '1.0.1',
 		githubUrl: 'https://github.com/PEP-UOC/expert-garden',
 		orientation: 'portrait',
 		backgroundColor: '#ffffff',
