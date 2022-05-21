@@ -80,13 +80,13 @@ export const LoginScreen = ({ debug, navigation }) => {
 			dispatch(setPushToken(pushToken))
 			auth().signInWithEmailAndPassword(email, password)
 				.then((user) => {
-					console.info('🔑 LOGI - Logged In!', user.user.email);
+					consola('normal', `🔑 LOGI - Logged In! ${user.user.email}`)
 					dispatch(addUser(user))
 					dispatch(setErrorMessage(false))
 					dispatch(setLoggedIn(true))
 				})
 				.catch((error) => {
-					console.error(error.message);
+					consola('error', `🩸 ERROR - ${error.message}`);
 					dispatch(setLoggedIn(false))
 					consola('normal', `🕳  LOGI - Dispatch Loading STOP`)
 					dispatch(setLoadingMessage(false))

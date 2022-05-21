@@ -68,7 +68,7 @@ export function useFirebaseServiceUtils(debug) {
 					consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 					dispatch(setLoadingMessage(false));
 				} catch (error) {
-					console.error(error.message);
+					consola('error', `🩸 ERROR - ${error.message}`);
 					setSaved(false);
 					dispatch(
 						setErrorMessage(
@@ -110,7 +110,7 @@ export function useFirebaseServiceUtils(debug) {
 								}
 							})
 							.catch((error) => {
-								console.error(error.message);
+								consola('error', `🩸 ERROR - ${error.message}`);
 								consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 								dispatch(setLoadingMessage(false));
 								dispatch(
@@ -165,7 +165,7 @@ export function useFirebaseServiceUtils(debug) {
 								}
 							})
 							.catch((error) => {
-								console.error(error.message);
+								consola('error', `🩸 ERROR - ${error.message}`);
 								consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 								dispatch(setLoadingMessage(false));
 								dispatch(
@@ -178,7 +178,7 @@ export function useFirebaseServiceUtils(debug) {
 							});
 					}
 				} catch (error) {
-					console.error(error.message);
+					consola('error', `🩸 ERROR - ${error.message}`);
 					setSaved(false);
 					dispatch(
 						setErrorMessage(
@@ -236,7 +236,7 @@ export function useFirebaseServiceUtils(debug) {
 								}
 							})
 							.catch((error) => {
-								console.error(error.message);
+								consola('error', `🩸 ERROR - ${error.message}`);
 								consola('error', '🩸 FSUT - Error getting document.');
 								setSaved(false);
 								dispatch(setErrorMessage(`Error al actualizar el servicio.`));
@@ -253,7 +253,7 @@ export function useFirebaseServiceUtils(debug) {
 						dispatch(setLoadingMessage(false));
 					}
 				} catch (error) {
-					console.error(error.message);
+					consola('error', `🩸 ERROR - ${error.message}`);
 					setSaved(false);
 					dispatch(
 						setErrorMessage(
@@ -315,7 +315,7 @@ export function useFirebaseServiceUtils(debug) {
 							dispatch(setLoadingMessage(false));
 						})
 						.catch((error) => {
-							console.error(error.message);
+							consola('error', `🩸 ERROR - ${error.message}`);
 							dispatch(
 								setErrorMessage(
 									debug
@@ -327,7 +327,7 @@ export function useFirebaseServiceUtils(debug) {
 							dispatch(setLoadingMessage(false));
 						});
 				} catch (error) {
-					console.error(error.message);
+					consola('error', `🩸 ERROR - ${error.message}`);
 					setSaved(false);
 					dispatch(
 						setErrorMessage(
@@ -376,7 +376,7 @@ export function useFirebaseServiceUtils(debug) {
 						dispatch(setLoadingMessage(false));
 					})
 					.catch((error) => {
-						console.error(error.message);
+						consola('error', `🩸 ERROR - ${error.message}`);
 						consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 						dispatch(
@@ -399,7 +399,7 @@ export function useFirebaseServiceUtils(debug) {
 				dispatch(setLoadingMessage(false));
 			}
 		} catch (error) {
-			console.error(error.message);
+			consola('error', `🩸 ERROR - ${error.message}`);
 			setSaved(false);
 			dispatch(
 				setErrorMessage(
@@ -455,7 +455,7 @@ export function useFirebaseServiceUtils(debug) {
 									dispatch(setLoadingMessage(false));
 								})
 								.catch((error) => {
-									console.error(error.message);
+									consola('error', `🩸 ERROR - ${error.message}`);
 									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 									dispatch(
@@ -477,7 +477,7 @@ export function useFirebaseServiceUtils(debug) {
 						}
 					})
 					.catch((error) => {
-						console.error(error.message);
+						consola('error', `🩸 ERROR - ${error.message}`);
 						consola('error', '🩸 FSUT - Error getting document.');
 						setSaved(false);
 						dispatch(setErrorMessage(`Error al actualizar la fecha del servicio.`));
@@ -494,7 +494,7 @@ export function useFirebaseServiceUtils(debug) {
 				dispatch(setLoadingMessage(false));
 			}
 		} catch (error) {
-			console.error(error.message);
+			consola('error', `🩸 ERROR - ${error.message}`);
 			setSaved(false);
 			dispatch(
 				setErrorMessage(
@@ -573,7 +573,7 @@ export function useFirebaseServiceUtils(debug) {
 									dispatch(setLoadingMessage(false));
 								})
 								.catch((error) => {
-									console.error(error.message);
+									consola('error', `🩸 ERROR - ${error.message}`);
 									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 									dispatch(
@@ -595,7 +595,7 @@ export function useFirebaseServiceUtils(debug) {
 						}
 					})
 					.catch((error) => {
-						console.error(error.message);
+						consola('error', `🩸 ERROR - ${error.message}`);
 						consola('error', '🩸 FSUT - Error getting document.');
 						setSaved(false);
 						dispatch(setErrorMessage(`Error al actualizar la estimación del servicio.`));
@@ -612,7 +612,7 @@ export function useFirebaseServiceUtils(debug) {
 				dispatch(setLoadingMessage(false));
 			}
 		} catch (error) {
-			console.error(error.message);
+			consola('error', `🩸 ERROR - ${error.message}`);
 			setSaved(false);
 			dispatch(
 				setErrorMessage(
@@ -700,7 +700,7 @@ export function useFirebaseServiceUtils(debug) {
 										});
 								})
 								.catch((error) => {
-									console.error(error.message);
+									consola('error', `🩸 ERROR - ${error.message}`);
 									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 									dispatch(
@@ -722,7 +722,7 @@ export function useFirebaseServiceUtils(debug) {
 						}
 					})
 					.catch((error) => {
-						console.error(error.message);
+						consola('error', `🩸 ERROR - ${error.message}`);
 						consola('error', '🩸 FSUT - Error getting document.');
 						setSaved(false);
 						dispatch(setErrorMessage(`Error al actualizar la estimación del servicio.`));
@@ -739,7 +739,7 @@ export function useFirebaseServiceUtils(debug) {
 				dispatch(setLoadingMessage(false));
 			}
 		} catch (error) {
-			console.error(error.message);
+			consola('error', `🩸 ERROR - ${error.message}`);
 			setSaved(false);
 			dispatch(
 				setErrorMessage(
@@ -875,7 +875,7 @@ export function useFirebaseServiceUtils(debug) {
 									dispatch(setLoadingMessage(false));
 								})
 								.catch((error) => {
-									console.error(error.message);
+									consola('error', `🩸 ERROR - ${error.message}`);
 									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 									dispatch(
@@ -897,7 +897,7 @@ export function useFirebaseServiceUtils(debug) {
 						}
 					})
 					.catch((error) => {
-						console.error(error.message);
+						consola('error', `🩸 ERROR - ${error.message}`);
 						consola('error', '🩸 FSUT - Error getting document.');
 						setSaved(false);
 						dispatch(setErrorMessage(`Error al actualizar la estimación del servicio.`));
@@ -914,7 +914,7 @@ export function useFirebaseServiceUtils(debug) {
 				dispatch(setLoadingMessage(false));
 			}
 		} catch (error) {
-			console.error(error.message);
+			consola('error', `🩸 ERROR - ${error.message}`);
 			setSaved(false);
 			dispatch(
 				setErrorMessage(
@@ -996,7 +996,7 @@ export function useFirebaseServiceUtils(debug) {
 									});
 								})
 								.catch((error) => {
-									console.error(error.message);
+									consola('error', `🩸 ERROR - ${error.message}`);
 									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 									dispatch(
@@ -1018,7 +1018,7 @@ export function useFirebaseServiceUtils(debug) {
 						}
 					})
 					.catch((error) => {
-						console.error(error.message);
+						consola('error', `🩸 ERROR - ${error.message}`);
 						consola('error', '🩸 FSUT - Error getting document.');
 						setSaved(false);
 						dispatch(setErrorMessage(`Error al actualizar la estimación del servicio.`));
@@ -1035,7 +1035,7 @@ export function useFirebaseServiceUtils(debug) {
 				dispatch(setLoadingMessage(false));
 			}
 		} catch (error) {
-			console.error(error.message);
+			consola('error', `🩸 ERROR - ${error.message}`);
 			setSaved(false);
 			dispatch(
 				setErrorMessage(
@@ -1079,7 +1079,7 @@ export function useFirebaseServiceUtils(debug) {
 									dispatch(setLoadingMessage(false));
 								})
 								.catch((error) => {
-									console.error(error.message);
+									consola('error', `🩸 ERROR - ${error.message}`);
 									consola('normal', `🕳  FSUT - Dispatch Loading STOP`);
 									dispatch(setLoadingMessage(false));
 									dispatch(
@@ -1101,7 +1101,7 @@ export function useFirebaseServiceUtils(debug) {
 						}
 					})
 					.catch((error) => {
-						console.error(error.message);
+						consola('error', `🩸 ERROR - ${error.message}`);
 						consola('error', '🩸 FSUT - Error getting document.');
 						setSaved(false);
 						dispatch(setErrorMessage(`Error al actualizar el trabajador del servicio.`));
@@ -1118,7 +1118,7 @@ export function useFirebaseServiceUtils(debug) {
 				dispatch(setLoadingMessage(false));
 			}
 		} catch (error) {
-			console.error(error.message);
+			consola('error', `🩸 ERROR - ${error.message}`);
 			setSaved(false);
 			dispatch(
 				setErrorMessage(

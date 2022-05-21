@@ -83,7 +83,7 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 			}
 			dispatch(setErrorMessage(false));
 		} catch (error) {
-			console.error(error.message);
+			consola('error', `🩸 ERROR - ${error.message}`);
 			dispatch(
 				setErrorMessage(
 					debug
@@ -153,7 +153,7 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 							})
 							.then(() => {})
 							.catch((error) => {
-								console.error(error.message);
+								consola('error', `🩸 ERROR - ${error.message}`);
 								consola('normal', `🕳  FISI - Dispatch Loading STOP`);
 								dispatch(setLoadingMessage(false));
 								dispatch(
@@ -166,7 +166,7 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 							});
 					})
 					.catch((error) => {
-						console.error(error.message);
+						consola('error', `🩸 ERROR - ${error.message}`);
 						consola('normal', `🕳  FISI - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 						dispatch(
@@ -195,7 +195,7 @@ export function useFirebaseSaveImage(debug, savedEntity, entityType) {
 						dispatch(setErrorMessage(false));
 					})
 					.catch((error) => {
-						console.error(error.message);
+						consola('error', `🩸 ERROR - ${error.message}`);
 						consola('normal', `🕳  FISI - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 						dispatch(

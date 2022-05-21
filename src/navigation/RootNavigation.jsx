@@ -58,9 +58,8 @@ const RootScreen = () => {
 			consola('normal', `👨‍🦯 RNAV - Initial URL ${url}`)
 			setUrlReceived(url);
 			return;
-		} catch (e) {
-			// We might want to provide this error information to an error reporting service
-			console.warn(e);
+		} catch (error) {
+			consola('error', `🩸 ERROR - ${error.message}`);
 		}
 	}
 
@@ -88,21 +87,28 @@ const RootScreen = () => {
 		}
 	}, [urlReceived])
 
-	//Push Notifications
-	// eslint-disable-next-line no-unused-vars
-	const [notification, setNotification] = useState(false);
+	//Push Notifications LISTENERS
 	const notificationListener = useRef();
 	const responseListener = useRef();
-
 	useEffect(() => {
 		// This listener is fired whenever a notification is received while the app is foregrounded
 		notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-			setNotification(notification);
+			const title = notification?.request?.content?.title || '';
+			const body = notification?.request?.content?.body || '';
+			consola('warn', `🏓 NOTIFCATION RECIBIDA ${title} | ${body}`);
 		});
 
 		// This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
 		responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-			consola('normal', response);
+			const nid = response?.notification?.request?.content?.data?.nid || false;
+			consola('warn', `🏓 NOTIFCATION NID ${nid}`);
+
+			if (nid) {
+				navigation.navigate('Notifications', {
+					screen: 'NotificationResumeScreen',
+					params: { nid },
+				});
+			}
 		});
 
 		return () => {
@@ -112,9 +118,7 @@ const RootScreen = () => {
 	}, []);
 
 	return (
-		<Root.Navigator
-			screenOptions={{ headerShown: false }}
-		>
+		<Root.Navigator screenOptions={{ headerShown: false }}>
 			{isLoggedIn ? (
 				<Root.Screen name="TabsNavigation" component={TabsNavigation} />
 			) : (

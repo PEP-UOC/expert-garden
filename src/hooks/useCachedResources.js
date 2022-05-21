@@ -19,8 +19,8 @@ export default function useCachedResources() {
 					'OpenSans-SemiBold': require('../assets/fonts/OpenSans/OpenSans-SemiBold.ttf'),
 					'OpenSans-Bold': require('../assets/fonts/OpenSans/OpenSans-Bold.ttf'),
 				});
-			} catch (e) {
-				console.warn(e);
+			} catch (error) {
+				consola('error', `🩸 ERROR - ${error.message}`);
 			} finally {
 				consola('warn', '🕯  CACHED RESOURCES LOADED', true);
 				setLoadingComplete(true);

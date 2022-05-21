@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from "prop-types";
-import consola from '../../../libs/myLogger';
+//import consola from '../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -74,7 +74,7 @@ export const NotificationResumeScreen = ({ debug, navigation, route }) => {
 
 								<View style={{ ...gloStyles.section.primary }}>
 
-									<TitleScreen icon={'plus-circle-outline'} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 20 : 30 }, primaryText: { lineHeight: Device?.isPhone ? 35 : 'initial', marginTop: Device?.isPhone ? 14 : 0 } }} primaryText={'Detalles de la notificación'} secondaryText={''} />
+									<TitleScreen icon={'plus-circle-outline'} exterStyles={{ wrapper: { marginBottom: Device?.isPhone ? 20 : 30 }, primaryText: { lineHeight: Device?.isPhone ? 35 : 'initial', marginTop: Device?.isPhone ? 14 : 0 } }} primaryText={'Notificación'} secondaryText={''} />
 
 									<View style={{ paddingLeft: 45 }}>
 

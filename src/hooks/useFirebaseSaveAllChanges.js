@@ -132,7 +132,7 @@ export function useFirebaseSaveAllChanges(debug) {
 						dispatch(removeChangesToSave());
 					})
 					.catch((error) => {
-						console.error(error.message);
+						consola('error', `🩸 ERROR - ${error.message}`);
 						consola('normal', `🕳  FISA - Dispatch Loading STOP`);
 						dispatch(setLoadingMessage(false));
 						dispatch(
@@ -145,7 +145,7 @@ export function useFirebaseSaveAllChanges(debug) {
 					});
 			})
 			.catch((error) => {
-				console.error(error.message);
+				consola('error', `🩸 ERROR - ${error.message}`);
 				consola('normal', `🕳  FISA - Dispatch Loading STOP`);
 				dispatch(setLoadingMessage(false));
 				dispatch(

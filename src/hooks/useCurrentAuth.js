@@ -48,8 +48,8 @@ export default function useCurrentAuth() {
 					consola('warn', '🕯  CURRENT AUTH LOADED', true);
 					setIsAuthLoadingComplete(true);
 				});
-			} catch (e) {
-				console.warn(e);
+			} catch (error) {
+				consola('error', `🩸 ERROR - ${error.message}`);
 			}
 		}
 

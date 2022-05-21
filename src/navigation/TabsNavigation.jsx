@@ -55,7 +55,7 @@ export const TabsNavigation = () => {
 		try {
 			await auth().signOut()
 				.then(() => {
-					console.info('🔐 TNAV - Logged Out!');
+					consola('normal', `🔐 TNAV - Logged Out!`)
 					dispatch(setLoggedIn(false))
 					consola('normal', `🕳  TNAV - Dispatch Loading STOP`)
 					if (intervalReloadId) {
@@ -67,7 +67,7 @@ export const TabsNavigation = () => {
 					dispatch(removeUser())
 				})
 				.catch((error) => {
-					console.error(error.message);
+					consola('error', `🩸 ERROR - ${error.message}`);
 					dispatch(setLoggedIn(false))
 					consola('normal', `🕳  TNAV - Dispatch Loading STOP`)
 					if (intervalReloadId) {
@@ -78,7 +78,7 @@ export const TabsNavigation = () => {
 					dispatch(setLoadingMessage(false))
 				});
 		} catch (error) {
-			console.error(error.message);
+			consola('error', `🩸 ERROR - ${error.message}`);
 			dispatch(setLoggedIn(false))
 			consola('normal', `🕳  TNAV - Dispatch Loading STOP`)
 			if (intervalReloadId) {
@@ -100,8 +100,6 @@ export const TabsNavigation = () => {
 	useEffect(() => {
 		let isMounted = true;
 		if (isMounted) {
-			console.log('auth()?.currentUser?.uid', auth()?.currentUser?.uid)
-			console.log('user', user)
 			firestore().collection("users").doc(auth()?.currentUser?.uid)
 				.onSnapshot({
 					// Listen for document metadata changes
