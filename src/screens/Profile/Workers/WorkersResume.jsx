@@ -88,10 +88,7 @@ export const WorkersResumeScreen = ({ debug, navigation, route }) => {
 											<Text style={{ ...ownStyles.textResponse, marginBottom: 0 }}>
 												{`${user?.metadata?.email}`}
 											</Text>
-											<TouchableWithoutFeedback onPress={() => openEmail(user?.metadata?.email)}
-												accessible={true}
-												accessibilityLabel="Enviar email"
-												accessibilityHint="Enviar email">
+											<TouchableWithoutFeedback onPress={() => openEmail(user?.metadata?.email)}>
 												<View style={{
 													marginLeft: 10,
 													justifyContent: 'center',
@@ -121,10 +118,7 @@ export const WorkersResumeScreen = ({ debug, navigation, route }) => {
 											<Text style={{ ...ownStyles.textResponse, marginBottom: 0 }}>
 												{`${user?.metadata?.phoneNumber}`}
 											</Text>
-											<TouchableWithoutFeedback onPress={() => openTel(user?.metadata?.phoneNumber)}
-												accessible={true}
-												accessibilityLabel="Llamar por teléfono"
-												accessibilityHint="Llamar por teléfono">
+											<TouchableWithoutFeedback onPress={() => openTel(user?.metadata?.phoneNumber)}>
 												<View style={{
 													marginLeft: 10,
 													justifyContent: 'center',
