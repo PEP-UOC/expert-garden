@@ -734,7 +734,6 @@ export const ServicesList = ({ debug, type, limit, showTitle, showLong, cid }) =
 		<>
 			{Device?.isPhone
 				? null
-				// eslint-disable-next-line react/prop-types
 				: <Text category='p1' style={{ ...ownStyles.accessory }}>{detail}</Text>
 			}
 			<Button onPress={() => navigateServiceResume(item?.sid)}
