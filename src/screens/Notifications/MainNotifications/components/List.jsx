@@ -54,103 +54,106 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong, ext
 
 	useEffect(() => {
 		let isMounted = true;
-		switch (type) {
-			case 'last':
-				setTitle('Todas')
-				setLongTitle('Todas las notificaciones')
-				setNoItems('Todavía no has recibido ninguna notificación')
-				setIcon('bell-outline')
 
-				if (auth().currentUser) {
-					firestore().collection("notifications")
-						.where("uidReceiver", "==", auth()?.currentUser?.uid)
-						.orderBy("sendDateTime", "desc")
-						.limit(limit)
-						.onSnapshot(notifications => {
-							if (!notifications.empty) {
-								const NOTIFICATIONS = [];
-								notifications.forEach(notification => {
-									NOTIFICATIONS.push(notification.data())
-								})
-								consola('normal', `🐳 NOLI - Notificaciones del usuario ${auth()?.currentUser?.uid} ${NOTIFICATIONS.length}`)
+		if (isMounted) {
+			switch (type) {
+				case 'last':
+					setTitle('Todas')
+					setLongTitle('Todas las notificaciones')
+					setNoItems('Todavía no has recibido ninguna notificación')
+					setIcon('bell-outline')
 
-								if (isMounted) {
-									setNotifications(NOTIFICATIONS)
+					if (auth().currentUser) {
+						firestore().collection("notifications")
+							.where("uidReceiver", "==", auth()?.currentUser?.uid)
+							.orderBy("sendDateTime", "desc")
+							.limit(limit)
+							.onSnapshot(notifications => {
+								if (!notifications.empty) {
+									const NOTIFICATIONS = [];
+									notifications.forEach(notification => {
+										NOTIFICATIONS.push(notification.data())
+									})
+									consola('normal', `🐳 NOLI - Notificaciones del usuario ${auth()?.currentUser?.uid} ${NOTIFICATIONS.length}`)
+
+									if (isMounted) {
+										setNotifications(NOTIFICATIONS)
+									}
 								}
-							}
-						})
-				} else {
-					setNotifications([])
-				}
-				break;
+							})
+					} else {
+						setNotifications([])
+					}
+					break;
 
-			case 'new':
-				setTitle('Nuevas')
-				setLongTitle('Nuevas notificaciones')
-				setNoItems('No tienes notificaciones sin leer')
-				setIcon('radio-button-on-outline')
+				case 'new':
+					setTitle('Nuevas')
+					setLongTitle('Nuevas notificaciones')
+					setNoItems('No tienes notificaciones sin leer')
+					setIcon('radio-button-on-outline')
 
-				if (auth().currentUser) {
-					firestore().collection("notifications")
-						.where("uidReceiver", "==", auth()?.currentUser?.uid)
-						.where("readDateTime", "==", null)
-						.orderBy("sendDateTime", "desc")
-						.limit(limit)
-						.onSnapshot(notifications => {
-							if (!notifications.empty) {
-								const NOTIFICATIONS = [];
-								notifications.forEach(notification => {
-									NOTIFICATIONS.push(notification.data())
-								})
-								consola('normal', `🐳 NOLI - Notificaciones nuevas del usuario ${auth()?.currentUser?.uid} ${NOTIFICATIONS.length}`)
+					if (auth().currentUser) {
+						firestore().collection("notifications")
+							.where("uidReceiver", "==", auth()?.currentUser?.uid)
+							.where("readDateTime", "==", null)
+							.orderBy("sendDateTime", "desc")
+							.limit(limit)
+							.onSnapshot(notifications => {
+								if (!notifications.empty) {
+									const NOTIFICATIONS = [];
+									notifications.forEach(notification => {
+										NOTIFICATIONS.push(notification.data())
+									})
+									consola('normal', `🐳 NOLI - Notificaciones nuevas del usuario ${auth()?.currentUser?.uid} ${NOTIFICATIONS.length}`)
 
-								if (isMounted) {
-									setNotifications(NOTIFICATIONS)
+									if (isMounted) {
+										setNotifications(NOTIFICATIONS)
+									}
 								}
-							}
-						})
-				} else {
-					setNotifications([])
-				}
-				break;
+							})
+					} else {
+						setNotifications([])
+					}
+					break;
 
-			case 'read':
-				setTitle('Leídas')
-				setLongTitle('Notificaciones leídas')
-				setNoItems('No tienes notificaciones leídas')
-				setIcon('radio-button-off-outline')
+				case 'read':
+					setTitle('Leídas')
+					setLongTitle('Notificaciones leídas')
+					setNoItems('No tienes notificaciones leídas')
+					setIcon('radio-button-off-outline')
 
-				if (auth().currentUser) {
-					firestore().collection("notifications")
-						.where("uidReceiver", "==", auth()?.currentUser?.uid)
-						.where("readDateTime", "!=", null)
-						.orderBy("readDateTime", "desc")
-						.limit(limit)
-						.onSnapshot(notifications => {
-							if (!notifications.empty) {
-								const NOTIFICATIONS = [];
-								notifications.forEach(notification => {
-									NOTIFICATIONS.push(notification.data())
-								})
-								consola('normal', `🐳 NOLI - Notificaciones leídas del usuario ${auth()?.currentUser?.uid} ${NOTIFICATIONS.length}`)
+					if (auth().currentUser) {
+						firestore().collection("notifications")
+							.where("uidReceiver", "==", auth()?.currentUser?.uid)
+							.where("readDateTime", "!=", null)
+							.orderBy("readDateTime", "desc")
+							.limit(limit)
+							.onSnapshot(notifications => {
+								if (!notifications.empty) {
+									const NOTIFICATIONS = [];
+									notifications.forEach(notification => {
+										NOTIFICATIONS.push(notification.data())
+									})
+									consola('normal', `🐳 NOLI - Notificaciones leídas del usuario ${auth()?.currentUser?.uid} ${NOTIFICATIONS.length}`)
 
-								if (isMounted) {
-									setNotifications(NOTIFICATIONS)
+									if (isMounted) {
+										setNotifications(NOTIFICATIONS)
+									}
 								}
-							}
-						})
-				} else {
-					setNotifications([])
-				}
-				break;
+							})
+					} else {
+						setNotifications([])
+					}
+					break;
 
-			default:
-				setTitle(undefined)
-				break;
+				default:
+					setTitle(undefined)
+					break;
+			}
 		}
 
 		if (externalIcon != '') {
-			setIcon('bell-outline')
+			setIcon(externalIcon)
 		}
 
 		return () => {
@@ -212,11 +215,6 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong, ext
 					accessoryRight={readDateTime ? RadioOffIcon : RadioOnIcon} size='giant' appearance='ghost' style={{ paddingRight: 0 }} />
 			</>
 		)
-	};
-
-	RenderItem.propTypes = {
-		sendDateTime: PropTypes.string,
-		readDateTime: PropTypes.string,
 	};
 
 	return (
