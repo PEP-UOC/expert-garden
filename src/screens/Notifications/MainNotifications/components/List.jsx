@@ -178,17 +178,17 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong, ext
 	//List
 	const RenderItem = ({ item }) => {
 		let time;
-		if (moment().format('DD/MM/YYYY') === item.sendDate) {
-			time = item.sendTime
+		if (moment().format('DD/MM/YYYY') === item?.sendDate) {
+			time = item?.sendTime
 		} else {
-			time = item.sendDate
+			time = item?.sendDate
 		}
 		return (
 			<ListItem
 				onPress={() => navigateNotificationDetail(item?.nid)}
-				title={`${time} - ${item.title}`}
-				description={`${item.body}`}
-				accessoryRight={renderItemAccessory(item?.sendDateTime, item?.readDateTime)}
+				title={`${time} - ${item?.title}`}
+				description={`${item?.body}`}
+				accessoryRight={renderItemAccessory(item?.sendDateTime, item?.readDateTime, item?.nid)}
 				style={{ paddingRight: 0, marginRight: -5 }}
 			/>
 		)
@@ -198,9 +198,9 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong, ext
 		item: PropTypes.object.isRequired,
 	};
 
-	const renderItemAccessory = (sendDateTime, readDateTime) => {
+	const renderItemAccessory = (sendDateTime, readDateTime, nid) => {
 		let momento = moment(sendDateTime).locale('es').calendar();
-		momento = momento.charAt(0).toUpperCase() + momento.slice(1);
+		momento = momento?.charAt(0)?.toUpperCase() + momento?.slice(1);
 
 		return (
 			<>
@@ -208,7 +208,7 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong, ext
 					? null
 					: <Text category='p1' style={{ ...ownStyles.accessory }}>{momento}</Text>
 				}
-				<Button onPress={navigateNotificationDetail}
+				<Button onPress={() => navigateNotificationDetail(nid)}
 					accessoryRight={readDateTime ? RadioOffIcon : RadioOnIcon} size='giant' appearance='ghost' style={{ paddingRight: 0 }} />
 			</>
 		)

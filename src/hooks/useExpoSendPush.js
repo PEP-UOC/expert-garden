@@ -67,7 +67,7 @@ export function useExpoSendPush(debug) {
 					to,
 					title,
 					body,
-					data,
+					data: { ...data, nid: ref.id },
 					type: 'PUSH',
 					uidSender,
 					uidReceiver,
