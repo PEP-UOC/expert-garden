@@ -77,6 +77,9 @@ export const DetailItem = ({ debug, detail, detailIndex, setSdidToRemove, setSho
 
 				{/*ICONO ELIMINAR*/}
 				<TouchableWithoutFeedback
+					accessible={true}
+					accessibilityLabel="Eliminar"
+					accessibilityHint="Eliminar"
 					onPress={() => {
 						setSdidToRemove(values?.sdid)
 						setShowDeleteConfirm(true)
@@ -167,6 +170,9 @@ export const DetailItem = ({ debug, detail, detailIndex, setSdidToRemove, setSho
 					marginTop: 'auto'
 				}}>
 				<TouchableWithoutFeedback
+					accessible={true}
+					accessibilityLabel="Editar"
+					accessibilityHint="Editar"
 					onPress={() => setShowInputs(!showInputs)}
 				>
 					{!showInputs

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import PropTypes from "prop-types";
+//import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -9,25 +10,19 @@ import { useStyleSheet } from '@ui-kitten/components';
 //import globalStyles from '../../../../styles/globalStyles'
 import styles from './styles'
 
-//Navigation
-//import { useNavigation } from '@react-navigation/native';
-
 //Components
 import { View, TouchableWithoutFeedback } from 'react-native'
-import { Text } from '@ui-kitten/components';
+import { Text, } from '@ui-kitten/components';
 import { TitleSection } from '../../../../components/Titles/Section'
 
 //Device Detect
 import Device from '../../../../libs/react-native-device-detection';
 
-//Data
-import { momentTypes } from '../../../../data/momentTypes'
-
 //Hooks
 import { useFirebaseServiceUtils } from "../../../../hooks/useFirebaseServiceUtils"
 
 // eslint-disable-next-line no-unused-vars
-export const DateItem = ({ debug, date, dateIndex, selectedIndex, cid, sid }) => {
+export const WorkerItem = ({ debug, worker, workerIndex, isSelected, sid }) => {
 
 	//Styles
 	//const gloStyles = useStyleSheet(globalStyles);
@@ -35,32 +30,23 @@ export const DateItem = ({ debug, date, dateIndex, selectedIndex, cid, sid }) =>
 
 	//State
 	// eslint-disable-next-line no-unused-vars
-	const [values, setValues] = useState(date)
-
-	const [isSelected, setIsSelected] = useState(dateIndex === selectedIndex)
-
-	//Save service
-	// eslint-disable-next-line no-unused-vars
-	const { saved, handleBusinessSelectServiceDate } = useFirebaseServiceUtils(debug)
+	const [values, setValues] = useState(worker)
 
 
-	useEffect(() => {
-		setIsSelected(dateIndex === selectedIndex)
-	}, [dateIndex, selectedIndex]);
+	const { handleBusinessSelectServiceWorker } = useFirebaseServiceUtils(debug)
 
-	const selectDate = () => {
-		handleBusinessSelectServiceDate(sid, cid, date.did)
+	const selectWorker = () => {
+		handleBusinessSelectServiceWorker(sid, values.uid)
 	}
 
 
-
 	return (
-		<View key={values?.sdid} style={{ ...ownStyles.itemWrapper }}>
+		<View key={values?.uid} style={{ ...ownStyles.itemWrapper }}>
 			<View style={{ ...ownStyles.viewWrapperTop }}>
 
 				{/*DETALLE*/}
 				<Text style={{ ...ownStyles.textDetalleTop }}>
-					{`#️ Fecha ${dateIndex + 1}`}
+					{`#️ Empleado ${workerIndex + 1}`}
 				</Text>
 
 				{/*BADGE SELECCIONADA*/}
@@ -69,13 +55,16 @@ export const DateItem = ({ debug, date, dateIndex, selectedIndex, cid, sid }) =>
 						(
 							<View style={{ ...ownStyles.badgeAccepted }}>
 								<Text style={{ ...ownStyles.badgeText }} appearance='alternative'>
-									Seleccionada
+									Seleccionado
 								</Text>
 							</View>
 						)
 						: isSelected === false ?
 							(
-								<TouchableWithoutFeedback onPress={() => selectDate(dateIndex)}>
+								<TouchableWithoutFeedback onPress={() => selectWorker(workerIndex)}
+									accessible={true}
+									accessibilityLabel="Seleccionar trabajador"
+									accessibilityHint="Seleccionar trabajador">
 									<View style={{ ...ownStyles.badgeAccept }}>
 										<Text style={{ ...ownStyles.badgeText }}>
 											Seleccionar
@@ -95,38 +84,26 @@ export const DateItem = ({ debug, date, dateIndex, selectedIndex, cid, sid }) =>
 						},
 						primaryText: {
 							fontSize: Device?.isPhone ? 22 : 22,
-							lineHeight: Device?.isPhone ? 25 : undefined
+							lineHeight: Device?.isPhone ? 25 : undefined,
 						}
 					}
 				}
-				primaryText={date?.date}
+				primaryText={`${worker?.metadata?.fullname}`}
 				secondaryText={''}
 			/>
-
-			<Text style={{ ...ownStyles.textQuestion }}>
-				{momentTypes.find(momentType => momentType.name === date?.schedule)?.value || ''}
-			</Text>
-
-			{date?.extra ? (
-				<Text style={{ ...ownStyles.textResponse }}>
-					{date?.extra || ''}
-				</Text>
-			) : null}
-
 
 		</View>
 	)
 };
 
-DateItem.propTypes = {
+WorkerItem.propTypes = {
 	debug: PropTypes.bool.isRequired,
-	date: PropTypes.object.isRequired,
-	dateIndex: PropTypes.number.isRequired,
-	selectedIndex: PropTypes.number.isRequired,
-	cid: PropTypes.string.isRequired,
+	worker: PropTypes.object.isRequired,
+	workerIndex: PropTypes.number.isRequired,
+	isSelected: PropTypes.bool.isRequired,
 	sid: PropTypes.string.isRequired,
 };
 
-DateItem.defaultProps = {
+WorkerItem.defaultProps = {
 	debug: Constants.manifest.extra.debug || false,
 };

@@ -74,7 +74,10 @@ export const SignUpScreen = ({ debug, navigation }) => {
 		setSecureTextEntry(!secureTextEntry);
 	};
 	const renderEyeIcon = (props) => (
-		<TouchableWithoutFeedback onPress={toggleSecureEntry} onClick={toggleSecureEntry}>
+		<TouchableWithoutFeedback onPress={toggleSecureEntry} onClick={toggleSecureEntry}
+			accessible={true}
+			accessibilityLabel="Mostrar contraseña"
+			accessibilityHint="Mostrar contraseña">
 			<Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
 		</TouchableWithoutFeedback>
 	);
@@ -251,7 +254,10 @@ export const SignUpScreen = ({ debug, navigation }) => {
 
 
 	return (
-		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}
+			accessible={true}
+			accessibilityLabel="Signup"
+			accessibilityHint="Signup">
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
 				<View style={{ flex: 1, justifyContent: "space-around" }}>
 					<ScrollView alwaysBounceVertical={true} centerContent={true}

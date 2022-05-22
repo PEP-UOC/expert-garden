@@ -41,6 +41,9 @@ export const TitleSectionWithNavigation = ({ debug, exterStyles, icon, primaryTe
 			}>
 				{!Device.isPhone && icon !== '' && <Icon width={37} height={37} name={icon} fill='#094c3f' />}
 				<TouchableWithoutFeedback
+					accessible={true}
+					accessibilityLabel="Ir a"
+					accessibilityHint="Ir a"
 					onPress={() => {
 						navTo()
 					}}>
@@ -49,6 +52,9 @@ export const TitleSectionWithNavigation = ({ debug, exterStyles, icon, primaryTe
 
 				{/*ICONO ELIMINAR*/}
 				<TouchableWithoutFeedback
+					accessible={true}
+					accessibilityLabel="Ir a"
+					accessibilityHint="Ir a"
 					onPress={() => {
 						navTo()
 					}}>
