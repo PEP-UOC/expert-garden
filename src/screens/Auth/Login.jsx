@@ -115,7 +115,7 @@ export const LoginScreen = ({ debug, navigation }) => {
 							<View style={{ ...gloStyles?.view }}>
 								<View style={{ ...gloStyles.section.fullCentered }}>
 									<Text category='h6' style={{ ...gloStyles?.h6, ...ownStyles?.topSubTitle }}>ACCEDE A</Text>
-									<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>EXPERT GARDEN 🪴</Text>
+									<Text category='h1' style={{ ...gloStyles?.h1, ...ownStyles?.mainTitle }}>EXPERT GARDEN</Text>
 
 									<Input
 										style={{ ...gloStyles?.inputs?.input }}
