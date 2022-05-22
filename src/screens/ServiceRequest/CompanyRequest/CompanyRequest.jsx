@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types";
+import { StatusBar } from 'expo-status-bar';
 
 //Constants
 import Constants from 'expo-constants';
@@ -88,6 +89,7 @@ export const CompanyRequestScreen = ({ debug, navigation, route }) => {
 							</View>
 						</Layout>
 					</ScrollView>
+					<StatusBar style={Platform.OS === 'android' ? 'light' : 'dark'} backgroundColor='#31a060' translucent={false} />
 				</View>
 			</KeyboardAvoidingView>
 		</SafeAreaView>

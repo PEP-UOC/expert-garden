@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types";
 import consola from '../../libs/myLogger';
+import { StatusBar } from 'expo-status-bar';
 
 //Constants
 import Constants from 'expo-constants';
@@ -13,6 +14,7 @@ import { setValidatingMessage, setErrorMessage } from '../../store/root/rootActi
 import { useStyleSheet } from '@ui-kitten/components';
 import globalStyles from '../../styles/globalStyles'
 import styles from './styles'
+import { Platform } from 'react-native';
 
 //Icons
 import { LeafIcon } from '../../assets/icons/Leaf'
@@ -231,6 +233,7 @@ export const ValidatingScreen = ({ debug, route }) => {
 						<View style={{ alignItems: 'center' }}>
 							<LeafIcon width={180} height={60} style={{ ...gloStyles?.leaf }} />
 						</View>
+						<StatusBar style={Platform.OS === 'android' ? 'light' : 'dark'} backgroundColor='#31a060' translucent={false} />
 					</View>
 				</Layout >
 			</ScrollView>
