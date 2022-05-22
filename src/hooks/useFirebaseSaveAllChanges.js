@@ -48,7 +48,7 @@ export function useFirebaseSaveAllChanges(debug) {
 			changesToSave?.metadata?.hasWorkers === false
 				? false
 				: changesToSave?.metadata?.hasWorkers || user?.metadata?.hasWorkers || false;
-		const birthday = changesToSave?.metadata?.birthday || user?.metadata?.birthdayDateTime || '';
+		const birthday = changesToSave?.metadata?.birthday || user?.metadata?.birthday || '';
 		const birthdayDateTime =
 			changesToSave?.metadata?.birthdayDateTime || user?.metadata?.birthdayDateTime || '';
 		const metadata = {

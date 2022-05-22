@@ -148,6 +148,10 @@ const globalStyles = StyleService.create({
 		},
 	},
 	colorPrimary500: { color: 'color-primary-500' },
+	colorPrimary600: { color: 'color-primary-600' },
+	colorPrimary700: { color: 'color-primary-700' },
+	colorPrimary800: { color: 'color-primary-800' },
+	colorPrimary900: { color: 'color-primary-900' },
 });
 
 export default globalStyles;

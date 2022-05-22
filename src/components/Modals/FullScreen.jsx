@@ -34,7 +34,7 @@ export const ModalFullScreen = ({ debug }) => {
 			backdropStyle={{ ...ownStyles.fullScreen.backdrop }}
 		>
 			<View style={{ ...ownStyles.fullScreen.view }}>
-				<Text style={{ ...ownStyles.fullScreen.text, ...gloStyles.colorPrimary500 }}>{loadingMessage}</Text>
+				<Text style={{ ...ownStyles.fullScreen.text, ...gloStyles.colorPrimary600 }}>{loadingMessage}</Text>
 				<Spinner size='giant' />
 			</View>
 		</Modal >
