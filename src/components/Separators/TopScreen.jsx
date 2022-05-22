@@ -16,8 +16,8 @@ export const SeparatorTopScreen = ({ debug, hasTopNavigation }) => {
 
 	return (
 		<View style={{
-			marginTop: Device?.isPhone ? hasTopNavigation ? 0 : 15 : hasTopNavigation ? 0 : 28,
-			marginBottom: Device?.isPhone ? hasTopNavigation ? 0 : 15 : hasTopNavigation ? 0 : 28,
+			marginTop: Device?.isPhone ? hasTopNavigation ? 0 : 5 : hasTopNavigation ? 0 : 28,
+			marginBottom: Device?.isPhone ? hasTopNavigation ? 0 : 5 : hasTopNavigation ? 0 : 28,
 			width: '100%',
 		}}></View>
 	)
