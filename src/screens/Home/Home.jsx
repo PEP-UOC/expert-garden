@@ -77,7 +77,7 @@ export const HomeScreen = ({ debug, navigation }) => {
 							<SeparatorTopScreen />
 							<View style={{ ...gloStyles.view }}>
 								<View style={{ ...gloStyles.section.primary }}>
-									<TitleScreen icon={''} exterStyles={{ wrapper: { marginBottom: 30 }, primaryText: { fontSize: 36 }, secondaryText: { fontSize: 36 } }} primaryText={user?.additionalUserInfo?.isNewUser ? 'Bienvenido' : 'Bienvenido'} secondaryText={debug ? `${user?.metadata?.name} ${gender}` + ` ${device} ${role}` : `${user?.metadata?.name} ${gender}`} secondaryTextMain={true} />
+									<TitleScreen icon={''} exterStyles={{ wrapper: { marginBottom: 30 }, primaryText: { fontSize: 36 }, secondaryText: { fontSize: 36 } }} primaryText={user?.additionalUserInfo?.isNewUser ? 'Bienvenido' : 'Bienvenido'} secondaryText={debug ? `${user?.metadata?.name} ${gender}` + ` ${device} ${role}` : `${user?.metadata?.name}`} secondaryTextMain={true} />
 									<EmailVerify user={user || {}} />
 									{
 										{
