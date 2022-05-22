@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import PropTypes from "prop-types";
 import consola from '../../libs/myLogger';
+import { StatusBar } from 'expo-status-bar';
 
 //Device Detect
 import Device from '../../libs/react-native-device-detection'
@@ -125,6 +126,7 @@ export const HomeScreen = ({ debug, navigation }) => {
 							</View>
 						</Layout >
 					</ScrollView>
+					<StatusBar style={Platform.OS === 'android' ? 'light' : 'dark'} backgroundColor='#31a060' translucent={false} />
 				</View>
 			</KeyboardAvoidingView>
 		</SafeAreaView>

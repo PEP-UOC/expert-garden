@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from "prop-types";
+import { StatusBar } from 'expo-status-bar';
 
 //Constants
 import Constants from 'expo-constants';
@@ -16,6 +17,7 @@ import { LeafIcon } from '../../assets/icons/Leaf'
 import { SafeAreaView, ScrollView, View } from 'react-native'
 import { Text, Layout } from '@ui-kitten/components';
 import { SeparatorTopScreen } from '../../components/Separators/TopScreen'
+import { Platform } from 'react-native';
 
 // eslint-disable-next-line no-unused-vars
 export const TermsAndConditionsScreen = ({ debug }) => {
@@ -118,6 +120,7 @@ export const TermsAndConditionsScreen = ({ debug }) => {
 						<View style={{ alignItems: 'center' }}>
 							<LeafIcon width={180} height={60} style={{ ...gloStyles?.leaf }} />
 						</View>
+						<StatusBar style={Platform.OS === 'android' ? 'light' : 'dark'} backgroundColor='#31a060' translucent={false} />
 					</View>
 				</Layout >
 			</ScrollView>
