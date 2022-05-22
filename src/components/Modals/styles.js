@@ -19,8 +19,8 @@ const styles = StyleService.create({
 			fontSize: 36,
 		},
 		text: {
-			marginBottom: 10,
-			fontSize: 18,
+			marginBottom: 30,
+			fontSize: 24,
 			textAlign: 'center',
 		},
 	},
@@ -40,7 +40,7 @@ const styles = StyleService.create({
 		text: {
 			width: '100%',
 			marginBottom: 10,
-			fontSize: 18,
+			fontSize: 20,
 			textAlign: 'center',
 		},
 	},

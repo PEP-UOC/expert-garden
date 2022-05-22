@@ -113,7 +113,7 @@ export const WorkersList = ({ debug, type, limit, showTitle, showLong }) => {
 	}, []);
 
 	//Navigation
-	const navigateServiceResume = (uid) => {
+	const navigateWorkerResume = (uid) => {
 		navigation.navigate('Profile', {
 			screen: 'WorkersResumeScreen',
 			params: { uid },
@@ -131,7 +131,7 @@ export const WorkersList = ({ debug, type, limit, showTitle, showLong }) => {
 	const RenderItem = ({ item }) => {
 		return (
 			<ListItem
-				onPress={() => navigateServiceResume(item.uid)}
+				onPress={() => navigateWorkerResume(item.uid)}
 				title={`${item.metadata.fullname}${!item.verified ? ' (Sin verificar)' : ''}`}
 				description={item.metadata.phoneNumber ? `${item.metadata.email} / ${item.metadata.phoneNumber}` : `${item.metadata.email}`}
 				accessoryRight={renderItemAccessory(item)}
@@ -146,7 +146,7 @@ export const WorkersList = ({ debug, type, limit, showTitle, showLong }) => {
 
 	const renderItemAccessory = (item) => (
 		<>
-			<Button onPress={() => navigateServiceResume(item?.uid)}
+			<Button onPress={() => navigateWorkerResume(item?.uid)}
 				accessoryRight={ChevronRightIcon} size='giant' appearance='ghost' style={{ paddingRight: 0 }} />
 		</>
 	);

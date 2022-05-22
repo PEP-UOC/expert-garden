@@ -72,7 +72,7 @@ export const WorkersResumeScreen = ({ debug, navigation, route }) => {
 
 									{!Device.isPhone && (
 										<View style={{ paddingLeft: 45 }}>
-											<NavigationBackButton show={Device.isPhone} />
+											<NavigationBackButton show={!Device.isPhone} />
 										</View>
 									)}
 
@@ -80,7 +80,6 @@ export const WorkersResumeScreen = ({ debug, navigation, route }) => {
 
 								<View style={{ ...gloStyles.section.secondary }}>
 									<View>
-
 										<Text style={{ ...ownStyles.textQuestion }}>
 											{`Email`}
 										</Text>
