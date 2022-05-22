@@ -5,7 +5,7 @@ export default {
 		name: 'Expert Garden',
 		slug: 'expert-garden',
 		description: 'An app to request gardening services',
-		version: '1.0.3',
+		version: '1.0.4',
 		githubUrl: 'https://github.com/PEP-UOC/expert-garden',
 		orientation: 'portrait',
 		backgroundColor: '#ffffff',
@@ -40,7 +40,7 @@ export default {
 		},
 		assetBundlePatterns: ['**/*'],
 		android: {
-			versionCode: 4,
+			versionCode: 5,
 			package: `com.expertgarden.${process.env.APP_VARIANT || 'expertgarden'}`,
 			googleServicesFile: './google-services.json',
 			adaptiveIcon: {
