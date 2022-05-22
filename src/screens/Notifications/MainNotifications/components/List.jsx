@@ -8,6 +8,7 @@ import Constants from 'expo-constants';
 
 //Device Detect
 import Device from '../../../../libs/react-native-device-detection';
+import { Platform } from 'react-native';
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
@@ -186,12 +187,19 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong, ext
 		} else {
 			time = item?.sendDate
 		}
+
+		let momento = '';
+		if (Platform.OS === "web") {
+			momento = moment(item?.sendDateTime).locale('es').calendar();
+			momento = momento?.charAt(0)?.toUpperCase() + momento?.slice(1);
+		}
+
 		return (
 			<ListItem
 				onPress={() => navigateNotificationResume(item.nid)}
 				title={`${time} - ${item?.title}`}
-				description={`${item?.body}`}
-				accessoryRight={renderItemAccessory(item?.sendDateTime, item?.readDateTime, item?.nid)}
+				description={`${item?.body || ' '}`}
+				accessoryRight={renderItemAccessory(item, momento)}
 				style={{ paddingRight: 0, marginRight: -5 }}
 			/>
 		)
@@ -201,21 +209,16 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong, ext
 		item: PropTypes.object.isRequired,
 	};
 
-	const renderItemAccessory = (sendDateTime, readDateTime, nid) => {
-		let momento = moment(sendDateTime).locale('es').calendar();
-		momento = momento?.charAt(0)?.toUpperCase() + momento?.slice(1);
-
-		return (
-			<>
-				{Device?.isPhone
-					? null
-					: <Text category='p1' style={{ ...ownStyles.accessory }}>{momento}</Text>
-				}
-				<Button onPress={() => navigateNotificationResume(nid)}
-					accessoryRight={readDateTime ? RadioOffIcon : RadioOnIcon} size='giant' appearance='ghost' style={{ paddingRight: 0 }} />
-			</>
-		)
-	};
+	const renderItemAccessory = (item, momento) => (
+		<>
+			{Device?.isPhone
+				? null
+				: <Text category='p1' style={{ ...ownStyles.accessory }}>{momento}</Text>
+			}
+			<Button onPress={() => navigateNotificationResume(item.nid)}
+				accessoryRight={item.readDateTime ? RadioOffIcon : RadioOnIcon} size='giant' appearance='ghost' style={{ paddingRight: 0 }} />
+		</>
+	);
 
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
