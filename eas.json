@@ -9,7 +9,7 @@
 				"buildType": "apk"
 			},
 			"env": {
-				"APP_VARIANT": "androidAPK"
+				"APP_VARIANT": "expertgarden"
 			}
 		},
 		"iosSimulator": {
@@ -19,20 +19,20 @@
 				"simulator": true
 			},
 			"env": {
-				"APP_VARIANT": "iosSimulator"
+				"APP_VARIANT": "expertgarden"
 			}
 		},
 		"development": {
 			"developmentClient": true,
 			"distribution": "internal",
 			"env": {
-				"APP_VARIANT": "development"
+				"APP_VARIANT": "expertgarden"
 			}
 		},
 		"preview": {
 			"distribution": "internal",
 			"env": {
-				"APP_VARIANT": "preview"
+				"APP_VARIANT": "expertgarden"
 			}
 		},
 		"production": {

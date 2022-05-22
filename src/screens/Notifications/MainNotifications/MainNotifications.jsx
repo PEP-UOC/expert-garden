@@ -75,7 +75,6 @@ export const MainNotificationsScreen = ({ debug, navigation }) => {
 										}[user?.role]
 									}
 								</View>
-
 							</View>
 						</Layout >
 					</ScrollView>
