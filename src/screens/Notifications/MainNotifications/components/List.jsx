@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
 import PropTypes from "prop-types";
 import consola from '../../../../libs/myLogger';
@@ -10,7 +11,7 @@ import Device from '../../../../libs/react-native-device-detection';
 
 //Styles
 import { useStyleSheet } from '@ui-kitten/components';
-//import globalStyles from '../../../styles/globalStyles'
+//import globalStyles from '../../../../styles/globalStyles'
 import styles from './styles'
 
 //Navigation
@@ -147,7 +148,6 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong, ext
 					break;
 
 				default:
-					setTitle(undefined)
 					break;
 			}
 		}
@@ -164,14 +164,14 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong, ext
 	}, []);
 
 	//Navigation
-	const navigateNotificationDetail = (nid) => {
+	const navigateNotificationResume = (nid) => {
 		navigation.navigate('Notifications', {
 			screen: 'NotificationResumeScreen',
 			params: { nid },
 		});
 	};
 
-	const navigateNotificationsList = (type) => {
+	const navigateNotificationList = (type) => {
 		navigation.navigate('Notifications', {
 			screen: 'NotificationListScreen',
 			params: { type },
@@ -188,7 +188,7 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong, ext
 		}
 		return (
 			<ListItem
-				onPress={() => navigateNotificationDetail(item?.nid)}
+				onPress={() => navigateNotificationResume(item.nid)}
 				title={`${time} - ${item?.title}`}
 				description={`${item?.body}`}
 				accessoryRight={renderItemAccessory(item?.sendDateTime, item?.readDateTime, item?.nid)}
@@ -211,7 +211,7 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong, ext
 					? null
 					: <Text category='p1' style={{ ...ownStyles.accessory }}>{momento}</Text>
 				}
-				<Button onPress={() => navigateNotificationDetail(nid)}
+				<Button onPress={() => navigateNotificationResume(nid)}
 					accessoryRight={readDateTime ? RadioOffIcon : RadioOnIcon} size='giant' appearance='ghost' style={{ paddingRight: 0 }} />
 			</>
 		)
@@ -219,7 +219,7 @@ export const NotificationsList = ({ debug, type, limit, showTitle, showLong, ext
 
 	return (
 		<View style={{ ...ownStyles?.wrapper }}>
-			{showTitle && <TitleSectionWithNavigation icon={icon || ''} primaryText={showLong ? longTitle : title || ''} secondaryText={''} navTo={() => navigateNotificationsList(type)} />}
+			{showTitle && <TitleSectionWithNavigation icon={icon || ''} primaryText={showLong ? longTitle : title || ''} secondaryText={''} navTo={() => navigateNotificationList(type)} />}
 
 			{notifications?.length
 				? notifications?.map((notification) => (
