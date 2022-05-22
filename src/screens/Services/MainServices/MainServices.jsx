@@ -100,7 +100,6 @@ export const MainServicesScreen = ({ debug, navigation }) => {
 										}[user?.role]
 									}
 								</View>
-
 							</View>
 						</Layout >
 					</ScrollView>
