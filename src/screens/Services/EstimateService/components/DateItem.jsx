@@ -75,7 +75,10 @@ export const DateItem = ({ debug, date, dateIndex, selectedIndex, cid, sid }) =>
 						)
 						: isSelected === false ?
 							(
-								<TouchableWithoutFeedback onPress={() => selectDate(dateIndex)}>
+								<TouchableWithoutFeedback onPress={() => selectDate(dateIndex)}
+									accessible={true}
+									accessibilityLabel="Seleccionar fecha"
+									accessibilityHint="Seleccionar fecha">
 									<View style={{ ...ownStyles.badgeAccept }}>
 										<Text style={{ ...ownStyles.badgeText }}>
 											Seleccionar

@@ -69,7 +69,11 @@ export const RememberPass = ({ debug, navigation }) => {
 	}, [passCounter]);
 
 	return (
-		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+		<SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}
+			accessible={true}
+			accessibilityLabel="RememberPass"
+			accessibilityHint="RememberPass"
+		>
 			<ScrollView alwaysBounceVertical={true} centerContent={true}
 				contentContainerStyle={{ ...gloStyles?.scrollView }}>
 				<Layout style={{ ...gloStyles?.layout }}>
