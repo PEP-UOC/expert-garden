@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from "prop-types";
-import consola from '../../../../libs/myLogger';
+//import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -61,7 +61,10 @@ export const WorkerItem = ({ debug, worker, workerIndex, isSelected, sid }) => {
 						)
 						: isSelected === false ?
 							(
-								<TouchableWithoutFeedback onPress={() => selectWorker(workerIndex)}>
+								<TouchableWithoutFeedback onPress={() => selectWorker(workerIndex)}
+									accessible={true}
+									accessibilityLabel="Seleccionar trabajador"
+									accessibilityHint="Seleccionar trabajador">
 									<View style={{ ...ownStyles.badgeAccept }}>
 										<Text style={{ ...ownStyles.badgeText }}>
 											Seleccionar

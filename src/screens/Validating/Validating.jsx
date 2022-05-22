@@ -69,7 +69,10 @@ export const ValidatingScreen = ({ debug, route }) => {
 		setSecureTextEntry(!secureTextEntry);
 	};
 	const renderEyeIcon = (props) => (
-		<TouchableWithoutFeedback onPress={toggleSecureEntry} onClick={toggleSecureEntry}>
+		<TouchableWithoutFeedback onPress={toggleSecureEntry} onClick={toggleSecureEntry}
+			accessible={true}
+			accessibilityLabel="Mostrar contraseña"
+			accessibilityHint="Mostrar contraseña">
 			<Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
 		</TouchableWithoutFeedback>
 	);
