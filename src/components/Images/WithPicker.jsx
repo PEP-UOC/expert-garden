@@ -165,7 +165,10 @@ export const ImgWithPicker = ({ debug, entity, entityType }) => {
 						</View>
 					</Camera>
 					: selectedImage !== null
-						? <TouchableWithoutFeedback onPress={() => setShowImageChangeCombo(!showImageChangeCombo)}>
+						? <TouchableWithoutFeedback onPress={() => setShowImageChangeCombo(!showImageChangeCombo)}
+							accessible={true}
+							accessibilityLabel="Mostrar selector de imágen"
+							accessibilityHint="Mostrar selector de imágen">
 							<Image
 								source={{ uri: selectedImage?.localUri }}
 								style={{ ...ownStyles?.image }}

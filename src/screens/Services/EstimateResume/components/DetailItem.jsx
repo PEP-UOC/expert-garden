@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from "prop-types";
-import consola from '../../../../libs/myLogger';
+//import consola from '../../../../libs/myLogger';
 
 //Constants
 import Constants from 'expo-constants';
@@ -152,6 +152,9 @@ export const DetailItem = ({ debug, detail, detailIndex, cid, sid, prevEstimatio
 				key={`show-${detailIndex}`}
 				style={{ ...ownStyles.viewWrapperBottom }}>
 				<TouchableWithoutFeedback
+					accessible={true}
+					accessibilityLabel="Ver más"
+					accessibilityHint="Ver más"
 					onPress={() => setShowInputs(!showInputs)}
 				>
 					<View
