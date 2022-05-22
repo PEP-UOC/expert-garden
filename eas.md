@@ -10,3 +10,6 @@
   - eas build --profile preview
 - Build IOS IPA / Andriod AAB for production
   - eas build --profile production
+
+BUILD AND SUBMIT TO GOOGLE PLAY
+eas build -p android --profile production --auto-submit-with-profile=internal
