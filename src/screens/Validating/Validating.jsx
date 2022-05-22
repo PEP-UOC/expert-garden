@@ -120,7 +120,7 @@ export const ValidatingScreen = ({ debug, route }) => {
 					consola('normal', Device)
 					let redirectURL = Linking.createURL('/', {});
 					if (Device.isPhone) {
-						redirectURL = 'exp://192.168.1.65:19000'
+						redirectURL = 'expert-garden://'
 					}
 					setRedirectURL(redirectURL);
 					setIsValidating(false);
@@ -148,7 +148,7 @@ export const ValidatingScreen = ({ debug, route }) => {
 					consola('normal', Device)
 					let redirectURL = Linking.createURL('/', {});
 					if (Device.isPhone) {
-						redirectURL = 'exp://192.168.1.65:19000'
+						redirectURL = 'expert-garden://'
 					}
 					setRedirectURL(redirectURL);
 					setIsValidating(false);
