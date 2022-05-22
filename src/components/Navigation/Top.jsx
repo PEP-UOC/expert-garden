@@ -37,7 +37,7 @@ export const NavigationTop = ({ debug, title, routeToBack }) => {
 
 	return (
 		<>
-			<TopNavigation title={title} alignment='center' accessoryLeft={BackAction} style={{ marginTop: Device?.isPhone && Platform.OS === 'android' ? 30 : 0 }} />
+			<TopNavigation title={title} alignment='center' accessoryLeft={BackAction} style={{ marginTop: Device?.isPhone && Platform.OS === 'android' && debug ? 30 : 0 }} />
 			<Divider />
 		</>
 	)
