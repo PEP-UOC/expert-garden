@@ -6,6 +6,7 @@ import Constants from 'expo-constants';
 
 //Device Detect
 import Device from '../../libs/react-native-device-detection';
+import { Platform } from 'react-native';
 
 //Navigation
 import { useNavigation } from '@react-navigation/native';
@@ -36,7 +37,7 @@ export const NavigationTop = ({ debug, title, routeToBack }) => {
 
 	return (
 		<>
-			<TopNavigation title={title} alignment='center' accessoryLeft={BackAction} style={{ marginTop: Device?.isPhone ? 30 : 0 }} />
+			<TopNavigation title={title} alignment='center' accessoryLeft={BackAction} style={{ marginTop: Device?.isPhone && Platform.OS === 'android' ? 30 : 0 }} />
 			<Divider />
 		</>
 	)
