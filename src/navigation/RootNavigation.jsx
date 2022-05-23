@@ -1,3 +1,16 @@
+/*
+	Copyright(C) 2022 Jose Fernández Marín
+
+	This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <https://www.gnu.org/licenses/gpl-3.0.html>*/
+
 import React, { useEffect, useState, useRef } from 'react'
 import consola from '../libs/myLogger';
 
@@ -13,6 +26,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { TabsNavigation } from './TabsNavigation';
 import { NotLoggedInNavigation } from './NotLoggedInNavigation';
+import { TermsAndConditionsScreen } from '../screens/TermsAndConditions/TermsAndConditions';
 
 //Expo Notifications
 import * as Notifications from 'expo-notifications';
@@ -124,6 +138,7 @@ const RootScreen = () => {
 			) : (
 				<Root.Screen name="NotLoggedInNavigation" component={NotLoggedInNavigation} />
 			)}
+			<Root.Screen name='TermsAndConditionsScreen' component={TermsAndConditionsScreen} />
 		</Root.Navigator>
 	)
 }
@@ -154,6 +169,9 @@ export const RootNavigation = () => {
 				prefixes: ['expert-garden://', 'https://expert-garden.web.app.com'],
 				config: {
 					screens: {
+						TermsAndConditionsScreen: {
+							path: 'termsAndConditions'
+						},
 						TabsNavigation: {
 							screens: {
 								Home: '',
@@ -215,9 +233,6 @@ export const RootNavigation = () => {
 								},
 								RememberPass: {
 									path: 'rememberPass'
-								},
-								TermsAndConditionsScreen: {
-									path: 'termsAndConditions'
 								},
 								ValidatingScreen: {
 									path: 'validating/:mode?/:actionCode?'
